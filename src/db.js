@@ -103,27 +103,37 @@ export async function deleteCustomWord(id) {
   await db.progress.delete(id);
 }
 
-// online leaderboard helpers (Vercel KV / fallback)
+// online leaderboard helpers (Vercel KV / fallback) - with debug logs
 export async function fetchOnlineLeaderboard() {
   try {
+    console.log('[leaderboard] fetching /api/leaderboard');
     const r = await fetch('/api/leaderboard');
-    if (!r.ok) throw new Error('no api');
-    return await r.json();
-  } catch {
+    console.log('[leaderboard] GET status', r.status);
+    if (!r.ok) throw new Error('no api ' + r.status);
+    const j = await r.json();
+    console.log('[leaderboard] GET ok', j?.length);
+    return j;
+  } catch (e) {
+    console.warn('[leaderboard] GET failed', e);
     return null;
   }
 }
 
 export async function submitOnlineScore(name, xp) {
   try {
+    console.log('[leaderboard] POST', name, xp);
     const r = await fetch('/api/leaderboard', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, xp }),
     });
-    if (!r.ok) throw new Error('post failed');
-    return await r.json();
-  } catch {
+    console.log('[leaderboard] POST status', r.status);
+    if (!r.ok) throw new Error('post failed ' + r.status);
+    const j = await r.json();
+    console.log('[leaderboard] POST ok', j?.length);
+    return j;
+  } catch (e) {
+    console.warn('[leaderboard] POST failed', e);
     return null;
   }
 }

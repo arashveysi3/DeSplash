@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@upstash/redis": "^1.38.4",
     "baseui": "^18.2.0",
     "dexie": "^4.4.6",
     "react": "^19.2.8",
