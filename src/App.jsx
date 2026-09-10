@@ -286,6 +286,15 @@ export default function App() {
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizArtikelChoice, setQuizArtikelChoice] = useState('');
 
+  // pack study (UX: preload N, save batch)
+  const [packWords, setPackWords] = useState([]);
+  const [packIdx, setPackIdx] = useState(0);
+  const [packAnswers, setPackAnswers] = useState([]);
+  const [packSize, setPackSize] = useState(10);
+  const [showPackSummary, setShowPackSummary] = useState(false);
+  const [pendingProgress, setPendingProgress] = useState({});
+  const [isSavingPack, setIsSavingPack] = useState(false);
+
   // helper to load progress per user: if logged in, from server (isolated), else from local Dexie (anonymous)
   const loadProgressForUser = useCallback(async (token) => {
     if (token) {
@@ -422,33 +431,171 @@ export default function App() {
     return w;
   }, [allWords, levelFilter, search]);
 
-  const studyQueue = useMemo(() => {
-    if (search.trim()) return filteredWords;
-    const withDue = filteredWords.map((w) => {
-      const p = progressMap[w.id];
-      return { w, due: p?.due || 0 };
-    });
-    withDue.sort((a, b) => {
-      const aDue = a.due === 0 ? Infinity : a.due;
-      const bDue = b.due === 0 ? Infinity : b.due;
-      if (aDue !== bDue) return aDue - bDue;
-      return a.w.id - b.w.id;
-    });
-    return withDue.map((x) => x.w);
-  }, [filteredWords, progressMap, search]);
-
   const filterKey = useMemo(() => levelFilter.map((o) => o.id).sort().join(',') + '|' + search.trim().toLowerCase(), [levelFilter, search]);
   const prevFilterKey = useRef(filterKey);
+  const sessionReviewedIds = useRef(new Set());
+  const sessionDay = useRef(new Date().toISOString().slice(0,10));
+
+  const studyQueue = useMemo(() => {
+    if (search.trim()) return filteredWords;
+    const today = Date.now();
+    const NEW_PER_DAY = 20;
+    let newCount = 0;
+    const withScore = filteredWords.map((w) => {
+      const p = progressMap[w.id];
+      const due = p?.due || 0;
+      const isNew = !p || p.repetition === 0;
+      const lapses = p?.lapses || 0;
+      const ease = p?.ease ?? 2.5;
+      const interval = p?.interval || 0;
+      const lastReview = p?.lastReview || 0;
+      const daysSinceReview = lastReview ? (today - lastReview) / 86400000 : 999;
+      
+      let score = 0;
+      if (due === 0 || isNew) {
+        score = 1e9 - (isNew ? newCount++ : 0);
+      } else {
+        const overdueDays = Math.max(0, (today - due) / 86400000);
+        score = overdueDays * 1000;
+      }
+      score += lapses * 500;
+      score += (2.5 - ease) * 200;
+      if (interval > 0 && interval < 7) score += (7 - interval) * 50;
+      if (daysSinceReview > 14) score += 100;
+      if (weakIds.has(w.id)) score += 300;
+      
+      return { w, score, isNew, due };
+    });
+    withScore.sort((a, b) => {
+      if (a.isNew && !b.isNew) return 1;
+      if (!a.isNew && b.isNew) return -1;
+      return b.score - a.score;
+    });
+    const result = withScore.map((x) => x.w);
+    if (search.trim()) return result;
+    return result.filter(w => !sessionReviewedIds.current.has(w.id));
+  }, [filteredWords, progressMap, search, weakIds]);
+
   useEffect(() => {
     if (!dbReady) return;
+    const today = new Date().toISOString().slice(0,10);
+    if (sessionDay.current !== today) {
+      sessionDay.current = today;
+      sessionReviewedIds.current.clear();
+    }
     if (queue.length === 0 || prevFilterKey.current !== filterKey) {
       prevFilterKey.current = filterKey;
+      sessionReviewedIds.current.clear();
       setQueue(studyQueue);
       setCurrentIdx(0);
       setFlipped(false);
       setTranscript('');
     }
   }, [studyQueue, filterKey, dbReady]);
+
+  // pack study (UX: preload N, save batch) — defined after studyQueue so it can use it
+  const startNewPack = useCallback(() => {
+    const available = studyQueue.filter(w => !sessionReviewedIds.current.has(w.id));
+    const pack = available.slice(0, packSize);
+    if (pack.length === 0) {
+      setToast(available.length === 0 ? 'No more words for today — try tomorrow or change filter' : 'All words reviewed this session');
+      setTimeout(()=> setToast(null),1500);
+      return;
+    }
+    setPackWords(pack);
+    setPackIdx(0);
+    setPackAnswers([]);
+    setPendingProgress({});
+    setShowPackSummary(false);
+    setFlipped(false);
+    setTranscript('');
+  }, [studyQueue, packSize]);
+
+  const handlePackRate = useCallback((label) => {
+    const word = packWords[packIdx];
+    if (!word) return;
+    sessionReviewedIds.current.add(word.id);
+    const base = pendingProgress[word.id] ? pendingProgress[word.id] : (progressMap[word.id] || { interval: 0, repetition: 0, ease: 2.5, due: 0, lapses: 0 });
+    const next = sm2(base, qualityFromLabel(label));
+    const xp = XP_MAP[label] || 5;
+    const nextEntry = { id: word.id, level: word.level, ...next, lastReview: Date.now() };
+    setPendingProgress(prev => ({ ...prev, [word.id]: nextEntry }));
+    setPackAnswers(prev => [...prev, { word, label, xp, correct: label !== 'Again' }]);
+    setProgressMap(m => ({ ...m, [word.id]: nextEntry }));
+    if (label === 'Again') setWeakIds(s => { const n = new Set(s); n.add(word.id); return n; });
+    setStats(s => {
+      const today = new Date().toISOString().slice(0,10);
+      const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+      let newStreak = s.streak || 0;
+      let newLast = s.lastStudyDate;
+      if (s.lastStudyDate !== today) {
+        if (!s.lastStudyDate) newStreak = 1;
+        else if (s.lastStudyDate === yesterday) newStreak = (s.streak||0)+1;
+        else {
+          const diff = (new Date(today) - new Date(s.lastStudyDate))/86400000;
+          newStreak = diff===1 ? (s.streak||0)+1 : 1;
+        }
+        newLast = today;
+      }
+      return { ...s, xp: (s.xp||0)+xp, totalReviews: (s.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
+    });
+    if (packIdx + 1 >= packWords.length) {
+      setShowPackSummary(true);
+    } else {
+      setPackIdx(i => i + 1);
+      setFlipped(false);
+      setTranscript('');
+    }
+    if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
+  }, [packWords, packIdx, progressMap, pendingProgress, packSize]);
+
+  const savePack = useCallback(async () => {
+    if (Object.keys(pendingProgress).length === 0) {
+      setShowPackSummary(false);
+      startNewPack();
+      return;
+    }
+    setIsSavingPack(true);
+    const entries = Object.values(pendingProgress);
+    const totalXp = packAnswers.reduce((a,b)=> a + b.xp, 0);
+    try {
+      if (authToken && authUser) {
+        const bulk = {};
+        entries.forEach(e => bulk[e.id] = e);
+        const server = await fetchProgress() || {};
+        const merged = { ...server, ...bulk };
+        await saveProgress(merged);
+        await saveStatsOnline(stats);
+        await submitOnlineScore(authUser.username, stats.xp);
+        const b = await fetchOnlineLeaderboard(); if (b) setOnlineBoard(b);
+      } else {
+        await db.progress.bulkPut(entries);
+        await db.stats.put({ id: 'main', ...stats });
+      }
+      setToast(`Pack saved +${totalXp} XP ✓`);
+    } catch (e) {
+      setToast('Save failed — will retry');
+      console.error(e);
+    } finally {
+      setIsSavingPack(false);
+      setTimeout(()=> setToast(null), 1500);
+      setPendingProgress({});
+      setPackAnswers([]);
+      setShowPackSummary(false);
+      setTimeout(()=> startNewPack(), 300);
+    }
+  }, [pendingProgress, packAnswers, authToken, authUser, stats, startNewPack]);
+
+  const handlePackSwipe = useCallback((dir) => {
+    if (dir === 'right') handlePackRate('Good');
+    else handlePackRate('Again');
+  }, [handlePackRate]);
+
+  useEffect(() => {
+    if (dbReady && activeKey === '0' && packWords.length === 0 && studyQueue.length > 0 && !showPackSummary) {
+      startNewPack();
+    }
+  }, [dbReady, activeKey, studyQueue, packWords.length, showPackSummary, startNewPack]);
 
   const currentWord = queue[currentIdx] || null;
   const progress = queue.length ? Math.round((currentIdx / queue.length) * 100) : 0;
@@ -510,6 +657,24 @@ export default function App() {
   };
 
   const weakWords = useMemo(() => allWords.filter((w) => weakIds.has(w.id)), [allWords, weakIds]);
+
+  const startWeakPack = useCallback(() => {
+    const available = weakWords.filter(w => !sessionReviewedIds.current.has(w.id));
+    const pack = available.slice(0, packSize);
+    if (pack.length === 0) {
+      setToast(weakWords.length === 0 ? 'No weak words' : 'All weak words reviewed this session');
+      setTimeout(()=> setToast(null),1500);
+      return;
+    }
+    setPackWords(pack);
+    setPackIdx(0);
+    setPackAnswers([]);
+    setPendingProgress({});
+    setShowPackSummary(false);
+    setFlipped(false);
+    setTranscript('');
+    setActiveKey('0');
+  }, [weakWords, packSize]);
 
   const leaderboard = useMemo(() => {
     const board = (useOnline && onlineBoard) ? onlineBoard : COMPETITORS;
@@ -875,36 +1040,62 @@ export default function App() {
             <Block paddingTop="16px">
               <Block display="flex" gridGap="8px" marginBottom="12px">
                 <Block flex="1">
-                  <Select options={[{id:'A1.1', label:'A1.1'},{id:'A1.2', label:'A1.2'},{id:'A2.1', label:'A2.1'},{id:'A2.2', label:'A2.2'},{id:'B1.1', label:'B1.1'},{id:'B1.2', label:'B1.2'},{id:'B2.1', label:'B2.1'},{id:'B2.2', label:'B2.2'},{id:'Custom', label:'Custom'}]} value={levelFilter} multi placeholder="Filter level" onChange={({ value }) => setLevelFilter(value)} size="compact" overrides={{ ControlContainer: { style: { backgroundColor: '#f7f7f7', borderTopColor: '#e5e5e5', borderBottomColor: '#e5e5e5', borderLeftColor: '#e5e5e5', borderRightColor: '#e5e5e5', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px' } } }} />
+                  <Select options={[{id:'A1.1', label:'A1.1'},{id:'A1.2', label:'A1.2'},{id:'A2.1', label:'A2.1'},{id:'A2.2', label:'A2.2'},{id:'B1.1', label:'B1.1'},{id:'B1.2', label:'B1.2'},{id:'B2.1', label:'B2.1'},{id:'B2.2', label:'B2.2'},{id:'Custom', label:'Custom'}]} value={levelFilter} multi placeholder="Filter level" onChange={({ value }) => { setLevelFilter(value); setTimeout(()=> startNewPack(), 100); }} size="compact" overrides={{ ControlContainer: { style: { backgroundColor: '#f7f7f7', borderTopColor: '#e5e5e5', borderBottomColor: '#e5e5e5', borderLeftColor: '#e5e5e5', borderRightColor: '#e5e5e5', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px' } } }} />
                 </Block>
-                <Button kind={KIND.secondary} size={SIZE.compact} shape={SHAPE.pill} onClick={() => { setLevelFilter([]); setSearch(''); }}>Reset</Button>
+                <Button kind={KIND.secondary} size={SIZE.compact} shape={SHAPE.pill} onClick={() => { setLevelFilter([]); setSearch(''); setTimeout(()=> startNewPack(), 100); }}>Reset</Button>
+              </Block>
+              <Block display="flex" gridGap="8px" marginBottom="12px">
+                <Select options={[{id:10, label:'10 / pack'},{id:20, label:'20 / pack'},{id:50, label:'50 / pack'}]} value={[{id:packSize, label:`${packSize} / pack`}]} onChange={({value})=> setPackSize(value[0].id)} size="compact" overrides={{ ControlContainer: { style: { minWidth: '120px', backgroundColor: '#fff', borderTopColor: '#000', borderBottomColor: '#000', borderLeftColor: '#000', borderRightColor: '#000', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px' } } }} />
+                <Button size={SIZE.compact} shape={SHAPE.pill} onClick={startNewPack}>New pack</Button>
+                <Block display="flex" alignItems="center" marginLeft="auto"><LabelSmall color="#6b6b6b">{studyQueue.length} due • {allWords.length} total</LabelSmall></Block>
               </Block>
 
-              <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-                <LabelSmall color="#6b6b6b">{queue.length - currentIdx} cards left • {currentIdx}/{queue.length} reviewed</LabelSmall>
-                <LabelSmall color="#000" overrides={{ Block: { style: { fontWeight: 700 } } }}>{progress}%</LabelSmall>
-              </Block>
-              <ProgressBar value={progress} successValue={progress} overrides={{ Bar: { style: { height: '4px' } }, BarProgress: { style: { backgroundColor: '#000' } }, BarContainer: { style: { backgroundColor: '#eee', height: '4px', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px' } } }} />
-
-              <Block marginTop="16px">
-                {currentWord ? (
-                  <FlashCard word={currentWord} flipped={flipped} setFlipped={setFlipped} onSwipe={handleSwipe} onRate={handleRate} listening={listening} setListening={setListening} transcript={transcript} setTranscript={setTranscript} />
-                ) : (
-                  <UberCard styleOverride={{ backgroundColor: '#f7f7f7', borderTopColor: '#e5e5e5', borderBottomColor: '#e5e5e5', borderLeftColor: '#e5e5e5', borderRightColor: '#e5e5e5', borderTopLeftRadius: '24px', borderTopRightRadius: '24px', borderBottomLeftRadius: '24px', borderBottomRightRadius: '24px', textAlign: 'center', paddingTop: '40px', paddingBottom: '40px' }}>
-                    <div style={{ fontSize: 48 }}>🎉</div>
-                    <HeadingLevel><Heading $style={{ fontSize: 20, fontWeight: 800 }}>All caught up!</Heading></HeadingLevel>
-                    <ParagraphSmall color="#6b6b6b">You’ve reviewed all cards. Change filter or come back tomorrow for SRS due cards.</ParagraphSmall>
-                    <Block marginTop="16px" display="flex" justifyContent="center"><Button shape={SHAPE.pill} onClick={() => setCurrentIdx(0)}>Restart deck</Button></Block>
-                  </UberCard>
-                )}
-              </Block>
+              {packWords.length > 0 && !showPackSummary ? (
+                <>
+                  <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
+                    <LabelSmall color="#6b6b6b">Pack {packIdx+1}/{packWords.length} • {packAnswers.length} answered</LabelSmall>
+                    <LabelSmall color="#000" overrides={{ Block: { style: { fontWeight: 700 } } }}>{Math.round((packIdx/packWords.length)*100)}%</LabelSmall>
+                  </Block>
+                  <ProgressBar value={(packIdx/packWords.length)*100} successValue={(packIdx/packWords.length)*100} overrides={{ Bar: { style: { height: '4px' } }, BarProgress: { style: { backgroundColor: '#000' } }, BarContainer: { style: { backgroundColor: '#eee', height: '4px', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px' } } }} />
+                  <Block marginTop="16px">
+                    <FlashCard word={packWords[packIdx]} flipped={flipped} setFlipped={setFlipped} onSwipe={handlePackSwipe} onRate={handlePackRate} listening={listening} setListening={setListening} transcript={transcript} setTranscript={setTranscript} />
+                  </Block>
+                  <Block display="flex" justifyContent="center" marginTop="12px">
+                    <LabelSmall color="#9a9a9a">{packWords.length - packIdx - 1} remaining in pack • pack saves at the end (no lag)</LabelSmall>
+                  </Block>
+                </>
+              ) : showPackSummary ? (
+                <UberCard styleOverride={{textAlign:'center', paddingTop:'24px', paddingBottom:'24px', backgroundColor:'#f7f7f7', borderTopColor:'#e5e5e5', borderBottomColor:'#e5e5e5', borderLeftColor:'#e5e5e5', borderRightColor:'#e5e5e5'}}>
+                  <div style={{fontSize:36}}>🎉</div>
+                  <Heading $style={{fontSize:18, margin:'8px 0 0'}}>Pack complete!</Heading>
+                  <ParagraphSmall margin="8px 0 0">{packAnswers.filter(a=>a.correct).length}/{packAnswers.length} correct • +{packAnswers.reduce((a,b)=>a+b.xp,0)} XP</ParagraphSmall>
+                  <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
+                    {packAnswers.map((a,i)=>(
+                      <Tag key={i} closeable={false} overrides={{Root:{style:{backgroundColor: a.correct ? '#dcfce7' : '#fee2e2', color: a.correct ? '#16a34a' : '#dc2626', borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px'}}}}>{a.word.german}: {a.label}</Tag>
+                    ))}
+                  </Block>
+                  <Block display="flex" gridGap="8px" justifyContent="center" marginTop="16px">
+                    <Button shape={SHAPE.pill} onClick={savePack} isLoading={isSavingPack}>Save & next pack</Button>
+                    <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setShowPackSummary(false); setPackAnswers([]); setPendingProgress({}); startNewPack(); }}>Discard</Button>
+                  </Block>
+                  <ParagraphSmall color="#9a9a9a" margin="8px 0 0">Saves {Object.keys(pendingProgress).length} cards + stats to {authUser ? 'cloud (per-user)' : 'local'} in one batch — smooth swipes, no per-card DB lag.</ParagraphSmall>
+                </UberCard>
+              ) : (
+                <UberCard styleOverride={{ backgroundColor: '#f7f7f7', borderTopColor: '#e5e5e5', borderBottomColor: '#e5e5e5', borderLeftColor: '#e5e5e5', borderRightColor: '#e5e5e5', textAlign: 'center', paddingTop: '30px', paddingBottom: '30px' }}>
+                  <div style={{ fontSize: 32 }}>📦</div>
+                  <Heading $style={{fontSize:16}}>Ready for a pack?</Heading>
+                  <ParagraphSmall color="#6b6b6b">Level-by-level packs load {packSize} words upfront and save once at the end — instant swipes, zero lag.</ParagraphSmall>
+                  <Block marginTop="12px" display="flex" justifyContent="center"><Button shape={SHAPE.pill} onClick={startNewPack}>Start {packSize}-word pack</Button></Block>
+                  {studyQueue.length===0 && <ParagraphSmall color="#dc2626" margin="8px 0 0">No due words for this filter — try Reset or different level.</ParagraphSmall>}
+                </UberCard>
+              )}
 
               <Block display="flex" justifyContent="center" gridGap="16px" marginTop="16px">
                 <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', background: '#2563eb' }} /><LabelSmall>der</LabelSmall></Block>
                 <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', background: '#dc2626' }} /><LabelSmall>die</LabelSmall></Block>
                 <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', background: '#16a34a' }} /><LabelSmall>das</LabelSmall></Block>
               </Block>
-              <ParagraphSmall color="#9a9a9a" textAlign="center" marginTop="8px">Tip: Allow microphone for accent check • Audio uses de-DE TTS • Swipe or use buttons</ParagraphSmall>
+              <ParagraphSmall color="#9a9a9a" textAlign="center" marginTop="8px">Preloaded pack • Swipe or buttons • Saves in batch at the end</ParagraphSmall>
             </Block>
           </Tab>
 
@@ -952,7 +1143,7 @@ export default function App() {
                 </Block>
                 {weakWords.length > 0 && (
                   <Block marginTop="12px" display="flex" gridGap="8px">
-                    <Button size={SIZE.mini} shape={SHAPE.pill} kind={KIND.primary} onClick={() => { setQueue(weakWords); setCurrentIdx(0); setFlipped(false); setActiveKey('0'); }}>Practice Weak Words</Button>
+                    <Button size={SIZE.mini} shape={SHAPE.pill} kind={KIND.primary} onClick={startWeakPack}>Practice Weak Words</Button>
                     <Button size={SIZE.mini} shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> {startQuiz('mixed', Math.min(10, weakWords.length)); setActiveKey('3');}}>Quiz Weak</Button>
                   </Block>
                 )}
@@ -1108,7 +1299,7 @@ export default function App() {
                 {onlineError && <ParagraphSmall color="#fca5a5" marginTop="8px">{onlineError}</ParagraphSmall>}
                 <Block display="flex" gridGap="8px" marginTop="8px">
                   <Button size={SIZE.mini} kind={useOnline?KIND.primary:KIND.secondary} shape={SHAPE.pill} onClick={()=> setUseOnline(false)}>Local</Button>
-                  <Button size={SIZE.mini} kind={useOnline?KIND.secondary:KIND.primary} shape={SHAPE.pill} onClick={async()=> { const b=await fetchOnlineLeaderboard(); if(b){ setOnlineBoard(b); setUseOnline(true);} else setOnlineError('Online board not available. Deploy api/leaderboard.js + add Vercel KV free store.'); setTimeout(()=> setOnlineError(null),3000); }}>{onlineBoard ? 'Online ✓' : 'Online'}</Button>
+                  <Button size={SIZE.mini} kind={useOnline?KIND.secondary:KIND.primary} shape={SHAPE.pill} onClick={async()=> { const b=await fetchOnlineLeaderboard(); if(b){ setOnlineBoard(b); setUseOnline(true);} else setOnlineError('Online not available'); setTimeout(()=> setOnlineError(null),3000); }}>{onlineBoard ? 'Online ✓' : 'Online'}</Button>
                   <LabelSmall color="#6b6b6b" overrides={{Block:{style:{alignSelf:'center'}}}}>{useOnline ? 'Synced board' : 'Local mock board'}</LabelSmall>
                 </Block>
               </UberCard>
@@ -1139,24 +1330,14 @@ export default function App() {
               </Block>
               {adminMode && (
                 <UberCard styleOverride={{marginTop:'8px', backgroundColor:'#fef2f2', borderTopColor:'#fecaca', borderBottomColor:'#fecaca', borderLeftColor:'#fecaca', borderRightColor:'#fecaca'}}>
-                  <LabelSmall>Admin token (optional, set ADMIN_TOKEN env to protect):</LabelSmall>
-                  <Input value={adminToken} onChange={e=> { setAdminToken(e.target.value); localStorage.setItem('gs_admin_token', e.target.value); }} placeholder="ADMIN_TOKEN if set on Vercel" size="compact" overrides={{Root:{style:{marginTop:'8px', borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />
+                  <LabelSmall>Admin</LabelSmall>
+                  <Input value={adminToken} onChange={e=> { setAdminToken(e.target.value); localStorage.setItem('gs_admin_token', e.target.value); }} placeholder="Admin token" size="compact" overrides={{Root:{style:{marginTop:'8px', borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />
                   <Block display="flex" gridGap="8px" marginTop="8px">
-                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b = await resetOnlineBoard(adminToken); if(b){ setOnlineBoard(b); setUseOnline(true); setToast('Board reset ✓'); } else setOnlineError('Reset failed — check admin token'); setTimeout(()=> setOnlineError(null),2000); setTimeout(()=> setToast(null),1500); }}>Reset to default</Button>
+                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b = await resetOnlineBoard(adminToken); if(b){ setOnlineBoard(b); setUseOnline(true); setToast('Board reset'); } else setOnlineError('Reset failed'); setTimeout(()=> setOnlineError(null),2000); setTimeout(()=> setToast(null),1500); }}>Reset</Button>
                     <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b = await fetchOnlineLeaderboard(); if(b) setOnlineBoard(b); setUseOnline(true); }}>Refresh</Button>
                   </Block>
-                  <ParagraphSmall color="#991b1b" margin="8px 0 0">Deletes affect Upstash (online) and local dev. Mock competitors can be re-added by Reset.</ParagraphSmall>
                 </UberCard>
               )}
-              <UberCard styleOverride={{marginTop:'12px', backgroundColor:'#f7f7f7'}}>
-                <LabelSmall>How to go online on Vercel Free:</LabelSmall>
-                <ParagraphSmall margin="8px 0 0" overrides={{Block:{style:{fontSize:12, lineHeight:'1.5'}}}}>
-                  1) Push this <b>api/leaderboard.js</b> to Vercel (already included). <br/>
-                  2) In Vercel Dashboard → your project → <b>Storage</b> → <b>Create KV</b> (Upstash, free 256 MB) → Connect to project. This auto-sets <b>KV_REST_API_URL</b> + <b>TOKEN</b>.<br/>
-                  3) Redeploy. Your app will auto-detect KV and `/api/leaderboard` will persist globally.<br/>
-                  No KV? It falls back to in-memory (resets on cold start). Alternatives on free plan: <b>Vercel Postgres</b> (Neon free 0.5 GB) or <b>Supabase free</b> — swap `api/leaderboard.js` to use Postgres. No backend needed for offline use; XP still saved locally in IndexedDB.
-                </ParagraphSmall>
-              </UberCard>
             </Block>
           </Tab>
           <Tab title="Profile">
