@@ -7,6 +7,14 @@ db.version(1).stores({
   stats: 'id',
   words: 'id, level, german, english',
 });
+db.version(2).stores({
+  progress: 'id, level, due, ease, interval, reps, lapses',
+  stats: 'id',
+  words: 'id, level, german, english, isCustom',
+}).upgrade(tx => {
+  // mark existing words as not custom
+  return tx.table('words').toCollection().modify(w => { if (w.isCustom === undefined) w.isCustom = 0; });
+});
 
 export const COMPETITORS = [
   { name: 'Lena M.', xp: 4820, avatar: 'LM' },
@@ -61,4 +69,61 @@ export async function getProgress(id) {
 }
 export async function getAllProgress() {
   return await db.progress.toArray();
+}
+
+export async function getAllWords() {
+  return await db.words.toArray();
+}
+
+export async function addCustomWord({ german, english, article, level, example, exampleEn, pos }) {
+  const all = await db.words.toArray();
+  const maxId = all.reduce((m, w) => Math.max(m, w.id), 0);
+  const id = maxId + 1;
+  const fullGerman = article ? `${article} ${german}` : german;
+  const word = {
+    id,
+    german,
+    fullGerman,
+    english,
+    article: article || null,
+    pos: pos || (article ? 'noun' : 'other'),
+    level: level || 'Custom',
+    example: example || `Ich lerne "${german}".`,
+    exampleEn: exampleEn || `I learn "${english}".`,
+    isCustom: 1,
+  };
+  await db.words.put(word);
+  return word;
+}
+
+export async function deleteCustomWord(id) {
+  const w = await db.words.get(id);
+  if (w && w.isCustom) await db.words.delete(id);
+  // also clean progress
+  await db.progress.delete(id);
+}
+
+// online leaderboard helpers (Vercel KV / fallback)
+export async function fetchOnlineLeaderboard() {
+  try {
+    const r = await fetch('/api/leaderboard');
+    if (!r.ok) throw new Error('no api');
+    return await r.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function submitOnlineScore(name, xp) {
+  try {
+    const r = await fetch('/api/leaderboard', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, xp }),
+    });
+    if (!r.ok) throw new Error('post failed');
+    return await r.json();
+  } catch {
+    return null;
+  }
 }
