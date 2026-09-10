@@ -431,6 +431,7 @@ export default function App() {
     return w;
   }, [levelFilter, search]);
 
+  // studyQueue sorted by SRS due, but queue state only resets when filter/search changes to avoid resetting on every review
   const studyQueue = useMemo(() => {
     if (search.trim()) return filteredWords;
     const withDue = filteredWords.map((w) => {
@@ -446,12 +447,20 @@ export default function App() {
     return withDue.map((x) => x.w);
   }, [filteredWords, progressMap, search]);
 
+  const filterKey = useMemo(() => levelFilter.map((o) => o.id).sort().join(',') + '|' + search.trim().toLowerCase(), [levelFilter, search]);
+  const prevFilterKey = useRef(filterKey);
   useEffect(() => {
-    setQueue(studyQueue);
-    setCurrentIdx(0);
-    setFlipped(false);
-    setTranscript('');
-  }, [studyQueue]);
+    if (!dbReady) return;
+    // init or when filter/search changes -> rebuild queue from studyQueue (which includes SRS sorting)
+    // do NOT rebuild on every progressMap change, otherwise currentIdx resets to Mann
+    if (queue.length === 0 || prevFilterKey.current !== filterKey) {
+      prevFilterKey.current = filterKey;
+      setQueue(studyQueue);
+      setCurrentIdx(0);
+      setFlipped(false);
+      setTranscript('');
+    }
+  }, [studyQueue, filterKey, dbReady]); // queue.length intentionally not a dep to avoid loop, but we read it
 
   const currentWord = queue[currentIdx] || null;
   const progress = queue.length ? Math.round((currentIdx / queue.length) * 100) : 0;
