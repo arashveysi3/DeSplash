@@ -12,7 +12,9 @@
   "dependencies": {
     "@upstash/redis": "^1.38.4",
     "baseui": "^18.2.0",
+    "bcryptjs": "^3.0.3",
     "dexie": "^4.4.6",
+    "jsonwebtoken": "^9.0.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "styletron-engine-atomic": "^1.6.2",

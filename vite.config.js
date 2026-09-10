@@ -2,8 +2,10 @@ import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import { Redis } from '@upstash/redis'
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
-// Dev-only in-memory fallback for /api/leaderboard so `npm run dev` works without Vercel
+// Dev-only in-memory fallback for /api/* so `npm run dev` works without Vercel
 let devMemoryBoard = [
   { name: 'Lena M.', xp: 4820, avatar: 'LM' },
   { name: 'Jonas K.', xp: 4210, avatar: 'JK' },
@@ -12,48 +14,67 @@ let devMemoryBoard = [
 ];
 function devApiPlugin() {
   return {
-    name: 'dev-api-leaderboard',
+    name: 'dev-api',
     configureServer(server) {
       const env = loadEnv(server.config.mode, process.cwd(), '');
       const getEnv = (k) => process.env[k] || env[k] || env[`VITE_${k}`];
-      server.middlewares.use(async (req, res, next) => {
-        if (!req.url?.startsWith('/api/leaderboard')) return next();
-        console.log('[dev-api] hit', req.method, req.url);
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-        if (req.method === 'OPTIONS') { res.statusCode = 200; return res.end(); }
-
-        // Use @upstash/redis as per docs: Redis.fromEnv() or explicit url/token
-        let redis = null;
+      const JWT_SECRET = getEnv('JWT_SECRET') || getEnv('ADMIN_TOKEN') || 'germansplash-dev-secret-change-in-prod';
+      const ADMIN_USER = (getEnv('ADMIN_USERNAME') || 'admin').toLowerCase();
+      const getRedis = () => {
         try {
           const url = getEnv('UPSTASH_REDIS_REST_URL') || getEnv('KV_REST_API_URL');
           const token = getEnv('UPSTASH_REDIS_REST_TOKEN') || getEnv('KV_REST_API_TOKEN');
-          if (url && token) redis = new Redis({ url, token });
-          else { try { redis = Redis.fromEnv(); } catch { redis = null; } }
-          // quick ping to ensure env is valid
-          if (redis && (!url || !token)) { try { await redis.ping(); } catch { redis = null; } }
-        } catch { redis = null; }
+          if (url && token) return new Redis({ url, token });
+          try { return Redis.fromEnv(); } catch { return null; }
+        } catch { return null; }
+      };
+      const getUser = async (redis, username) => {
+        if (!redis) return null;
+        const data = await redis.get(`user:${username.toLowerCase()}`);
+        return data ? (typeof data === 'string' ? JSON.parse(data) : data) : null;
+      };
+      const saveUser = async (redis, user) => {
+        await redis.set(`user:${user.username.toLowerCase()}`, JSON.stringify(user));
+        await redis.sadd('users', user.username.toLowerCase());
+      };
 
-        if (req.method === 'GET') {
-          console.log('[dev-api] GET /api/leaderboard redis?', !!redis);
-          try {
-            if (redis) {
-              const data = await redis.get('leaderboard');
-              console.log('[dev-api] redis GET', data ? `${JSON.stringify(data).length} chars` : 'null');
-              if (data) {
-                const arr = Array.isArray(data) ? data : JSON.parse(data);
-                res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(arr));
+      server.middlewares.use(async (req, res, next) => {
+        if (!req.url?.startsWith('/api/')) return next();
+        const urlObj = new URL(req.url, 'http://localhost');
+        const path = urlObj.pathname;
+        console.log('[dev-api] hit', req.method, req.url);
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-admin-token');
+        if (req.method === 'OPTIONS') { res.statusCode = 200; return res.end(); }
+
+        let redis = null;
+        try { redis = getRedis(); } catch { redis = null; }
+
+        // helper to read body
+        const readBody = async () => {
+          let b = ''; for await (const c of req) b += c;
+          if (!b) return {};
+          try { return JSON.parse(b); } catch { return {}; }
+        };
+
+        // /api/leaderboard
+        if (path === '/api/leaderboard') {
+          if (req.method === 'GET') {
+            try {
+              if (redis) {
+                const data = await redis.get('leaderboard');
+                if (data) {
+                  const arr = Array.isArray(data) ? data : JSON.parse(data);
+                  res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(arr));
+                }
               }
-            }
-          } catch (e) { console.error('dev redis GET', e); }
-          console.log('[dev-api] fallback memoryBoard', devMemoryBoard.length);
-          res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(devMemoryBoard));
-        }
-        if (req.method === 'POST') {
-          let body=''; for await (const c of req) body+=c;
-          try {
-            const { name, xp } = JSON.parse(body||'{}');
+            } catch (e) { console.error('dev redis GET', e); }
+            res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(devMemoryBoard));
+          }
+          if (req.method === 'POST') {
+            const body = await readBody();
+            const { name, xp } = body;
             if (!name || typeof xp !== 'number') { res.statusCode=400; return res.end(JSON.stringify({error:'name and xp required'})); }
             const entry = { name: String(name).slice(0,24), xp: Math.max(0, Math.floor(xp)), avatar: String(name).slice(0,2).toUpperCase() };
             if (redis) {
@@ -64,6 +85,7 @@ function devApiPlugin() {
               if (idx>=0) { if(entry.xp>board[idx].xp) board[idx]=entry; } else board.push(entry);
               board = board.sort((a,b)=> b.xp - a.xp).slice(0,50);
               await redis.set('leaderboard', JSON.stringify(board));
+              try { const uk=`user:${entry.name.toLowerCase()}`; const u=await redis.get(uk); if(u){ const user=typeof u==='string'?JSON.parse(u):u; if(entry.xp>(user.xp||0)){ user.xp=entry.xp; await redis.set(uk, JSON.stringify(user)); } } } catch {}
               res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(board));
             } else {
               const idx = devMemoryBoard.findIndex(b=> b.name.toLowerCase()===entry.name.toLowerCase());
@@ -71,9 +93,218 @@ function devApiPlugin() {
               devMemoryBoard = devMemoryBoard.sort((a,b)=> b.xp - a.xp).slice(0,50);
               res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(devMemoryBoard));
             }
-          } catch(e){ console.error(e); res.statusCode=500; return res.end(JSON.stringify({error:String(e)})); }
+          }
+          if (req.method === 'DELETE') {
+            const adminToken = getEnv('ADMIN_TOKEN') || getEnv('LEADERBOARD_ADMIN_TOKEN');
+            const token = req.headers['x-admin-token'] || urlObj.searchParams.get('adminToken') || urlObj.searchParams.get('admin');
+            if (adminToken && token !== adminToken) { res.statusCode=401; return res.end(JSON.stringify({error:'admin token required'})); }
+            const body = await readBody();
+            const name = body?.name || urlObj.searchParams.get('name');
+            const reset = body?.reset || urlObj.searchParams.get('reset');
+            if (reset==='true' || reset===true) {
+              const def = [
+                { name: 'Lena M.', xp: 4820, avatar: 'LM' },
+                { name: 'Jonas K.', xp: 4210, avatar: 'JK' },
+                { name: 'Sophie R.', xp: 3890, avatar: 'SR' },
+                { name: 'Maxim B.', xp: 3450, avatar: 'MB' },
+              ];
+              if (redis) await redis.set('leaderboard', JSON.stringify(def));
+              else devMemoryBoard = def;
+              const board = redis ? (await redis.get('leaderboard') || def) : devMemoryBoard;
+              const arr = Array.isArray(board) ? board : JSON.parse(board);
+              res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(arr));
+            }
+            if (!name) { res.statusCode=400; return res.end(JSON.stringify({error:'name required'})); }
+            if (redis) {
+              let board = await redis.get('leaderboard');
+              if (board && typeof board === 'string') try{ board=JSON.parse(board);}catch{board=null;}
+              if (!Array.isArray(board)) board = devMemoryBoard;
+              const before = board.length;
+              board = board.filter(b=> b.name.toLowerCase() !== String(name).toLowerCase());
+              if (board.length===before) { res.statusCode=404; return res.end(JSON.stringify({error:'not found', board})); }
+              await redis.set('leaderboard', JSON.stringify(board));
+              res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(board));
+            } else {
+              const before = devMemoryBoard.length;
+              devMemoryBoard = devMemoryBoard.filter(b=> b.name.toLowerCase() !== String(name).toLowerCase());
+              if (devMemoryBoard.length===before) { res.statusCode=404; return res.end(JSON.stringify({error:'not found', board:devMemoryBoard})); }
+              res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(devMemoryBoard));
+            }
+          }
+          res.statusCode=405; return res.end(JSON.stringify({error:'Method not allowed'}));
         }
-        res.statusCode=405; return res.end(JSON.stringify({error:'Method not allowed'}));
+
+        // /api/auth/signup
+        if (path === '/api/auth/signup' && req.method === 'POST') {
+          if (!redis) { res.statusCode=500; return res.end(JSON.stringify({error:'Redis not configured'})); }
+          const body = await readBody();
+          const { username, email, password } = body;
+          if (!username || !password) { res.statusCode=400; return res.end(JSON.stringify({error:'username and password required'})); }
+          if (username.length < 3 || password.length < 4) { res.statusCode=400; return res.end(JSON.stringify({error:'username min 3, password min 4'})); }
+          if (!/^[a-zA-Z0-9_\-]+$/.test(username)) { res.statusCode=400; return res.end(JSON.stringify({error:'username alphanumeric + _-'})); }
+          const existing = await getUser(redis, username);
+          if (existing) { res.statusCode=409; return res.end(JSON.stringify({error:'username taken'})); }
+          const hash = await bcrypt.hash(password, 10);
+          const isAdmin = username.toLowerCase() === ADMIN_USER;
+          const user = { id: Date.now().toString(36)+Math.random().toString(36).slice(2,6), username, email: email||'', passwordHash: hash, xp:0, streak:0, totalReviews:0, level:'A1.1', isAdmin, createdAt: new Date().toISOString() };
+          await saveUser(redis, user);
+          let board = await redis.get('leaderboard');
+          if (board && typeof board === 'string') board = JSON.parse(board);
+          if (!Array.isArray(board)) board = devMemoryBoard;
+          board = board.filter(b=> b.name.toLowerCase() !== username.toLowerCase());
+          board.push({ name: username, xp:0, avatar: username.slice(0,2).toUpperCase() });
+          board = board.sort((a,b)=> b.xp - a.xp).slice(0,50);
+          await redis.set('leaderboard', JSON.stringify(board));
+          const token = jwt.sign({ username, isAdmin }, JWT_SECRET, { expiresIn: '30d' });
+          const { passwordHash, ...safe } = user;
+          res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify({ token, user: safe }));
+        }
+
+        // /api/auth/login
+        if (path === '/api/auth/login' && req.method === 'POST') {
+          if (!redis) { res.statusCode=500; return res.end(JSON.stringify({error:'Redis not configured'})); }
+          const body = await readBody();
+          const { username, password } = body;
+          if (!username || !password) { res.statusCode=400; return res.end(JSON.stringify({error:'username and password required'})); }
+          const user = await getUser(redis, username);
+          if (!user) { res.statusCode=401; return res.end(JSON.stringify({error:'invalid credentials'})); }
+          const ok = await bcrypt.compare(password, user.passwordHash);
+          if (!ok) { res.statusCode=401; return res.end(JSON.stringify({error:'invalid credentials'})); }
+          const token = jwt.sign({ username: user.username, isAdmin: !!user.isAdmin }, JWT_SECRET, { expiresIn: '30d' });
+          const { passwordHash, ...safe } = user;
+          res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify({ token, user: safe }));
+        }
+
+        // /api/auth/me
+        if (path === '/api/auth/me' && req.method === 'GET') {
+          if (!redis) { res.statusCode=500; return res.end(JSON.stringify({error:'Redis not configured'})); }
+          const auth = req.headers.authorization || '';
+          const token = auth.startsWith('Bearer ') ? auth.slice(7) : urlObj.searchParams.get('token');
+          if (!token) { res.statusCode=401; return res.end(JSON.stringify({error:'no token'})); }
+          try {
+            const payload = jwt.verify(token, JWT_SECRET);
+            const user = await getUser(redis, payload.username);
+            if (!user) { res.statusCode=404; return res.end(JSON.stringify({error:'user not found'})); }
+            const { passwordHash, ...safe } = user;
+            res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify({ user: safe }));
+          } catch { res.statusCode=401; return res.end(JSON.stringify({error:'invalid token'})); }
+        }
+
+        // /api/users
+        if (path === '/api/users') {
+          if (!redis) { res.statusCode=500; return res.end(JSON.stringify({error:'Redis not configured'})); }
+          const auth = req.headers.authorization || '';
+          const token = auth.startsWith('Bearer ') ? auth.slice(7) : urlObj.searchParams.get('token');
+          try {
+            const payload = jwt.verify(token, JWT_SECRET);
+            const caller = await getUser(redis, payload.username);
+            if (!caller || !caller.isAdmin) throw new Error('admin only');
+          } catch (e) { res.statusCode=403; return res.end(JSON.stringify({error: String(e.message)})); }
+          if (req.method === 'GET') {
+            const members = await redis.smembers('users');
+            const users = [];
+            for (const u of members || []) {
+              const d = await redis.get(`user:${u}`);
+              if (d) users.push(typeof d==='string'?JSON.parse(d):d);
+            }
+            const safe = users.map(({passwordHash, ...u})=>u).sort((a,b)=> b.xp - a.xp);
+            res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(safe));
+          }
+          if (req.method === 'DELETE') {
+            const body = await readBody();
+            const name = body?.username || body?.name || urlObj.searchParams.get('username') || urlObj.searchParams.get('name');
+            if (!name) { res.statusCode=400; return res.end(JSON.stringify({error:'username required'})); }
+            const key = `user:${String(name).toLowerCase()}`;
+            const exists = await redis.get(key);
+            if (!exists) { res.statusCode=404; return res.end(JSON.stringify({error:'not found'})); }
+            await redis.del(key);
+            await redis.srem('users', String(name).toLowerCase());
+            let board = await redis.get('leaderboard');
+            if (board && typeof board === 'string') board = JSON.parse(board);
+            if (Array.isArray(board)) {
+              board = board.filter(b=> b.name.toLowerCase() !== String(name).toLowerCase());
+              await redis.set('leaderboard', JSON.stringify(board));
+            }
+            res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify({ok:true}));
+          }
+          res.statusCode=405; return res.end(JSON.stringify({error:'Method not allowed'}));
+        }
+
+        // /api/progress
+        if (path === '/api/progress') {
+          const auth = req.headers.authorization || '';
+          const token = auth.startsWith('Bearer ') ? auth.slice(7) : urlObj.searchParams.get('token');
+          if (!token) { res.statusCode=401; return res.end(JSON.stringify({error:'no token'})); }
+          try {
+            const payload = jwt.verify(token, JWT_SECRET);
+            const username = payload.username.toLowerCase();
+            const key = `progress:${username}`;
+            if (req.method === 'GET') {
+              const data = await redis.get(key);
+              const obj = data ? (typeof data==='string'?JSON.parse(data):data) : {};
+              res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(obj));
+            }
+            if (req.method === 'POST') {
+              const body = await readBody();
+              if (body.progress && typeof body.progress === 'object') {
+                await redis.set(key, JSON.stringify(body.progress));
+                res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify({ok:true}));
+              }
+              if (body.id) {
+                const cur = await redis.get(key);
+                let obj = cur ? (typeof cur==='string'?JSON.parse(cur):cur) : {};
+                obj[String(body.id)] = body;
+                await redis.set(key, JSON.stringify(obj));
+                res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify({ok:true}));
+              }
+              res.statusCode=400; return res.end(JSON.stringify({error:'progress or id required'}));
+            }
+          } catch (e) { res.statusCode=401; return res.end(JSON.stringify({error:'invalid token'})); }
+          res.statusCode=405; return res.end(JSON.stringify({error:'Method not allowed'}));
+        }
+
+        // /api/stats
+        if (path === '/api/stats') {
+          const auth = req.headers.authorization || '';
+          const token = auth.startsWith('Bearer ') ? auth.slice(7) : urlObj.searchParams.get('token');
+          if (!token) { res.statusCode=401; return res.end(JSON.stringify({error:'no token'})); }
+          try {
+            const payload = jwt.verify(token, JWT_SECRET);
+            const username = payload.username.toLowerCase();
+            const key = `stats:${username}`;
+            if (req.method === 'GET') {
+              const data = await redis.get(key);
+              const obj = data ? (typeof data==='string'?JSON.parse(data):data) : { xp:0, streak:0, lastStudyDate:null, totalReviews:0 };
+              res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify(obj));
+            }
+            if (req.method === 'POST') {
+              const body = await readBody();
+              await redis.set(key, JSON.stringify(body));
+              // sync to user
+              const uk = `user:${username}`;
+              const u = await redis.get(uk);
+              if (u) {
+                const user = typeof u==='string'?JSON.parse(u):u;
+                if (typeof body.xp==='number') user.xp = body.xp;
+                if (typeof body.streak==='number') user.streak = body.streak;
+                if (typeof body.totalReviews==='number') user.totalReviews = body.totalReviews;
+                await redis.set(uk, JSON.stringify(user));
+                let board = await redis.get('leaderboard');
+                if (board && typeof board==='string') board = JSON.parse(board);
+                if (Array.isArray(board)) {
+                  const idx = board.findIndex(b=> b.name.toLowerCase()===user.username.toLowerCase());
+                  if (idx>=0) board[idx].xp = user.xp; else board.push({name:user.username, xp:user.xp, avatar:user.username.slice(0,2).toUpperCase()});
+                  board = board.sort((a,b)=> b.xp - a.xp).slice(0,50);
+                  await redis.set('leaderboard', JSON.stringify(board));
+                }
+              }
+              res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify({ok:true}));
+            }
+          } catch (e) { res.statusCode=401; return res.end(JSON.stringify({error:'invalid token'})); }
+          res.statusCode=405; return res.end(JSON.stringify({error:'Method not allowed'}));
+        }
+
+        return next();
       });
     },
   };
@@ -101,18 +332,10 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,json,svg,png,woff2}'],
-        // Never cache leaderboard API
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
-          {
-            urlPattern: /^\/api\/.*/i,
-            handler: 'NetworkOnly',
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: { cacheName: 'google-fonts-cache', expiration: { maxEntries: 10, maxAgeSeconds: 60*60*24*365 } },
-          },
+          { urlPattern: /^\/api\/.*/i, handler: 'NetworkOnly' },
+          { urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i, handler: 'CacheFirst', options: { cacheName: 'google-fonts-cache', expiration: { maxEntries: 10, maxAgeSeconds: 60*60*24*365 } } },
         ],
       },
     }),

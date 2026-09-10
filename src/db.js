@@ -137,3 +137,28 @@ export async function submitOnlineScore(name, xp) {
     return null;
   }
 }
+
+export async function deleteOnlineScore(name, adminToken) {
+  try {
+    const qs = `?name=${encodeURIComponent(name)}${adminToken ? `&adminToken=${encodeURIComponent(adminToken)}` : ''}`;
+    const r = await fetch(`/api/leaderboard${qs}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', ...(adminToken ? { 'x-admin-token': adminToken } : {}) },
+      body: JSON.stringify({ name, adminToken }),
+    });
+    if (!r.ok) throw new Error('delete failed ' + r.status);
+    return await r.json();
+  } catch (e) { console.warn('[leaderboard] DELETE failed', e); return null; }
+}
+
+export async function resetOnlineBoard(adminToken) {
+  try {
+    const r = await fetch(`/api/leaderboard?reset=true${adminToken ? `&adminToken=${encodeURIComponent(adminToken)}` : ''}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', ...(adminToken ? { 'x-admin-token': adminToken } : {}) },
+      body: JSON.stringify({ reset: true, adminToken }),
+    });
+    if (!r.ok) throw new Error('reset failed ' + r.status);
+    return await r.json();
+  } catch (e) { console.warn('[leaderboard] RESET failed', e); return null; }
+}

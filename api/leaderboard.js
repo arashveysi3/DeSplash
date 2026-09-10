@@ -40,9 +40,12 @@ function getRedis() {
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-admin-token");
   if (req.method === "OPTIONS") return res.status(200).end();
+
+  // Simple admin check: if ADMIN_TOKEN env is set, require it for DELETE
+  const adminToken = process.env.ADMIN_TOKEN || process.env.LEADERBOARD_ADMIN_TOKEN;
 
   let redis = null;
   try {
@@ -68,7 +71,6 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     try {
-      // Vercel Node may not parse json automatically in some setups
       let body = req.body;
       if (!body || typeof body === "string") {
         try {
@@ -102,6 +104,18 @@ export default async function handler(req, res) {
         } else board.push(entry);
         board = board.sort((a, b) => b.xp - a.xp).slice(0, 50);
         await redis.set("leaderboard", JSON.stringify(board));
+        // also sync to user record if exists
+        try {
+          const uk = `user:${entry.name.toLowerCase()}`;
+          const u = await redis.get(uk);
+          if (u) {
+            const user = typeof u === 'string' ? JSON.parse(u) : u;
+            if (entry.xp > (user.xp || 0)) {
+              user.xp = entry.xp;
+              await redis.set(uk, JSON.stringify(user));
+            }
+          }
+        } catch {}
         return res.status(200).json(board);
       } else {
         const idx = memoryBoard.findIndex(
@@ -117,6 +131,44 @@ export default async function handler(req, res) {
       console.error(e);
       return res.status(500).json({ error: String(e) });
     }
+  }
+
+  if (req.method === "DELETE") {
+    try {
+      const token = req.headers["x-admin-token"] || req.query?.adminToken || req.headers["x-admin-token".toLowerCase()];
+      if (adminToken && token !== adminToken) return res.status(401).json({ error: "admin token required" });
+      let body = req.body;
+      if (!body || typeof body === "string") {
+        try { body = JSON.parse(body || "{}"); } catch { body = {}; }
+      }
+      const name = body?.name || req.query?.name || (req.url && new URL(req.url, "http://localhost").searchParams.get("name"));
+      const reset = body?.reset || req.query?.reset || (req.url && new URL(req.url, "http://localhost").searchParams.get("reset"));
+      if (redis) {
+        if (reset === "true" || reset === true) {
+          await redis.set("leaderboard", JSON.stringify(memoryBoard));
+          return res.status(200).json(memoryBoard);
+        }
+        if (!name) return res.status(400).json({ error: "name required or reset=true" });
+        let board = (await redis.get("leaderboard")) || memoryBoard;
+        if (typeof board === "string") try { board = JSON.parse(board); } catch { board = memoryBoard; }
+        if (!Array.isArray(board)) board = memoryBoard;
+        const before = board.length;
+        board = board.filter((b) => b.name.toLowerCase() !== String(name).toLowerCase());
+        if (board.length === before) return res.status(404).json({ error: "not found", board });
+        await redis.set("leaderboard", JSON.stringify(board));
+        return res.status(200).json(board);
+      } else {
+        if (reset === "true" || reset === true) {
+          // reset handled by returning default
+          return res.status(200).json(memoryBoard);
+        }
+        if (!name) return res.status(400).json({ error: "name required" });
+        const before = memoryBoard.length;
+        memoryBoard = memoryBoard.filter((b) => b.name.toLowerCase() !== String(name).toLowerCase());
+        if (memoryBoard.length === before) return res.status(404).json({ error: "not found", board: memoryBoard });
+        return res.status(200).json(memoryBoard);
+      }
+    } catch (e) { console.error(e); return res.status(500).json({ error: String(e) }); }
   }
 
   return res.status(405).json({ error: "Method not allowed" });

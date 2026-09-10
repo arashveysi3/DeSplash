@@ -10,7 +10,8 @@ import { ProgressBar } from 'baseui/progress-bar';
 import { Select } from 'baseui/select';
 import { Notification } from 'baseui/notification';
 import { Spinner } from 'baseui/spinner';
-import { db, initDB, getStats, updateStreak, addXP, COMPETITORS, getAllWords, addCustomWord, deleteCustomWord, fetchOnlineLeaderboard, submitOnlineScore } from './db';
+import { db, initDB, getStats, updateStreak, addXP, COMPETITORS, getAllWords, addCustomWord, deleteCustomWord, fetchOnlineLeaderboard, submitOnlineScore, deleteOnlineScore, resetOnlineBoard } from './db';
+import { signup, login, fetchMe, logout, fetchUsers, deleteUser, getToken, fetchProgress, saveProgress, saveProgressOne, fetchStatsOnline, saveStatsOnline } from './auth';
 import { sm2, qualityFromLabel, XP_MAP } from './srs';
 import { genderColor, genderBg } from './theme';
 import wordsData from './data/words.js';
@@ -266,6 +267,14 @@ export default function App() {
   const [onlineError, setOnlineError] = useState(null);
   const [username, setUsername] = useState(() => localStorage.getItem('gs_username') || '');
   const [useOnline, setUseOnline] = useState(false);
+  const [adminMode, setAdminMode] = useState(false);
+  const [adminToken, setAdminToken] = useState(() => localStorage.getItem('gs_admin_token') || '');
+  const [authUser, setAuthUser] = useState(null);
+  const [authToken, setAuthToken] = useState(() => localStorage.getItem('gs_token') || '');
+  const [showAuth, setShowAuth] = useState(false);
+  const [authMode, setAuthMode] = useState('login');
+  const [authForm, setAuthForm] = useState({ username: '', email: '', password: '' });
+  const [usersList, setUsersList] = useState([]);
 
   // quiz state
   const [quizMode, setQuizMode] = useState('mixed'); // dictation | artikel | mixed
@@ -277,31 +286,128 @@ export default function App() {
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizArtikelChoice, setQuizArtikelChoice] = useState('');
 
+  // helper to load progress per user: if logged in, from server (isolated), else from local Dexie (anonymous)
+  const loadProgressForUser = useCallback(async (token) => {
+    if (token) {
+      try {
+        const serverProgress = await fetchProgress();
+        if (serverProgress && Object.keys(serverProgress).length > 0) {
+          const map = {};
+          const weak = new Set();
+          Object.values(serverProgress).forEach((p) => {
+            map[p.id] = p;
+            if (p.lapses > 0 || (p.ease && p.ease < 1.8)) weak.add(p.id);
+          });
+          setProgressMap(map);
+          setWeakIds(weak);
+          // do NOT clear Dexie — keep anonymous data intact for logout
+          return;
+        } else {
+          // server empty -> push local anonymous progress to new account if exists
+          const local = await db.progress.toArray();
+          if (local.length > 0) {
+            const obj = {}; local.forEach(p=> obj[p.id]=p);
+            try { await saveProgress(obj); } catch {}
+            const map = {}; const weak = new Set();
+            local.forEach((p) => { map[p.id]=p; if (p.lapses>0 || (p.ease && p.ease<1.8)) weak.add(p.id); });
+            setProgressMap(map); setWeakIds(weak);
+            return;
+          }
+          // fresh account
+          setProgressMap({}); setWeakIds(new Set()); return;
+        }
+      } catch {}
+    }
+    // anonymous or fallback: local Dexie
+    const allProg = await db.progress.toArray();
+    const map = {};
+    const weak = new Set();
+    allProg.forEach((p) => {
+      map[p.id] = p;
+      if (p.lapses > 0 || (p.ease && p.ease < 1.8)) weak.add(p.id);
+    });
+    setProgressMap(map);
+    setWeakIds(weak);
+  }, []);
+
+  const loadStatsForUser = useCallback(async (token) => {
+    if (token) {
+      try {
+        const serverStats = await fetchStatsOnline();
+        if (serverStats && typeof serverStats.xp === 'number') {
+          setStats(serverStats);
+          return serverStats;
+        } else {
+          const s = await getStats();
+          if (s.xp > 0 || s.streak > 0) {
+            try { await saveStatsOnline(s); } catch {}
+          }
+          setStats(s);
+          return s;
+        }
+      } catch {}
+    }
+    const s = await getStats();
+    setStats(s);
+    return s;
+  }, []);
+
   useEffect(() => {
     (async () => {
       await initDB();
-      const s = await getStats();
-      setStats(s);
-      const allProg = await db.progress.toArray();
-      const map = {};
-      const weak = new Set();
-      allProg.forEach((p) => {
-        map[p.id] = p;
-        if (p.lapses > 0 || (p.ease && p.ease < 1.8)) weak.add(p.id);
-      });
-      setProgressMap(map);
-      setWeakIds(weak);
       try {
         const wordsFromDB = await getAllWords();
         if (wordsFromDB.length > 0) setAllWords(wordsFromDB);
       } catch {}
+      // try auth first
+      const t = localStorage.getItem('gs_token');
+      let serverStats = null;
+      if (t) {
+        try {
+          const u = await fetchMe();
+          if (u) {
+            setAuthUser(u);
+            setUsername(u.username);
+            setAuthToken(t);
+            serverStats = await loadStatsForUser(t);
+            await loadProgressForUser(t);
+          } else {
+            await loadStatsForUser(null);
+            await loadProgressForUser(null);
+          }
+        } catch {
+          await loadStatsForUser(null);
+          await loadProgressForUser(null);
+        }
+      } else {
+        await loadStatsForUser(null);
+        await loadProgressForUser(null);
+      }
       setDbReady(true);
-      // try fetch online board silently
       fetchOnlineLeaderboard().then(b => { if (b) { setOnlineBoard(b); setUseOnline(true); } }).catch(()=>{});
       const savedName = localStorage.getItem('gs_username');
       if (savedName) setUsername(savedName);
     })();
-  }, []);
+  }, [loadProgressForUser, loadStatsForUser]);
+
+  // when auth changes (login/logout), reload per-user data and clear queue to avoid cross-user leakage
+  useEffect(() => {
+    if (!dbReady) return;
+    (async () => {
+      if (authUser) {
+        await loadStatsForUser(authToken);
+        await loadProgressForUser(authToken);
+      } else {
+        // anonymous: load local
+        await loadStatsForUser(null);
+        await loadProgressForUser(null);
+      }
+      // reset queue to avoid showing previous user's due order
+      setQueue([]);
+      setCurrentIdx(0);
+      setFlipped(false);
+    })();
+  }, [authUser, authToken, dbReady, loadProgressForUser, loadStatsForUser]);
 
   const filteredWords = useMemo(() => {
     let w = allWords;
@@ -353,23 +459,49 @@ export default function App() {
     const prev = progressMap[currentWord.id] || { interval: 0, repetition: 0, ease: 2.5, due: 0, lapses: 0 };
     const next = sm2(prev, q);
     const xp = XP_MAP[label] || 5;
-    await db.progress.put({ id: currentWord.id, level: currentWord.level, ...next });
-    setProgressMap((m) => ({ ...m, [currentWord.id]: { id: currentWord.id, ...next } }));
-    if (label === 'Again') {
-      setWeakIds((s) => { const n = new Set(s); n.add(currentWord.id); return n; });
+    // per-user isolated storage
+    if (authToken && authUser) {
+      setProgressMap((m) => ({ ...m, [currentWord.id]: { id: currentWord.id, level: currentWord.level, ...next } }));
+      try { await saveProgressOne({ id: currentWord.id, level: currentWord.level, ...next }); } catch {}
+      if (label === 'Again') setWeakIds((s) => { const n = new Set(s); n.add(currentWord.id); return n; });
+      // per-user stats (xp, streak, reviews) — update in-memory and server, NOT Dexie
+      const today = new Date().toISOString().slice(0,10);
+      const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+      let newStreak = stats.streak || 0;
+      let newLast = stats.lastStudyDate;
+      if (stats.lastStudyDate !== today) {
+        if (!stats.lastStudyDate) newStreak = 1;
+        else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
+        else {
+          const diff = (new Date(today) - new Date(stats.lastStudyDate))/86400000;
+          newStreak = diff===1 ? (stats.streak||0)+1 : 1;
+        }
+        newLast = today;
+      }
+      const newStats = { ...stats, xp: (stats.xp||0)+xp, totalReviews: (stats.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
+      setStats(newStats);
+      try { await saveStatsOnline(newStats); } catch {}
+      const syncName = authUser.username;
+      if (useOnline) submitOnlineScore(syncName, newStats.xp).then(b => { if (b) setOnlineBoard(b); }).catch(()=>{});
+    } else {
+      // anonymous: local Dexie
+      await db.progress.put({ id: currentWord.id, level: currentWord.level, ...next });
+      setProgressMap((m) => ({ ...m, [currentWord.id]: { id: currentWord.id, ...next } }));
+      if (label === 'Again') setWeakIds((s) => { const n = new Set(s); n.add(currentWord.id); return n; });
+      await addXP(xp);
+      await updateStreak();
+      const s = await getStats();
+      setStats(s);
+      const syncName = username;
+      if (useOnline && syncName) submitOnlineScore(syncName, s.xp).then(b => { if (b) setOnlineBoard(b); }).catch(()=>{});
     }
-    await addXP(xp);
-    await updateStreak();
-    const s = await getStats();
-    setStats(s);
-    if (useOnline && username) submitOnlineScore(username, s.xp + 0).then(b => { if (b) setOnlineBoard(b); }).catch(()=>{});
     setToast(`+${xp} XP • ${label}`);
     setTimeout(() => setToast(null), 1600);
     setFlipped(false);
     setTranscript('');
     setCurrentIdx((i) => Math.min(i + 1, queue.length));
     if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
-  }, [currentWord, progressMap, queue.length, useOnline, username]);
+  }, [currentWord, progressMap, queue.length, useOnline, username, authUser, authToken, stats]);
 
   const handleSwipe = (dir) => {
     if (!currentWord) return;
@@ -421,6 +553,78 @@ export default function App() {
     setAllWords(updated);
     setToast('Deleted');
     setTimeout(()=> setToast(null),1200);
+  };
+
+  const handleSignup = async () => {
+    try {
+      const { username, email, password } = authForm;
+      if (!username || !password) { setToast('Username and password required'); setTimeout(()=> setToast(null),1500); return; }
+      const res = await signup(username.trim(), email.trim(), password);
+      setAuthUser(res.user);
+      setAuthToken(res.token);
+      setUsername(res.user.username);
+      localStorage.setItem('gs_username', res.user.username);
+      localStorage.setItem('gs_token', res.token);
+      setShowAuth(false);
+      setAuthForm({ username: '', email: '', password: '' });
+      setToast(`Welcome ${res.user.username} ✓`);
+      setTimeout(()=> setToast(null),1500);
+      // push local progress/stats to new account if any
+      try {
+        if (Object.keys(progressMap).length > 0) await saveProgress(progressMap);
+        await saveStatsOnline(stats);
+        if (stats.xp > 0) await submitOnlineScore(res.user.username, stats.xp);
+      } catch {}
+      const b = await fetchOnlineLeaderboard(); if (b) { setOnlineBoard(b); setUseOnline(true); }
+    } catch (e) { setToast(e.message || 'Signup failed'); setTimeout(()=> setToast(null),1500); }
+  };
+  const handleLogin = async () => {
+    try {
+      const { username, password } = authForm;
+      const res = await login(username.trim(), password);
+      setAuthUser(res.user);
+      setAuthToken(res.token);
+      localStorage.setItem('gs_token', res.token);
+      setUsername(res.user.username);
+      localStorage.setItem('gs_username', res.user.username);
+      setShowAuth(false);
+      setAuthForm({ username: '', email: '', password: '' });
+      setToast(`Logged in as ${res.user.username} ✓`);
+      setTimeout(()=> setToast(null),1500);
+      // stats sync: server wins if higher, else push local
+      try {
+        const serverStats = await fetchStatsOnline();
+        if (serverStats && serverStats.xp > stats.xp) {
+          setStats(serverStats);
+          await db.stats.put({ id: 'main', ...serverStats });
+        } else if (stats.xp > (serverStats?.xp||0)) {
+          await saveStatsOnline(stats);
+          await submitOnlineScore(res.user.username, stats.xp);
+        }
+        // progress sync: if server has data use it, else push local
+        const serverProg = await fetchProgress();
+        if (!serverProg || Object.keys(serverProg).length===0) {
+          if (Object.keys(progressMap).length>0) await saveProgress(progressMap);
+        }
+      } catch {}
+      const b = await fetchOnlineLeaderboard(); if (b) { setOnlineBoard(b); setUseOnline(true); }
+      if (res.user.isAdmin) {
+        try { const users = await fetchUsers(); setUsersList(users); } catch {}
+      }
+    } catch (e) { setToast(e.message || 'Login failed'); setTimeout(()=> setToast(null),1500); }
+  };
+  const handleLogout = () => {
+    logout();
+    setAuthUser(null);
+    setAuthToken('');
+    setToast('Logged out');
+    setTimeout(()=> setToast(null),1200);
+  };
+  const loadUsersList = async () => {
+    try {
+      const users = await fetchUsers();
+      setUsersList(users);
+    } catch (e) { setToast('Admin only'); setTimeout(()=> setToast(null),1500); }
   };
 
   // quiz smart logic
@@ -515,10 +719,41 @@ export default function App() {
     const q = qualityFromLabel(correct ? 'Good' : 'Again');
     const prev = progressMap[currentQuizWord.id] || { interval:0, repetition:0, ease:2.5, due:0, lapses:0 };
     const next = sm2(prev, q);
-    await db.progress.put({ id: currentQuizWord.id, level: currentQuizWord.level, ...next });
-    setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, ...next }}));
+    if (authToken && authUser) {
+      setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, level: currentQuizWord.level, ...next }}));
+      try { await saveProgressOne({ id: currentQuizWord.id, level: currentQuizWord.level, ...next }); } catch {}
+    } else {
+      await db.progress.put({ id: currentQuizWord.id, level: currentQuizWord.level, ...next });
+      setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, ...next }}));
+      if (authToken) { try { await saveProgressOne({ id: currentQuizWord.id, level: currentQuizWord.level, ...next }); } catch {} }
+    }
     if (!correct) setWeakIds(s=> { const n=new Set(s); n.add(currentQuizWord.id); return n; });
-    if (xpAdd>0) { await addXP(xpAdd); await updateStreak(); const s=await getStats(); setStats(s); if (useOnline && username) submitOnlineScore(username, s.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{}); }
+    if (xpAdd>0) {
+      if (authToken && authUser) {
+        const today = new Date().toISOString().slice(0,10);
+        const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+        let newStreak = stats.streak || 0;
+        let newLast = stats.lastStudyDate;
+        if (stats.lastStudyDate !== today) {
+          if (!stats.lastStudyDate) newStreak = 1;
+          else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
+          else {
+            const diff = (new Date(today) - new Date(stats.lastStudyDate))/86400000;
+            newStreak = diff===1 ? (stats.streak||0)+1 : 1;
+          }
+          newLast = today;
+        }
+        const newStats = { ...stats, xp: (stats.xp||0)+xpAdd, totalReviews: (stats.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
+        setStats(newStats);
+        try { await saveStatsOnline(newStats); } catch {}
+        if (useOnline) submitOnlineScore(authUser.username, newStats.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
+      } else {
+        await addXP(xpAdd); await updateStreak();
+        const s=await getStats(); setStats(s);
+        const syncName = username;
+        if (useOnline && syncName) submitOnlineScore(syncName, s.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
+      }
+    }
     setQuizScore(sc=> ({ correct: sc.correct + (correct?1:0), total: sc.total+1, xp: sc.xp + xpAdd }));
     setQuizFeedback({ correct, expected: currentQuizWord.article ? `${currentQuizWord.article} ${currentQuizWord.german}` : currentQuizWord.german, xp: xpAdd });
     setToast(correct ? `+${xpAdd} XP ✓` : `+0 XP • was "${currentQuizWord.article ? currentQuizWord.article+' '+currentQuizWord.german : currentQuizWord.german}"`);
@@ -562,6 +797,17 @@ export default function App() {
         </Block>
         <Block display="flex" alignItems="center" gridGap="8px">
           <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setShowAdd(true)}>＋ Add</Button>
+          {authUser ? (
+            <Block display="flex" alignItems="center" gridGap="6px">
+              <Block backgroundColor="#000" color="#fff" padding="6px 10px" overrides={{ Block: { style: { borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', fontWeight: 700, fontSize: '12px', display:'flex', alignItems:'center', gap:'6px' } } }}>
+                <span style={{width:20,height:20, borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px', background:'#fff', color:'#000', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:10}}>{authUser.username.slice(0,2).toUpperCase()}</span>
+                {authUser.username}{authUser.isAdmin ? ' ★' : ''}
+              </Block>
+              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={handleLogout}>Logout</Button>
+            </Block>
+          ) : (
+            <Button size={SIZE.mini} kind={KIND.primary} shape={SHAPE.pill} onClick={()=> { setAuthMode('login'); setShowAuth(true); }}>Login</Button>
+          )}
           <Block backgroundColor="#fff7ed" padding="6px 10px" overrides={{ Block: { style: { borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', borderWidth: '1px', borderStyle: 'solid', borderTopColor: '#ffedd5', borderBottomColor: '#ffedd5', borderLeftColor: '#ffedd5', borderRightColor: '#ffedd5', display: 'flex', alignItems: 'center', gap: '6px' } } }}>
             <span style={{ fontSize: 14 }}>🔥</span>
             <span style={{ fontWeight: 800, fontSize: 13 }}>{stats.streak}</span>
@@ -595,6 +841,24 @@ export default function App() {
                 <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setShowAdd(false)}>Cancel</Button>
                 <Button shape={SHAPE.pill} onClick={handleAddCard}>Add card</Button>
               </Block>
+            </Block>
+          </Block>
+        </Block>
+      )}
+      {showAuth && (
+        <Block overrides={{ Block: { style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' } } }} onClick={()=> setShowAuth(false)}>
+          <Block onClick={(e)=> e.stopPropagation()} overrides={{ Block: { style: { background: '#fff', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', borderBottomLeftRadius: '20px', borderBottomRightRadius: '20px', padding: '20px', width: '100%', maxWidth: '400px' } } }}>
+            <Heading $style={{ fontSize: 18, marginTop: 0 }}>{authMode==='login' ? 'Login' : 'Sign up'}</Heading>
+            <ParagraphSmall color="#6b6b6b">{authMode==='login' ? 'Welcome back! Your progress is saved per account.' : 'Create account — admin is username "admin". Progress saved online.'}</ParagraphSmall>
+            <Block display="flex" flexDirection="column" gridGap="10px" marginTop="12px">
+              <Input value={authForm.username} onChange={e=> setAuthForm({...authForm, username: e.target.value})} placeholder="Username (a-z, 0-9, _ -)" overrides={{Root:{style:{borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />
+              {authMode==='signup' && <Input value={authForm.email} onChange={e=> setAuthForm({...authForm, email: e.target.value})} placeholder="Email (optional)" overrides={{Root:{style:{borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />}
+              <Input type="password" value={authForm.password} onChange={e=> setAuthForm({...authForm, password: e.target.value})} placeholder="Password (min 4)" overrides={{Root:{style:{borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />
+              <Block display="flex" gridGap="8px" marginTop="8px">
+                <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setShowAuth(false)}>Cancel</Button>
+                {authMode==='login' ? <Button shape={SHAPE.pill} onClick={handleLogin}>Login</Button> : <Button shape={SHAPE.pill} onClick={handleSignup}>Sign up</Button>}
+              </Block>
+              <Button kind={KIND.tertiary} size={SIZE.mini} onClick={()=> setAuthMode(authMode==='login' ? 'signup' : 'login')}>{authMode==='login' ? 'Need account? Sign up' : 'Have account? Login'}</Button>
             </Block>
           </Block>
         </Block>
@@ -861,11 +1125,29 @@ export default function App() {
                           <div style={{ fontSize: 11, color: '#6b6b6b' }}>{p.xp} XP</div>
                         </Block>
                       </Block>
-                      {i < 3 && <span style={{ fontSize: 18 }}>{['🥇', '🥈', '🥉'][i]}</span>}
+                      <Block display="flex" alignItems="center" gridGap="8px">
+                        {i < 3 && <span style={{ fontSize: 18 }}>{['🥇', '🥈', '🥉'][i]}</span>}
+                        {adminMode && <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={async()=> { const b = await deleteOnlineScore(p.name, adminToken); if(b){ setOnlineBoard(b); setToast(`Deleted ${p.name}`); } else setOnlineError('Delete failed — check admin token'); setTimeout(()=> setToast(null),1500); setTimeout(()=> setOnlineError(null),2000); }}>×</Button>}
+                      </Block>
                     </Block>
                   </UberCard>
                 ))}
               </Block>
+              <Block display="flex" justifyContent="space-between" alignItems="center" marginTop="12px">
+                <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setAdminMode(!adminMode)}>{adminMode ? 'Exit admin' : 'Admin'}</Button>
+                {adminMode && <LabelSmall color="#dc2626">Admin: tap × to delete</LabelSmall>}
+              </Block>
+              {adminMode && (
+                <UberCard styleOverride={{marginTop:'8px', backgroundColor:'#fef2f2', borderTopColor:'#fecaca', borderBottomColor:'#fecaca', borderLeftColor:'#fecaca', borderRightColor:'#fecaca'}}>
+                  <LabelSmall>Admin token (optional, set ADMIN_TOKEN env to protect):</LabelSmall>
+                  <Input value={adminToken} onChange={e=> { setAdminToken(e.target.value); localStorage.setItem('gs_admin_token', e.target.value); }} placeholder="ADMIN_TOKEN if set on Vercel" size="compact" overrides={{Root:{style:{marginTop:'8px', borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />
+                  <Block display="flex" gridGap="8px" marginTop="8px">
+                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b = await resetOnlineBoard(adminToken); if(b){ setOnlineBoard(b); setUseOnline(true); setToast('Board reset ✓'); } else setOnlineError('Reset failed — check admin token'); setTimeout(()=> setOnlineError(null),2000); setTimeout(()=> setToast(null),1500); }}>Reset to default</Button>
+                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b = await fetchOnlineLeaderboard(); if(b) setOnlineBoard(b); setUseOnline(true); }}>Refresh</Button>
+                  </Block>
+                  <ParagraphSmall color="#991b1b" margin="8px 0 0">Deletes affect Upstash (online) and local dev. Mock competitors can be re-added by Reset.</ParagraphSmall>
+                </UberCard>
+              )}
               <UberCard styleOverride={{marginTop:'12px', backgroundColor:'#f7f7f7'}}>
                 <LabelSmall>How to go online on Vercel Free:</LabelSmall>
                 <ParagraphSmall margin="8px 0 0" overrides={{Block:{style:{fontSize:12, lineHeight:'1.5'}}}}>
@@ -877,6 +1159,92 @@ export default function App() {
               </UberCard>
             </Block>
           </Tab>
+          <Tab title="Profile">
+            <Block paddingTop="16px">
+              {!authUser ? (
+                <UberCard styleOverride={{textAlign:'center', paddingTop:'30px', paddingBottom:'30px'}}>
+                  <div style={{fontSize:40}}>👤</div>
+                  <Heading $style={{fontSize:18}}>Not logged in</Heading>
+                  <ParagraphSmall color="#6b6b6b">Sign up to save your XP, streak and weak words online. Works offline too.</ParagraphSmall>
+                  <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
+                    <Button shape={SHAPE.pill} onClick={()=> { setAuthMode('login'); setShowAuth(true); }}>Login</Button>
+                    <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setAuthMode('signup'); setShowAuth(true); }}>Sign up</Button>
+                  </Block>
+                </UberCard>
+              ) : (
+                <>
+                  <UberCard styleOverride={{backgroundColor:'#000', color:'#fff', borderWidth:0, borderTopLeftRadius:'20px', borderTopRightRadius:'20px', borderBottomLeftRadius:'20px', borderBottomRightRadius:'20px'}}>
+                    <Block display="flex" justifyContent="space-between" alignItems="center">
+                      <Block>
+                        <div style={{fontSize:22, fontWeight:800}}>{authUser.username} {authUser.isAdmin && <span style={{fontSize:12, background:'#fff', color:'#000', padding:'2px 6px', borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px'}}>ADMIN</span>}</div>
+                        <div style={{fontSize:12, color:'#d4d4d4'}}>{authUser.email || 'No email'} • Joined {new Date(authUser.createdAt).toLocaleDateString()}</div>
+                        <div style={{fontSize:13, color:'#fff', marginTop:6}}>{stats.xp} XP • 🔥 {stats.streak} streak • {stats.totalReviews} reviews</div>
+                      </Block>
+                      <div style={{width:48,height:48, borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px', background:'#fff', color:'#000', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800}}>{authUser.username.slice(0,2).toUpperCase()}</div>
+                    </Block>
+                    <Block display="flex" gridGap="8px" marginTop="12px">
+                      <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={handleLogout}>Logout</Button>
+                      <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b=await fetchOnlineLeaderboard(); if(b) setOnlineBoard(b); setUseOnline(true); setToast('Synced ✓'); setTimeout(()=> setToast(null),1200); }}>Sync XP</Button>
+                    </Block>
+                  </UberCard>
+                  <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
+                    <UberCard>
+                      <LabelSmall>Your progress</LabelSmall>
+                      <Block display="flex" justifyContent="space-between" marginTop="8px">
+                        <ParagraphSmall>Level</ParagraphSmall><ParagraphSmall>{authUser.level || 'A1.1'}</ParagraphSmall>
+                      </Block>
+                      <Block display="flex" justifyContent="space-between">
+                        <ParagraphSmall>Weak words</ParagraphSmall><ParagraphSmall>{weakWords.length}</ParagraphSmall>
+                      </Block>
+                      <Block display="flex" justifyContent="space-between">
+                        <ParagraphSmall>Custom cards</ParagraphSmall><ParagraphSmall>{allWords.filter(w=>w.isCustom).length}</ParagraphSmall>
+                      </Block>
+                      <Block display="flex" justifyContent="space-between">
+                        <ParagraphSmall>Total words</ParagraphSmall><ParagraphSmall>{allWords.length}</ParagraphSmall>
+                      </Block>
+                    </UberCard>
+                    <UberCard>
+                      <LabelSmall>Quick actions</LabelSmall>
+                      <Block display="flex" gridGap="8px" marginTop="8px">
+                        <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> setActiveKey('0')}>Study</Button>
+                        <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setActiveKey('3')}>Quiz weak</Button>
+                        <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setActiveKey('4')}>Board</Button>
+                      </Block>
+                    </UberCard>
+                  </Block>
+                </>
+              )}
+            </Block>
+          </Tab>
+          {authUser?.isAdmin && (
+            <Tab title="Admin">
+              <Block paddingTop="16px">
+                <UberCard styleOverride={{backgroundColor:'#fef2f2', borderTopColor:'#fecaca', borderBottomColor:'#fecaca', borderLeftColor:'#fecaca', borderRightColor:'#fecaca'}}>
+                  <Heading $style={{fontSize:16, margin:0}}>Admin — User management</Heading>
+                  <ParagraphSmall color="#991b1b">You are admin ({authUser.username}). You can view and remove users. XP is synced via leaderboard.</ParagraphSmall>
+                  <Block display="flex" gridGap="8px" marginTop="8px">
+                    <Button size={SIZE.mini} shape={SHAPE.pill} onClick={loadUsersList}>Refresh users</Button>
+                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b=await resetOnlineBoard(adminToken); if(b){ setOnlineBoard(b); setUseOnline(true); setToast('Leaderboard reset'); } setTimeout(()=> setToast(null),1500); }}>Reset board</Button>
+                  </Block>
+                </UberCard>
+                <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
+                  {usersList.length===0 ? <ParagraphSmall color="#6b6b6b">No users loaded. Tap Refresh.</ParagraphSmall> :
+                    usersList.map(u=>(
+                      <UberCard key={u.username} styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
+                        <Block display="flex" justifyContent="space-between" alignItems="center">
+                          <Block>
+                            <div style={{fontWeight:700}}>{u.username} {u.isAdmin && <span style={{fontSize:10, background:'#000', color:'#fff', padding:'1px 5px', borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px'}}>admin</span>} <span style={{fontSize:11, color:'#6b6b6b'}}>• {u.xp} XP • {u.email || 'no email'}</span></div>
+                            <div style={{fontSize:11, color:'#9a9a9a'}}>Joined {new Date(u.createdAt).toLocaleDateString()} • {u.streak||0} streak • {u.totalReviews||0} reviews</div>
+                          </Block>
+                          <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={async()=> { if(!confirm(`Delete ${u.username}?`)) return; const r=await deleteUser(u.username); if(r){ setUsersList(usersList.filter(x=> x.username!==u.username)); const b=await fetchOnlineLeaderboard(); if(b) setOnlineBoard(b); setToast(`Deleted ${u.username}`); setTimeout(()=> setToast(null),1500); } else { setToast('Delete failed'); setTimeout(()=> setToast(null),1500); } }}>×</Button>
+                        </Block>
+                      </UberCard>
+                    ))
+                  }
+                </Block>
+              </Block>
+            </Tab>
+          )}
         </Tabs>
       </Block>
 
