@@ -16,6 +16,32 @@ import { sm2, qualityFromLabel, XP_MAP } from './srs';
 import { genderColor, genderBg } from './theme';
 import wordsData from './data/words.js';
 
+const LEVEL_ORDER = ['A1.1', 'A1.2', 'A2.1', 'A2.2', 'B1.1', 'B1.2', 'B2.1', 'B2.2'];
+
+function isWordMastered(progress) {
+  if (!progress) return false;
+  const reps = progress.repetition || 0;
+  const ease = progress.ease ?? 2.5;
+  const lapses = progress.lapses || 0;
+  const interval = progress.interval || 0;
+  return (reps >= 3 && lapses === 0 && ease >= 2.0) || interval >= 14;
+}
+
+function getLevelMastery(level, allWords, progressMap) {
+  const words = allWords.filter(w => w.level === level);
+  if (words.length === 0) return { total: 0, mastered: 0, pct: 100 };
+  const mastered = words.filter(w => isWordMastered(progressMap[w.id])).length;
+  return { total: words.length, mastered, pct: Math.round((mastered / words.length) * 100) };
+}
+
+function getUserLevel(allWords, progressMap) {
+  for (const level of LEVEL_ORDER) {
+    const { pct } = getLevelMastery(level, allWords, progressMap);
+    if (pct < 80) return level;
+  }
+  return LEVEL_ORDER[LEVEL_ORDER.length - 1];
+}
+
 // -- Uber-style Card using Block (avoids baseui Card hasThumbnail bug) --
 function UberCard({ children, onClick, styleOverride = {}, bodyStyle = {} }) {
   return (
@@ -658,6 +684,20 @@ export default function App() {
 
   const weakWords = useMemo(() => allWords.filter((w) => weakIds.has(w.id)), [allWords, weakIds]);
 
+  const userLevel = useMemo(() => getUserLevel(allWords, progressMap), [allWords, progressMap]);
+  const levelMastery = useMemo(() => getLevelMastery(userLevel, allWords, progressMap), [userLevel, allWords, progressMap]);
+  const prevUserLevelRef = useRef(userLevel);
+  useEffect(() => {
+    if (prevUserLevelRef.current !== userLevel) {
+      const idx = LEVEL_ORDER.indexOf(userLevel);
+      if (idx > 0) {
+        setToast(`Level up! You unlocked ${userLevel}!`);
+        setTimeout(() => setToast(null), 3000);
+      }
+      prevUserLevelRef.current = userLevel;
+    }
+  }, [userLevel]);
+
   const startWeakPack = useCallback(() => {
     const available = weakWords.filter(w => !sessionReviewedIds.current.has(w.id));
     const pack = available.slice(0, packSize);
@@ -795,8 +835,11 @@ export default function App() {
   // quiz smart logic
   const buildQuizQueue = useCallback((count = 10, mode = quizMode) => {
     let pool = [];
+    // only use words from the user's current level
+    const levelWords = allWords.filter(w => w.level === userLevel);
+    const levelWeak = weakWords.filter(w => w.level === userLevel);
     // prioritize weak words
-    let candidates = [...weakWords];
+    let candidates = [...levelWeak];
     // sort weak by most lapses / lowest ease / overdue
     candidates.sort((a,b)=>{
       const pa = progressMap[a.id] || { lapses:0, ease:2.5, due:0 };
@@ -808,7 +851,7 @@ export default function App() {
     pool = [...candidates];
     if (pool.length < count) {
       // fill with hardest non-weak: lowest ease or not yet studied
-      const remaining = allWords.filter(w => !weakIds.has(w.id));
+      const remaining = levelWords.filter(w => !weakIds.has(w.id));
       remaining.sort((a,b)=>{
         const pa = progressMap[a.id]; const pb = progressMap[b.id];
         const ea = pa ? pa.ease : 2.5; const eb = pb ? pb.ease : 2.5;
@@ -821,7 +864,7 @@ export default function App() {
     if (mode === 'artikel') {
       pool = pool.filter(w => w.article); // only nouns
       if (pool.length < count) {
-        const nouns = allWords.filter(w => w.article && !pool.includes(w));
+        const nouns = levelWords.filter(w => w.article && !pool.includes(w));
         // shuffle fill
         for (let i = nouns.length -1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [nouns[i], nouns[j]]=[nouns[j], nouns[i]]; }
         pool.push(...nouns.slice(0, count - pool.length));
@@ -830,7 +873,7 @@ export default function App() {
     // shuffle and slice
     for (let i = pool.length -1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [pool[i], pool[j]]=[pool[j], pool[i]]; }
     return pool.slice(0, count);
-  }, [weakWords, allWords, weakIds, progressMap, quizMode]);
+  }, [weakWords, allWords, weakIds, progressMap, quizMode, userLevel]);
 
   const startQuiz = (mode, count=10) => {
     const q = buildQuizQueue(count, mode);
@@ -952,7 +995,7 @@ export default function App() {
 
   return (
     <HeadingLevel>
-      <Block display="flex" justifyContent="space-between" alignItems="center" padding="16px 20px" overrides={{ Block: { style: { position: 'sticky', top: 0, zIndex: 10, background: '#fff', borderBottomWidth: '1px', borderBottomStyle: 'solid', borderBottomColor: '#eee' } } }}>
+      <Block display="flex" justifyContent="space-between" alignItems="center" overrides={{ Block: { style: { position: 'sticky', top: 0, zIndex: 10, background: '#fff', borderBottomWidth: '1px', borderBottomStyle: 'solid', borderBottomColor: '#eee', paddingTop: 'calc(16px + env(safe-area-inset-top))', paddingBottom: '16px', paddingLeft: '20px', paddingRight: '20px' } } }}>
         <Block display="flex" alignItems="center" gridGap="10px">
           <div style={{ width: 36, height: 36, background: '#000', color: '#fff', borderTopLeftRadius: '12px', borderTopRightRadius: '12px', borderBottomLeftRadius: '12px', borderBottomRightRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14 }}>GS</div>
           <Block>
@@ -977,6 +1020,7 @@ export default function App() {
             <span style={{ fontSize: 14 }}>🔥</span>
             <span style={{ fontWeight: 800, fontSize: 13 }}>{stats.streak}</span>
           </Block>
+          <Block backgroundColor="#000" color="#fff" padding="6px 10px" overrides={{ Block: { style: { borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', fontWeight: 700, fontSize: '12px' } } }}>{userLevel}</Block>
           <Block backgroundColor="#000" color="#fff" padding="6px 12px" overrides={{ Block: { style: { borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', fontWeight: 700, fontSize: '12px' } } }}>{stats.xp} XP</Block>
         </Block>
       </Block>
@@ -1171,8 +1215,8 @@ export default function App() {
               {!quizStarted ? (
                 <>
                   <UberCard styleOverride={{ backgroundColor:'#f7f7f7', borderTopColor:'#e5e5e5', borderBottomColor:'#e5e5e5', borderLeftColor:'#e5e5e5', borderRightColor:'#e5e5e5' }}>
-                    <Heading $style={{fontSize:16, margin:0}}>Smart Quiz — Weak Words</Heading>
-                    <ParagraphSmall color="#6b6b6b">Dictation (umlaut-sensitive) & Artikel. Prioritizes your hardest words (most lapses / lowest ease). Quiz updates SRS & XP.</ParagraphSmall>
+                    <Heading $style={{fontSize:16, margin:0}}>Smart Quiz — {userLevel}</Heading>
+                    <ParagraphSmall color="#6b6b6b">Dictation (umlaut-sensitive) & Artikel. Quiz uses words from your current level ({userLevel}). Master {userLevel} to unlock the next level.</ParagraphSmall>
                     <Block display="flex" gridGap="8px" marginTop="12px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
                       <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='dictation'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('dictation')}>Dictation</Button>
                       <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='artikel'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('artikel')}>Artikel</Button>
@@ -1183,7 +1227,7 @@ export default function App() {
                       <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 10)}>Start 10</Button>
                       <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 20)}>Start 20</Button>
                     </Block>
-                    <ParagraphSmall color="#9a9a9a" marginTop="8px">{weakWords.length} weak words available • {allWords.filter(w=>w.article).length} nouns with Artikel</ParagraphSmall>
+                    <ParagraphSmall color="#9a9a9a" marginTop="8px">{weakWords.filter(w=>w.level===userLevel).length} weak words in {userLevel} • {allWords.filter(w=>w.article && w.level===userLevel).length} nouns with Artikel</ParagraphSmall>
                   </UberCard>
                   <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
                     <LabelSmall>How it works</LabelSmall>
@@ -1276,7 +1320,7 @@ export default function App() {
                   <Block>
                     <LabelSmall color="#a3a3a3" overrides={{ Block: { style: { letterSpacing: '1px', textTransform: 'uppercase' } } }}>Your rank</LabelSmall>
                     <div style={{ fontSize: 28, fontWeight: 800, lineHeight: 1, color: '#fff' }}>#{leaderboard.rank} <span style={{ fontSize: 14, fontWeight: 600, opacity: 0.7 }}>/ {leaderboard.all.length}</span></div>
-                    <div style={{ fontSize: 13, color: '#d4d4d4' }}>{stats.xp} XP • {stats.totalReviews} reviews • 🔥 {stats.streak} day streak</div>
+                    <div style={{ fontSize: 13, color: '#d4d4d4' }}>{userLevel} • {stats.xp} XP • {stats.totalReviews} reviews • 🔥 {stats.streak} day streak</div>
                   </Block>
                   <Block backgroundColor="white" color="black" padding="12px 16px" overrides={{ Block: { style: { borderTopLeftRadius: '16px', borderTopRightRadius: '16px', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px', textAlign: 'center' } } }}>
                     <div style={{ fontSize: 22, fontWeight: 800 }}>{stats.xp}</div>
@@ -1359,7 +1403,7 @@ export default function App() {
                       <Block>
                         <div style={{fontSize:22, fontWeight:800}}>{authUser.username} {authUser.isAdmin && <span style={{fontSize:12, background:'#fff', color:'#000', padding:'2px 6px', borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px'}}>ADMIN</span>}</div>
                         <div style={{fontSize:12, color:'#d4d4d4'}}>{authUser.email || 'No email'} • Joined {new Date(authUser.createdAt).toLocaleDateString()}</div>
-                        <div style={{fontSize:13, color:'#fff', marginTop:6}}>{stats.xp} XP • 🔥 {stats.streak} streak • {stats.totalReviews} reviews</div>
+                        <div style={{fontSize:13, color:'#fff', marginTop:6}}>{userLevel} • {stats.xp} XP • 🔥 {stats.streak} streak • {stats.totalReviews} reviews</div>
                       </Block>
                       <div style={{width:48,height:48, borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px', background:'#fff', color:'#000', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800}}>{authUser.username.slice(0,2).toUpperCase()}</div>
                     </Block>
@@ -1370,11 +1414,19 @@ export default function App() {
                   </UberCard>
                   <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
                     <UberCard>
-                      <LabelSmall>Your progress</LabelSmall>
-                      <Block display="flex" justifyContent="space-between" marginTop="8px">
-                        <ParagraphSmall>Level</ParagraphSmall><ParagraphSmall>{authUser.level || 'A1.1'}</ParagraphSmall>
+                      <LabelSmall>Your level</LabelSmall>
+                      <Block display="flex" justifyContent="space-between" alignItems="center" marginTop="8px">
+                        <div style={{fontSize:22, fontWeight:800}}>{userLevel}</div>
+                        <div style={{fontSize:12, color:'#6b6b6b'}}>{levelMastery.mastered}/{levelMastery.total} words mastered</div>
                       </Block>
-                      <Block display="flex" justifyContent="space-between">
+                      <div style={{height:8, background:'#eee', borderTopLeftRadius:999, borderTopRightRadius:999, borderBottomLeftRadius:999, borderBottomRightRadius:999, marginTop:8, overflow:'hidden'}}>
+                        <div style={{height:'100%', width:`${levelMastery.pct}%`, background: levelMastery.pct >= 80 ? '#16a34a' : '#000', borderTopLeftRadius:999, borderTopRightRadius:999, borderBottomLeftRadius:999, borderBottomRightRadius:999, transition:'width 0.5s'}} />
+                      </div>
+                      <ParagraphSmall color="#6b6b6b" marginTop="4px">{levelMastery.pct}% — {levelMastery.pct >= 80 ? 'Ready for next level!' : `Master ${80 - levelMastery.pct}% more to unlock ${LEVEL_ORDER[LEVEL_ORDER.indexOf(userLevel) + 1] || 'next level'}`}</ParagraphSmall>
+                    </UberCard>
+                    <UberCard>
+                      <LabelSmall>Stats</LabelSmall>
+                      <Block display="flex" justifyContent="space-between" marginTop="8px">
                         <ParagraphSmall>Weak words</ParagraphSmall><ParagraphSmall>{weakWords.length}</ParagraphSmall>
                       </Block>
                       <Block display="flex" justifyContent="space-between">
