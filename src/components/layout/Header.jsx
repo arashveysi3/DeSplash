@@ -1,9 +1,17 @@
+import { useState, useEffect } from 'react';
 import { Block } from 'baseui/block';
 import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
 import { BOOKS } from '../../data/menschen.js';
+import { isSoundEnabled, setSoundEnabled, primeAudio, playTap } from '../../utils/sounds.js';
 
 export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setShowAuth, setAuthMode }) {
   const totalWords = BOOKS[0].total + BOOKS[1].total;
+  const [soundOn, setSoundOn] = useState(() => isSoundEnabled());
+  useEffect(() => {
+    const h = () => setSoundOn(isSoundEnabled());
+    window.addEventListener('gs:sound-toggle', h);
+    return () => window.removeEventListener('gs:sound-toggle', h);
+  }, []);
   return (
     <Block
       overrides={{
@@ -79,6 +87,23 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
           },
         }}
       >
+        <Button
+          size={SIZE.mini}
+          kind={KIND.secondary}
+          shape={SHAPE.pill}
+          overrides={{ BaseButton: { style: { fontWeight: 700, flexShrink: 0 }, props: { className: 'gs-header-btn' } } }}
+          onClick={() => {
+            const next = !isSoundEnabled();
+            setSoundEnabled(next);
+            setSoundOn(next);
+            primeAudio();
+            if (next) playTap();
+            window.dispatchEvent(new CustomEvent('gs:sound-toggle'));
+          }}
+          title={soundOn ? 'Sound on — tap to mute' : 'Sound off — tap to enable'}
+        >
+          {soundOn ? '🔊' : '🔇'}
+        </Button>
         <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{ BaseButton: { style: { fontWeight: 700, flexShrink: 0 }, props: { className: 'gs-header-btn' } } }} onClick={() => window.dispatchEvent(new CustomEvent('gs:check-update'))} title="Check for update">↻</Button>
         <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{ BaseButton: { style: { flexShrink: 0 }, props: { className: 'gs-header-btn' } } }} onClick={onAdd}>
           <span className="gs-header-add-text">＋ Add</span>

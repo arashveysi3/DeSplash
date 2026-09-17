@@ -6,6 +6,7 @@ import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { genderColor, genderBg } from '../../theme';
 import { XP_MAP } from '../../srs';
 import { speakGerman } from '../../utils/speak';
+import { playFlip } from '../../utils/sounds.js';
 
 export default function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, listening, setListening, transcript, setTranscript }) {
   const [dragX, setDragX] = useState(0);
@@ -96,6 +97,7 @@ export default function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, 
 
       <Block
         onClick={() => {
+          playFlip();
           const next = !flipped;
           setFlipped(next);
           if (next) speakGerman(word.german);

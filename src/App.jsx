@@ -21,6 +21,7 @@ import BoardTab from './components/tabs/BoardTab.jsx';
 import ProfileTab from './components/tabs/ProfileTab.jsx';
 import AdminTab from './components/tabs/AdminTab.jsx';
 import { speakGerman } from './utils/speak.js';
+import { playCorrect, playIncorrect, playPackComplete, playQuizComplete, playGameWin, playGameOver, playMatchPair, playXp, playStreak, playTap, primeAudio } from './utils/sounds.js';
 
 export default function App() {
   const [activeKey, setActiveKey] = useState('0');
@@ -324,6 +325,8 @@ export default function App() {
   },[selectedBook, selectedLektions]);
 
   const startNewPack = useCallback(() => {
+    primeAudio();
+    playTap();
     const today = new Date().toISOString().slice(0,10);
     if (sessionDay.current !== today) { sessionDay.current = today; sessionReviewedIds.current.clear(); }
     const available = studyQueue.filter(w => !sessionReviewedIds.current.has(w.id));
@@ -345,6 +348,8 @@ export default function App() {
   const handlePackRate = useCallback((label) => {
     const word = packWords[packIdx];
     if (!word) return;
+    primeAudio();
+    if (label === 'Again') playIncorrect(); else { playCorrect(); if (label === 'Easy') setTimeout(() => playXp(), 140); }
     sessionReviewedIds.current.add(word.id);
     const base = pendingProgress[word.id] ? pendingProgress[word.id] : (progressMap[word.id] || { interval: 0, repetition: 0, ease: 2.5, due: 0, lapses: 0 });
     const next = sm2(base, qualityFromLabel(label));
@@ -371,6 +376,7 @@ export default function App() {
       return { ...s, xp: (s.xp||0)+xp, totalReviews: (s.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
     });
     if (packIdx + 1 >= packWords.length) {
+      setTimeout(() => playPackComplete(), 180);
       setShowPackSummary(true);
     } else {
       setPackIdx(i => i + 1);
@@ -380,6 +386,7 @@ export default function App() {
   }, [packWords, packIdx, progressMap, pendingProgress]);
 
   const savePack = useCallback(async () => {
+    primeAudio();
     if (Object.keys(pendingProgress).length === 0) {
       setShowPackSummary(false);
       startNewPack();
@@ -403,6 +410,7 @@ export default function App() {
         await db.stats.put({ id: 'main', ...stats });
       }
       setToast(`Pack saved +${totalXp} XP ✓`);
+      if (totalXp > 0) playQuizComplete(); else playTap();
     } catch (e) {
       setToast('Save failed — will retry');
       console.error(e);
@@ -490,6 +498,8 @@ export default function App() {
   }, []);
 
   const startQuiz = (mode, count=10) => {
+    primeAudio();
+    playTap();
     if (mode === 'match') { startMatchGame(); return; }
     if (mode === 'sprint') { startSprintGame(count); return; }
     if (mode === 'satz') { startSatzGame(count); return; }
@@ -515,6 +525,7 @@ export default function App() {
   const currentQuizWord = quizQueue[quizIdx] || null;
 
   const submitQuiz = async () => {
+    primeAudio();
     if (!currentQuizWord) return;
     const isChoiceQ = quizMode === 'choice';
     const isArtikelQ = !isChoiceQ && (quizMode==='artikel' || (quizMode==='mixed' && currentQuizWord.article && quizIdx %2===0));
@@ -598,14 +609,18 @@ export default function App() {
     }
     setQuizScore(sc=> ({ correct: sc.correct + (correct?1:0), total: sc.total+1, xp: sc.xp + xpAdd }));
     setQuizFeedback({ correct, expected: currentQuizWord.article ? `${currentQuizWord.article} ${currentQuizWord.german}` : currentQuizWord.german, expectedFa: currentQuizWord.meaning_fa, expectedEn: currentQuizWord.meaning_en || currentQuizWord.english, xp: xpAdd });
+    if (correct) { playCorrect(); if (xpAdd >= 10) setTimeout(() => playXp(), 160); } else playIncorrect();
     setToast(correct ? `+${xpAdd} XP ✓` : `was "${currentQuizWord.article ? currentQuizWord.article+' '+currentQuizWord.german : currentQuizWord.german}"`);
     setTimeout(()=> setToast(null),1400);
   };
 
   const nextQuiz = () => {
+    primeAudio();
     if (quizIdx +1 >= quizQueue.length) {
       setQuizFeedback(null);
       setQuizStarted(false);
+      const doneOk = quizScore.correct + (quizFeedback?.correct?1:0) > quizQueue.length / 2;
+      if (doneOk) playQuizComplete(); else playGameOver();
       setToast(`Quiz done: ${quizScore.correct + (quizFeedback?.correct?1:0)}/${quizScore.total +1} • +${quizScore.xp + (quizFeedback?.xp||0)} XP`);
       setTimeout(()=> setToast(null),2000);
       return;
@@ -651,6 +666,8 @@ export default function App() {
   }, [quizScopeWords, allWords]);
 
   const handleMatchPick = (uid) => {
+    primeAudio();
+    playTap();
     if (matchDone) return;
     const tile = matchBoard.find(t=> t.uid===uid);
     if (!tile || tile.matched || tile.flipped) return;
@@ -665,6 +682,7 @@ export default function App() {
       const isMatch = a.pairId === b.pairId && a.type !== b.type;
       setTimeout(()=> {
         if (isMatch) {
+          playMatchPair();
           const updated = nextBoard.map(t=> (t.uid===a.uid || t.uid===b.uid) ? {...t, matched:true} : t);
           setMatchBoard(updated);
           const xpAdd = GAME_XP.matchPair;
@@ -676,12 +694,13 @@ export default function App() {
               const totalAward = 6 * GAME_XP.matchPair + bonus;
               setMatchXp(totalAward);
               setMatchDone(true);
-              setTimeout(()=> awardGameXP(totalAward, 6), 420);
+              setTimeout(() => { playGameWin(); awardGameXP(totalAward, 6); }, 420);
             }
             return nv;
           });
           setMatchPicks([]);
         } else {
+          playIncorrect();
           setMatchBoard(prev=> prev.map(t=> nextPicks.includes(t.uid) ? {...t, flipped:false} : t));
           setMatchPicks([]);
         }
@@ -749,7 +768,7 @@ export default function App() {
           clearInterval(sprintTimerRef.current);
           setSprintActive(false);
           const final = sprintScoreRef.current;
-          if (final.xp>0) awardGameXP(final.xp, final.total);
+          if (final.xp>0) { playGameWin(); awardGameXP(final.xp, final.total); } else playGameOver();
           setToast(`Sprint done: ${final.correct}/${final.total} • +${final.xp} XP`);
           setTimeout(()=> setToast(null),2200);
           return 0;
@@ -761,11 +780,13 @@ export default function App() {
   }, [sprintActive]);
 
   const handleSprintPick = (opt) => {
+    primeAudio();
     if (!sprintActive || sprintFeedback) return;
     const cur = sprintQueue[sprintIdx];
     const optEn = typeof opt === 'object' ? opt.en : opt;
     const correctEn = typeof cur.correct === 'object' ? cur.correct.en : cur.correct;
     const correct = optEn === correctEn;
+    if (correct) { playCorrect(); if ((sprintScore.streak+1) % 3 === 0) setTimeout(() => playStreak(), 120); } else playIncorrect();
     const streak = correct ? sprintScore.streak + 1 : 0;
     const mult = Math.min(2, 1 + streak*0.15);
     const xpAdd = correct ? Math.round(GAME_XP.sprintBase * mult) : 0;
@@ -821,17 +842,22 @@ export default function App() {
   }, [quizScopeWords, allWords]);
 
   const handleSatzPick = (token, idx) => {
+    primeAudio();
+    playTap();
     if (satzFeedback) return;
     setSatzBuilt(b=> [...b, token]);
     setSatzPool(p=> p.filter((_,i)=> i!==idx));
   };
   const handleSatzRemove = (idx) => {
+    primeAudio();
+    playTap();
     if (satzFeedback) return;
     const tok = satzBuilt[idx];
     setSatzBuilt(b=> b.filter((_,i)=> i!==idx));
     setSatzPool(p=> [...p, tok]);
   };
   const checkSatz = () => {
+    primeAudio();
     const cur = satzQueue[satzIdx];
     const builtStr = satzBuilt.join(' ');
     const correctStr = cur.tokens.join(' ');
@@ -839,11 +865,13 @@ export default function App() {
     const xpAdd = correct ? (GAME_XP.scramblePerWord + Math.max(0, 8 - satzBuilt.length)) : 0;
     setSatzFeedback({ correct, expected: correctStr, xp: xpAdd });
     setSatzScore(s=> ({ correct: s.correct + (correct?1:0), total: s.total+1, xp: s.xp + xpAdd }));
-    if (xpAdd>0) setTimeout(()=> awardGameXP(xpAdd,1), 300);
+    if (correct) playCorrect(); else playIncorrect();
+    if (xpAdd>0) setTimeout(()=> { playXp(); awardGameXP(xpAdd,1); }, 300);
     setTimeout(()=> {
       setSatzFeedback(null);
       if (satzIdx +1 >= satzQueue.length) {
         setSatzActive(false);
+        if (correct) playGameWin(); else if (satzIdx +1 >= satzQueue.length) playGameOver();
         if (satzScore.xp + xpAdd > 0) awardGameXP(0,0);
         setToast(`Forge done: ${satzScore.correct + (correct?1:0)}/${satzQueue.length} • +${satzScore.xp + xpAdd} XP`);
         setTimeout(()=> setToast(null),2000);
@@ -891,6 +919,8 @@ export default function App() {
       setRainTime(t=>{
         if (t<=1) {
           // timeout — lose life
+          primeAudio();
+          playIncorrect();
           const cur = rainQueue[rainIdx];
           setRainFeedback({ correct:false, expected: cur?.correct, timeout:true });
           setRainScore(s=> ({ ...s, total: s.total+1, streak:0 }));
@@ -900,7 +930,7 @@ export default function App() {
               clearInterval(rainTimerRef.current);
               setRainActive(false);
               const final = { ...rainScoreRef.current, total: rainScoreRef.current.total+1 };
-              if (final.xp>0) awardGameXP(final.xp, final.total);
+              if (final.xp>0) { playGameOver(); awardGameXP(final.xp, final.total); } else playGameOver();
               setToast(`Storm ended: ${final.correct}/${final.total} • +${final.xp} XP`);
               setTimeout(()=> setToast(null),2200);
             }
@@ -942,11 +972,13 @@ export default function App() {
   }, [rainActive, rainQueue, rainIdx, rainLives, quizScopeWords, allWords]);
 
   const handleRainPick = (opt) => {
+    primeAudio();
     if (!rainActive || rainFeedback) return;
     const cur = rainQueue[rainIdx];
     const optEn = typeof opt==='object'? opt.en : opt;
     const correctEn = typeof cur.correct==='object'? cur.correct.en : cur.correct;
     const correct = optEn===correctEn;
+    if (correct) { playCorrect(); if ((rainScore.streak+1) % 4 === 0) playStreak(); } else playIncorrect();
     const streak = correct ? rainScore.streak+1 : 0;
     const mult = Math.min(2, 1 + streak*0.12);
     const xpAdd = correct ? Math.round(6*mult) : 0;
@@ -959,7 +991,7 @@ export default function App() {
         clearInterval(rainTimerRef.current);
         setRainActive(false);
         const final = { ...rainScore, correct: rainScore.correct + (correct?1:0), total: rainScore.total+1, xp: rainScore.xp + xpAdd };
-        if (final.xp>0) awardGameXP(final.xp, final.total);
+        if (final.xp>0) { playGameOver(); awardGameXP(final.xp, final.total); } else playGameOver();
         setToast(`Storm ended: ${final.correct}/${final.total} • +${final.xp} XP`);
         setTimeout(()=> setToast(null),2200);
         return;
