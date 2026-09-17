@@ -44,3 +44,55 @@ html, body, #root { overflow-x: clip; }
 }
 /* prevent horizontal page scroll from tabs and cards */
 [data-baseweb="tabs"] { max-width: 100%; overflow: hidden; }
+
+/* tabs — underline indicator: black line dragged with overshoot (pass a little beyond then settle) */
+.gs-tabs [role="tablist"] { scrollbar-width: none; -ms-overflow-style: none; gap: 24px; }
+.gs-tabs [role="tablist"]::-webkit-scrollbar { display: none; height: 0; }
+.gs-tabs-bar { scrollbar-width: none; }
+.gs-tabs-bar::-webkit-scrollbar { display: none; }
+[data-baseweb="tab-highlight"] {
+  background: #000 !important;
+  height: 3px !important;
+  border-radius: 999px !important;
+  bottom: -1px !important;
+  transition-duration: 520ms !important;
+  transition-timing-function: cubic-bezier(0.68, -0.60, 0.32, 1.60) !important;
+  will-change: transform, width;
+}
+[data-baseweb="tab-border"] { display: none !important; }
+[role="tab"] { background: transparent !important; }
+[role="tab"][aria-selected="true"] { color: #0f0f12 !important; font-weight: 800 !important; }
+[role="tab"][aria-selected="false"] { color: #9aa0b2 !important; }
+@media (max-width: 520px) {
+  .gs-tabs [role="tablist"] { gap: 16px !important; }
+}
+
+/* tab content — cards rise from bottom to up, opacity increases toward navbar (reversible: remove this block) */
+.gs-tabs [data-baseweb="tab-panel"] > div {
+  animation: gs-panel-up 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes gs-panel-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.gs-tabs [data-baseweb="tab-panel"] .gs-card {
+  animation: gs-card-up 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  will-change: transform, opacity;
+}
+.gs-tabs [data-baseweb="tab-panel"] .gs-card:nth-child(1) { animation-delay: 30ms; }
+.gs-tabs [data-baseweb="tab-panel"] .gs-card:nth-child(2) { animation-delay: 70ms; }
+.gs-tabs [data-baseweb="tab-panel"] .gs-card:nth-child(3) { animation-delay: 110ms; }
+.gs-tabs [data-baseweb="tab-panel"] .gs-card:nth-child(4) { animation-delay: 150ms; }
+.gs-tabs [data-baseweb="tab-panel"] .gs-card:nth-child(5) { animation-delay: 190ms; }
+.gs-tabs [data-baseweb="tab-panel"] .gs-card:nth-child(6) { animation-delay: 230ms; }
+.gs-tabs [data-baseweb="tab-panel"] .gs-card:nth-child(7) { animation-delay: 270ms; }
+.gs-tabs [data-baseweb="tab-panel"] .gs-card:nth-child(8) { animation-delay: 310ms; }
+.gs-tabs [data-baseweb="tab-panel"] .gs-card:nth-child(n+9) { animation-delay: 340ms; }
+@keyframes gs-card-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gs-tabs [data-baseweb="tab-panel"] > div,
+  .gs-tabs [data-baseweb="tab-panel"] .gs-card { animation: none !important; opacity: 1 !important; transform: none !important; }
+}

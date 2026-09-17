@@ -1120,6 +1120,16 @@ export default function App() {
     } catch (e) { setToast('Admin only'); setTimeout(()=> setToast(null),1500); }
   };
 
+  // keep active tab visible on mobile (navbar indicator scroll) — must be before early return per Rules of Hooks
+  useEffect(() => {
+    const el = document.querySelector('[role="tab"][aria-selected="true"]');
+    if (el && el.scrollIntoView) {
+      try {
+        el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      } catch {}
+    }
+  }, [activeKey]);
+
   if (!dbReady) return <Block display="flex" justifyContent="center" alignItems="center" height="100vh"><Spinner size={48} /></Block>;
 
   const selectedBookMeta = BOOKS.find(b=> b.id===selectedBook);
@@ -1146,12 +1156,86 @@ export default function App() {
       <AuthModal show={showAuth} onClose={()=> setShowAuth(false)} authMode={authMode} setAuthMode={setAuthMode} authForm={authForm} setAuthForm={setAuthForm} onLogin={handleLogin} onSignup={handleSignup} />
 
       <Block maxWidth="620px" width="100%" margin="0 auto" padding="0 16px 100px">
-        <Tabs activeKey={activeKey} onChange={({ activeKey }) => setActiveKey(activeKey)} overrides={{
-            TabBar: { style: { backgroundColor: '#f7f7f7', borderRadius: '999px', paddingTop: '4px', paddingBottom: '4px', paddingLeft: '4px', paddingRight: '4px', marginTop: '16px', overflowX:'auto' } },
-            Tab: { style: ({ $active }) => ({ backgroundColor: $active ? '#000' : 'transparent', color: $active ? '#fff' : '#6b6b6b', borderRadius: '999px', fontWeight: 700, fontSize: '12px', flex: 1, whiteSpace:'nowrap' }) },
-            TabHighlight: { style: { display: 'none' } },
-            TabBorder: { style: { display: 'none' } },
-          }}>
+        <Tabs
+          activeKey={activeKey}
+          onChange={({ activeKey }) => setActiveKey(activeKey)}
+          overrides={{
+            Root: { props: { className: 'gs-tabs' } },
+            TabBar: {
+              style: {
+                backgroundColor: '#fff',
+                borderRadius: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                marginTop: '16px',
+                overflowX: 'auto',
+                overflowY: 'hidden',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch',
+                scrollBehavior: 'smooth',
+                display: 'flex',
+                flexWrap: 'nowrap',
+                alignItems: 'center',
+                borderBottomWidth: '1px',
+                borderBottomStyle: 'solid',
+                borderBottomColor: '#e9e8f0',
+              },
+              props: { className: 'gs-tabs-bar' },
+            },
+            TabList: {
+              style: {
+                gap: '24px',
+                paddingBottom: 0,
+                marginBottom: 0,
+                overflow: 'visible',
+              },
+            },
+            Tab: {
+              style: ({ $active }) => ({
+                backgroundColor: 'transparent',
+                color: $active ? '#0f0f12' : '#9aa0b2',
+                fontWeight: $active ? 800 : 600,
+                fontSize: '13px',
+                lineHeight: '14px',
+                flex: '0 0 auto',
+                whiteSpace: 'nowrap',
+                paddingTop: '14px',
+                paddingBottom: '14px',
+                paddingLeft: '4px',
+                paddingRight: '4px',
+                borderRadius: 0,
+                borderWidth: 0,
+                borderStyle: 'none',
+                borderColor: 'transparent',
+                boxShadow: 'none',
+                transform: 'none',
+                opacity: 1,
+                transitionProperty: 'color',
+                transitionDuration: '200ms',
+                transitionTimingFunction: 'ease',
+                scrollMarginLeft: '16px',
+                scrollMarginRight: '16px',
+                ':hover': { backgroundColor: 'transparent', color: $active ? '#0f0f12' : '#6b6b7a' },
+              }),
+            },
+            TabHighlight: {
+              style: {
+                backgroundColor: '#000',
+                height: '3px',
+                borderRadius: '999px',
+                bottom: '-1px',
+                display: 'block',
+                transitionDuration: '520ms',
+                transitionTimingFunction: 'cubic-bezier(0.68, -0.60, 0.32, 1.60)',
+                zIndex: 2,
+              },
+            },
+            TabBorder: { style: { display: 'none', backgroundColor: 'transparent', height: '1px' } },
+          }}
+        >
           <Tab title="📚 Bücher">
             <Block paddingTop="16px">
               <BuecherTab selectedBook={selectedBook} setSelectedBook={setSelectedBook} selectedLektions={selectedLektions} setSelectedLektions={setSelectedLektions} bookView={bookView} setBookView={setBookView} allWords={allWords} progressMap={progressMap} scopeWords={scopeWords} setActiveKey={setActiveKey} setQuizBook={setQuizBook} setQuizLektions={setQuizLektions} selectedBookMeta={selectedBookMeta} />
