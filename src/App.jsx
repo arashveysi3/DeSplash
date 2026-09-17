@@ -11,12 +11,10 @@ import { Select } from 'baseui/select';
 import { Notification } from 'baseui/notification';
 import { Spinner } from 'baseui/spinner';
 import { db, initDB, getStats, updateStreak, addXP, COMPETITORS, getAllWords, addCustomWord, deleteCustomWord, fetchOnlineLeaderboard, submitOnlineScore, deleteOnlineScore, resetOnlineBoard } from './db';
-import { signup, login, fetchMe, logout, fetchUsers, deleteUser, getToken, fetchProgress, saveProgress, saveProgressOne, fetchStatsOnline, saveStatsOnline } from './auth';
+import { signup, login, fetchMe, logout, fetchUsers, deleteUser, fetchProgress, saveProgress, saveProgressOne, fetchStatsOnline, saveStatsOnline } from './auth';
 import { sm2, qualityFromLabel, XP_MAP } from './srs';
 import { genderColor, genderBg } from './theme';
-import wordsData from './data/words.js';
-
-const LEVEL_ORDER = ['A1.1', 'A1.2', 'A2.1', 'A2.2', 'B1.1', 'B1.2', 'B2.1', 'B2.2'];
+import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
 
 function isWordMastered(progress) {
   if (!progress) return false;
@@ -27,22 +25,30 @@ function isWordMastered(progress) {
   return (reps >= 3 && lapses === 0 && ease >= 2.0) || interval >= 14;
 }
 
-function getLevelMastery(level, allWords, progressMap) {
-  const words = allWords.filter(w => w.level === level);
-  if (words.length === 0) return { total: 0, mastered: 0, pct: 100 };
-  const mastered = words.filter(w => isWordMastered(progressMap[w.id])).length;
-  return { total: words.length, mastered, pct: Math.round((mastered / words.length) * 100) };
-}
-
-function getUserLevel(allWords, progressMap) {
-  for (const level of LEVEL_ORDER) {
-    const { pct } = getLevelMastery(level, allWords, progressMap);
-    if (pct < 80) return level;
+function getLektionMastery(lektionWords, progressMap) {
+  if (!lektionWords.length) return { total: 0, mastered: 0, seen: 0, pct: 0, masteredPct: 0 };
+  let seen = 0, mastered = 0;
+  for (const w of lektionWords) {
+    const p = progressMap[w.id];
+    if (p && (p.repetition > 0 || p.interval > 0 || p.lapses > 0)) seen++;
+    if (isWordMastered(p)) mastered++;
   }
-  return LEVEL_ORDER[LEVEL_ORDER.length - 1];
+  return { total: lektionWords.length, mastered, seen, pct: Math.round((seen / lektionWords.length) * 100), masteredPct: Math.round((mastered / lektionWords.length) * 100) };
 }
+function getBookMastery(bookKey, allWords, progressMap) {
+  const words = allWords.filter(w => w.book === bookKey);
+  if (!words.length) return { total: 0, mastered: 0, seen: 0, pct: 0, masteredPct: 0 };
+  let seen = 0, mastered = 0;
+  for (const w of words) {
+    const p = progressMap[w.id];
+    if (p && (p.repetition > 0 || p.interval > 0 || p.lapses > 0)) seen++;
+    if (isWordMastered(p)) mastered++;
+  }
+  return { total: words.length, mastered, seen, pct: Math.round((seen / words.length) * 100), masteredPct: Math.round((mastered / words.length) * 100) };
+}
+// legacy alias for scope progress (uses seen)
+function getScopeProgress(words, progressMap) { return getLektionMastery(words, progressMap); }
 
-// -- Uber-style Card using Block (avoids baseui Card hasThumbnail bug) --
 function UberCard({ children, onClick, styleOverride = {}, bodyStyle = {} }) {
   return (
     <Block
@@ -85,10 +91,6 @@ function speakGerman(text) {
   window.speechSynthesis.speak(u);
 }
 
-function normalizeInput(s) {
-  return s.trim();
-}
-
 function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, listening, setListening, transcript, setTranscript }) {
   const [dragX, setDragX] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -127,7 +129,7 @@ function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, listening, setL
   const startListening = () => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
-      alert('Speech Recognition not supported on this browser. Use Chrome/Safari iOS.');
+      alert('Speech Recognition not supported. Use Chrome.');
       return;
     }
     const rec = new SR();
@@ -136,10 +138,7 @@ function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, listening, setL
     rec.maxAlternatives = 1;
     rec.onstart = () => setListening(true);
     rec.onend = () => setListening(false);
-    rec.onresult = (e) => {
-      const t = e.results[0][0].transcript;
-      setTranscript(t);
-    };
+    rec.onresult = (e) => setTranscript(e.results[0][0].transcript);
     rec.onerror = () => setListening(false);
     rec.start();
   };
@@ -175,8 +174,8 @@ function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, listening, setL
           transition: 'opacity 0.2s',
         }}
       >
-        <span style={{ background: '#fee2e2', color: '#dc2626', padding: '6px 12px', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', fontWeight: 700, fontSize: 12, transform: dragX < -30 ? 'scale(1)' : 'scale(0.8)' }}>FORGOT</span>
-        <span style={{ background: '#dcfce7', color: '#16a34a', padding: '6px 12px', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', fontWeight: 700, fontSize: 12, transform: dragX > 30 ? 'scale(1)' : 'scale(0.8)' }}>KNEW IT</span>
+        <span style={{ background: '#fee2e2', color: '#dc2626', padding: '6px 12px', borderRadius: '999px', fontWeight: 700, fontSize: 12 }}>AGAIN</span>
+        <span style={{ background: '#dcfce7', color: '#16a34a', padding: '6px 12px', borderRadius: '999px', fontWeight: 700, fontSize: 12 }}>KNOWN</span>
       </div>
 
       <Block
@@ -191,75 +190,80 @@ function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, listening, setL
               backgroundColor: flipped ? bg : '#fff',
               borderWidth: '1.5px',
               borderStyle: 'solid',
-              borderTopColor: flipped ? color : '#000',
-              borderBottomColor: flipped ? color : '#000',
-              borderLeftColor: flipped ? color : '#000',
-              borderRightColor: flipped ? color : '#000',
-              borderTopLeftRadius: '24px',
-              borderTopRightRadius: '24px',
-              borderBottomLeftRadius: '24px',
-              borderBottomRightRadius: '24px',
+              borderColor: flipped ? color : '#000',
+              borderRadius: '24px',
               boxShadow: '0 12px 32px rgba(0,0,0,0.08)',
               cursor: 'pointer',
-              minHeight: '380px',
+              minHeight: '400px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
               overflow: 'hidden',
-              paddingTop: '16px',
-              paddingBottom: '16px',
-              paddingLeft: '16px',
-              paddingRight: '16px',
+              padding: '18px',
             },
           },
         }}
       >
-        <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="16px">
-          <Tag closeable={false} overrides={{ Root: { style: { backgroundColor: '#000', color: '#fff', fontWeight: 700, fontSize: '11px' } } }}>{word.level}</Tag>
+        <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="12px">
+          <Block display="flex" gridGap="6px" alignItems="center">
+            <Tag closeable={false} overrides={{ Root: { style: { backgroundColor: '#000', color: '#fff', fontWeight: 700, fontSize: '11px' } } }}>{word.bookLabel || word.level} • {word.lektion}</Tag>
+            {word.plural && <Tag closeable={false} overrides={{ Root: { style: { backgroundColor: '#f7f7f7', color: '#6b6b6b', fontSize: '11px' } } }}>Pl: {word.plural}</Tag>}
+          </Block>
           <Block display="flex" gridGap="8px" alignItems="center">
-            <span style={{ width: 8, height: 8, borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', background: color, display: 'inline-block' }} />
-            <LabelSmall color="#6b6b6b" overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>{word.article ? `${word.article} • ${word.pos}` : word.pos}</LabelSmall>
+            <span style={{ width: 8, height: 8, borderRadius: '999px', background: color, display: 'inline-block' }} />
+            <LabelSmall color="#6b6b6b" overrides={{ Block: { style: { textTransform: 'uppercase', fontSize: 11 } } }}>{word.article ? `${word.article} • noun` : word.pos}</LabelSmall>
           </Block>
         </Block>
 
         {!flipped ? (
-          <Block textAlign="center" paddingTop="24px" paddingBottom="24px">
-            <div style={{ fontSize: '42px', fontWeight: 800, letterSpacing: '-1px', lineHeight: 1.1, color: word.article ? color : '#000' }}>
+          <Block textAlign="center" paddingTop="16px" paddingBottom="16px">
+            <div style={{ fontSize: '40px', fontWeight: 800, letterSpacing: '-1px', lineHeight: 1.1, color: word.article ? color : '#000' }}>
               {word.article && <span style={{ fontSize: 18, fontWeight: 600, marginRight: 8, opacity: 0.9 }}>{word.article}</span>}
               {word.german}
             </div>
-            <ParagraphSmall color="#9a9a9a" marginTop="12px">Tap to reveal • Swipe to answer</ParagraphSmall>
-            <Block marginTop="16px">
+            {word.plural && <div style={{ fontSize: 13, color: '#6b6b6b', marginTop: 6 }}>Plural: {word.plural}</div>}
+            <div style={{ fontSize: 13, color: '#9a9a9a', marginTop: 6, fontFamily: 'Vazirmatn, sans-serif', direction: 'rtl' }}>{word.meaning_fa}</div>
+            <ParagraphSmall color="#9a9a9a" marginTop="14px">Tap to reveal • Swipe → Known • Swipe ← Again</ParagraphSmall>
+            <Block marginTop="16px" display="flex" justifyContent="center" gridGap="8px">
               <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(word.german); }}>🔊 Listen</Button>
+              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(word.example); }}>💬 Example</Button>
             </Block>
           </Block>
         ) : (
           <Block textAlign="center">
-            <DisplaySmall overrides={{ Block: { style: { fontWeight: 800, fontSize: '30px', lineHeight: '1.2' } } }}>{word.english}</DisplaySmall>
-            <Block marginTop="16px" backgroundColor="white" padding="12px" overrides={{ Block: { style: { borderTopLeftRadius: '14px', borderTopRightRadius: '14px', borderBottomLeftRadius: '14px', borderBottomRightRadius: '14px', borderWidth: '1px', borderStyle: 'solid', borderTopColor: '#eee', borderBottomColor: '#eee', borderLeftColor: '#eee', borderRightColor: '#eee', textAlign: 'left' } } }}>
-              <LabelSmall color="#6b6b6b" marginBottom="4px">Beispiel • Example</LabelSmall>
-              <div style={{ fontStyle: 'italic', fontSize: 15, lineHeight: 1.4 }}>{word.example}</div>
-              <div style={{ fontSize: 13, color: '#6b6b6b', marginTop: 4 }}>{word.exampleEn}</div>
-            </Block>
+            <div style={{ display: 'grid', gap: 8 }}>
+              <div style={{ background: '#fff', border: '1px solid #eee', borderRadius: 14, padding: 12, textAlign: 'left' }}>
+                <LabelSmall color="#9a9a9a">English</LabelSmall>
+                <div style={{ fontWeight: 700, fontSize: 18 }}>{word.meaning_en || word.english}</div>
+                <LabelSmall color="#9a9a9a" marginTop="8px">فارسی</LabelSmall>
+                <div style={{ fontWeight: 700, fontSize: 18, fontFamily: 'Vazirmatn, sans-serif', direction: 'rtl' }}>{word.meaning_fa}</div>
+                {word.plural && <div style={{ fontSize: 12, color: '#6b6b6b', marginTop: 6 }}>Plural: <b>{word.plural}</b></div>}
+              </div>
+              <div style={{ background: '#fff', border: '1px solid #eee', borderRadius: 14, padding: 12, textAlign: 'left' }}>
+                <LabelSmall color="#6b6b6b" marginBottom="4px">Beispiel • Example</LabelSmall>
+                <div style={{ fontStyle: 'italic', fontSize: 14, lineHeight: 1.4 }}>{word.example}</div>
+                <div style={{ fontSize: 12, color: '#6b6b6b', marginTop: 4 }}>{word.meaning_en} • <span style={{ fontFamily: 'Vazirmatn', direction: 'rtl' }}>{word.meaning_fa}</span></div>
+              </div>
+            </div>
 
-            <Block display="flex" justifyContent="center" gridGap="8px" marginTop="16px">
+            <Block display="flex" justifyContent="center" gridGap="8px" marginTop="12px">
               <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(word.example); }}>🔊 Sentence</Button>
-              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); startListening(); }} isLoading={listening}>🎙️ {listening ? 'Listening...' : 'Check pronunciation'}</Button>
+              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); startListening(); }} isLoading={listening}>🎙️ {listening ? 'Listening...' : 'Pronunciation'}</Button>
             </Block>
             {transcript && (
-              <Block marginTop="8px" padding="8px" backgroundColor={transcript.toLowerCase().trim() === word.german.toLowerCase().trim() ? '#dcfce7' : '#fef2f2'} overrides={{ Block: { style: { borderTopLeftRadius: '8px', borderTopRightRadius: '8px', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px' } } }}>
+              <Block marginTop="8px" padding="8px" backgroundColor={transcript.toLowerCase().trim() === word.german.toLowerCase().trim() ? '#dcfce7' : '#fef2f2'} overrides={{ Block: { style: { borderRadius: '8px' } } }}>
                 <LabelSmall>You said: “{transcript}” — {transcript.toLowerCase().trim() === word.german.toLowerCase().trim() ? '✅ Perfect!' : `Compare: “${word.german}”`}</LabelSmall>
               </Block>
             )}
 
-            <Block display="flex" gridGap="8px" marginTop="16px">
+            <Block display="flex" gridGap="8px" marginTop="14px">
               {[
                 { label: 'Again', color: '#dc2626', bg: '#fef2f2' },
                 { label: 'Hard', color: '#ea580c', bg: '#fff7ed' },
                 { label: 'Good', color: '#16a34a', bg: '#f0fdf4' },
                 { label: 'Easy', color: '#2563eb', bg: '#eff6ff' },
               ].map((b) => (
-                <Button key={b.label} size={SIZE.mini} overrides={{ BaseButton: { style: { flex: 1, backgroundColor: b.bg, color: b.color, borderWidth: '1px', borderStyle: 'solid', borderTopColor: b.color + '30', borderBottomColor: b.color + '30', borderLeftColor: b.color + '30', borderRightColor: b.color + '30', borderTopLeftRadius: '12px', borderTopRightRadius: '12px', borderBottomLeftRadius: '12px', borderBottomRightRadius: '12px', fontWeight: 700 } } }} onClick={(e) => { e.stopPropagation(); onRate(b.label); }}>
+                <Button key={b.label} size={SIZE.mini} overrides={{ BaseButton: { style: { flex: 1, backgroundColor: b.bg, color: b.color, borderWidth: '1px', borderStyle: 'solid', borderColor: b.color + '30', borderRadius: '12px', fontWeight: 700 } } }} onClick={(e) => { e.stopPropagation(); onRate(b.label); }}>
                   {b.label}<br /><span style={{ fontSize: 10, opacity: 0.7 }}>+{XP_MAP[b.label]} XP</span>
                 </Button>
               ))}
@@ -275,20 +279,16 @@ function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, listening, setL
 export default function App() {
   const [activeKey, setActiveKey] = useState('0');
   const [stats, setStats] = useState({ xp: 0, streak: 0, lastStudyDate: null, totalReviews: 0 });
-  const [levelFilter, setLevelFilter] = useState([]);
   const [search, setSearch] = useState('');
-  const [queue, setQueue] = useState([]);
-  const [currentIdx, setCurrentIdx] = useState(0);
-  const [flipped, setFlipped] = useState(false);
   const [progressMap, setProgressMap] = useState({});
   const [weakIds, setWeakIds] = useState(new Set());
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [dbReady, setDbReady] = useState(false);
   const [toast, setToast] = useState(null);
-  const [allWords, setAllWords] = useState(wordsData);
+  const [allWords, setAllWords] = useState(ALL_MENSCHEN_WORDS);
   const [showAdd, setShowAdd] = useState(false);
-  const [newCard, setNewCard] = useState({ german: '', english: '', article: '', level: 'Custom', example: '', exampleEn: '' });
+  const [newCard, setNewCard] = useState({ german: '', english: '', englishFa: '', article: '', plural: '', level: 'Custom', book: '', lektion: '', example: '', exampleEn: '' });
   const [onlineBoard, setOnlineBoard] = useState(null);
   const [onlineError, setOnlineError] = useState(null);
   const [username, setUsername] = useState(() => localStorage.getItem('gs_username') || '');
@@ -302,8 +302,14 @@ export default function App() {
   const [authForm, setAuthForm] = useState({ username: '', email: '', password: '' });
   const [usersList, setUsersList] = useState([]);
 
+  // Book / Lektion scope
+  const [selectedBook, setSelectedBook] = useState(() => localStorage.getItem('gs_book') || 'a1.1');
+  const [selectedLektion, setSelectedLektion] = useState(() => localStorage.getItem('gs_lektion') || 'all');
+  const [bookView, setBookView] = useState(null); // which book detail is open in Books tab
+  const [flipped, setFlipped] = useState(false);
+
   // quiz state
-  const [quizMode, setQuizMode] = useState('mixed'); // dictation | artikel | mixed
+  const [quizMode, setQuizMode] = useState('mixed'); // dictation | artikel | mixed | fa
   const [quizQueue, setQuizQueue] = useState([]);
   const [quizIdx, setQuizIdx] = useState(0);
   const [quizAnswer, setQuizAnswer] = useState('');
@@ -311,8 +317,10 @@ export default function App() {
   const [quizScore, setQuizScore] = useState({ correct: 0, total: 0, xp: 0 });
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizArtikelChoice, setQuizArtikelChoice] = useState('');
+  const [quizBook, setQuizBook] = useState(() => localStorage.getItem('gs_quiz_book') || 'a1.1');
+  const [quizLektion, setQuizLektion] = useState(() => localStorage.getItem('gs_quiz_lektion') || 'all');
 
-  // pack study (UX: preload N, save batch)
+  // pack study
   const [packWords, setPackWords] = useState([]);
   const [packIdx, setPackIdx] = useState(0);
   const [packAnswers, setPackAnswers] = useState([]);
@@ -321,7 +329,11 @@ export default function App() {
   const [pendingProgress, setPendingProgress] = useState({});
   const [isSavingPack, setIsSavingPack] = useState(false);
 
-  // helper to load progress per user: if logged in, from server (isolated), else from local Dexie (anonymous)
+  useEffect(()=>{ localStorage.setItem('gs_book', selectedBook); },[selectedBook]);
+  useEffect(()=>{ localStorage.setItem('gs_lektion', selectedLektion); },[selectedLektion]);
+  useEffect(()=>{ localStorage.setItem('gs_quiz_book', quizBook); },[quizBook]);
+  useEffect(()=>{ localStorage.setItem('gs_quiz_lektion', quizLektion); },[quizLektion]);
+
   const loadProgressForUser = useCallback(async (token) => {
     if (token) {
       try {
@@ -335,10 +347,8 @@ export default function App() {
           });
           setProgressMap(map);
           setWeakIds(weak);
-          // do NOT clear Dexie — keep anonymous data intact for logout
           return;
         } else {
-          // server empty -> push local anonymous progress to new account if exists
           const local = await db.progress.toArray();
           if (local.length > 0) {
             const obj = {}; local.forEach(p=> obj[p.id]=p);
@@ -348,12 +358,10 @@ export default function App() {
             setProgressMap(map); setWeakIds(weak);
             return;
           }
-          // fresh account
           setProgressMap({}); setWeakIds(new Set()); return;
         }
       } catch {}
     }
-    // anonymous or fallback: local Dexie
     const allProg = await db.progress.toArray();
     const map = {};
     const weak = new Set();
@@ -393,10 +401,9 @@ export default function App() {
       try {
         const wordsFromDB = await getAllWords();
         if (wordsFromDB.length > 0) setAllWords(wordsFromDB);
-      } catch {}
-      // try auth first
+        else setAllWords(ALL_MENSCHEN_WORDS);
+      } catch { setAllWords(ALL_MENSCHEN_WORDS); }
       const t = localStorage.getItem('gs_token');
-      let serverStats = null;
       if (t) {
         try {
           const u = await fetchMe();
@@ -404,7 +411,7 @@ export default function App() {
             setAuthUser(u);
             setUsername(u.username);
             setAuthToken(t);
-            serverStats = await loadStatsForUser(t);
+            await loadStatsForUser(t);
             await loadProgressForUser(t);
           } else {
             await loadStatsForUser(null);
@@ -425,7 +432,6 @@ export default function App() {
     })();
   }, [loadProgressForUser, loadStatsForUser]);
 
-  // when auth changes (login/logout), reload per-user data and clear queue to avoid cross-user leakage
   useEffect(() => {
     if (!dbReady) return;
     (async () => {
@@ -433,41 +439,47 @@ export default function App() {
         await loadStatsForUser(authToken);
         await loadProgressForUser(authToken);
       } else {
-        // anonymous: load local
         await loadStatsForUser(null);
         await loadProgressForUser(null);
       }
-      // reset queue to avoid showing previous user's due order
-      setQueue([]);
-      setCurrentIdx(0);
-      setFlipped(false);
+      setPackWords([]); setPackIdx(0); setFlipped(false);
     })();
   }, [authUser, authToken, dbReady, loadProgressForUser, loadStatsForUser]);
 
-  const filteredWords = useMemo(() => {
-    let w = allWords;
-    if (levelFilter.length) {
-      const levels = levelFilter.map((o) => o.id);
-      w = w.filter((x) => levels.includes(x.level));
-    }
+  // scope words helper
+  const scopeWords = useMemo(()=>{
+    const book = selectedBook;
+    const lek = selectedLektion;
+    if (!book) return allWords;
+    let w = allWords.filter(x=> x.book === book);
+    if (lek && lek !== 'all') w = w.filter(x=> x.lektion === lek);
     if (search.trim()) {
       const q = search.toLowerCase();
-      w = w.filter((x) => x.german.toLowerCase().includes(q) || x.english.toLowerCase().includes(q) || x.level.toLowerCase().includes(q) || x.example.toLowerCase().includes(q));
+      w = w.filter(x => x.german.toLowerCase().includes(q) || (x.meaning_en||x.english||'').toLowerCase().includes(q) || (x.meaning_fa||'').includes(q) || x.lektion.toLowerCase().includes(q));
     }
     return w;
-  }, [allWords, levelFilter, search]);
+  }, [allWords, selectedBook, selectedLektion, search]);
 
-  const filterKey = useMemo(() => levelFilter.map((o) => o.id).sort().join(',') + '|' + search.trim().toLowerCase(), [levelFilter, search]);
-  const prevFilterKey = useRef(filterKey);
-  const sessionReviewedIds = useRef(new Set());
-  const sessionDay = useRef(new Date().toISOString().slice(0,10));
+  const quizScopeWords = useMemo(()=>{
+    let w = allWords.filter(x=> x.book === quizBook);
+    if (quizLektion && quizLektion !== 'all') w = w.filter(x=> x.lektion === quizLektion);
+    return w;
+  }, [allWords, quizBook, quizLektion]);
+
+  const filteredWordsForSearch = useMemo(() => {
+    let w = allWords;
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      w = w.filter((x) => x.german.toLowerCase().includes(q) || (x.meaning_en||x.english||'').toLowerCase().includes(q) || (x.meaning_fa||'').includes(q) || (x.level||'').toLowerCase().includes(q) || (x.lektion||'').toLowerCase().includes(q));
+    }
+    return w;
+  }, [allWords, search]);
 
   const studyQueue = useMemo(() => {
-    if (search.trim()) return filteredWords;
+    if (!scopeWords.length) return [];
     const today = Date.now();
-    const NEW_PER_DAY = 20;
     let newCount = 0;
-    const withScore = filteredWords.map((w) => {
+    const withScore = scopeWords.map((w) => {
       const p = progressMap[w.id];
       const due = p?.due || 0;
       const isNew = !p || p.repetition === 0;
@@ -476,7 +488,6 @@ export default function App() {
       const interval = p?.interval || 0;
       const lastReview = p?.lastReview || 0;
       const daysSinceReview = lastReview ? (today - lastReview) / 86400000 : 999;
-      
       let score = 0;
       if (due === 0 || isNew) {
         score = 1e9 - (isNew ? newCount++ : 0);
@@ -489,7 +500,6 @@ export default function App() {
       if (interval > 0 && interval < 7) score += (7 - interval) * 50;
       if (daysSinceReview > 14) score += 100;
       if (weakIds.has(w.id)) score += 300;
-      
       return { w, score, isNew, due };
     });
     withScore.sort((a, b) => {
@@ -497,35 +507,31 @@ export default function App() {
       if (!a.isNew && b.isNew) return -1;
       return b.score - a.score;
     });
-    const result = withScore.map((x) => x.w);
-    if (search.trim()) return result;
-    return result.filter(w => !sessionReviewedIds.current.has(w.id));
-  }, [filteredWords, progressMap, search, weakIds]);
+    const res = withScore.map((x) => x.w);
+    return res;
+  }, [scopeWords, progressMap, weakIds]);
 
-  useEffect(() => {
-    if (!dbReady) return;
-    const today = new Date().toISOString().slice(0,10);
-    if (sessionDay.current !== today) {
-      sessionDay.current = today;
+  // pack logic
+  const sessionReviewedIds = useRef(new Set());
+  const sessionDay = useRef(new Date().toISOString().slice(0,10));
+  const prevScopeKey = useRef(`${selectedBook}::${selectedLektion}`);
+  useEffect(()=>{
+    const key = `${selectedBook}::${selectedLektion}`;
+    if (prevScopeKey.current !== key) {
+      prevScopeKey.current = key;
       sessionReviewedIds.current.clear();
+      setPackWords([]); setPackIdx(0); setPackAnswers([]); setPendingProgress({}); setShowPackSummary(false); setFlipped(false);
     }
-    if (queue.length === 0 || prevFilterKey.current !== filterKey) {
-      prevFilterKey.current = filterKey;
-      sessionReviewedIds.current.clear();
-      setQueue(studyQueue);
-      setCurrentIdx(0);
-      setFlipped(false);
-      setTranscript('');
-    }
-  }, [studyQueue, filterKey, dbReady]);
+  },[selectedBook, selectedLektion]);
 
-  // pack study (UX: preload N, save batch) — defined after studyQueue so it can use it
   const startNewPack = useCallback(() => {
+    const today = new Date().toISOString().slice(0,10);
+    if (sessionDay.current !== today) { sessionDay.current = today; sessionReviewedIds.current.clear(); }
     const available = studyQueue.filter(w => !sessionReviewedIds.current.has(w.id));
     const pack = available.slice(0, packSize);
     if (pack.length === 0) {
-      setToast(available.length === 0 ? 'No more words for today — try tomorrow or change filter' : 'All words reviewed this session');
-      setTimeout(()=> setToast(null),1500);
+      setToast(available.length === 0 ? 'No more words in this scope — try another Lektion or whole book' : 'All words reviewed');
+      setTimeout(()=> setToast(null),1800);
       return;
     }
     setPackWords(pack);
@@ -544,7 +550,7 @@ export default function App() {
     const base = pendingProgress[word.id] ? pendingProgress[word.id] : (progressMap[word.id] || { interval: 0, repetition: 0, ease: 2.5, due: 0, lapses: 0 });
     const next = sm2(base, qualityFromLabel(label));
     const xp = XP_MAP[label] || 5;
-    const nextEntry = { id: word.id, level: word.level, ...next, lastReview: Date.now() };
+    const nextEntry = { id: word.id, level: word.level, book: word.book, lektion: word.lektion, ...next, lastReview: Date.now() };
     setPendingProgress(prev => ({ ...prev, [word.id]: nextEntry }));
     setPackAnswers(prev => [...prev, { word, label, xp, correct: label !== 'Again' }]);
     setProgressMap(m => ({ ...m, [word.id]: nextEntry }));
@@ -572,8 +578,7 @@ export default function App() {
       setFlipped(false);
       setTranscript('');
     }
-    if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
-  }, [packWords, packIdx, progressMap, pendingProgress, packSize]);
+  }, [packWords, packIdx, progressMap, pendingProgress]);
 
   const savePack = useCallback(async () => {
     if (Object.keys(pendingProgress).length === 0) {
@@ -604,7 +609,7 @@ export default function App() {
       console.error(e);
     } finally {
       setIsSavingPack(false);
-      setTimeout(()=> setToast(null), 1500);
+      setTimeout(()=> setToast(null),1500);
       setPendingProgress({});
       setPackAnswers([]);
       setShowPackSummary(false);
@@ -618,109 +623,18 @@ export default function App() {
   }, [handlePackRate]);
 
   useEffect(() => {
-    if (dbReady && activeKey === '0' && packWords.length === 0 && studyQueue.length > 0 && !showPackSummary) {
+    if (dbReady && activeKey === '1' && packWords.length === 0 && studyQueue.length > 0 && !showPackSummary) {
       startNewPack();
     }
   }, [dbReady, activeKey, studyQueue, packWords.length, showPackSummary, startNewPack]);
 
-  const currentWord = queue[currentIdx] || null;
-  const progress = queue.length ? Math.round((currentIdx / queue.length) * 100) : 0;
-
-  const handleRate = useCallback(async (label) => {
-    if (!currentWord) return;
-    const q = qualityFromLabel(label);
-    const prev = progressMap[currentWord.id] || { interval: 0, repetition: 0, ease: 2.5, due: 0, lapses: 0 };
-    const next = sm2(prev, q);
-    const xp = XP_MAP[label] || 5;
-    // per-user isolated storage
-    if (authToken && authUser) {
-      setProgressMap((m) => ({ ...m, [currentWord.id]: { id: currentWord.id, level: currentWord.level, ...next } }));
-      try { await saveProgressOne({ id: currentWord.id, level: currentWord.level, ...next }); } catch {}
-      if (label === 'Again') setWeakIds((s) => { const n = new Set(s); n.add(currentWord.id); return n; });
-      // per-user stats (xp, streak, reviews) — update in-memory and server, NOT Dexie
-      const today = new Date().toISOString().slice(0,10);
-      const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-      let newStreak = stats.streak || 0;
-      let newLast = stats.lastStudyDate;
-      if (stats.lastStudyDate !== today) {
-        if (!stats.lastStudyDate) newStreak = 1;
-        else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
-        else {
-          const diff = (new Date(today) - new Date(stats.lastStudyDate))/86400000;
-          newStreak = diff===1 ? (stats.streak||0)+1 : 1;
-        }
-        newLast = today;
-      }
-      const newStats = { ...stats, xp: (stats.xp||0)+xp, totalReviews: (stats.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
-      setStats(newStats);
-      try { await saveStatsOnline(newStats); } catch {}
-      const syncName = authUser.username;
-      if (useOnline) submitOnlineScore(syncName, newStats.xp).then(b => { if (b) setOnlineBoard(b); }).catch(()=>{});
-    } else {
-      // anonymous: local Dexie
-      await db.progress.put({ id: currentWord.id, level: currentWord.level, ...next });
-      setProgressMap((m) => ({ ...m, [currentWord.id]: { id: currentWord.id, ...next } }));
-      if (label === 'Again') setWeakIds((s) => { const n = new Set(s); n.add(currentWord.id); return n; });
-      await addXP(xp);
-      await updateStreak();
-      const s = await getStats();
-      setStats(s);
-      const syncName = username;
-      if (useOnline && syncName) submitOnlineScore(syncName, s.xp).then(b => { if (b) setOnlineBoard(b); }).catch(()=>{});
-    }
-    setToast(`+${xp} XP • ${label}`);
-    setTimeout(() => setToast(null), 1600);
-    setFlipped(false);
-    setTranscript('');
-    setCurrentIdx((i) => Math.min(i + 1, queue.length));
-    if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
-  }, [currentWord, progressMap, queue.length, useOnline, username, authUser, authToken, stats]);
-
-  const handleSwipe = (dir) => {
-    if (!currentWord) return;
-    if (dir === 'right') handleRate('Good');
-    else handleRate('Again');
-  };
-
   const weakWords = useMemo(() => allWords.filter((w) => weakIds.has(w.id)), [allWords, weakIds]);
-
-  const userLevel = useMemo(() => getUserLevel(allWords, progressMap), [allWords, progressMap]);
-  const levelMastery = useMemo(() => getLevelMastery(userLevel, allWords, progressMap), [userLevel, allWords, progressMap]);
-  const prevUserLevelRef = useRef(userLevel);
-  useEffect(() => {
-    if (prevUserLevelRef.current !== userLevel) {
-      const idx = LEVEL_ORDER.indexOf(userLevel);
-      if (idx > 0) {
-        setToast(`Level up! You unlocked ${userLevel}!`);
-        setTimeout(() => setToast(null), 3000);
-      }
-      prevUserLevelRef.current = userLevel;
-    }
-  }, [userLevel]);
-
-  const startWeakPack = useCallback(() => {
-    const available = weakWords.filter(w => !sessionReviewedIds.current.has(w.id));
-    const pack = available.slice(0, packSize);
-    if (pack.length === 0) {
-      setToast(weakWords.length === 0 ? 'No weak words' : 'All weak words reviewed this session');
-      setTimeout(()=> setToast(null),1500);
-      return;
-    }
-    setPackWords(pack);
-    setPackIdx(0);
-    setPackAnswers([]);
-    setPendingProgress({});
-    setShowPackSummary(false);
-    setFlipped(false);
-    setTranscript('');
-    setActiveKey('0');
-  }, [weakWords, packSize]);
+  const weakForScope = useMemo(()=> scopeWords.filter(w=> weakIds.has(w.id)),[scopeWords, weakIds]);
 
   const leaderboard = useMemo(() => {
     const board = (useOnline && onlineBoard) ? onlineBoard : COMPETITORS;
     const me = { name: username || 'You', xp: stats.xp || 0, avatar: (username || 'DU').slice(0,2).toUpperCase() };
     const all = [...board, me].sort((a, b) => b.xp - a.xp);
-    // dedup me if already in board
     const seen = new Set();
     const dedup = [];
     for (const p of all) { const k = p.name.toLowerCase(); if (!seen.has(k)) { seen.add(k); dedup.push(p); } }
@@ -729,7 +643,145 @@ export default function App() {
     return { all: sorted, rank, me };
   }, [stats.xp, username, useOnline, onlineBoard]);
 
-  // custom card handlers
+  // quiz building scoped
+  const buildQuizQueue = useCallback((count = 10, mode = quizMode) => {
+    let pool = quizScopeWords;
+    if (!pool.length) return [];
+    // prioritize weak within scope
+    const weakInScope = pool.filter(w=> weakIds.has(w.id));
+    let candidates = [...weakInScope];
+    candidates.sort((a,b)=>{
+      const pa = progressMap[a.id] || { lapses:0, ease:2.5, due:0 };
+      const pb = progressMap[b.id] || { lapses:0, ease:2.5, due:0 };
+      if (pb.lapses !== pa.lapses) return pb.lapses - pa.lapses;
+      if (pa.ease !== pb.ease) return pa.ease - pb.ease;
+      return (pa.due||Infinity) - (pb.due||Infinity);
+    });
+    let out = [...candidates];
+    if (out.length < count) {
+      const remaining = pool.filter(w => !weakIds.has(w.id));
+      remaining.sort((a,b)=>{
+        const pa = progressMap[a.id]; const pb = progressMap[b.id];
+        const ea = pa ? pa.ease : 2.5; const eb = pb ? pb.ease : 2.5;
+        if (ea !== eb) return ea - eb;
+        return a.id - b.id;
+      });
+      out.push(...remaining.slice(0, count - out.length));
+    }
+    if (mode === 'artikel') {
+      out = out.filter(w => w.article);
+      if (out.length < count) {
+        const nouns = pool.filter(w => w.article && !out.includes(w));
+        for (let i = nouns.length -1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [nouns[i], nouns[j]]=[nouns[j], nouns[i]]; }
+        out.push(...nouns.slice(0, count - out.length));
+      }
+    }
+    for (let i = out.length -1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [out[i], out[j]]=[out[j], out[i]]; }
+    return out.slice(0, count);
+  }, [quizScopeWords, weakIds, progressMap, quizMode]);
+
+  const startQuiz = (mode, count=10) => {
+    const q = buildQuizQueue(count, mode);
+    if (q.length===0) { setToast('No words for this scope/mode'); setTimeout(()=> setToast(null),1500); return; }
+    setQuizMode(mode);
+    setQuizQueue(q);
+    setQuizIdx(0);
+    setQuizAnswer('');
+    setQuizArtikelChoice('');
+    setQuizFeedback(null);
+    setQuizScore({ correct:0, total:0, xp:0 });
+    setQuizStarted(true);
+    setTimeout(()=> { if ((mode==='dictation' || mode==='mixed') && q[0]) { const w=q[0]; if (mode==='dictation' || (mode==='mixed' && !w.article)) speakGerman(w.german); } }, 300);
+  };
+
+  const currentQuizWord = quizQueue[quizIdx] || null;
+
+  const submitQuiz = async () => {
+    if (!currentQuizWord) return;
+    const isArtikelQ = quizMode==='artikel' || (quizMode==='mixed' && currentQuizWord.article && quizIdx %2===0);
+    const isFaQ = quizMode==='fa';
+    let correct = false;
+    let xpAdd = 0;
+    if (isArtikelQ) {
+      correct = quizArtikelChoice === currentQuizWord.article;
+      xpAdd = correct ? 10 : 0;
+    } else if (isFaQ) {
+      const ans = quizAnswer.trim();
+      const expected = (currentQuizWord.meaning_fa||'').trim();
+      correct = ans === expected;
+      xpAdd = correct ? 15 : 0;
+    } else {
+      const expected = currentQuizWord.german;
+      const ans = quizAnswer.trim();
+      const expNorm = expected.trim();
+      const expFullNorm = (currentQuizWord.fullGerman||expected).trim();
+      correct = ans === expNorm || ans === expFullNorm;
+      if (!correct) correct = ans.toLowerCase() === expNorm.toLowerCase() || ans.toLowerCase() === expFullNorm.toLowerCase();
+      xpAdd = correct ? 15 : 0;
+    }
+    const q = qualityFromLabel(correct ? 'Good' : 'Again');
+    const prev = progressMap[currentQuizWord.id] || { interval:0, repetition:0, ease:2.5, due:0, lapses:0 };
+    const next = sm2(prev, q);
+    if (authToken && authUser) {
+      setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, level: currentQuizWord.level, book: currentQuizWord.book, lektion: currentQuizWord.lektion, ...next }}));
+      try { await saveProgressOne({ id: currentQuizWord.id, level: currentQuizWord.level, book: currentQuizWord.book, lektion: currentQuizWord.lektion, ...next }); } catch {}
+    } else {
+      await db.progress.put({ id: currentQuizWord.id, level: currentQuizWord.level, book: currentQuizWord.book, lektion: currentQuizWord.lektion, ...next });
+      setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, ...next }}));
+    }
+    if (!correct) setWeakIds(s=> { const n=new Set(s); n.add(currentQuizWord.id); return n; });
+    if (xpAdd>0) {
+      if (authToken && authUser) {
+        const today = new Date().toISOString().slice(0,10);
+        const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+        let newStreak = stats.streak || 0;
+        let newLast = stats.lastStudyDate;
+        if (stats.lastStudyDate !== today) {
+          if (!stats.lastStudyDate) newStreak = 1;
+          else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
+          else {
+            const diff = (new Date(today) - new Date(stats.lastStudyDate))/86400000;
+            newStreak = diff===1 ? (stats.streak||0)+1 : 1;
+          }
+          newLast = today;
+        }
+        const newStats = { ...stats, xp: (stats.xp||0)+xpAdd, totalReviews: (stats.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
+        setStats(newStats);
+        try { await saveStatsOnline(newStats); } catch {}
+        if (useOnline) submitOnlineScore(authUser.username, newStats.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
+      } else {
+        await addXP(xpAdd); await updateStreak();
+        const s=await getStats(); setStats(s);
+        if (useOnline && username) submitOnlineScore(username, s.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
+      }
+    }
+    setQuizScore(sc=> ({ correct: sc.correct + (correct?1:0), total: sc.total+1, xp: sc.xp + xpAdd }));
+    setQuizFeedback({ correct, expected: currentQuizWord.article ? `${currentQuizWord.article} ${currentQuizWord.german}` : currentQuizWord.german, expectedFa: currentQuizWord.meaning_fa, xp: xpAdd });
+    setToast(correct ? `+${xpAdd} XP ✓` : `was "${currentQuizWord.article ? currentQuizWord.article+' '+currentQuizWord.german : currentQuizWord.german}"`);
+    setTimeout(()=> setToast(null),1400);
+  };
+
+  const nextQuiz = () => {
+    if (quizIdx +1 >= quizQueue.length) {
+      setQuizFeedback(null);
+      setQuizStarted(false);
+      setToast(`Quiz done: ${quizScore.correct + (quizFeedback?.correct?1:0)}/${quizScore.total +1} • +${quizScore.xp + (quizFeedback?.xp||0)} XP`);
+      setTimeout(()=> setToast(null),2000);
+      return;
+    }
+    const nextIdx = quizIdx +1;
+    setQuizIdx(nextIdx);
+    setQuizAnswer('');
+    setQuizArtikelChoice('');
+    setQuizFeedback(null);
+    const w = quizQueue[nextIdx];
+    const isArtikelNext = quizMode==='artikel' || (quizMode==='mixed' && w.article && nextIdx %2===0);
+    if (!isArtikelNext && quizMode !== 'fa') setTimeout(()=> speakGerman(w.german), 250);
+  };
+
+  const insertUmlaut = (ch) => setQuizAnswer(a=> a + ch);
+
+  // custom add - now book/lektion aware
   const handleAddCard = async () => {
     if (!newCard.german.trim() || !newCard.english.trim()) {
       setToast('German and English required');
@@ -739,11 +791,11 @@ export default function App() {
     const isNoun = !!newCard.article;
     const pos = isNoun ? 'noun' : 'other';
     try {
-      const w = await addCustomWord({ german: newCard.german.trim(), english: newCard.english.trim(), article: newCard.article || null, level: newCard.level || 'Custom', example: newCard.example.trim() || `Ich lerne "${newCard.german}".`, exampleEn: newCard.exampleEn.trim() || `I learn "${newCard.english}".`, pos });
+      const w = await addCustomWord({ german: newCard.german.trim(), english: newCard.english.trim(), article: newCard.article || null, plural: newCard.plural.trim(), level: newCard.level || 'Custom', book: newCard.book || selectedBook, lektion: newCard.lektion || selectedLektion, example: newCard.example.trim() || `Ich lerne "${newCard.german}".`, exampleEn: newCard.exampleEn.trim() || `I learn "${newCard.english}".`, pos, meaning_fa: newCard.englishFa.trim() });
       const updated = await getAllWords();
       setAllWords(updated);
       setShowAdd(false);
-      setNewCard({ german: '', english: '', article: '', level: 'Custom', example: '', exampleEn: '' });
+      setNewCard({ german: '', english: '', englishFa: '', article: '', plural: '', level: 'Custom', book: '', lektion: '', example: '', exampleEn: '' });
       setToast(`Added "${w.german}" ✓`);
       setTimeout(()=> setToast(null),1500);
     } catch (e) {
@@ -774,7 +826,6 @@ export default function App() {
       setAuthForm({ username: '', email: '', password: '' });
       setToast(`Welcome ${res.user.username} ✓`);
       setTimeout(()=> setToast(null),1500);
-      // push local progress/stats to new account if any
       try {
         if (Object.keys(progressMap).length > 0) await saveProgress(progressMap);
         await saveStatsOnline(stats);
@@ -796,7 +847,6 @@ export default function App() {
       setAuthForm({ username: '', email: '', password: '' });
       setToast(`Logged in as ${res.user.username} ✓`);
       setTimeout(()=> setToast(null),1500);
-      // stats sync: server wins if higher, else push local
       try {
         const serverStats = await fetchStatsOnline();
         if (serverStats && serverStats.xp > stats.xp) {
@@ -806,7 +856,6 @@ export default function App() {
           await saveStatsOnline(stats);
           await submitOnlineScore(res.user.username, stats.xp);
         }
-        // progress sync: if server has data use it, else push local
         const serverProg = await fetchProgress();
         if (!serverProg || Object.keys(serverProg).length===0) {
           if (Object.keys(progressMap).length>0) await saveProgress(progressMap);
@@ -832,183 +881,27 @@ export default function App() {
     } catch (e) { setToast('Admin only'); setTimeout(()=> setToast(null),1500); }
   };
 
-  // quiz smart logic
-  const buildQuizQueue = useCallback((count = 10, mode = quizMode) => {
-    let pool = [];
-    // only use words from the user's current level
-    const levelWords = allWords.filter(w => w.level === userLevel);
-    const levelWeak = weakWords.filter(w => w.level === userLevel);
-    // prioritize weak words
-    let candidates = [...levelWeak];
-    // sort weak by most lapses / lowest ease / overdue
-    candidates.sort((a,b)=>{
-      const pa = progressMap[a.id] || { lapses:0, ease:2.5, due:0 };
-      const pb = progressMap[b.id] || { lapses:0, ease:2.5, due:0 };
-      if (pb.lapses !== pa.lapses) return pb.lapses - pa.lapses;
-      if (pa.ease !== pb.ease) return pa.ease - pb.ease;
-      return (pa.due||Infinity) - (pb.due||Infinity);
-    });
-    pool = [...candidates];
-    if (pool.length < count) {
-      // fill with hardest non-weak: lowest ease or not yet studied
-      const remaining = levelWords.filter(w => !weakIds.has(w.id));
-      remaining.sort((a,b)=>{
-        const pa = progressMap[a.id]; const pb = progressMap[b.id];
-        const ea = pa ? pa.ease : 2.5; const eb = pb ? pb.ease : 2.5;
-        if (ea !== eb) return ea - eb;
-        return a.id - b.id;
-      });
-      pool.push(...remaining.slice(0, count - pool.length));
-    }
-    // filter by mode
-    if (mode === 'artikel') {
-      pool = pool.filter(w => w.article); // only nouns
-      if (pool.length < count) {
-        const nouns = levelWords.filter(w => w.article && !pool.includes(w));
-        // shuffle fill
-        for (let i = nouns.length -1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [nouns[i], nouns[j]]=[nouns[j], nouns[i]]; }
-        pool.push(...nouns.slice(0, count - pool.length));
-      }
-    }
-    // shuffle and slice
-    for (let i = pool.length -1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [pool[i], pool[j]]=[pool[j], pool[i]]; }
-    return pool.slice(0, count);
-  }, [weakWords, allWords, weakIds, progressMap, quizMode, userLevel]);
-
-  const startQuiz = (mode, count=10) => {
-    const q = buildQuizQueue(count, mode);
-    if (q.length===0) { setToast('No words for this mode'); setTimeout(()=> setToast(null),1500); return; }
-    setQuizMode(mode);
-    setQuizQueue(q);
-    setQuizIdx(0);
-    setQuizAnswer('');
-    setQuizArtikelChoice('');
-    setQuizFeedback(null);
-    setQuizScore({ correct:0, total:0, xp:0 });
-    setQuizStarted(true);
-    // speak first if dictation
-    setTimeout(()=> { if ((mode==='dictation' || mode==='mixed') && q[0]) { const w=q[0]; if (mode==='dictation' || (mode==='mixed' && !w.article)) speakGerman(w.german); } }, 300);
-  };
-
-  const currentQuizWord = quizQueue[quizIdx] || null;
-  const isQuizArtikel = currentQuizWord ? (quizMode==='artikel' || (quizMode==='mixed' && currentQuizWord.article && Math.random()<0.5)) : false;
-  // we determine per item: for mixed, decide based on article existence and parity
-
-  const submitQuiz = async () => {
-    if (!currentQuizWord) return;
-    const isArtikelQ = quizMode==='artikel' || (quizMode==='mixed' && currentQuizWord.article && quizIdx %2===0);
-    let correct = false;
-    let xpAdd = 0;
-    if (isArtikelQ) {
-      correct = quizArtikelChoice === currentQuizWord.article;
-      xpAdd = correct ? 10 : 0;
-    } else {
-      // dictation: expect exact german (case-sensitive for nouns, but we use exact lower for leniency? umlauts strict)
-      const expected = currentQuizWord.german; // without article
-      // also accept fullGerman for nouns? we check both
-      const ans = normalizeInput(quizAnswer);
-      const expNorm = normalizeInput(expected);
-      const expFullNorm = normalizeInput(currentQuizWord.fullGerman);
-      // umlauts strict: ä != a, ö != o, ü != u, ß != ss
-      correct = ans === expNorm || ans === expFullNorm || ans.toLowerCase() === expNorm.toLowerCase() && ans === expNorm ? true : ans.toLowerCase() === expNorm.toLowerCase() ? false : false;
-      // simpler: require exact, but allow case-insensitive but still umlaut exact
-      if (!correct) {
-        // allow case-insensitive exact (umlaut must match)
-        correct = ans.toLowerCase() === expNorm.toLowerCase() || ans.toLowerCase() === expFullNorm.toLowerCase();
-        // but if ans differs only by case, we consider correct; umlaut still must match because lowercasing preserves it
-      }
-      xpAdd = correct ? 15 : 0;
-      if (correct && ans !== expNorm && ans.toLowerCase()===expNorm.toLowerCase()) {
-        // case mismatch but umlaut correct -> still correct
-        correct = true;
-      }
-    }
-    const label = correct ? 'Good' : 'Again';
-    const q = qualityFromLabel(correct ? 'Good' : 'Again');
-    const prev = progressMap[currentQuizWord.id] || { interval:0, repetition:0, ease:2.5, due:0, lapses:0 };
-    const next = sm2(prev, q);
-    if (authToken && authUser) {
-      setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, level: currentQuizWord.level, ...next }}));
-      try { await saveProgressOne({ id: currentQuizWord.id, level: currentQuizWord.level, ...next }); } catch {}
-    } else {
-      await db.progress.put({ id: currentQuizWord.id, level: currentQuizWord.level, ...next });
-      setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, ...next }}));
-      if (authToken) { try { await saveProgressOne({ id: currentQuizWord.id, level: currentQuizWord.level, ...next }); } catch {} }
-    }
-    if (!correct) setWeakIds(s=> { const n=new Set(s); n.add(currentQuizWord.id); return n; });
-    if (xpAdd>0) {
-      if (authToken && authUser) {
-        const today = new Date().toISOString().slice(0,10);
-        const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-        let newStreak = stats.streak || 0;
-        let newLast = stats.lastStudyDate;
-        if (stats.lastStudyDate !== today) {
-          if (!stats.lastStudyDate) newStreak = 1;
-          else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
-          else {
-            const diff = (new Date(today) - new Date(stats.lastStudyDate))/86400000;
-            newStreak = diff===1 ? (stats.streak||0)+1 : 1;
-          }
-          newLast = today;
-        }
-        const newStats = { ...stats, xp: (stats.xp||0)+xpAdd, totalReviews: (stats.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
-        setStats(newStats);
-        try { await saveStatsOnline(newStats); } catch {}
-        if (useOnline) submitOnlineScore(authUser.username, newStats.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
-      } else {
-        await addXP(xpAdd); await updateStreak();
-        const s=await getStats(); setStats(s);
-        const syncName = username;
-        if (useOnline && syncName) submitOnlineScore(syncName, s.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
-      }
-    }
-    setQuizScore(sc=> ({ correct: sc.correct + (correct?1:0), total: sc.total+1, xp: sc.xp + xpAdd }));
-    setQuizFeedback({ correct, expected: currentQuizWord.article ? `${currentQuizWord.article} ${currentQuizWord.german}` : currentQuizWord.german, xp: xpAdd });
-    setToast(correct ? `+${xpAdd} XP ✓` : `+0 XP • was "${currentQuizWord.article ? currentQuizWord.article+' '+currentQuizWord.german : currentQuizWord.german}"`);
-    setTimeout(()=> setToast(null),1400);
-  };
-
-  const nextQuiz = () => {
-    if (quizIdx +1 >= quizQueue.length) {
-      // finished
-      setQuizFeedback(null);
-      setQuizStarted(false);
-      setToast(`Quiz done: ${quizScore.correct + (quizFeedback?.correct?1:0)}/${quizScore.total +1} • +${quizScore.xp + (quizFeedback?.xp||0)} XP`);
-      setTimeout(()=> setToast(null),2000);
-      return;
-    }
-    const nextIdx = quizIdx +1;
-    setQuizIdx(nextIdx);
-    setQuizAnswer('');
-    setQuizArtikelChoice('');
-    setQuizFeedback(null);
-    const w = quizQueue[nextIdx];
-    const isArtikelNext = quizMode==='artikel' || (quizMode==='mixed' && w.article && nextIdx %2===0);
-    if (!isArtikelNext) setTimeout(()=> speakGerman(w.german), 250);
-  };
-
-  const insertUmlaut = (ch) => {
-    setQuizAnswer(a=> a + ch);
-  };
-
   if (!dbReady) return <Block display="flex" justifyContent="center" alignItems="center" height="100vh"><Spinner size={48} /></Block>;
+
+  const selectedBookMeta = BOOKS.find(b=> b.id===selectedBook);
+  const quizBookMeta = BOOKS.find(b=> b.id===quizBook);
 
   return (
     <HeadingLevel>
-      <Block display="flex" justifyContent="space-between" alignItems="center" overrides={{ Block: { style: { position: 'sticky', top: 0, zIndex: 10, background: '#fff', borderBottomWidth: '1px', borderBottomStyle: 'solid', borderBottomColor: '#eee', paddingTop: 'calc(16px + env(safe-area-inset-top))', paddingBottom: '16px', paddingLeft: '20px', paddingRight: '20px' } } }}>
+      <Block display="flex" justifyContent="space-between" alignItems="center" overrides={{ Block: { style: { position: 'sticky', top: 0, zIndex: 10, background: '#fff', borderBottomWidth: '1px', borderBottomStyle: 'solid', borderBottomColor: '#eee', paddingTop: 'calc(12px + env(safe-area-inset-top))', paddingBottom: '12px', paddingLeft: '16px', paddingRight: '16px' } } }}>
         <Block display="flex" alignItems="center" gridGap="10px">
-          <div style={{ width: 36, height: 36, background: '#000', color: '#fff', borderTopLeftRadius: '12px', borderTopRightRadius: '12px', borderBottomLeftRadius: '12px', borderBottomRightRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14 }}>GS</div>
+          <div style={{ width: 36, height: 36, background: '#000', color: '#fff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14 }}>GS</div>
           <Block>
             <div style={{ fontWeight: 800, fontSize: 16, letterSpacing: '-0.5px', lineHeight: 1 }}>GermanSplash</div>
-            <div style={{ fontSize: 11, color: '#6b6b6b', letterSpacing: '0.3px' }}>MENSCHEN • A1—B2 • {allWords.length} words</div>
+            <div style={{ fontSize: 11, color: '#6b6b6b', letterSpacing: '0.3px' }}>MENSCHEN • {BOOKS[0].total + BOOKS[1].total} words • a1.1 + a1.2</div>
           </Block>
         </Block>
-        <Block display="flex" alignItems="center" gridGap="8px">
+        <Block display="flex" alignItems="center" gridGap="6px">
           <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setShowAdd(true)}>＋ Add</Button>
           {authUser ? (
             <Block display="flex" alignItems="center" gridGap="6px">
-              <Block backgroundColor="#000" color="#fff" padding="6px 10px" overrides={{ Block: { style: { borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', fontWeight: 700, fontSize: '12px', display:'flex', alignItems:'center', gap:'6px' } } }}>
-                <span style={{width:20,height:20, borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px', background:'#fff', color:'#000', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:10}}>{authUser.username.slice(0,2).toUpperCase()}</span>
+              <Block backgroundColor="#000" color="#fff" padding="6px 10px" overrides={{ Block: { style: { borderRadius: '999px', fontWeight: 700, fontSize: '12px', display:'flex', alignItems:'center', gap:'6px' } } }}>
+                <span style={{width:20,height:20, borderRadius:'999px', background:'#fff', color:'#000', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:10}}>{authUser.username.slice(0,2).toUpperCase()}</span>
                 {authUser.username}{authUser.isAdmin ? ' ★' : ''}
               </Block>
               <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={handleLogout}>Logout</Button>
@@ -1016,36 +909,34 @@ export default function App() {
           ) : (
             <Button size={SIZE.mini} kind={KIND.primary} shape={SHAPE.pill} onClick={()=> { setAuthMode('login'); setShowAuth(true); }}>Login</Button>
           )}
-          <Block backgroundColor="#fff7ed" padding="6px 10px" overrides={{ Block: { style: { borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', borderWidth: '1px', borderStyle: 'solid', borderTopColor: '#ffedd5', borderBottomColor: '#ffedd5', borderLeftColor: '#ffedd5', borderRightColor: '#ffedd5', display: 'flex', alignItems: 'center', gap: '6px' } } }}>
+          <Block backgroundColor="#fff7ed" padding="6px 8px" overrides={{ Block: { style: { borderRadius: '999px', borderWidth: '1px', borderStyle: 'solid', borderColor: '#ffedd5', display: 'flex', alignItems: 'center', gap: '6px' } } }}>
             <span style={{ fontSize: 14 }}>🔥</span>
             <span style={{ fontWeight: 800, fontSize: 13 }}>{stats.streak}</span>
           </Block>
-          <Block backgroundColor="#000" color="#fff" padding="6px 10px" overrides={{ Block: { style: { borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', fontWeight: 700, fontSize: '12px' } } }}>{userLevel}</Block>
-          <Block backgroundColor="#000" color="#fff" padding="6px 12px" overrides={{ Block: { style: { borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', fontWeight: 700, fontSize: '12px' } } }}>{stats.xp} XP</Block>
+          <Block backgroundColor="#000" color="#fff" padding="6px 10px" overrides={{ Block: { style: { borderRadius: '999px', fontWeight: 700, fontSize: '12px' } } }}>{stats.xp} XP</Block>
         </Block>
       </Block>
 
       {toast && (
         <Block overrides={{ Block: { style: { position: 'fixed', top: '70px', left: '50%', transform: 'translateX(-50%)', zIndex: 20 } } }}>
-          <Notification overrides={{ Body: { style: { backgroundColor: '#000', color: '#fff', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', paddingTop: '8px', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px', fontWeight: 700, fontSize: '13px' } } }}>{toast}</Notification>
+          <Notification overrides={{ Body: { style: { backgroundColor: '#000', color: '#fff', borderRadius: '999px', paddingTop: '8px', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px', fontWeight: 700, fontSize: '13px' } } }}>{toast}</Notification>
         </Block>
       )}
 
-      {/* Add Card Modal */}
       {showAdd && (
         <Block overrides={{ Block: { style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' } } }} onClick={()=> setShowAdd(false)}>
-          <Block onClick={(e)=> e.stopPropagation()} overrides={{ Block: { style: { background: '#fff', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', borderBottomLeftRadius: '20px', borderBottomRightRadius: '20px', padding: '20px', width: '100%', maxWidth: '420px', maxHeight: '85vh', overflowY: 'auto' } } }}>
+          <Block onClick={(e)=> e.stopPropagation()} overrides={{ Block: { style: { background: '#fff', borderRadius: '20px', padding: '20px', width: '100%', maxWidth: '420px', maxHeight: '85vh', overflowY: 'auto' } } }}>
             <Heading $style={{ fontSize: 18, marginTop: 0 }}>Add custom card</Heading>
-            <ParagraphSmall color="#6b6b6b">Creates an offline card (stored in IndexedDB). Works in Study/Search/Quiz immediately.</ParagraphSmall>
+            <ParagraphSmall color="#6b6b6b">Saved to {selectedBookMeta?.label} • {selectedLektion !== 'all' ? selectedLektion : 'Whole book'}</ParagraphSmall>
             <Block display="flex" flexDirection="column" gridGap="10px" marginTop="12px">
-              <Input value={newCard.german} onChange={(e)=> setNewCard({...newCard, german: e.target.value})} placeholder="German word (e.g. Mädchen)" overrides={{ Root: { style: { borderTopLeftRadius: '12px', borderTopRightRadius: '12px', borderBottomLeftRadius: '12px', borderBottomRightRadius: '12px' } } }} />
-              <Input value={newCard.english} onChange={(e)=> setNewCard({...newCard, english: e.target.value})} placeholder="English (e.g. girl)" overrides={{ Root: { style: { borderTopLeftRadius: '12px', borderTopRightRadius: '12px', borderBottomLeftRadius: '12px', borderBottomRightRadius: '12px' } } }} />
+              <Input value={newCard.german} onChange={(e)=> setNewCard({...newCard, german: e.target.value})} placeholder="German word (e.g. Mädchen)" overrides={{ Root: { style: { borderRadius: '12px' } } }} />
+              <Input value={newCard.english} onChange={(e)=> setNewCard({...newCard, english: e.target.value})} placeholder="English (e.g. girl)" overrides={{ Root: { style: { borderRadius: '12px' } } }} />
+              <Input value={newCard.englishFa} onChange={(e)=> setNewCard({...newCard, englishFa: e.target.value})} placeholder="فارسی (e.g. دختر)" overrides={{ Root: { style: { borderRadius: '12px' } } }} />
               <Block display="flex" gridGap="8px">
-                <Select options={[{id:'', label:'— no article'},{id:'der', label:'der (m)'},{id:'die', label:'die (f)'},{id:'das', label:'das (n)'}]} value={newCard.article ? [{id:newCard.article, label:newCard.article}] : []} placeholder="Article (for nouns)" onChange={({value})=> setNewCard({...newCard, article: value[0]?.id || ''})} size="compact" />
-                <Select options={[{id:'Custom', label:'Custom'},{id:'A1.1', label:'A1.1'},{id:'A1.2', label:'A1.2'},{id:'A2.1', label:'A2.1'},{id:'A2.2', label:'A2.2'},{id:'B1.1', label:'B1.1'},{id:'B1.2', label:'B1.2'},{id:'B2.1', label:'B2.1'},{id:'B2.2', label:'B2.2'}]} value={[{id:newCard.level, label:newCard.level}]} onChange={({value})=> setNewCard({...newCard, level: value[0]?.id || 'Custom'})} size="compact" />
+                <Select options={[{id:'', label:'— no article'},{id:'der', label:'der (m)'},{id:'die', label:'die (f)'},{id:'das', label:'das (n)'}]} value={newCard.article ? [{id:newCard.article, label:newCard.article}] : []} placeholder="Article" onChange={({value})=> setNewCard({...newCard, article: value[0]?.id || ''})} size="compact" />
+                <Input value={newCard.plural} onChange={e=> setNewCard({...newCard, plural:e.target.value})} placeholder="Plural" overrides={{Root:{style:{borderRadius:'12px'}}}} />
               </Block>
               <Input value={newCard.example} onChange={(e)=> setNewCard({...newCard, example: e.target.value})} placeholder="Example sentence (optional)" />
-              <Input value={newCard.exampleEn} onChange={(e)=> setNewCard({...newCard, exampleEn: e.target.value})} placeholder="Example EN (optional)" />
               <Block display="flex" gridGap="8px" marginTop="8px">
                 <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setShowAdd(false)}>Cancel</Button>
                 <Button shape={SHAPE.pill} onClick={handleAddCard}>Add card</Button>
@@ -1056,13 +947,13 @@ export default function App() {
       )}
       {showAuth && (
         <Block overrides={{ Block: { style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' } } }} onClick={()=> setShowAuth(false)}>
-          <Block onClick={(e)=> e.stopPropagation()} overrides={{ Block: { style: { background: '#fff', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', borderBottomLeftRadius: '20px', borderBottomRightRadius: '20px', padding: '20px', width: '100%', maxWidth: '400px' } } }}>
+          <Block onClick={(e)=> e.stopPropagation()} overrides={{ Block: { style: { background: '#fff', borderRadius: '20px', padding: '20px', width: '100%', maxWidth: '400px' } } }}>
             <Heading $style={{ fontSize: 18, marginTop: 0 }}>{authMode==='login' ? 'Login' : 'Sign up'}</Heading>
-            <ParagraphSmall color="#6b6b6b">{authMode==='login' ? 'Welcome back! Your progress is saved per account.' : 'Create account — admin is username "admin". Progress saved online.'}</ParagraphSmall>
+            <ParagraphSmall color="#6b6b6b">{authMode==='login' ? 'Welcome back! Your progress is saved per account.' : 'Create account — admin is username "admin".'}</ParagraphSmall>
             <Block display="flex" flexDirection="column" gridGap="10px" marginTop="12px">
-              <Input value={authForm.username} onChange={e=> setAuthForm({...authForm, username: e.target.value})} placeholder="Username (a-z, 0-9, _ -)" overrides={{Root:{style:{borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />
-              {authMode==='signup' && <Input value={authForm.email} onChange={e=> setAuthForm({...authForm, email: e.target.value})} placeholder="Email (optional)" overrides={{Root:{style:{borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />}
-              <Input type="password" value={authForm.password} onChange={e=> setAuthForm({...authForm, password: e.target.value})} placeholder="Password (min 4)" overrides={{Root:{style:{borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />
+              <Input value={authForm.username} onChange={e=> setAuthForm({...authForm, username: e.target.value})} placeholder="Username (a-z, 0-9, _ -)" overrides={{Root:{style:{borderRadius:'12px'}}}} />
+              {authMode==='signup' && <Input value={authForm.email} onChange={e=> setAuthForm({...authForm, email: e.target.value})} placeholder="Email (optional)" overrides={{Root:{style:{borderRadius:'12px'}}}} />}
+              <Input type="password" value={authForm.password} onChange={e=> setAuthForm({...authForm, password: e.target.value})} placeholder="Password (min 4)" overrides={{Root:{style:{borderRadius:'12px'}}}} />
               <Block display="flex" gridGap="8px" marginTop="8px">
                 <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setShowAuth(false)}>Cancel</Button>
                 {authMode==='login' ? <Button shape={SHAPE.pill} onClick={handleLogin}>Login</Button> : <Button shape={SHAPE.pill} onClick={handleSignup}>Sign up</Button>}
@@ -1073,140 +964,210 @@ export default function App() {
         </Block>
       )}
 
-      <Block maxWidth="520px" width="100%" margin="0 auto" padding="0 16px 100px">
+      <Block maxWidth="620px" width="100%" margin="0 auto" padding="0 16px 100px">
         <Tabs activeKey={activeKey} onChange={({ activeKey }) => setActiveKey(activeKey)} overrides={{
-            TabBar: { style: { backgroundColor: '#f7f7f7', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', paddingTop: '4px', paddingBottom: '4px', paddingLeft: '4px', paddingRight: '4px', marginTop: '16px' } },
-            Tab: { style: ({ $active }) => ({ backgroundColor: $active ? '#000' : 'transparent', color: $active ? '#fff' : '#6b6b6b', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', fontWeight: 700, fontSize: '12px', flex: 1 }) },
+            TabBar: { style: { backgroundColor: '#f7f7f7', borderRadius: '999px', paddingTop: '4px', paddingBottom: '4px', paddingLeft: '4px', paddingRight: '4px', marginTop: '16px', overflowX:'auto' } },
+            Tab: { style: ({ $active }) => ({ backgroundColor: $active ? '#000' : 'transparent', color: $active ? '#fff' : '#6b6b6b', borderRadius: '999px', fontWeight: 700, fontSize: '12px', flex: 1, whiteSpace:'nowrap' }) },
             TabHighlight: { style: { display: 'none' } },
             TabBorder: { style: { display: 'none' } },
           }}>
-          <Tab title="Study">
+          {/* BÜCHER */}
+          <Tab title="📚 Bücher">
             <Block paddingTop="16px">
-              <Block display="flex" gridGap="8px" marginBottom="12px">
-                <Block flex="1">
-                  <Select options={[{id:'A1.1', label:'A1.1'},{id:'A1.2', label:'A1.2'},{id:'A2.1', label:'A2.1'},{id:'A2.2', label:'A2.2'},{id:'B1.1', label:'B1.1'},{id:'B1.2', label:'B1.2'},{id:'B2.1', label:'B2.1'},{id:'B2.2', label:'B2.2'},{id:'Custom', label:'Custom'}]} value={levelFilter} multi placeholder="Filter level" onChange={({ value }) => { setLevelFilter(value); setTimeout(()=> startNewPack(), 100); }} size="compact" overrides={{ ControlContainer: { style: { backgroundColor: '#f7f7f7', borderTopColor: '#e5e5e5', borderBottomColor: '#e5e5e5', borderLeftColor: '#e5e5e5', borderRightColor: '#e5e5e5', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px' } } }} />
+              {!bookView ? (
+                <>
+                  <Block marginBottom="12px">
+                    <Heading $style={{fontSize:22, margin:'0 0 4px', letterSpacing:'-0.5px'}}>Wähle dein Buch</Heading>
+                    <ParagraphSmall color="#6b6b6b" margin="0">Menschen A1 — 24 Lektionen • 885 Wörter • Deutsch + English + فارسی</ParagraphSmall>
+                  </Block>
+                  <Block display="flex" flexDirection="column" gridGap="12px">
+                    {BOOKS.map(book=>{
+                      const mastery = getBookMastery(book.id, allWords, progressMap);
+                      const isSelected = selectedBook===book.id;
+                      return (
+                        <Block key={book.id} onClick={()=> setBookView(book.id)} overrides={{Block:{style:{cursor:'pointer', background: book.gradient, borderRadius:'20px', padding:'18px', color:'#fff', position:'relative', overflow:'hidden', border: isSelected ? '3px solid #000' : '1px solid rgba(255,255,255,0.2)', boxShadow: isSelected ? '0 8px 24px rgba(0,0,0,0.15)' : '0 4px 12px rgba(0,0,0,0.08)'}}}}>
+                          <div style={{position:'absolute', right:-10, top:-10, fontSize:90, opacity:0.15, transform:'rotate(-12deg)'}}>{book.coverEmoji}</div>
+                          <Block display="flex" justifyContent="space-between" alignItems="flex-start">
+                            <Block>
+                              <div style={{fontSize:12, letterSpacing:1, opacity:0.9, fontWeight:700}}>{book.levels} • {book.publisher}</div>
+                              <div style={{fontSize:22, fontWeight:800, marginTop:4}}>{book.label}</div>
+                              <div style={{fontSize:12, opacity:0.85, marginTop:2}}>{book.title} • {book.isbn}</div>
+                              <Block display="flex" gridGap="6px" marginTop="12px">
+                                <span style={{background:'rgba(255,255,255,0.2)', padding:'4px 10px', borderRadius:999, fontSize:11, fontWeight:700}}>{book.total} Wörter</span>
+                                <span style={{background: isSelected ? '#fff' : 'rgba(255,255,255,0.2)', color: isSelected ? '#000' : '#fff', padding:'4px 10px', borderRadius:999, fontSize:11, fontWeight:700}}>{isSelected ? '✓ Selected' : 'Tap to open'}</span>
+                              </Block>
+                            </Block>
+                            <div style={{textAlign:'right'}}>
+                              <div style={{fontSize:28, fontWeight:800}}>{mastery.pct}%</div>
+                              <div style={{fontSize:11, opacity:0.8}}>{mastery.seen}/{mastery.total} seen • {mastery.mastered} mastered</div>
+                            </div>
+                          </Block>
+                          <div style={{height:6, background:'rgba(255,255,255,0.3)', borderRadius:999, marginTop:14, overflow:'hidden'}}>
+                            <div style={{height:'100%', width:`${mastery.pct}%`, background:'#fff', borderRadius:999, transition:'width 0.5s'}} />
+                          </div>
+                          <Block display="flex" gridGap="8px" marginTop="14px">
+                            <Button size={SIZE.mini} kind={KIND.primary} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#000', fontWeight:700}}}} onClick={(e)=>{e.stopPropagation(); setSelectedBook(book.id); setSelectedLektion('all'); setActiveKey('1');}}>📖 Whole book — Study</Button>
+                            <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'rgba(255,255,255,0.2)', color:'#fff', backdropFilter:'blur(8px)'}}}} onClick={(e)=>{e.stopPropagation(); setBookView(book.id);}}>Lektionen →</Button>
+                          </Block>
+                        </Block>
+                      );
+                    })}
+                  </Block>
+                  <UberCard styleOverride={{marginTop:'12px', backgroundColor:'#f7f7f7', borderColor:'#e5e5e5'}}>
+                    <LabelSmall>Current scope</LabelSmall>
+                    <div style={{fontWeight:700, marginTop:4}}>{selectedBookMeta?.label} • {selectedLektion==='all' ? 'Whole book' : selectedLektion} • {scopeWords.length} words</div>
+                    <Block display="flex" gridGap="8px" marginTop="10px">
+                      <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> setActiveKey('1')}>Go to Study →</Button>
+                      <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setQuizBook(selectedBook); setQuizLektion(selectedLektion); setActiveKey('2');}}>Quiz this scope</Button>
+                    </Block>
+                  </UberCard>
+                </>
+              ) : (
+                <>
+                  {(() => {
+                    const book = BOOKS.find(b=> b.id===bookView);
+                    const lektions = lektionenForBook(bookView);
+                    return (
+                      <>
+                        <Block display="flex" alignItems="center" gridGap="8px" marginBottom="12px">
+                          <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setBookView(null)}>← All books</Button>
+                          <Tag closeable={false} overrides={{Root:{style:{background: book.gradient, color:'#fff', fontWeight:700}}}}>{book.label}</Tag>
+                          <LabelSmall color="#6b6b6b">{book.levels}</LabelSmall>
+                        </Block>
+                        <Block overrides={{Block:{style:{background: book.gradient, borderRadius:'16px', padding:'16px', color:'#fff'}}}}>
+                          <Block display="flex" justifyContent="space-between" alignItems="center">
+                            <Block>
+                              <div style={{fontWeight:800, fontSize:18}}>{book.label} — Alle Lektionen</div>
+                              <div style={{fontSize:12, opacity:0.9}}>{book.total} Wörter • Tap a Lektion to focus</div>
+                            </Block>
+                            <Button size={SIZE.mini} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#000', fontWeight:700}}}} onClick={()=> { setSelectedBook(book.id); setSelectedLektion('all'); setActiveKey('1'); }}>Study whole book</Button>
+                          </Block>
+                        </Block>
+                        <Block display="grid" gridGap="10px" marginTop="12px" overrides={{Block:{style:{gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))'}}}}>
+                          {lektions.map(l=>{
+                            const words = allWords.filter(w=> w.book===l.book && w.lektion===l.lektion);
+                            const mastery = getLektionMastery(words, progressMap);
+                            const isActive = selectedBook===l.book && selectedLektion===l.lektion;
+                            return (
+                              <UberCard key={l.key} styleOverride={{ borderColor: isActive ? '#000' : '#e5e5e5', backgroundColor: isActive ? '#f7f7f7' : '#fff', borderWidth: isActive ? '2px' : '1px' }}>
+                                <Block display="flex" justifyContent="space-between" alignItems="flex-start">
+                                  <Block>
+                                    <div style={{fontSize:11, letterSpacing:1, color:'#6b6b6b', fontWeight:700}}>{l.lektion}</div>
+                                    <div style={{fontWeight:800, fontSize:14, marginTop:2}}>{l.title}</div>
+                                    <div style={{fontSize:11, color:'#9a9a9a', marginTop:2, lineHeight:1.3}}>{l.theme}</div>
+                                  </Block>
+                                  <div style={{textAlign:'right', flexShrink:0, marginLeft:8}}>
+                                    <div style={{fontWeight:800, fontSize:16, color: mastery.pct>=80 ? '#16a34a' : mastery.pct>=40 ? '#ea580c' : '#000'}}>{mastery.pct}%</div>
+                                    <div style={{fontSize:10, color:'#6b6b6b'}}>{mastery.seen}/{mastery.total} seen • {mastery.mastered}★</div>
+                                  </div>
+                                </Block>
+                                <div style={{height:6, background:'#eee', borderRadius:999, marginTop:10, overflow:'hidden'}}>
+                                  <div style={{height:'100%', width:`${mastery.pct}%`, background: mastery.pct>=80 ? '#16a34a' : mastery.pct>=40 ? '#000' : '#9a9a9a', borderRadius:999, transition:'width 0.5s'}}/>
+                                </div>
+                                <Block display="flex" justifyContent="space-between" alignItems="center" marginTop="8px">
+                                  <LabelSmall color="#6b6b6b">{words.length} words • {mastery.mastered} mastered</LabelSmall>
+                                  <LabelSmall color={mastery.pct>=80 ? '#16a34a' : '#9a9a9a'}>{mastery.pct>=80 ? '✓ Studied' : mastery.pct>=30 ? '● In progress' : '○ Not started'}</LabelSmall>
+                                </Block>
+                                <Block display="flex" gridGap="6px" marginTop="10px">
+                                  <Button size={SIZE.mini} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1, fontWeight:700, backgroundColor: isActive ? '#000' : undefined, color: isActive ? '#fff' : undefined}}}} onClick={()=> { setSelectedBook(l.book); setSelectedLektion(l.lektion); setActiveKey('1'); }}>{isActive? '● Studying' : 'Study'}</Button>
+                                  <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setQuizBook(l.book); setQuizLektion(l.lektion); setActiveKey('2');}}>Quiz</Button>
+                                  <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={()=> speakGerman(words[0]?.german || l.title)}>🔊</Button>
+                                </Block>
+                              </UberCard>
+                            );
+                          })}
+                        </Block>
+                      </>
+                    );
+                  })()}
+                </>
+              )}
+            </Block>
+          </Tab>
+
+          <Tab title="Lernen">
+            <Block paddingTop="16px">
+              {/* Scope selector */}
+              <UberCard styleOverride={{backgroundColor:'#f7f7f7', borderColor:'#e5e5e5', paddingTop:'12px', paddingBottom:'12px'}}>
+                <Block display="flex" justifyContent="space-between" alignItems="center">
+                  <Block>
+                    <LabelSmall color="#6b6b6b">Scope</LabelSmall>
+                    <div style={{fontWeight:800, fontSize:14}}>{selectedBookMeta?.label} • {selectedLektion==='all' ? 'Whole book' : selectedLektion}</div>
+                    <div style={{fontSize:11, color:'#6b6b6b'}}>{scopeWords.length} words • {weakForScope.length} weak</div>
+                  </Block>
+                  <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setActiveKey('0')}>Change book →</Button>
                 </Block>
-                <Button kind={KIND.secondary} size={SIZE.compact} shape={SHAPE.pill} onClick={() => { setLevelFilter([]); setSearch(''); setTimeout(()=> startNewPack(), 100); }}>Reset</Button>
-              </Block>
-              <Block display="flex" gridGap="8px" marginBottom="12px">
-                <Select options={[{id:10, label:'10 / pack'},{id:20, label:'20 / pack'},{id:50, label:'50 / pack'}]} value={[{id:packSize, label:`${packSize} / pack`}]} onChange={({value})=> setPackSize(value[0].id)} size="compact" overrides={{ ControlContainer: { style: { minWidth: '120px', backgroundColor: '#fff', borderTopColor: '#000', borderBottomColor: '#000', borderLeftColor: '#000', borderRightColor: '#000', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px' } } }} />
-                <Button size={SIZE.compact} shape={SHAPE.pill} onClick={startNewPack}>New pack</Button>
-                <Block display="flex" alignItems="center" marginLeft="auto"><LabelSmall color="#6b6b6b">{studyQueue.length} due • {allWords.length} total</LabelSmall></Block>
-              </Block>
+                <Block display="flex" gridGap="8px" marginTop="10px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
+                  <Select options={BOOKS.map(b=> ({id:b.id, label:b.label}))} value={[{id:selectedBook, label:selectedBookMeta?.label}]} onChange={({value})=> { if(value[0]) { setSelectedBook(value[0].id); setSelectedLektion('all'); }}} size="compact" overrides={{ControlContainer:{style:{minWidth:'140px', borderRadius:'999px'}}}} />
+                  <Select options={[{id:'all', label:'Whole book'}, ...lektionenForBook(selectedBook).map(l=> ({id:l.lektion, label: `${l.lektion} — ${l.title.slice(0,18)}…`}))]} value={selectedLektion==='all' ? [{id:'all', label:'Whole book'}] : [{id:selectedLektion, label:selectedLektion}]} onChange={({value})=> setSelectedLektion(value[0]?.id || 'all')} size="compact" overrides={{ControlContainer:{style:{minWidth:'160px', borderRadius:'999px'}}}} />
+                  <Select options={[{id:10, label:'10 / pack'},{id:20, label:'20 / pack'},{id:50, label:'50 / pack'}]} value={[{id:packSize, label:`${packSize} / pack`}]} onChange={({value})=> setPackSize(value[0].id)} size="compact" overrides={{ ControlContainer: { style: { minWidth: '110px', borderRadius:'999px' } } }} />
+                </Block>
+                <Block display="flex" gridGap="8px" marginTop="10px">
+                  <Button size={SIZE.mini} shape={SHAPE.pill} onClick={startNewPack}>New pack</Button>
+                  <LabelSmall color="#6b6b6b" overrides={{Block:{style:{alignSelf:'center'}}}}>{studyQueue.length} due in scope</LabelSmall>
+                </Block>
+              </UberCard>
 
               {packWords.length > 0 && !showPackSummary ? (
                 <>
-                  <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
+                  <Block display="flex" justifyContent="space-between" alignItems="center" marginTop="12px" marginBottom="8px">
                     <LabelSmall color="#6b6b6b">Pack {packIdx+1}/{packWords.length} • {packAnswers.length} answered</LabelSmall>
                     <LabelSmall color="#000" overrides={{ Block: { style: { fontWeight: 700 } } }}>{Math.round((packIdx/packWords.length)*100)}%</LabelSmall>
                   </Block>
-                  <ProgressBar value={(packIdx/packWords.length)*100} successValue={(packIdx/packWords.length)*100} overrides={{ Bar: { style: { height: '4px' } }, BarProgress: { style: { backgroundColor: '#000' } }, BarContainer: { style: { backgroundColor: '#eee', height: '4px', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px' } } }} />
+                  <ProgressBar value={(packIdx/packWords.length)*100} overrides={{ Bar: { style: { height: '4px' } }, BarProgress: { style: { backgroundColor: '#000' } }, BarContainer: { style: { backgroundColor: '#eee', height: '4px', borderRadius: '999px' } } }} />
                   <Block marginTop="16px">
                     <FlashCard word={packWords[packIdx]} flipped={flipped} setFlipped={setFlipped} onSwipe={handlePackSwipe} onRate={handlePackRate} listening={listening} setListening={setListening} transcript={transcript} setTranscript={setTranscript} />
                   </Block>
                   <Block display="flex" justifyContent="center" marginTop="12px">
-                    <LabelSmall color="#9a9a9a">{packWords.length - packIdx - 1} remaining in pack • pack saves at the end (no lag)</LabelSmall>
+                    <LabelSmall color="#9a9a9a">{packWords.length - packIdx - 1} remaining • saves at end (no lag)</LabelSmall>
                   </Block>
                 </>
               ) : showPackSummary ? (
-                <UberCard styleOverride={{textAlign:'center', paddingTop:'24px', paddingBottom:'24px', backgroundColor:'#f7f7f7', borderTopColor:'#e5e5e5', borderBottomColor:'#e5e5e5', borderLeftColor:'#e5e5e5', borderRightColor:'#e5e5e5'}}>
+                <UberCard styleOverride={{textAlign:'center', paddingTop:'24px', paddingBottom:'24px', backgroundColor:'#f7f7f7', borderColor:'#e5e5e5', marginTop:'12px'}}>
                   <div style={{fontSize:36}}>🎉</div>
                   <Heading $style={{fontSize:18, margin:'8px 0 0'}}>Pack complete!</Heading>
-                  <ParagraphSmall margin="8px 0 0">{packAnswers.filter(a=>a.correct).length}/{packAnswers.length} correct • +{packAnswers.reduce((a,b)=>a+b.xp,0)} XP</ParagraphSmall>
+                  <ParagraphSmall margin="8px 0 0">{packAnswers.filter(a=>a.correct).length}/{packAnswers.length} correct • +{packAnswers.reduce((a,b)=>a+b.xp,0)} XP • {selectedBookMeta?.label} {selectedLektion}</ParagraphSmall>
                   <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
                     {packAnswers.map((a,i)=>(
-                      <Tag key={i} closeable={false} overrides={{Root:{style:{backgroundColor: a.correct ? '#dcfce7' : '#fee2e2', color: a.correct ? '#16a34a' : '#dc2626', borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px'}}}}>{a.word.german}: {a.label}</Tag>
+                      <Tag key={i} closeable={false} overrides={{Root:{style:{backgroundColor: a.correct ? '#dcfce7' : '#fee2e2', color: a.correct ? '#16a34a' : '#dc2626', borderRadius:'999px'}}}}>{a.word.german}: {a.label}</Tag>
                     ))}
                   </Block>
                   <Block display="flex" gridGap="8px" justifyContent="center" marginTop="16px">
                     <Button shape={SHAPE.pill} onClick={savePack} isLoading={isSavingPack}>Save & next pack</Button>
                     <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setShowPackSummary(false); setPackAnswers([]); setPendingProgress({}); startNewPack(); }}>Discard</Button>
                   </Block>
-                  <ParagraphSmall color="#9a9a9a" margin="8px 0 0">Saves {Object.keys(pendingProgress).length} cards + stats to {authUser ? 'cloud (per-user)' : 'local'} in one batch — smooth swipes, no per-card DB lag.</ParagraphSmall>
+                  <ParagraphSmall color="#9a9a9a" margin="8px 0 0">Saves {Object.keys(pendingProgress).length} cards + stats to {authUser ? 'cloud' : 'local'} in one batch.</ParagraphSmall>
                 </UberCard>
               ) : (
-                <UberCard styleOverride={{ backgroundColor: '#f7f7f7', borderTopColor: '#e5e5e5', borderBottomColor: '#e5e5e5', borderLeftColor: '#e5e5e5', borderRightColor: '#e5e5e5', textAlign: 'center', paddingTop: '30px', paddingBottom: '30px' }}>
+                <UberCard styleOverride={{ backgroundColor: '#f7f7f7', borderColor: '#e5e5e5', textAlign: 'center', paddingTop: '30px', paddingBottom: '30px', marginTop:'12px' }}>
                   <div style={{ fontSize: 32 }}>📦</div>
                   <Heading $style={{fontSize:16}}>Ready for a pack?</Heading>
-                  <ParagraphSmall color="#6b6b6b">Level-by-level packs load {packSize} words upfront and save once at the end — instant swipes, zero lag.</ParagraphSmall>
+                  <ParagraphSmall color="#6b6b6b">Scoped to <b>{selectedBookMeta?.label} {selectedLektion==='all' ? '— whole book' : selectedLektion}</b> • {scopeWords.length} words. Preloads {packSize} cards and saves once at the end.</ParagraphSmall>
                   <Block marginTop="12px" display="flex" justifyContent="center"><Button shape={SHAPE.pill} onClick={startNewPack}>Start {packSize}-word pack</Button></Block>
-                  {studyQueue.length===0 && <ParagraphSmall color="#dc2626" margin="8px 0 0">No due words for this filter — try Reset or different level.</ParagraphSmall>}
+                  {studyQueue.length===0 && <ParagraphSmall color="#dc2626" margin="8px 0 0">No due words for this scope — try another Lektion or whole book.</ParagraphSmall>}
+                  <Block display="flex" justifyContent="center" gridGap="16px" marginTop="16px">
+                    <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderRadius: '999px', background: '#2563eb' }} /><LabelSmall>der</LabelSmall></Block>
+                    <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderRadius: '999px', background: '#dc2626' }} /><LabelSmall>die</LabelSmall></Block>
+                    <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderRadius: '999px', background: '#16a34a' }} /><LabelSmall>das</LabelSmall></Block>
+                  </Block>
                 </UberCard>
               )}
 
-              <Block display="flex" justifyContent="center" gridGap="16px" marginTop="16px">
-                <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', background: '#2563eb' }} /><LabelSmall>der</LabelSmall></Block>
-                <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', background: '#dc2626' }} /><LabelSmall>die</LabelSmall></Block>
-                <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', background: '#16a34a' }} /><LabelSmall>das</LabelSmall></Block>
-              </Block>
-              <ParagraphSmall color="#9a9a9a" textAlign="center" marginTop="8px">Preloaded pack • Swipe or buttons • Saves in batch at the end</ParagraphSmall>
-            </Block>
-          </Tab>
-
-          <Tab title="Search">
-            <Block paddingTop="16px">
-              <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search German, English or level e.g. 'A1.1' or 'Haus'" clearable size="compact" overrides={{ Root: { style: { backgroundColor: '#f7f7f7', borderTopColor: '#e5e5e5', borderBottomColor: '#e5e5e5', borderLeftColor: '#e5e5e5', borderRightColor: '#e5e5e5', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', paddingTop: '4px', paddingBottom: '4px' } }, Input: { style: { fontSize: '14px' } } }} startEnhancer="🔍" />
-              <Block display="flex" gridGap="6px" marginTop="12px" overrides={{ Block: { style: { flexWrap: 'wrap' } } }}>
-                {['A1.1','A1.2','A2.1','A2.2','B1.1','B1.2','B2.1','B2.2','Custom'].map((l) => (
-                  <Tag key={l} closeable={false} variant={levelFilter.find((x) => x.id === l) ? 'solid' : 'outlined'} onClick={() => { const exists = levelFilter.find((x) => x.id === l); if (exists) setLevelFilter(levelFilter.filter((x) => x.id !== l)); else setLevelFilter([...levelFilter, { id: l, label: l }]); }}>{l}</Tag>
-                ))}
-              </Block>
-              <LabelSmall color="#6b6b6b" marginTop="12px">{filteredWords.length} results {search && `for “${search}”`}</LabelSmall>
-              <Block display="flex" flexDirection="column" gridGap="8px" marginTop="8px" overrides={{ Block: { style: { maxHeight: '62vh', overflowY: 'auto', paddingBottom: '20px' } } }}>
-                {filteredWords.slice(0, 100).map((w) => (
-                  <UberCard key={w.id} onClick={() => speakGerman(w.german)} styleOverride={{ cursor: 'pointer', backgroundColor: w.article ? genderBg(w.article) : '#fff', borderTopColor: w.article ? genderColor(w.article) + '30' : '#eee', borderBottomColor: w.article ? genderColor(w.article) + '30' : '#eee', borderLeftColor: w.article ? genderColor(w.article) + '30' : '#eee', borderRightColor: w.article ? genderColor(w.article) + '30' : '#eee' }}>
-                    <Block display="flex" justifyContent="space-between" alignItems="center">
-                      <Block>
-                        <div style={{ fontWeight: 700, fontSize: 15, color: w.article ? genderColor(w.article) : '#000' }}>
-                          {w.article && <span style={{ fontSize: 11, marginRight: 6, opacity: 0.8 }}>{w.article}</span>}
-                          {w.german} <span style={{ fontWeight: 400, color: '#6b6b6b' }}>— {w.english}</span>{w.isCustom ? <span style={{ fontSize:10, background:'#000', color:'#fff', borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px', padding:'1px 6px', marginLeft:6 }}>custom</span>:null}
-                        </div>
-                        <div style={{ fontSize: 12, color: '#6b6b6b', fontStyle: 'italic', marginTop: 2 }}>{w.example}</div>
-                      </Block>
-                      <Block display="flex" gridGap="6px" alignItems="center">
-                        <Tag closeable={false} overrides={{ Root: { style: { backgroundColor: '#000', color: '#fff', flexShrink: 0 } } }}>{w.level}</Tag>
-                        {w.isCustom && <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={(e)=> {e.stopPropagation(); handleDeleteCustom(w.id);}}>×</Button>}
-                      </Block>
-                    </Block>
-                  </UberCard>
-                ))}
-                {filteredWords.length > 100 && <LabelSmall color="#9a9a9a">Showing 100 of {filteredWords.length}. Refine search.</LabelSmall>}
-              </Block>
-            </Block>
-          </Tab>
-
-          <Tab title={`Weak (${weakWords.length})`}>
-            <Block paddingTop="16px">
-              <UberCard styleOverride={{ backgroundColor: '#fef2f2', borderTopColor: '#fecaca', borderBottomColor: '#fecaca', borderLeftColor: '#fecaca', borderRightColor: '#fecaca' }}>
-                <Block display="flex" justifyContent="space-between" alignItems="center">
-                  <Block>
-                    <Heading $style={{ fontSize: 16, margin: 0 }}>Mistake Bank</Heading>
-                    <ParagraphSmall margin="4px 0 0" color="#991b1b">Failed cards are auto-collected here for targeted practice.</ParagraphSmall>
+              {(() => { const m = getLektionMastery(scopeWords, progressMap); return (
+                <UberCard styleOverride={{marginTop:'12px', paddingTop:'12px', paddingBottom:'12px'}}>
+                  <Block display="flex" justifyContent="space-between" alignItems="center">
+                    <LabelSmall>Scope progress — {m.seen}/{m.total} seen • {m.mastered} mastered</LabelSmall>
+                    <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{m.pct}% seen • {m.masteredPct}% mastered</LabelSmall>
                   </Block>
-                  <div style={{ fontSize: 28 }}>⚠️</div>
-                </Block>
-                {weakWords.length > 0 && (
-                  <Block marginTop="12px" display="flex" gridGap="8px">
-                    <Button size={SIZE.mini} shape={SHAPE.pill} kind={KIND.primary} onClick={startWeakPack}>Practice Weak Words</Button>
-                    <Button size={SIZE.mini} shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> {startQuiz('mixed', Math.min(10, weakWords.length)); setActiveKey('3');}}>Quiz Weak</Button>
-                  </Block>
-                )}
-              </UberCard>
-              <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
-                {weakWords.length === 0 ? (
-                  <UberCard styleOverride={{ textAlign: 'center', paddingTop: '30px', paddingBottom: '30px' }}><ParagraphSmall>No weak words yet. Keep studying — cards you mark “Again” or fail will appear here.</ParagraphSmall></UberCard>
-                ) : (
-                  weakWords.slice(0, 80).map((w) => (
-                    <UberCard key={w.id} styleOverride={{ borderTopColor: '#fecaca', borderBottomColor: '#fecaca', borderLeftColor: '#fecaca', borderRightColor: '#fecaca' }}>
-                      <Block display="flex" justifyContent="space-between" alignItems="center">
-                        <div><span style={{ fontWeight: 700, color: genderColor(w.article) }}>{w.fullGerman}</span> <span style={{ color: '#6b6b6b' }}>— {w.english}</span> <span style={{ fontSize: 11, background: '#000', color: '#fff', borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', padding: '2px 6px', marginLeft: 6 }}>{w.level}</span></div>
-                        <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => speakGerman(w.german)}>🔊</Button>
-                      </Block>
-                      <div style={{ fontSize: 12, fontStyle: 'italic', color: '#6b6b6b', marginTop: 6 }}>{w.example}</div>
-                    </UberCard>
-                  ))
-                )}
-              </Block>
+                  <div style={{height:6, background:'#eee', borderRadius:999, marginTop:8, overflow:'hidden'}}>
+                    <div style={{height:'100%', width:`${m.pct}%`, background:'#000', borderRadius:999, transition:'width 0.5s'}}/>
+                  </div>
+                  <div style={{height:4, background:'#dcfce7', borderRadius:999, marginTop:4, overflow:'hidden'}}>
+                    <div style={{height:'100%', width:`${m.masteredPct}%`, background:'#16a34a', borderRadius:999, transition:'width 0.5s'}}/>
+                  </div>
+                  <ParagraphSmall color="#9a9a9a" margin="4px 0 0">Gray = studied, green = mastered (3× Good, interval ≥14d)</ParagraphSmall>
+                </UberCard>
+              ); })()}
             </Block>
           </Tab>
 
@@ -1214,57 +1175,63 @@ export default function App() {
             <Block paddingTop="16px">
               {!quizStarted ? (
                 <>
-                  <UberCard styleOverride={{ backgroundColor:'#f7f7f7', borderTopColor:'#e5e5e5', borderBottomColor:'#e5e5e5', borderLeftColor:'#e5e5e5', borderRightColor:'#e5e5e5' }}>
-                    <Heading $style={{fontSize:16, margin:0}}>Smart Quiz — {userLevel}</Heading>
-                    <ParagraphSmall color="#6b6b6b">Dictation (umlaut-sensitive) & Artikel. Quiz uses words from your current level ({userLevel}). Master {userLevel} to unlock the next level.</ParagraphSmall>
+                  <UberCard styleOverride={{ backgroundColor:'#f7f7f7', borderColor:'#e5e5e5' }}>
+                    <Heading $style={{fontSize:16, margin:0}}>Quiz — scoped to book & Lektion</Heading>
+                    <ParagraphSmall color="#6b6b6b">Dictation (ä ö ü ß), Artikel, and فارسی modes. Only words from your selected book/Lektion.</ParagraphSmall>
+                    <Block display="flex" gridGap="8px" marginTop="10px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
+                      <Select options={BOOKS.map(b=> ({id:b.id, label:b.label}))} value={[{id:quizBook, label: quizBookMeta?.label}]} onChange={({value})=> setQuizBook(value[0].id)} size="compact" overrides={{ControlContainer:{style:{minWidth:'140px', borderRadius:'999px'}}}} />
+                      <Select options={[{id:'all', label:'Whole book'}, ...lektionenForBook(quizBook).map(l=> ({id:l.lektion, label: l.lektion}))]} value={quizLektion==='all' ? [{id:'all', label:'Whole book'}] : [{id:quizLektion, label:quizLektion}]} onChange={({value})=> setQuizLektion(value[0]?.id || 'all')} size="compact" overrides={{ControlContainer:{style:{minWidth:'140px', borderRadius:'999px'}}}} />
+                    </Block>
                     <Block display="flex" gridGap="8px" marginTop="12px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='dictation'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('dictation')}>Dictation</Button>
+                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='dictation'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('dictation')}>Dictation DE</Button>
                       <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='artikel'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('artikel')}>Artikel</Button>
                       <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='mixed'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('mixed')}>Mixed</Button>
+                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='fa'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('fa')}>DE → فارسی</Button>
                     </Block>
                     <Block display="flex" gridGap="8px" marginTop="12px">
                       <Button shape={SHAPE.pill} onClick={()=> startQuiz(quizMode, 5)}>Start 5</Button>
                       <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 10)}>Start 10</Button>
                       <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 20)}>Start 20</Button>
                     </Block>
-                    <ParagraphSmall color="#9a9a9a" marginTop="8px">{weakWords.filter(w=>w.level===userLevel).length} weak words in {userLevel} • {allWords.filter(w=>w.article && w.level===userLevel).length} nouns with Artikel</ParagraphSmall>
+                    <ParagraphSmall color="#9a9a9a" marginTop="8px">{quizScopeWords.length} words in {quizBookMeta?.label} {quizLektion==='all' ? 'whole book' : quizLektion} • {quizScopeWords.filter(w=> weakIds.has(w.id)).length} weak • {quizScopeWords.filter(w=> w.article).length} nouns</ParagraphSmall>
                   </UberCard>
                   <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
-                    <LabelSmall>How it works</LabelSmall>
                     <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-                      <ParagraphSmall margin={0}><b>Dictation:</b> Hear German → type exact word (<b>ä ö ü Ä Ö Ü ß</b> must be correct). Use the toolbar below the input if your keyboard lacks umlauts. +15 XP correct.</ParagraphSmall>
+                      <ParagraphSmall margin={0}><b>Dictation:</b> Hear German → type exact word (<b>ä ö ü Ä Ö Ü ß</b> strict). Toolbar below input. +15 XP.</ParagraphSmall>
                     </UberCard>
                     <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-                      <ParagraphSmall margin={0}><b>Artikel:</b> Pick <span style={{color:genderColor('der'), fontWeight:700}}>der</span> / <span style={{color:genderColor('die'), fontWeight:700}}>die</span> / <span style={{color:genderColor('das'), fontWeight:700}}>das</span> for the noun. +10 XP correct.</ParagraphSmall>
+                      <ParagraphSmall margin={0}><b>Artikel:</b> Pick <span style={{color:genderColor('der'), fontWeight:700}}>der</span> / <span style={{color:genderColor('die'), fontWeight:700}}>die</span> / <span style={{color:genderColor('das'), fontWeight:700}}>das</span>. +10 XP.</ParagraphSmall>
                     </UberCard>
                     <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-                      <ParagraphSmall margin={0}>Wrong answers count as <b>Again</b> → added to Weak / SRS interval reset. Correct counts as <b>Good</b>.</ParagraphSmall>
+                      <ParagraphSmall margin={0}><b>فارسی:</b> See German → type Persian meaning exactly (from JSON). Great for recall. +15 XP.</ParagraphSmall>
                     </UberCard>
                   </Block>
                 </>
               ) : (
                 <>
                   <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-                    <LabelSmall color="#6b6b6b">Quiz {quizIdx+1}/{quizQueue.length} • {quizMode}</LabelSmall>
-                    <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{quizScore.correct}/{quizScore.total} correct • {quizScore.xp} XP</LabelSmall>
+                    <LabelSmall color="#6b6b6b">Quiz {quizIdx+1}/{quizQueue.length} • {quizMode} • {quizBookMeta?.label} {quizLektion}</LabelSmall>
+                    <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{quizScore.correct}/{quizScore.total} • {quizScore.xp} XP</LabelSmall>
                   </Block>
-                  <ProgressBar value={quizQueue.length ? (quizIdx/quizQueue.length)*100 : 0} overrides={{ BarProgress:{style:{backgroundColor:'#000'}}, BarContainer:{style:{backgroundColor:'#eee', height:'4px', borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px'}}, Bar:{style:{height:'4px'}} }} />
+                  <ProgressBar value={quizQueue.length ? (quizIdx/quizQueue.length)*100 : 0} overrides={{ BarProgress:{style:{backgroundColor:'#000'}}, BarContainer:{style:{backgroundColor:'#eee', height:'4px', borderRadius:'999px'}}, Bar:{style:{height:'4px'}} }} />
                   {currentQuizWord && (
-                    <UberCard styleOverride={{marginTop:'12px', minHeight:'260px'}}>
+                    <UberCard styleOverride={{marginTop:'12px', minHeight:'280px'}}>
                       {(quizMode==='artikel' || (quizMode==='mixed' && currentQuizWord.article && quizIdx %2===0)) ? (
                         <Block textAlign="center">
-                          <LabelSmall color="#6b6b6b">ARTIKEL - Wahl den Artikel</LabelSmall>
-                          <div style={{fontSize:28, fontWeight:800, marginTop:8}}>{currentQuizWord.german} <span style={{fontWeight:400, color:'#6b6b6b', fontSize:16}}>- {currentQuizWord.english}</span></div>
-                          <div style={{fontSize:12, color:'#9a9a9a', marginTop:4}}>{currentQuizWord.example}</div>
+                          <LabelSmall color="#6b6b6b">ARTIKEL — Wähle den Artikel</LabelSmall>
+                          <div style={{fontSize:28, fontWeight:800, marginTop:8}}>{currentQuizWord.german} <span style={{fontWeight:400, color:'#6b6b6b', fontSize:14}}>- {currentQuizWord.meaning_en}</span></div>
+                          <div style={{fontSize:12, color:'#9a9a9a', marginTop:4, fontFamily:'Vazirmatn', direction:'rtl'}}>{currentQuizWord.meaning_fa}</div>
+                          <div style={{fontSize:12, color:'#9a9a9a', marginTop:4}}>{currentQuizWord.lektion} • {currentQuizWord.example}</div>
                           {!quizFeedback ? (
                             <Block display="flex" gridGap="8px" marginTop="16px" justifyContent="center">
                               {['der','die','das'].map(a=>(
-                                <Button key={a} shape={SHAPE.pill} kind={quizArtikelChoice===a?KIND.primary:KIND.secondary} onClick={()=> setQuizArtikelChoice(a)} overrides={{BaseButton:{style:{flex:1, backgroundColor: quizArtikelChoice===a ? genderColor(a) : undefined, borderTopColor: genderColor(a), borderBottomColor: genderColor(a), borderLeftColor: genderColor(a), borderRightColor: genderColor(a)}}}}>{a}</Button>
+                                <Button key={a} shape={SHAPE.pill} kind={quizArtikelChoice===a?KIND.primary:KIND.secondary} onClick={()=> setQuizArtikelChoice(a)} overrides={{BaseButton:{style:{flex:1, backgroundColor: quizArtikelChoice===a ? genderColor(a) : undefined, borderColor: genderColor(a)}}}}>{a}</Button>
                               ))}
                             </Block>
                           ) : (
-                            <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}}>
-                              <LabelSmall>{quizFeedback.correct ? 'Correct!' : `Was "${quizFeedback.expected}"`} {quizFeedback.correct ? `+${quizFeedback.xp} XP` : ''}</LabelSmall>
+                            <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
+                              <LabelSmall>{quizFeedback.correct ? '✅ Correct!' : `Was "${quizFeedback.expected}"`} {quizFeedback.correct ? `+${quizFeedback.xp} XP` : ''}</LabelSmall>
+                              {quizFeedback.expectedFa && <div style={{fontFamily:'Vazirmatn', direction:'rtl', fontSize:12, color:'#6b6b6b'}}>{quizFeedback.expectedFa}</div>}
                             </Block>
                           )}
                           {!quizFeedback ? (
@@ -1273,30 +1240,53 @@ export default function App() {
                             <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'16px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
                           )}
                         </Block>
+                      ) : quizMode==='fa' ? (
+                        <Block textAlign="center">
+                          <LabelSmall color="#6b6b6b">FARSI — Tippe die persische Bedeutung</LabelSmall>
+                          <div style={{fontSize:22, fontWeight:800, marginTop:8}}>{currentQuizWord.german} <span style={{color: genderColor(currentQuizWord.article), fontSize:14, fontWeight:600}}>{currentQuizWord.article || ''}</span></div>
+                          <div style={{fontSize:12, color:'#6b6b6b'}}>{currentQuizWord.meaning_en} • {currentQuizWord.lektion}</div>
+                          <Block marginTop="10px">
+                            <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>🔊 German</Button>
+                          </Block>
+                          {!quizFeedback ? (
+                            <>
+                              <Input value={quizAnswer} onChange={(e)=> setQuizAnswer(e.target.value)} placeholder="فارسی را تایپ کنید..." onKeyDown={(e)=> { if(e.key==='Enter') submitQuiz(); }} autoFocus overrides={{ Root:{style:{marginTop:'12px', borderRadius:'12px'}}}} />
+                              <Button shape={SHAPE.pill} disabled={!quizAnswer.trim()} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>Check</Button>
+                            </>
+                          ) : (
+                            <>
+                              <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
+                                <LabelSmall>{quizFeedback.correct ? `Correct! "${quizFeedback.expectedFa}" +${quizFeedback.xp} XP` : `"${quizAnswer.trim()}" is wrong → "${quizFeedback.expectedFa}"`}</LabelSmall>
+                              </Block>
+                              <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
+                            </>
+                          )}
+                        </Block>
                       ) : (
                         <Block textAlign="center">
-                          <LabelSmall color="#6b6b6b">DICTATION - Hor und tippe (Umlaute wichtig!)</LabelSmall>
-                          <DisplaySmall $style={{fontSize:16, color:'#6b6b6b', marginTop:'8px'}}>{currentQuizWord.english} - {currentQuizWord.level}</DisplaySmall>
+                          <LabelSmall color="#6b6b6b">DICTATION — Höre und tippe (Umlaute wichtig!)</LabelSmall>
+                          <DisplaySmall $style={{fontSize:16, color:'#6b6b6b', marginTop:'8px'}}>{currentQuizWord.meaning_en} — {currentQuizWord.lektion}</DisplaySmall>
+                          <div style={{fontFamily:'Vazirmatn', direction:'rtl', fontSize:13, color:'#9a9a9a'}}>{currentQuizWord.meaning_fa}</div>
                           <Block marginTop="12px">
-                            <Button size={SIZE.compact} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>Play German</Button>
+                            <Button size={SIZE.compact} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>▶ Play German</Button>
                             <Button size={SIZE.compact} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.example)} overrides={{BaseButton:{style:{marginLeft:'8px'}}}}>Sentence</Button>
                           </Block>
                           {!quizFeedback ? (
                             <>
-                              <Input value={quizAnswer} onChange={(e)=> setQuizAnswer(e.target.value)} placeholder="Tippe das deutsche Wort..." onKeyDown={(e)=> { if(e.key==='Enter') submitQuiz(); }} autoFocus overrides={{ Root:{style:{marginTop:'12px', borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />
-                              <Block display="flex" gridGap="6px" marginTop="8px" justifyContent="center">
+                              <Input value={quizAnswer} onChange={(e)=> setQuizAnswer(e.target.value)} placeholder="Tippe das deutsche Wort..." onKeyDown={(e)=> { if(e.key==='Enter') submitQuiz(); }} autoFocus overrides={{ Root:{style:{marginTop:'12px', borderRadius:'12px'}}}} />
+                              <Block display="flex" gridGap="6px" marginTop="8px" justifyContent="center" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
                                 {['ä','ö','ü','Ä','Ö','Ü','ß'].map(ch=>(
                                   <Button key={ch} size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={()=> insertUmlaut(ch)}>{ch}</Button>
                                 ))}
                                 <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setQuizAnswer('')}>Clear</Button>
                               </Block>
-                              <Button shape={SHAPE.pill} disabled={!quizAnswer.trim()} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>Check (a o u beachten!)</Button>
+                              <Button shape={SHAPE.pill} disabled={!quizAnswer.trim()} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>Check</Button>
                             </>
                           ) : (
                             <>
-                              <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}}>
-                                <LabelSmall>{quizFeedback.correct ? `Correct! "${quizFeedback.expected}" +${quizFeedback.xp} XP` : `"${quizAnswer.trim()}" is wrong -> "${quizFeedback.expected}"`}</LabelSmall>
-                                {!quizFeedback.correct && <ParagraphSmall margin="4px 0 0">Umlaute: <b>a</b> != a, <b>o</b> != o, <b>u</b> != u, <b>ss</b> != ss</ParagraphSmall>}
+                              <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
+                                <LabelSmall>{quizFeedback.correct ? `Correct! "${quizFeedback.expected}" +${quizFeedback.xp} XP` : `"${quizAnswer.trim()}" → "${quizFeedback.expected}"`}</LabelSmall>
+                                {!quizFeedback.correct && <ParagraphSmall margin="4px 0 0">Umlaute: ä ≠ a, ö ≠ o, ü ≠ u, ß ≠ ss</ParagraphSmall>}
                               </Block>
                               <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
                             </>
@@ -1313,16 +1303,87 @@ export default function App() {
             </Block>
           </Tab>
 
+          <Tab title="Suche">
+            <Block paddingTop="16px">
+              <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Suche German, English, فارسی oder Lektion..." clearable size="compact" overrides={{ Root: { style: { backgroundColor: '#f7f7f7', borderColor: '#e5e5e5', borderRadius: '999px', paddingTop: '4px', paddingBottom: '4px' } }, Input: { style: { fontSize: '14px' } } }} startEnhancer="🔍" />
+              <Block display="flex" gridGap="6px" marginTop="12px" overrides={{ Block: { style: { flexWrap: 'wrap' } } }}>
+                {BOOKS.map(b=> <Tag key={b.id} closeable={false} variant={selectedBook===b.id ? 'solid' : 'outlined'} onClick={() => setSelectedBook(b.id)}>{b.label}</Tag>)}
+                <Tag closeable={false} variant="outlined" onClick={() => setSearch('')}>Clear</Tag>
+              </Block>
+              <LabelSmall color="#6b6b6b" marginTop="12px">{filteredWordsForSearch.length} results {search && `for “${search}”`}</LabelSmall>
+              <Block display="flex" flexDirection="column" gridGap="8px" marginTop="8px" overrides={{ Block: { style: { maxHeight: '62vh', overflowY: 'auto', paddingBottom: '20px' } } }}>
+                {filteredWordsForSearch.slice(0, 80).map((w) => (
+                  <UberCard key={w.id} onClick={() => speakGerman(w.german)} styleOverride={{ cursor: 'pointer', backgroundColor: w.article ? genderBg(w.article) : '#fff', borderColor: w.article ? genderColor(w.article) + '30' : '#eee' }}>
+                    <Block display="flex" justifyContent="space-between" alignItems="center">
+                      <Block>
+                        <div style={{ fontWeight: 700, fontSize: 14, color: w.article ? genderColor(w.article) : '#000' }}>
+                          {w.article && <span style={{ fontSize: 11, marginRight: 6, opacity: 0.8 }}>{w.article}</span>}
+                          {w.german} <span style={{ fontWeight: 400, color: '#6b6b6b' }}>— {w.meaning_en || w.english}</span>
+                          <span style={{ fontWeight:400, color:'#9a9a9a', fontFamily:'Vazirmatn', direction:'rtl', marginLeft:6 }}>— {w.meaning_fa}</span>
+                          {w.isCustom ? <span style={{ fontSize:10, background:'#000', color:'#fff', borderRadius:'999px', padding:'1px 6px', marginLeft:6 }}>custom</span>:null}
+                        </div>
+                        <div style={{ fontSize: 11, color: '#9a9a9a' }}>{w.lektion} • {w.bookLabel} {w.plural ? `• Pl: ${w.plural}` : ''}</div>
+                        <div style={{ fontSize: 12, color: '#6b6b6b', fontStyle: 'italic', marginTop: 2 }}>{w.example}</div>
+                      </Block>
+                      <Block display="flex" gridGap="6px" alignItems="center">
+                        <Tag closeable={false} overrides={{ Root: { style: { backgroundColor: '#000', color: '#fff', flexShrink: 0 } } }}>{w.lektion}</Tag>
+                        {w.isCustom && <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={(e)=> {e.stopPropagation(); handleDeleteCustom(w.id);}}>×</Button>}
+                      </Block>
+                    </Block>
+                  </UberCard>
+                ))}
+                {filteredWordsForSearch.length > 80 && <LabelSmall color="#9a9a9a">Showing 80 of {filteredWordsForSearch.length}. Refine search.</LabelSmall>}
+              </Block>
+            </Block>
+          </Tab>
+
+          <Tab title={`Weak (${weakWords.length})`}>
+            <Block paddingTop="16px">
+              <UberCard styleOverride={{ backgroundColor: '#fef2f2', borderColor: '#fecaca' }}>
+                <Block display="flex" justifyContent="space-between" alignItems="center">
+                  <Block>
+                    <Heading $style={{ fontSize: 16, margin: 0 }}>Mistake Bank</Heading>
+                    <ParagraphSmall margin="4px 0 0" color="#991b1b">Failed cards auto-collected. Filtered to current scope: {selectedBookMeta?.label} {selectedLektion}</ParagraphSmall>
+                  </Block>
+                  <div style={{ fontSize: 28 }}>⚠️</div>
+                </Block>
+                {weakWords.length > 0 && (
+                  <Block marginTop="12px" display="flex" gridGap="8px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
+                    <Button size={SIZE.mini} shape={SHAPE.pill} kind={KIND.primary} onClick={()=> { const w = weakForScope.slice(0, packSize); if(!w.length){ setToast('No weak in this scope'); setTimeout(()=> setToast(null),1500); return; } setPackWords(w); setPackIdx(0); setPackAnswers([]); setPendingProgress({}); setShowPackSummary(false); setFlipped(false); setActiveKey('1'); }}>Practice Weak ({weakForScope.length})</Button>
+                    <Button size={SIZE.mini} shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> { setQuizBook(selectedBook); setQuizLektion(selectedLektion); setTimeout(()=> startQuiz('mixed', Math.min(10, weakForScope.length)), 100); setActiveKey('2');}}>Quiz Weak</Button>
+                    <LabelSmall color="#6b6b6b" overrides={{Block:{style:{alignSelf:'center'}}}}>{weakForScope.length} in scope • {weakWords.length} total</LabelSmall>
+                  </Block>
+                )}
+              </UberCard>
+              <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
+                {weakWords.length === 0 ? (
+                  <UberCard styleOverride={{ textAlign: 'center', paddingTop: '30px', paddingBottom: '30px' }}><ParagraphSmall>No weak words yet. Cards marked “Again” appear here.</ParagraphSmall></UberCard>
+                ) : (
+                  (scopeWords.filter(w=> weakIds.has(w.id)).length ? scopeWords.filter(w=> weakIds.has(w.id)) : weakWords).slice(0, 60).map((w) => (
+                    <UberCard key={w.id} styleOverride={{ borderColor: '#fecaca' }}>
+                      <Block display="flex" justifyContent="space-between" alignItems="center">
+                        <div><span style={{ fontWeight: 700, color: genderColor(w.article) }}>{w.fullGerman || (w.article? `${w.article} ${w.german}`: w.german)}</span> <span style={{ color: '#6b6b6b' }}>— {w.meaning_en || w.english}</span> <span style={{fontFamily:'Vazirmatn', direction:'rtl', color:'#9a9a9a'}}>— {w.meaning_fa}</span> <span style={{ fontSize: 11, background: '#000', color: '#fff', borderRadius: '999px', padding: '2px 6px', marginLeft: 6 }}>{w.lektion}</span></div>
+                        <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => speakGerman(w.german)}>🔊</Button>
+                      </Block>
+                      <div style={{ fontSize: 12, fontStyle: 'italic', color: '#6b6b6b', marginTop: 6 }}>{w.example}</div>
+                      {w.plural && <div style={{fontSize:11, color:'#9a9a9a'}}>Plural: {w.plural}</div>}
+                    </UberCard>
+                  ))
+                )}
+              </Block>
+            </Block>
+          </Tab>
+
           <Tab title="Board">
             <Block paddingTop="16px">
-              <UberCard styleOverride={{ backgroundColor: '#000', borderWidth: 0, borderTopLeftRadius: '20px', borderTopRightRadius: '20px', borderBottomLeftRadius: '20px', borderBottomRightRadius: '20px', paddingTop: '12px' }}>
+              <UberCard styleOverride={{ backgroundColor: '#000', borderWidth: 0, borderRadius: '20px', paddingTop: '12px' }}>
                 <Block display="flex" justifyContent="space-between" alignItems="center">
                   <Block>
                     <LabelSmall color="#a3a3a3" overrides={{ Block: { style: { letterSpacing: '1px', textTransform: 'uppercase' } } }}>Your rank</LabelSmall>
                     <div style={{ fontSize: 28, fontWeight: 800, lineHeight: 1, color: '#fff' }}>#{leaderboard.rank} <span style={{ fontSize: 14, fontWeight: 600, opacity: 0.7 }}>/ {leaderboard.all.length}</span></div>
-                    <div style={{ fontSize: 13, color: '#d4d4d4' }}>{userLevel} • {stats.xp} XP • {stats.totalReviews} reviews • 🔥 {stats.streak} day streak</div>
+                    <div style={{ fontSize: 13, color: '#d4d4d4' }}>{selectedBookMeta?.label} • {stats.xp} XP • {stats.totalReviews} reviews • 🔥 {stats.streak} streak</div>
                   </Block>
-                  <Block backgroundColor="white" color="black" padding="12px 16px" overrides={{ Block: { style: { borderTopLeftRadius: '16px', borderTopRightRadius: '16px', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px', textAlign: 'center' } } }}>
+                  <Block backgroundColor="white" color="black" padding="12px 16px" overrides={{ Block: { style: { borderRadius: '16px', textAlign: 'center' } } }}>
                     <div style={{ fontSize: 22, fontWeight: 800 }}>{stats.xp}</div>
                     <div style={{ fontSize: 10, letterSpacing: '1px', fontWeight: 700 }}>TOTAL XP</div>
                   </Block>
@@ -1332,11 +1393,11 @@ export default function App() {
                   <LabelSmall color="#fff" overrides={{ Block: { style: { fontWeight: 700 } } }}>Season ends in 12 days</LabelSmall>
                 </Block>
                 <Block marginTop="12px" display="flex" gridGap="8px">
-                  <Input value={username} onChange={(e)=> { setUsername(e.target.value); localStorage.setItem('gs_username', e.target.value); }} placeholder="Your name" size="compact" overrides={{ Root:{style:{backgroundColor:'#1a1a1a', borderTopColor:'#333', borderBottomColor:'#333', borderLeftColor:'#333', borderRightColor:'#333', borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px' }}, Input:{style:{color:'#fff'}}}} />
+                  <Input value={username} onChange={(e)=> { setUsername(e.target.value); localStorage.setItem('gs_username', e.target.value); }} placeholder="Your name" size="compact" overrides={{ Root:{style:{backgroundColor:'#1a1a1a', borderColor:'#333', borderRadius:'999px' }}, Input:{style:{color:'#fff'}}}} />
                   <Button size={SIZE.compact} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> {
                     if(!username.trim()) { setOnlineError('Enter a name first'); setTimeout(()=> setOnlineError(null),1500); return; }
                     const b = await submitOnlineScore(username.trim(), stats.xp);
-                    if (b) { setOnlineBoard(b); setUseOnline(true); setToast('Score synced online ✓'); } else { setOnlineError('Online not configured — see instructions below'); }
+                    if (b) { setOnlineBoard(b); setUseOnline(true); setToast('Score synced online ✓'); } else { setOnlineError('Online not configured'); }
                     setTimeout(()=> setToast(null),1500); setTimeout(()=> setOnlineError(null),2500);
                   }}>Sync</Button>
                 </Block>
@@ -1350,11 +1411,11 @@ export default function App() {
 
               <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
                 {leaderboard.all.map((p, i) => (
-                  <UberCard key={p.name} styleOverride={{ borderTopColor: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#000' : '#eee', borderBottomColor: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#000' : '#eee', borderLeftColor: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#000' : '#eee', borderRightColor: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#000' : '#eee', backgroundColor: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#f7f7f7' : '#fff', borderWidth: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '2px' : '1px' }}>
+                  <UberCard key={p.name} styleOverride={{ borderColor: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#000' : '#eee', backgroundColor: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#f7f7f7' : '#fff', borderWidth: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '2px' : '1px' }}>
                     <Block display="flex" justifyContent="space-between" alignItems="center">
                       <Block display="flex" alignItems="center" gridGap="12px">
-                        <div style={{ width: 32, height: 32, borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', background: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#000' : '#eee', color: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#fff' : '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 11 }}>#{i + 1}</div>
-                        <div style={{ width: 36, height: 36, borderTopLeftRadius: '999px', borderTopRightRadius: '999px', borderBottomLeftRadius: '999px', borderBottomRightRadius: '999px', background: '#fff', borderWidth: '1px', borderStyle: 'solid', borderTopColor: '#e5e5e5', borderBottomColor: '#e5e5e5', borderLeftColor: '#e5e5e5', borderRightColor: '#e5e5e5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 12 }}>{p.avatar}</div>
+                        <div style={{ width: 32, height: 32, borderRadius: '999px', background: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#000' : '#eee', color: p.name.toLowerCase()=== (username||'You').toLowerCase() ? '#fff' : '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 11 }}>#{i + 1}</div>
+                        <div style={{ width: 36, height: 36, borderRadius: '999px', background: '#fff', border: '1px solid #e5e5e5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 12 }}>{p.avatar}</div>
                         <Block>
                           <div style={{ fontWeight: p.name.toLowerCase()=== (username||'You').toLowerCase() ? 800 : 600, fontSize: 14 }}>{p.name} {p.name.toLowerCase()=== (username||'You').toLowerCase() && '• You'}</div>
                           <div style={{ fontSize: 11, color: '#6b6b6b' }}>{p.xp} XP</div>
@@ -1362,7 +1423,7 @@ export default function App() {
                       </Block>
                       <Block display="flex" alignItems="center" gridGap="8px">
                         {i < 3 && <span style={{ fontSize: 18 }}>{['🥇', '🥈', '🥉'][i]}</span>}
-                        {adminMode && <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={async()=> { const b = await deleteOnlineScore(p.name, adminToken); if(b){ setOnlineBoard(b); setToast(`Deleted ${p.name}`); } else setOnlineError('Delete failed — check admin token'); setTimeout(()=> setToast(null),1500); setTimeout(()=> setOnlineError(null),2000); }}>×</Button>}
+                        {adminMode && <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={async()=> { const b = await deleteOnlineScore(p.name, adminToken); if(b){ setOnlineBoard(b); setToast(`Deleted ${p.name}`); } else setOnlineError('Delete failed'); setTimeout(()=> setToast(null),1500); setTimeout(()=> setOnlineError(null),2000); }}>×</Button>}
                       </Block>
                     </Block>
                   </UberCard>
@@ -1373,9 +1434,9 @@ export default function App() {
                 {adminMode && <LabelSmall color="#dc2626">Admin: tap × to delete</LabelSmall>}
               </Block>
               {adminMode && (
-                <UberCard styleOverride={{marginTop:'8px', backgroundColor:'#fef2f2', borderTopColor:'#fecaca', borderBottomColor:'#fecaca', borderLeftColor:'#fecaca', borderRightColor:'#fecaca'}}>
+                <UberCard styleOverride={{marginTop:'8px', backgroundColor:'#fef2f2', borderColor:'#fecaca'}}>
                   <LabelSmall>Admin</LabelSmall>
-                  <Input value={adminToken} onChange={e=> { setAdminToken(e.target.value); localStorage.setItem('gs_admin_token', e.target.value); }} placeholder="Admin token" size="compact" overrides={{Root:{style:{marginTop:'8px', borderTopLeftRadius:'12px', borderTopRightRadius:'12px', borderBottomLeftRadius:'12px', borderBottomRightRadius:'12px'}}}} />
+                  <Input value={adminToken} onChange={e=> { setAdminToken(e.target.value); localStorage.setItem('gs_admin_token', e.target.value); }} placeholder="Admin token" size="compact" overrides={{Root:{style:{marginTop:'8px', borderRadius:'12px'}}}} />
                   <Block display="flex" gridGap="8px" marginTop="8px">
                     <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b = await resetOnlineBoard(adminToken); if(b){ setOnlineBoard(b); setUseOnline(true); setToast('Board reset'); } else setOnlineError('Reset failed'); setTimeout(()=> setOnlineError(null),2000); setTimeout(()=> setToast(null),1500); }}>Reset</Button>
                     <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b = await fetchOnlineLeaderboard(); if(b) setOnlineBoard(b); setUseOnline(true); }}>Refresh</Button>
@@ -1398,14 +1459,14 @@ export default function App() {
                 </UberCard>
               ) : (
                 <>
-                  <UberCard styleOverride={{backgroundColor:'#000', color:'#fff', borderWidth:0, borderTopLeftRadius:'20px', borderTopRightRadius:'20px', borderBottomLeftRadius:'20px', borderBottomRightRadius:'20px'}}>
+                  <UberCard styleOverride={{backgroundColor:'#000', color:'#fff', borderWidth:0, borderRadius:'20px'}}>
                     <Block display="flex" justifyContent="space-between" alignItems="center">
                       <Block>
-                        <div style={{fontSize:22, fontWeight:800}}>{authUser.username} {authUser.isAdmin && <span style={{fontSize:12, background:'#fff', color:'#000', padding:'2px 6px', borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px'}}>ADMIN</span>}</div>
+                        <div style={{fontSize:22, fontWeight:800}}>{authUser.username} {authUser.isAdmin && <span style={{fontSize:12, background:'#fff', color:'#000', padding:'2px 6px', borderRadius:'999px'}}>ADMIN</span>}</div>
                         <div style={{fontSize:12, color:'#d4d4d4'}}>{authUser.email || 'No email'} • Joined {new Date(authUser.createdAt).toLocaleDateString()}</div>
-                        <div style={{fontSize:13, color:'#fff', marginTop:6}}>{userLevel} • {stats.xp} XP • 🔥 {stats.streak} streak • {stats.totalReviews} reviews</div>
+                        <div style={{fontSize:13, color:'#fff', marginTop:6}}>{selectedBookMeta?.label} • {stats.xp} XP • 🔥 {stats.streak} streak • {stats.totalReviews} reviews</div>
                       </Block>
-                      <div style={{width:48,height:48, borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px', background:'#fff', color:'#000', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800}}>{authUser.username.slice(0,2).toUpperCase()}</div>
+                      <div style={{width:48,height:48, borderRadius:'999px', background:'#fff', color:'#000', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800}}>{authUser.username.slice(0,2).toUpperCase()}</div>
                     </Block>
                     <Block display="flex" gridGap="8px" marginTop="12px">
                       <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={handleLogout}>Logout</Button>
@@ -1414,34 +1475,48 @@ export default function App() {
                   </UberCard>
                   <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
                     <UberCard>
-                      <LabelSmall>Your level</LabelSmall>
-                      <Block display="flex" justifyContent="space-between" alignItems="center" marginTop="8px">
-                        <div style={{fontSize:22, fontWeight:800}}>{userLevel}</div>
-                        <div style={{fontSize:12, color:'#6b6b6b'}}>{levelMastery.mastered}/{levelMastery.total} words mastered</div>
-                      </Block>
-                      <div style={{height:8, background:'#eee', borderTopLeftRadius:999, borderTopRightRadius:999, borderBottomLeftRadius:999, borderBottomRightRadius:999, marginTop:8, overflow:'hidden'}}>
-                        <div style={{height:'100%', width:`${levelMastery.pct}%`, background: levelMastery.pct >= 80 ? '#16a34a' : '#000', borderTopLeftRadius:999, borderTopRightRadius:999, borderBottomLeftRadius:999, borderBottomRightRadius:999, transition:'width 0.5s'}} />
-                      </div>
-                      <ParagraphSmall color="#6b6b6b" marginTop="4px">{levelMastery.pct}% — {levelMastery.pct >= 80 ? 'Ready for next level!' : `Master ${80 - levelMastery.pct}% more to unlock ${LEVEL_ORDER[LEVEL_ORDER.indexOf(userLevel) + 1] || 'next level'}`}</ParagraphSmall>
+                      <LabelSmall>Progress — {selectedBookMeta?.label} {selectedLektion}</LabelSmall>
+                      {(() => { const m = getLektionMastery(scopeWords, progressMap); return (
+                        <>
+                          <Block display="flex" justifyContent="space-between" alignItems="center" marginTop="8px">
+                            <div style={{fontSize:22, fontWeight:800}}>{m.pct}% <span style={{fontSize:12, fontWeight:400}}>seen</span> <span style={{fontSize:14, color:'#16a34a'}}>• {m.masteredPct}% mas.</span></div>
+                            <div style={{fontSize:12, color:'#6b6b6b'}}>{m.seen}/{m.total} seen • {m.mastered}★</div>
+                          </Block>
+                          <div style={{height:8, background:'#eee', borderRadius:999, marginTop:8, overflow:'hidden'}}>
+                            <div style={{height:'100%', width:`${m.pct}%`, background: '#000', borderRadius:999, transition:'width 0.5s'}} />
+                          </div>
+                          <div style={{height:6, background:'#dcfce7', borderRadius:999, marginTop:6, overflow:'hidden'}}>
+                            <div style={{height:'100%', width:`${m.masteredPct}%`, background: '#16a34a', borderRadius:999, transition:'width 0.5s'}} />
+                          </div>
+                          <ParagraphSmall color="#6b6b6b" marginTop="4px">{m.masteredPct >= 80 ? 'Mastered! Try next Lektion.' : `Study to see green grow — ${80 - m.masteredPct}% mastered to unlock`}</ParagraphSmall>
+                        </>
+                      );})()}
                     </UberCard>
+                    <Block display="flex" gridGap="8px">
+                      {BOOKS.map(b=> {
+                        const m = getBookMastery(b.id, allWords, progressMap);
+                        return (
+                          <UberCard key={b.id} styleOverride={{flex:1, paddingTop:'12px', paddingBottom:'12px', background: b.gradient, color:'#fff', borderWidth:0}}>
+                            <LabelSmall color="white">{b.label}</LabelSmall>
+                            <div style={{fontWeight:800, fontSize:18}}>{m.pct}% <span style={{fontSize:10, opacity:0.8}}>seen</span></div>
+                            <div style={{fontSize:11, opacity:0.9}}>{m.seen}/{m.total} seen • {m.mastered}★ {m.masteredPct}% mas.</div>
+                          </UberCard>
+                        );
+                      })}
+                    </Block>
                     <UberCard>
                       <LabelSmall>Stats</LabelSmall>
                       <Block display="flex" justifyContent="space-between" marginTop="8px">
-                        <ParagraphSmall>Weak words</ParagraphSmall><ParagraphSmall>{weakWords.length}</ParagraphSmall>
+                        <ParagraphSmall>Weak in scope</ParagraphSmall><ParagraphSmall>{weakForScope.length}</ParagraphSmall>
+                      </Block>
+                      <Block display="flex" justifyContent="space-between">
+                        <ParagraphSmall>Total weak</ParagraphSmall><ParagraphSmall>{weakWords.length}</ParagraphSmall>
                       </Block>
                       <Block display="flex" justifyContent="space-between">
                         <ParagraphSmall>Custom cards</ParagraphSmall><ParagraphSmall>{allWords.filter(w=>w.isCustom).length}</ParagraphSmall>
                       </Block>
                       <Block display="flex" justifyContent="space-between">
                         <ParagraphSmall>Total words</ParagraphSmall><ParagraphSmall>{allWords.length}</ParagraphSmall>
-                      </Block>
-                    </UberCard>
-                    <UberCard>
-                      <LabelSmall>Quick actions</LabelSmall>
-                      <Block display="flex" gridGap="8px" marginTop="8px">
-                        <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> setActiveKey('0')}>Study</Button>
-                        <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setActiveKey('3')}>Quiz weak</Button>
-                        <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setActiveKey('4')}>Board</Button>
                       </Block>
                     </UberCard>
                   </Block>
@@ -1452,9 +1527,9 @@ export default function App() {
           {authUser?.isAdmin && (
             <Tab title="Admin">
               <Block paddingTop="16px">
-                <UberCard styleOverride={{backgroundColor:'#fef2f2', borderTopColor:'#fecaca', borderBottomColor:'#fecaca', borderLeftColor:'#fecaca', borderRightColor:'#fecaca'}}>
+                <UberCard styleOverride={{backgroundColor:'#fef2f2', borderColor:'#fecaca'}}>
                   <Heading $style={{fontSize:16, margin:0}}>Admin — User management</Heading>
-                  <ParagraphSmall color="#991b1b">You are admin ({authUser.username}). You can view and remove users. XP is synced via leaderboard.</ParagraphSmall>
+                  <ParagraphSmall color="#991b1b">You are admin ({authUser.username}).</ParagraphSmall>
                   <Block display="flex" gridGap="8px" marginTop="8px">
                     <Button size={SIZE.mini} shape={SHAPE.pill} onClick={loadUsersList}>Refresh users</Button>
                     <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b=await resetOnlineBoard(adminToken); if(b){ setOnlineBoard(b); setUseOnline(true); setToast('Leaderboard reset'); } setTimeout(()=> setToast(null),1500); }}>Reset board</Button>
@@ -1466,7 +1541,7 @@ export default function App() {
                       <UberCard key={u.username} styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
                         <Block display="flex" justifyContent="space-between" alignItems="center">
                           <Block>
-                            <div style={{fontWeight:700}}>{u.username} {u.isAdmin && <span style={{fontSize:10, background:'#000', color:'#fff', padding:'1px 5px', borderTopLeftRadius:'999px', borderTopRightRadius:'999px', borderBottomLeftRadius:'999px', borderBottomRightRadius:'999px'}}>admin</span>} <span style={{fontSize:11, color:'#6b6b6b'}}>• {u.xp} XP • {u.email || 'no email'}</span></div>
+                            <div style={{fontWeight:700}}>{u.username} {u.isAdmin && <span style={{fontSize:10, background:'#000', color:'#fff', padding:'1px 5px', borderRadius:'999px'}}>admin</span>} <span style={{fontSize:11, color:'#6b6b6b'}}>• {u.xp} XP • {u.email || 'no email'}</span></div>
                             <div style={{fontSize:11, color:'#9a9a9a'}}>Joined {new Date(u.createdAt).toLocaleDateString()} • {u.streak||0} streak • {u.totalReviews||0} reviews</div>
                           </Block>
                           <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={async()=> { if(!confirm(`Delete ${u.username}?`)) return; const r=await deleteUser(u.username); if(r){ setUsersList(usersList.filter(x=> x.username!==u.username)); const b=await fetchOnlineLeaderboard(); if(b) setOnlineBoard(b); setToast(`Deleted ${u.username}`); setTimeout(()=> setToast(null),1500); } else { setToast('Delete failed'); setTimeout(()=> setToast(null),1500); } }}>×</Button>

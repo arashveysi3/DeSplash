@@ -1,0 +1,3580 @@
+{
+  "metadata": {
+    "book": "Menschen A1.1 Kursbuch",
+    "publisher": "Hueber Verlag",
+    "isbn": "978-3-19-301901-1",
+    "levels": "Lektion 1-12",
+    "total_words": 437,
+    "note": "Words extracted from Bildlexikon, Lesen, Hören sections"
+  },
+  "lektionen": {
+    "Lektion 1": {
+      "title": "Begrüßung, Befinden (Greetings, How are you)",
+      "theme": "Sich begrüßen und verabschieden; nach dem Befinden fragen; sich und andere vorstellen",
+      "words": [
+        {
+          "german": "Hallo",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Hello",
+          "meaning_fa": "سلام",
+          "example": "Hallo, ich bin Nicole."
+        },
+        {
+          "german": "Guten Tag",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Good day / Hello",
+          "meaning_fa": "روز بخیر",
+          "example": "Guten Tag, Frau Wachter!"
+        },
+        {
+          "german": "Guten Morgen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Good morning",
+          "meaning_fa": "صبح بخیر",
+          "example": "Guten Morgen, Paco!"
+        },
+        {
+          "german": "Guten Abend",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Good evening",
+          "meaning_fa": "عصر بخیر",
+          "example": "Guten Abend, Herr Rodriguez!"
+        },
+        {
+          "german": "Gute Nacht",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Good night",
+          "meaning_fa": "شب بخیر",
+          "example": "Gute Nacht, Nicole!"
+        },
+        {
+          "german": "Auf Wiedersehen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Goodbye (formal)",
+          "meaning_fa": "خداحافظ (رسمی)",
+          "example": "Auf Wiedersehen, Herr Rodriguez!"
+        },
+        {
+          "german": "Tschüss",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Bye (informal)",
+          "meaning_fa": "خداحافظ (عامیانه)",
+          "example": "Tschüss, bis morgen!"
+        },
+        {
+          "german": "Wie heißen Sie?",
+          "article": "",
+          "plural": "",
+          "meaning_en": "What is your name? (formal)",
+          "meaning_fa": "اسم شما چیست؟",
+          "example": "Wie heißen Sie? - Ich heiße Lydia Wirth."
+        },
+        {
+          "german": "Wie heißt du?",
+          "article": "",
+          "plural": "",
+          "meaning_en": "What is your name? (informal)",
+          "meaning_fa": "اسم تو چیست؟",
+          "example": "Wie heißt du? - Ich heiße Paco."
+        },
+        {
+          "german": "heißen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be called",
+          "meaning_fa": "نامیده شدن",
+          "example": "Ich heiße Nicole."
+        },
+        {
+          "german": "Ich bin...",
+          "article": "",
+          "plural": "",
+          "meaning_en": "I am...",
+          "meaning_fa": "من هستم...",
+          "example": "Ich bin Nicole."
+        },
+        {
+          "german": "Mein Name ist...",
+          "article": "",
+          "plural": "",
+          "meaning_en": "My name is...",
+          "meaning_fa": "اسم من ... است",
+          "example": "Mein Name ist Valerie Wulf."
+        },
+        {
+          "german": "der Name",
+          "article": "der",
+          "plural": "die Namen",
+          "meaning_en": "the name",
+          "meaning_fa": "نام",
+          "example": "Wie ist Ihr Name?"
+        },
+        {
+          "german": "der Familienname",
+          "article": "der",
+          "plural": "die Familiennamen",
+          "meaning_en": "family name / surname",
+          "meaning_fa": "نام خانوادگی",
+          "example": "Familienname: Rodriguez."
+        },
+        {
+          "german": "der Vorname",
+          "article": "der",
+          "plural": "die Vornamen",
+          "meaning_en": "first name",
+          "meaning_fa": "نام کوچک",
+          "example": "Vorname: Nicole."
+        },
+        {
+          "german": "wer",
+          "article": "",
+          "plural": "",
+          "meaning_en": "who",
+          "meaning_fa": "چه کسی",
+          "example": "Wer bist du?"
+        },
+        {
+          "german": "woher",
+          "article": "",
+          "plural": "",
+          "meaning_en": "where from",
+          "meaning_fa": "از کجا",
+          "example": "Woher kommst du?"
+        },
+        {
+          "german": "kommen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to come",
+          "meaning_fa": "آمدن",
+          "example": "Ich komme aus Mexiko."
+        },
+        {
+          "german": "sein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be",
+          "meaning_fa": "بودن",
+          "example": "Ich bin Student."
+        },
+        {
+          "german": "Wie geht's?",
+          "article": "",
+          "plural": "",
+          "meaning_en": "How are you? (informal)",
+          "meaning_fa": "حالت چطوره؟",
+          "example": "Wie geht's? - Gut, danke."
+        },
+        {
+          "german": "Wie geht es Ihnen?",
+          "article": "",
+          "plural": "",
+          "meaning_en": "How are you? (formal)",
+          "meaning_fa": "حالتان چطور است؟",
+          "example": "Wie geht es Ihnen? - Auch gut."
+        },
+        {
+          "german": "gut",
+          "article": "",
+          "plural": "",
+          "meaning_en": "good",
+          "meaning_fa": "خوب",
+          "example": "Gut, danke."
+        },
+        {
+          "german": "danke",
+          "article": "",
+          "plural": "",
+          "meaning_en": "thank you",
+          "meaning_fa": "ممنون",
+          "example": "Gut, danke."
+        },
+        {
+          "german": "bitte",
+          "article": "",
+          "plural": "",
+          "meaning_en": "please / you're welcome",
+          "meaning_fa": "لطفاً / خواهش می‌کنم",
+          "example": "Bitte schön."
+        },
+        {
+          "german": "auch",
+          "article": "",
+          "plural": "",
+          "meaning_en": "also / too",
+          "meaning_fa": "همچنین / هم",
+          "example": "Auch gut."
+        },
+        {
+          "german": "nicht so gut",
+          "article": "",
+          "plural": "",
+          "meaning_en": "not so good",
+          "meaning_fa": "نه خیلی خوب",
+          "example": "Nicht so gut."
+        },
+        {
+          "german": "sehr gut",
+          "article": "",
+          "plural": "",
+          "meaning_en": "very good",
+          "meaning_fa": "خیلی خوب",
+          "example": "Sehr gut, danke!"
+        },
+        {
+          "german": "die Frau",
+          "article": "die",
+          "plural": "die Frauen",
+          "meaning_en": "woman / Mrs.",
+          "meaning_fa": "زن / خانم",
+          "example": "Hallo, Frau Wachter!"
+        },
+        {
+          "german": "der Herr",
+          "article": "der",
+          "plural": "die Herren",
+          "meaning_en": "gentleman / Mr.",
+          "meaning_fa": "مرد / آقا",
+          "example": "Auf Wiedersehen, Herr Rodriguez!"
+        },
+        {
+          "german": "das Lied",
+          "article": "das",
+          "plural": "die Lieder",
+          "meaning_en": "song",
+          "meaning_fa": "آهنگ",
+          "example": "Hören Sie. Wie heißt das Lied?"
+        },
+        {
+          "german": "das Alphabet",
+          "article": "das",
+          "plural": "die Alphabete",
+          "meaning_en": "alphabet",
+          "meaning_fa": "الفبا",
+          "example": "Das Alphabet: A, B, C, D..."
+        },
+        {
+          "german": "buchstabieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to spell",
+          "meaning_fa": "هجی کردن",
+          "example": "Ich buchstabiere: V-a-l-..."
+        },
+        {
+          "german": "der Sitzplan",
+          "article": "der",
+          "plural": "die Sitzpläne",
+          "meaning_en": "seating plan",
+          "meaning_fa": "نقشه نشستن",
+          "example": "Zeichnen Sie einen Sitzplan."
+        },
+        {
+          "german": "meistens",
+          "article": "",
+          "plural": "",
+          "meaning_en": "mostly / most",
+          "meaning_fa": "بیشتر",
+          "example": "Wer weiß die meisten Namen?"
+        },
+        {
+          "german": "das Land",
+          "article": "das",
+          "plural": "die Länder",
+          "meaning_en": "country",
+          "meaning_fa": "کشور",
+          "example": "Woher kommst du? - Aus Spanien."
+        },
+        {
+          "german": "die Musik",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "music",
+          "meaning_fa": "موسیقی",
+          "example": "Woher kommt die Musik?"
+        }
+      ]
+    },
+    "Lektion 2": {
+      "title": "Angaben zur Person, Berufe (Personal Information, Professions)",
+      "theme": "Über den Beruf und Persönliches sprechen",
+      "words": [
+        {
+          "german": "der Beruf",
+          "article": "der",
+          "plural": "die Berufe",
+          "meaning_en": "profession / occupation",
+          "meaning_fa": "شغل / حرفه",
+          "example": "Was sind Sie von Beruf?"
+        },
+        {
+          "german": "beruflich",
+          "article": "",
+          "plural": "",
+          "meaning_en": "professional / work-related",
+          "meaning_fa": "حرفه‌ای",
+          "example": "Carmen, was machst du beruflich?"
+        },
+        {
+          "german": "arbeiten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to work",
+          "meaning_fa": "کار کردن",
+          "example": "Ich arbeite als Journalistin."
+        },
+        {
+          "german": "haben",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to have",
+          "meaning_fa": "داشتن",
+          "example": "Ich habe einen Job als..."
+        },
+        {
+          "german": "der Ingenieur",
+          "article": "der",
+          "plural": "die Ingenieure",
+          "meaning_en": "engineer",
+          "meaning_fa": "مهندس",
+          "example": "Er ist Ingenieur."
+        },
+        {
+          "german": "der Mechatroniker",
+          "article": "der",
+          "plural": "die Mechatroniker",
+          "meaning_en": "mechatronics engineer",
+          "meaning_fa": "مکاترونیک",
+          "example": "Er arbeitet als Mechatroniker."
+        },
+        {
+          "german": "der Schauspieler",
+          "article": "der",
+          "plural": "die Schauspieler",
+          "meaning_en": "actor",
+          "meaning_fa": "بازیگر",
+          "example": "Sie sind Schauspieler."
+        },
+        {
+          "german": "der Student",
+          "article": "der",
+          "plural": "die Studenten",
+          "meaning_en": "student (university)",
+          "meaning_fa": "دانشجو",
+          "example": "Ich bin Student."
+        },
+        {
+          "german": "die Studentin",
+          "article": "die",
+          "plural": "die Studentinnen",
+          "meaning_en": "student (female)",
+          "meaning_fa": "دانشجو (زن)",
+          "example": "Ich bin Studentin."
+        },
+        {
+          "german": "der Historiker",
+          "article": "der",
+          "plural": "die Historiker",
+          "meaning_en": "historian",
+          "meaning_fa": "تاریخ‌نگار",
+          "example": "Er ist Historiker."
+        },
+        {
+          "german": "die Historikerin",
+          "article": "die",
+          "plural": "die Historikerinnen",
+          "meaning_en": "historian (female)",
+          "meaning_fa": "تاریخ‌نگار (زن)",
+          "example": "Sie ist Historikerin."
+        },
+        {
+          "german": "der Journalist",
+          "article": "der",
+          "plural": "die Journalisten",
+          "meaning_en": "journalist",
+          "meaning_fa": "روزنامه‌نگار",
+          "example": "Ich bin Journalist."
+        },
+        {
+          "german": "die Journalistin",
+          "article": "die",
+          "plural": "die Journalistinnen",
+          "meaning_en": "journalist (female)",
+          "meaning_fa": "روزنامه‌نگار (زن)",
+          "example": "Ich bin Journalistin."
+        },
+        {
+          "german": "der Arzt",
+          "article": "der",
+          "plural": "die Ärzte",
+          "meaning_en": "doctor",
+          "meaning_fa": "پزشک",
+          "example": "Er ist Arzt."
+        },
+        {
+          "german": "die Ärztin",
+          "article": "die",
+          "plural": "die Ärztinnen",
+          "meaning_en": "doctor (female)",
+          "meaning_fa": "پزشک (زن)",
+          "example": "Sie ist Ärztin."
+        },
+        {
+          "german": "der Lehrer",
+          "article": "der",
+          "plural": "die Lehrer",
+          "meaning_en": "teacher",
+          "meaning_fa": "معلم",
+          "example": "Er ist Lehrer."
+        },
+        {
+          "german": "die Lehrerin",
+          "article": "die",
+          "plural": "die Lehrerinnen",
+          "meaning_en": "teacher (female)",
+          "meaning_fa": "معلم (زن)",
+          "example": "Sie ist Lehrerin."
+        },
+        {
+          "german": "der Kellner",
+          "article": "der",
+          "plural": "die Kellner",
+          "meaning_en": "waiter",
+          "meaning_fa": "گارسون",
+          "example": "Er arbeitet als Kellner."
+        },
+        {
+          "german": "die Kellnerin",
+          "article": "die",
+          "plural": "die Kellnerinnen",
+          "meaning_en": "waitress",
+          "meaning_fa": "گارسون (زن)",
+          "example": "Sie ist Kellnerin."
+        },
+        {
+          "german": "der Verkäufer",
+          "article": "der",
+          "plural": "die Verkäufer",
+          "meaning_en": "salesman",
+          "meaning_fa": "فروشنده",
+          "example": "Er ist Verkäufer."
+        },
+        {
+          "german": "die Verkäuferin",
+          "article": "die",
+          "plural": "die Verkäuferinnen",
+          "meaning_en": "saleswoman",
+          "meaning_fa": "فروشنده (زن)",
+          "example": "Sie ist Verkäuferin."
+        },
+        {
+          "german": "die Ausbildung",
+          "article": "die",
+          "plural": "die Ausbildungen",
+          "meaning_en": "training / apprenticeship",
+          "meaning_fa": "آموزش",
+          "example": "Ich mache eine Ausbildung als Friseurin."
+        },
+        {
+          "german": "das Praktikum",
+          "article": "das",
+          "plural": "die Praktika",
+          "meaning_en": "internship",
+          "meaning_fa": "کارآموزی",
+          "example": "Ich mache ein Praktikum bei..."
+        },
+        {
+          "german": "der Job",
+          "article": "der",
+          "plural": "die Jobs",
+          "meaning_en": "job",
+          "meaning_fa": "شغل",
+          "example": "Ich habe einen Job als..."
+        },
+        {
+          "german": "der Schüler",
+          "article": "der",
+          "plural": "die Schüler",
+          "meaning_en": "pupil / student (school)",
+          "meaning_fa": "دانش‌آموز",
+          "example": "Ich bin Schüler."
+        },
+        {
+          "german": "die Schülerin",
+          "article": "die",
+          "plural": "die Schülerinnen",
+          "meaning_en": "pupil (female)",
+          "meaning_fa": "دانش‌آموز (زن)",
+          "example": "Ich bin Schülerin."
+        },
+        {
+          "german": "der Friseur",
+          "article": "der",
+          "plural": "die Friseure",
+          "meaning_en": "hairdresser",
+          "meaning_fa": "آرایشگر",
+          "example": "Ich mache eine Ausbildung als Friseur."
+        },
+        {
+          "german": "die Friseurin",
+          "article": "die",
+          "plural": "die Friseurinnen",
+          "meaning_en": "hairdresser (female)",
+          "meaning_fa": "آرایشگر (زن)",
+          "example": "Ich mache eine Ausbildung als Friseurin."
+        },
+        {
+          "german": "die Visitenkarte",
+          "article": "die",
+          "plural": "die Visitenkarten",
+          "meaning_en": "business card",
+          "meaning_fa": "کارت ویزیت",
+          "example": "Das ist eine Visitenkarte."
+        },
+        {
+          "german": "die Firma",
+          "article": "die",
+          "plural": "die Firmen",
+          "meaning_en": "company",
+          "meaning_fa": "شرکت",
+          "example": "Ich arbeite bei einer Firma."
+        },
+        {
+          "german": "verheiratet",
+          "article": "",
+          "plural": "",
+          "meaning_en": "married",
+          "meaning_fa": "متاهل",
+          "example": "Wir sind verheiratet."
+        },
+        {
+          "german": "geschieden",
+          "article": "",
+          "plural": "",
+          "meaning_en": "divorced",
+          "meaning_fa": "طلاق گرفته",
+          "example": "Wir sind geschieden."
+        },
+        {
+          "german": "der Single",
+          "article": "der",
+          "plural": "die Singles",
+          "meaning_en": "single person",
+          "meaning_fa": "مجرد",
+          "example": "Ich bin Single."
+        },
+        {
+          "german": "zusammen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "together",
+          "meaning_fa": "با هم",
+          "example": "Wir leben zusammen."
+        },
+        {
+          "german": "das Kind",
+          "article": "das",
+          "plural": "die Kinder",
+          "meaning_en": "child",
+          "meaning_fa": "بچه",
+          "example": "Wir haben ein Kind."
+        },
+        {
+          "german": "die Kinder",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "children",
+          "meaning_fa": "بچه‌ها",
+          "example": "Wir haben zwei Kinder."
+        },
+        {
+          "german": "keine Kinder",
+          "article": "",
+          "plural": "",
+          "meaning_en": "no children",
+          "meaning_fa": "بچه‌ای ندارم",
+          "example": "Ich habe keine Kinder."
+        },
+        {
+          "german": "alt",
+          "article": "",
+          "plural": "",
+          "meaning_en": "old",
+          "meaning_fa": "پیر / قدیمی",
+          "example": "Wie alt bist du?"
+        },
+        {
+          "german": "das Alter",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "age",
+          "meaning_fa": "سن",
+          "example": "Ich bin 34 Jahre alt."
+        },
+        {
+          "german": "die Zahl",
+          "article": "die",
+          "plural": "die Zahlen",
+          "meaning_en": "number",
+          "meaning_fa": "عدد",
+          "example": "Die Zahl von 0 bis 100."
+        },
+        {
+          "german": "wohnen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to live / to reside",
+          "meaning_fa": "زندگی کردن",
+          "example": "Ich wohne in Berlin."
+        },
+        {
+          "german": "der Wohnort",
+          "article": "der",
+          "plural": "die Wohnorte",
+          "meaning_en": "place of residence",
+          "meaning_fa": "محل سکونت",
+          "example": "Wohnort: Berlin."
+        },
+        {
+          "german": "die Herkunft",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "origin",
+          "meaning_fa": "محل تولد / خاستگاه",
+          "example": "Herkunft: Mexiko."
+        },
+        {
+          "german": "bekannt",
+          "article": "",
+          "plural": "",
+          "meaning_en": "known / famous",
+          "meaning_fa": "شناخته شده / معروف",
+          "example": "Angela Merkel ist eine bekannte Persönlichkeit."
+        },
+        {
+          "german": "die Persönlichkeit",
+          "article": "die",
+          "plural": "die Persönlichkeiten",
+          "meaning_en": "personality",
+          "meaning_fa": "شخصیت",
+          "example": "Eine bekannte Persönlichkeit."
+        }
+      ]
+    },
+    "Lektion 3": {
+      "title": "Familie, Sprachen (Family, Languages)",
+      "theme": "Über die Familie und über Sprachkenntnisse sprechen",
+      "words": [
+        {
+          "german": "die Familie",
+          "article": "die",
+          "plural": "die Familien",
+          "meaning_en": "family",
+          "meaning_fa": "خانواده",
+          "example": "Das ist meine Familie."
+        },
+        {
+          "german": "der Vater",
+          "article": "der",
+          "plural": "die Väter",
+          "meaning_en": "father",
+          "meaning_fa": "پدر",
+          "example": "Das ist mein Vater."
+        },
+        {
+          "german": "die Mutter",
+          "article": "die",
+          "plural": "die Mütter",
+          "meaning_en": "mother",
+          "meaning_fa": "مادر",
+          "example": "Das ist meine Mutter."
+        },
+        {
+          "german": "der Sohn",
+          "article": "der",
+          "plural": "die Söhne",
+          "meaning_en": "son",
+          "meaning_fa": "پسر",
+          "example": "Mein Sohn heißt Bernd."
+        },
+        {
+          "german": "die Tochter",
+          "article": "die",
+          "plural": "die Töchter",
+          "meaning_en": "daughter",
+          "meaning_fa": "دختر",
+          "example": "Die Tochter ist nett."
+        },
+        {
+          "german": "der Bruder",
+          "article": "der",
+          "plural": "die Brüder",
+          "meaning_en": "brother",
+          "meaning_fa": "برادر",
+          "example": "Wie heißt dein Bruder?"
+        },
+        {
+          "german": "die Schwester",
+          "article": "die",
+          "plural": "die Schwestern",
+          "meaning_en": "sister",
+          "meaning_fa": "خواهر",
+          "example": "Meine Schwester ist nett."
+        },
+        {
+          "german": "der Großvater",
+          "article": "der",
+          "plural": "die Großväter",
+          "meaning_en": "grandfather",
+          "meaning_fa": "پدربزرگ",
+          "example": "Der Großvater heißt Carl."
+        },
+        {
+          "german": "der Opa",
+          "article": "der",
+          "plural": "die Opas",
+          "meaning_en": "grandpa",
+          "meaning_fa": "پدربزرگ (عامیانه)",
+          "example": "Mein Opa heißt Carl."
+        },
+        {
+          "german": "die Großmutter",
+          "article": "die",
+          "plural": "die Großmütter",
+          "meaning_en": "grandmother",
+          "meaning_fa": "مادربزرگ",
+          "example": "Die Großmutter heißt Helga."
+        },
+        {
+          "german": "die Oma",
+          "article": "die",
+          "plural": "dieomas",
+          "meaning_en": "grandma",
+          "meaning_fa": "مادربزرگ (عامیانه)",
+          "example": "Meine Oma heißt Helga."
+        },
+        {
+          "german": "die Großeltern",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "grandparents",
+          "meaning_fa": "پدربزرگ و مادربزرگ",
+          "example": "Das sind meine Großeltern."
+        },
+        {
+          "german": "der Mann",
+          "article": "der",
+          "plural": "die Männer",
+          "meaning_en": "man / husband",
+          "meaning_fa": "مرد / شوهر",
+          "example": "Das ist mein Mann."
+        },
+        {
+          "german": "die Frau",
+          "article": "die",
+          "plural": "die Frauen",
+          "meaning_en": "woman / wife",
+          "meaning_fa": "زن / همسر",
+          "example": "Das ist meine Frau."
+        },
+        {
+          "german": "der Enkel",
+          "article": "der",
+          "plural": "die Enkel",
+          "meaning_en": "grandson",
+          "meaning_fa": "نوه پسری",
+          "example": "Das ist mein Enkel."
+        },
+        {
+          "german": "die Enkelin",
+          "article": "die",
+          "plural": "die Enkelinnen",
+          "meaning_en": "granddaughter",
+          "meaning_fa": "نوه دختری",
+          "example": "Das ist meine Enkelin."
+        },
+        {
+          "german": "die Eltern",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "parents",
+          "meaning_fa": "والدین",
+          "example": "Das sind meine Eltern."
+        },
+        {
+          "german": "die Kinder",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "children",
+          "meaning_fa": "بچه‌ها",
+          "example": "Wir haben drei Kinder."
+        },
+        {
+          "german": "die Geschwister",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "siblings",
+          "meaning_fa": "خواهر و برادرها",
+          "example": "Ich habe zwei Geschwister."
+        },
+        {
+          "german": "der Freund",
+          "article": "der",
+          "plural": "die Freunde",
+          "meaning_en": "friend (male)",
+          "meaning_fa": "دوست (مرد)",
+          "example": "Das ist mein Freund."
+        },
+        {
+          "german": "die Freundin",
+          "article": "die",
+          "plural": "die Freundinnen",
+          "meaning_en": "friend (female) / girlfriend",
+          "meaning_fa": "دوست (زن) / دختر",
+          "example": "Ewa ist meine Freundin."
+        },
+        {
+          "german": "der Partner",
+          "article": "der",
+          "plural": "die Partner",
+          "meaning_en": "partner",
+          "meaning_fa": "شریک / همسر",
+          "example": "Das ist mein Partner."
+        },
+        {
+          "german": "die Partnerin",
+          "article": "die",
+          "plural": "die Partnerinnen",
+          "meaning_en": "partner (female)",
+          "meaning_fa": "شریک (زن)",
+          "example": "Das ist meine Partnerin."
+        },
+        {
+          "german": "der Kollege",
+          "article": "der",
+          "plural": "die Kollegen",
+          "meaning_en": "colleague (male)",
+          "meaning_fa": "همکار (مرد)",
+          "example": "Er ist mein Kollege."
+        },
+        {
+          "german": "die Kollegin",
+          "article": "die",
+          "plural": "die Kolleginnen",
+          "meaning_en": "colleague (female)",
+          "meaning_fa": "همکار (زن)",
+          "example": "Sie ist meine Kollegin."
+        },
+        {
+          "german": "die Sprache",
+          "article": "die",
+          "plural": "die Sprachen",
+          "meaning_en": "language",
+          "meaning_fa": "زبان",
+          "example": "Welche Sprachen sprechen Sie?"
+        },
+        {
+          "german": "sprechen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to speak",
+          "meaning_fa": "صحبت کردن",
+          "example": "Ich spreche Deutsch und Englisch."
+        },
+        {
+          "german": "das Deutsch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "German (language)",
+          "meaning_fa": "آلمانی",
+          "example": "Ich spreche Deutsch."
+        },
+        {
+          "german": "das Englisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "English",
+          "meaning_fa": "انگلیسی",
+          "example": "Ich spreche auch Englisch."
+        },
+        {
+          "german": "das Französisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "French",
+          "meaning_fa": "فرانسوی",
+          "example": "Sprichst du Französisch?"
+        },
+        {
+          "german": "das Spanisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "Spanish",
+          "meaning_fa": "اسپانیایی",
+          "example": "Ich spreche Spanisch."
+        },
+        {
+          "german": "das Russisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "Russian",
+          "meaning_fa": "روسی",
+          "example": "Er spricht Russisch."
+        },
+        {
+          "german": "das Finnisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "Finnish",
+          "meaning_fa": "فنلاندی",
+          "example": "Sie spricht Finnisch."
+        },
+        {
+          "german": "das Italienisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "Italian",
+          "meaning_fa": "ایتالیایی",
+          "example": "Er spricht Italienisch."
+        },
+        {
+          "german": "das Chinesisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "Chinese",
+          "meaning_fa": "چینی",
+          "example": "Sie spricht Chinesisch."
+        },
+        {
+          "german": "das Japanisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "Japanese",
+          "meaning_fa": "ژاپنی",
+          "example": "Er spricht Japanisch."
+        },
+        {
+          "german": "die Fremdsprache",
+          "article": "die",
+          "plural": "die Fremdsprachen",
+          "meaning_en": "foreign language",
+          "meaning_fa": "زبان خارجی",
+          "example": "Er spricht zwei Fremdsprachen."
+        },
+        {
+          "german": "perfekt",
+          "article": "",
+          "plural": "",
+          "meaning_en": "perfect",
+          "meaning_fa": "عالی",
+          "example": "Ich spreche perfekt Deutsch."
+        },
+        {
+          "german": "ein bisschen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "a little / a bit",
+          "meaning_fa": "یکم",
+          "example": "Ich spreche ein bisschen Französisch."
+        },
+        {
+          "german": "sehr gut",
+          "article": "",
+          "plural": "",
+          "meaning_en": "very good",
+          "meaning_fa": "خیلی خوب",
+          "example": "Ich spreche sehr gut Englisch."
+        },
+        {
+          "german": "mein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "my",
+          "meaning_fa": "مال من",
+          "example": "Das ist mein Bruder."
+        },
+        {
+          "german": "dein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "your (informal)",
+          "meaning_fa": "مال تو",
+          "example": "Ist das deine Schwester?"
+        },
+        {
+          "german": "das Bild",
+          "article": "das",
+          "plural": "die Bilder",
+          "meaning_en": "picture / image",
+          "meaning_fa": "تصویر",
+          "example": "Die Frau auf dem Bild."
+        },
+        {
+          "german": "glauben",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to believe",
+          "meaning_fa": "باور کردن",
+          "example": "Ja, das glaube ich auch."
+        }
+      ]
+    },
+    "Lektion 4": {
+      "title": "Einkaufen, Möbel (Shopping, Furniture)",
+      "theme": "Nach Preisen fragen und Preise nennen; etwas bewerten",
+      "words": [
+        {
+          "german": "der Tisch",
+          "article": "der",
+          "plural": "die Tische",
+          "meaning_en": "table",
+          "meaning_fa": "میز",
+          "example": "Der Tisch ist schön."
+        },
+        {
+          "german": "das Bett",
+          "article": "das",
+          "plural": "die Betten",
+          "meaning_en": "bed",
+          "meaning_fa": "تخت",
+          "example": "Das Bett ist modern."
+        },
+        {
+          "german": "der Sessel",
+          "article": "der",
+          "plural": "die Sessel",
+          "meaning_en": "armchair",
+          "meaning_fa": "صندلی راحتی",
+          "example": "Der Sessel ist bequem."
+        },
+        {
+          "german": "das Sofa",
+          "article": "das",
+          "plural": "die Sofas",
+          "meaning_en": "sofa / couch",
+          "meaning_fa": "مبل",
+          "example": "Das Sofa ist neu."
+        },
+        {
+          "german": "der Stuhl",
+          "article": "der",
+          "plural": "die Stühle",
+          "meaning_en": "chair",
+          "meaning_fa": "صندلی",
+          "example": "Der Stuhl ist billig."
+        },
+        {
+          "german": "der Teppich",
+          "article": "der",
+          "plural": "die Teppiche",
+          "meaning_en": "carpet / rug",
+          "meaning_fa": "فرش",
+          "example": "Der Teppich ist schön."
+        },
+        {
+          "german": "der Schrank",
+          "article": "der",
+          "plural": "die Schränke",
+          "meaning_en": "cupboard / wardrobe",
+          "meaning_fa": "کمد",
+          "example": "Der Schrank ist groß."
+        },
+        {
+          "german": "die Lampe",
+          "article": "die",
+          "plural": "die Lampen",
+          "meaning_en": "lamp",
+          "meaning_fa": "چراغ",
+          "example": "Die Lampe kostet 119 Euro."
+        },
+        {
+          "german": "schön",
+          "article": "",
+          "plural": "",
+          "meaning_en": "beautiful / nice",
+          "meaning_fa": "زیبا / خوب",
+          "example": "Der Tisch ist schön."
+        },
+        {
+          "german": "modern",
+          "article": "",
+          "plural": "",
+          "meaning_en": "modern",
+          "meaning_fa": "مدرن",
+          "example": "Das Bett ist modern."
+        },
+        {
+          "german": "teuer",
+          "article": "",
+          "plural": "",
+          "meaning_en": "expensive",
+          "meaning_fa": "گران",
+          "example": "Das ist zu teuer!"
+        },
+        {
+          "german": "billig",
+          "article": "",
+          "plural": "",
+          "meaning_en": "cheap",
+          "meaning_fa": "ارزان",
+          "example": "Das ist billig."
+        },
+        {
+          "german": "günstig",
+          "article": "",
+          "plural": "",
+          "meaning_en": "favorable / cheap",
+          "meaning_fa": "ارزان / مناسب",
+          "example": "Das ist sehr günstig."
+        },
+        {
+          "german": "praktisch",
+          "article": "",
+          "plural": "",
+          "meaning_en": "practical",
+          "meaning_fa": "عملی",
+          "example": "Das ist praktisch."
+        },
+        {
+          "german": "groß",
+          "article": "",
+          "plural": "",
+          "meaning_en": "big / tall",
+          "meaning_fa": "بزرگ",
+          "example": "Der Tisch ist zu groß."
+        },
+        {
+          "german": "klein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "small",
+          "meaning_fa": "کوچک",
+          "example": "Das Bett ist zu klein."
+        },
+        {
+          "german": "gut",
+          "article": "",
+          "plural": "",
+          "meaning_en": "good",
+          "meaning_fa": "خوب",
+          "example": "Das ist gut."
+        },
+        {
+          "german": "schlecht",
+          "article": "",
+          "plural": "",
+          "meaning_en": "bad",
+          "meaning_fa": "بد",
+          "example": "Das ist schlecht."
+        },
+        {
+          "german": "neu",
+          "article": "",
+          "plural": "",
+          "meaning_en": "new",
+          "meaning_fa": "جدید",
+          "example": "Das Sofa ist neu."
+        },
+        {
+          "german": "kosten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to cost",
+          "meaning_fa": "قیمت داشتن",
+          "example": "Der Tisch kostet 1478 Euro."
+        },
+        {
+          "german": "der Euro",
+          "article": "der",
+          "plural": "die Euros",
+          "meaning_en": "Euro",
+          "meaning_fa": "یورو",
+          "example": "Das kostet 20 Euro."
+        },
+        {
+          "german": "die Farbe",
+          "article": "die",
+          "plural": "die Farben",
+          "meaning_en": "color",
+          "meaning_fa": "رنگ",
+          "example": "Welche Farbe hat der Teppich?"
+        },
+        {
+          "german": "schwarz",
+          "article": "",
+          "plural": "",
+          "meaning_en": "black",
+          "meaning_fa": "سیاه",
+          "example": "Der Tisch ist schwarz."
+        },
+        {
+          "german": "weiß",
+          "article": "",
+          "plural": "",
+          "meaning_en": "white",
+          "meaning_fa": "سفید",
+          "example": "Die Lampe ist weiß."
+        },
+        {
+          "german": "blau",
+          "article": "",
+          "plural": "",
+          "meaning_en": "blue",
+          "meaning_fa": "آبی",
+          "example": "Der Stuhl ist blau."
+        },
+        {
+          "german": "rot",
+          "article": "",
+          "plural": "",
+          "meaning_en": "red",
+          "meaning_fa": "قرمز",
+          "example": "Das Bett ist rot."
+        },
+        {
+          "german": "grün",
+          "article": "",
+          "plural": "",
+          "meaning_en": "green",
+          "meaning_fa": "سبز",
+          "example": "Der Teppich ist grün."
+        },
+        {
+          "german": "gelb",
+          "article": "",
+          "plural": "",
+          "meaning_en": "yellow",
+          "meaning_fa": "زرد",
+          "example": "Die Lampe ist gelb."
+        },
+        {
+          "german": "orange",
+          "article": "",
+          "plural": "",
+          "meaning_en": "orange",
+          "meaning_fa": "نارنجی",
+          "example": "Der Stuhl ist orange."
+        },
+        {
+          "german": "braun",
+          "article": "",
+          "plural": "",
+          "meaning_en": "brown",
+          "meaning_fa": "قهوه‌ای",
+          "example": "Der Tisch ist braun."
+        },
+        {
+          "german": "das Holz",
+          "article": "das",
+          "plural": "die Hölzer",
+          "meaning_en": "wood",
+          "meaning_fa": "چوب",
+          "example": "Der Tisch ist aus Holz."
+        },
+        {
+          "german": "das Metall",
+          "article": "das",
+          "plural": "die Metalle",
+          "meaning_en": "metal",
+          "meaning_fa": "فلز",
+          "example": "Die Lampe ist aus Metall."
+        },
+        {
+          "german": "das Papier",
+          "article": "das",
+          "plural": "die Papiere",
+          "meaning_en": "paper",
+          "meaning_fa": "کاغذ",
+          "example": "Das ist aus Papier."
+        },
+        {
+          "german": "der Kunststoff",
+          "article": "der",
+          "plural": "die Kunststoffe",
+          "meaning_en": "plastic",
+          "meaning_fa": "پلاستیک",
+          "example": "Das ist aus Kunststoff."
+        },
+        {
+          "german": "das Glas",
+          "article": "das",
+          "plural": "die Gläser",
+          "meaning_en": "glass",
+          "meaning_fa": "شیشه",
+          "example": "Die Lampe ist aus Glas."
+        },
+        {
+          "german": "die Brille",
+          "article": "die",
+          "plural": "die Brillen",
+          "meaning_en": "eyeglasses",
+          "meaning_fa": "عینک",
+          "example": "Die Brille ist schön."
+        },
+        {
+          "german": "das Sonderangebot",
+          "article": "das",
+          "plural": "die Sonderangebote",
+          "meaning_en": "special offer",
+          "meaning_fa": "پیشنهاد ویژه",
+          "example": "Das ist ein Sonderangebot."
+        },
+        {
+          "german": "die Hilfe",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "help",
+          "meaning_fa": "کمک",
+          "example": "Brauchen Sie Hilfe?"
+        },
+        {
+          "german": "vielen Dank",
+          "article": "",
+          "plural": "",
+          "meaning_en": "thank you very much",
+          "meaning_fa": "خیلی ممنون",
+          "example": "Vielen Dank!"
+        },
+        {
+          "german": "die Zahl",
+          "article": "die",
+          "plural": "die Zahlen",
+          "meaning_en": "number",
+          "meaning_fa": "عدد",
+          "example": "Die Zahl 100 ist hundert."
+        },
+        {
+          "german": "hundert",
+          "article": "",
+          "plural": "",
+          "meaning_en": "hundred",
+          "meaning_fa": "صد",
+          "example": "100 = hundert."
+        },
+        {
+          "german": "tausend",
+          "article": "",
+          "plural": "",
+          "meaning_en": "thousand",
+          "meaning_fa": "هزار",
+          "example": "1000 = (ein)tausend."
+        },
+        {
+          "german": "eine Million",
+          "article": "",
+          "plural": "",
+          "meaning_en": "a million",
+          "meaning_fa": "یک میلیون",
+          "example": "1.000.000 = eine Million."
+        },
+        {
+          "german": "der Preis",
+          "article": "der",
+          "plural": "die Preise",
+          "meaning_en": "price",
+          "meaning_fa": "قیمت",
+          "example": "Was kostet der Tisch?"
+        },
+        {
+          "german": "was",
+          "article": "",
+          "plural": "",
+          "meaning_en": "what",
+          "meaning_fa": "چه",
+          "example": "Was kostet die Lampe?"
+        },
+        {
+          "german": "wie viel",
+          "article": "",
+          "plural": "",
+          "meaning_en": "how much",
+          "meaning_fa": "چقدر",
+          "example": "Wie viel kostet der Tisch?"
+        },
+        {
+          "german": "ja",
+          "article": "",
+          "plural": "",
+          "meaning_en": "yes",
+          "meaning_fa": "بله",
+          "example": "Ja, bitte."
+        },
+        {
+          "german": "nein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "no",
+          "meaning_fa": "نه",
+          "example": "Nein, danke."
+        },
+        {
+          "german": "ein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "a / an (masc. / neut.)",
+          "meaning_fa": "یک",
+          "example": "Das ist ein Tisch."
+        },
+        {
+          "german": "eine",
+          "article": "",
+          "plural": "",
+          "meaning_en": "a / an (fem.)",
+          "meaning_fa": "یک",
+          "example": "Das ist eine Lampe."
+        },
+        {
+          "german": "der",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "the (masculine)",
+          "meaning_fa": "آن (مذکر)",
+          "example": "Der Tisch ist schön."
+        },
+        {
+          "german": "die",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "the (feminine / plural)",
+          "meaning_fa": "آن (مؤنث)",
+          "example": "Die Lampe ist neu."
+        },
+        {
+          "german": "das",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "the (neuter)",
+          "meaning_fa": "آن (خنثی)",
+          "example": "Das Bett ist modern."
+        },
+        {
+          "german": "er",
+          "article": "",
+          "plural": "",
+          "meaning_en": "he",
+          "meaning_fa": "او (مرد)",
+          "example": "Er kostet 100 Euro."
+        },
+        {
+          "german": "es",
+          "article": "",
+          "plural": "",
+          "meaning_en": "it",
+          "meaning_fa": "آن",
+          "example": "Es kostet 50 Euro."
+        },
+        {
+          "german": "sie",
+          "article": "",
+          "plural": "",
+          "meaning_en": "she / they",
+          "meaning_fa": "آنها / او (زن)",
+          "example": "Sie kostet 20 Euro."
+        }
+      ]
+    },
+    "Lektion 5": {
+      "title": "Gegenstände, Produkte (Objects, Products)",
+      "theme": "Nach Wörtern fragen und Wörter nennen; etwas beschreiben; sich bedanken",
+      "words": [
+        {
+          "german": "der Bleistift",
+          "article": "der",
+          "plural": "die Bleistifte",
+          "meaning_en": "pencil",
+          "meaning_fa": "مداد",
+          "example": "Das ist ein Bleistift."
+        },
+        {
+          "german": "die Brille",
+          "article": "die",
+          "plural": "die Brillen",
+          "meaning_en": "eyeglasses",
+          "meaning_fa": "عینک",
+          "example": "Die Brille ist aus Kunststoff."
+        },
+        {
+          "german": "das Buch",
+          "article": "das",
+          "plural": "die Bücher",
+          "meaning_en": "book",
+          "meaning_fa": "کتاب",
+          "example": "Das ist mein Buch."
+        },
+        {
+          "german": "die Flasche",
+          "article": "die",
+          "plural": "die Flaschen",
+          "meaning_en": "bottle",
+          "meaning_fa": "بطری",
+          "example": "Die Flasche ist aus Glas."
+        },
+        {
+          "german": "die Geldbörse",
+          "article": "die",
+          "plural": "die Geldbörsen",
+          "meaning_en": "wallet",
+          "meaning_fa": "کیف پول",
+          "example": "Das ist meine Geldbörse."
+        },
+        {
+          "german": "das Feuerzeug",
+          "article": "das",
+          "plural": "die Feuerzeuge",
+          "meaning_en": "lighter",
+          "meaning_fa": "فندک",
+          "example": "Das Feuerzeug ist neu."
+        },
+        {
+          "german": "der Fotoapparat",
+          "article": "der",
+          "plural": "die Fotoapparate",
+          "meaning_en": "camera",
+          "meaning_fa": "دوربین عکاسی",
+          "example": "Der Fotoapparat ist teuer."
+        },
+        {
+          "german": "die Kette",
+          "article": "die",
+          "plural": "die Ketten",
+          "meaning_en": "chain / necklace",
+          "meaning_fa": "زنجیر / گردنبند",
+          "example": "Die Kette ist aus Gold."
+        },
+        {
+          "german": "der Kugelschreiber",
+          "article": "der",
+          "plural": "die Kugelschreiber",
+          "meaning_en": "ballpoint pen",
+          "meaning_fa": "خودکار",
+          "example": "Das ist mein Kugelschreiber."
+        },
+        {
+          "german": "der Regenschirm",
+          "article": "der",
+          "plural": "die Regenschirme",
+          "meaning_en": "umbrella",
+          "meaning_fa": "چتر",
+          "example": "Der Regenschirm ist blau."
+        },
+        {
+          "german": "der Ring",
+          "article": "der",
+          "plural": "die Ringe",
+          "meaning_en": "ring",
+          "meaning_fa": "انگشتر",
+          "example": "Der Ring ist aus Silber."
+        },
+        {
+          "german": "der Schlüssel",
+          "article": "der",
+          "plural": "die Schlüssel",
+          "meaning_en": "key",
+          "meaning_fa": "کلید",
+          "example": "Das ist mein Schlüssel."
+        },
+        {
+          "german": "die Seife",
+          "article": "die",
+          "plural": "die Seifen",
+          "meaning_en": "soap",
+          "meaning_fa": "صابون",
+          "example": "Die Seife riecht gut."
+        },
+        {
+          "german": "das Streichholz",
+          "article": "das",
+          "plural": "die Streichhölzer",
+          "meaning_en": "match",
+          "meaning_fa": "کبریت",
+          "example": "Das ist ein Streichholz."
+        },
+        {
+          "german": "die Tasche",
+          "article": "die",
+          "plural": "die Taschen",
+          "meaning_en": "bag / pocket",
+          "meaning_fa": "کیف / جیب",
+          "example": "Die Tasche ist schön."
+        },
+        {
+          "german": "die Uhr",
+          "article": "die",
+          "plural": "die Uhren",
+          "meaning_en": "watch / clock",
+          "meaning_fa": "ساعت",
+          "example": "Die Uhr ist teuer."
+        },
+        {
+          "german": "die Adresse",
+          "article": "die",
+          "plural": "die Adressen",
+          "meaning_en": "address",
+          "meaning_fa": "آدرس",
+          "example": "Was ist Ihre Adresse?"
+        },
+        {
+          "german": "die E-Mail",
+          "article": "die",
+          "plural": "die E-Mails",
+          "meaning_en": "email",
+          "meaning_fa": "ایمیل",
+          "example": "Ich schreibe eine E-Mail."
+        },
+        {
+          "german": "das Fax",
+          "article": "das",
+          "plural": "die Faxe",
+          "meaning_en": "fax",
+          "meaning_fa": "فاکس",
+          "example": "Das Fax ist da."
+        },
+        {
+          "german": "das Geburtsdatum",
+          "article": "das",
+          "plural": "die Geburtsdaten",
+          "meaning_en": "date of birth",
+          "meaning_fa": "تاریخ تولد",
+          "example": "Was ist Ihr Geburtsdatum?"
+        },
+        {
+          "german": "die Nummer",
+          "article": "die",
+          "plural": "die Nummern",
+          "meaning_en": "number",
+          "meaning_fa": "شماره",
+          "example": "Was ist Ihre Telefonnummer?"
+        },
+        {
+          "german": "die Hausnummer",
+          "article": "die",
+          "plural": "die Hausnummern",
+          "meaning_en": "house number",
+          "meaning_fa": "شماره خانه",
+          "example": "Die Hausnummer ist 25."
+        },
+        {
+          "german": "die Straße",
+          "article": "die",
+          "plural": "die Straßen",
+          "meaning_en": "street",
+          "meaning_fa": "خیابان",
+          "example": "Die Straße heißt Hauptstraße."
+        },
+        {
+          "german": "die Postleitzahl",
+          "article": "die",
+          "plural": "die Postleitzahlen",
+          "meaning_en": "postal code",
+          "meaning_fa": "کد پستی",
+          "example": "Die Postleitzahl ist 10115."
+        },
+        {
+          "german": "das Telefon",
+          "article": "das",
+          "plural": "die Telefone",
+          "meaning_en": "telephone",
+          "meaning_fa": "تلفن",
+          "example": "Das Telefon klingelt."
+        },
+        {
+          "german": "die Entschuldigung",
+          "article": "die",
+          "plural": "die Entschuldigungen",
+          "meaning_en": "excuse / apology",
+          "meaning_fa": "عذرخواهی",
+          "example": "Entschuldigung, wie ist die Adresse?"
+        },
+        {
+          "german": "die Menge",
+          "article": "die",
+          "plural": "die Mengen",
+          "meaning_en": "amount / quantity",
+          "meaning_fa": "مقدار",
+          "example": "Eine große Menge."
+        },
+        {
+          "german": "das Problem",
+          "article": "das",
+          "plural": "die Probleme",
+          "meaning_en": "problem",
+          "meaning_fa": "مشکل",
+          "example": "Kein Problem."
+        },
+        {
+          "german": "das Produkt",
+          "article": "das",
+          "plural": "die Produkte",
+          "meaning_en": "product",
+          "meaning_fa": "محصول",
+          "example": "Das Produkt ist gut."
+        },
+        {
+          "german": "das Wort",
+          "article": "das",
+          "plural": "die Wörter",
+          "meaning_en": "word",
+          "meaning_fa": "کلمه",
+          "example": "Wie ist das Wort auf Deutsch?"
+        },
+        {
+          "german": "die Bestellnummer",
+          "article": "die",
+          "plural": "die Bestellnummern",
+          "meaning_en": "order number",
+          "meaning_fa": "شماره سفارش",
+          "example": "Was ist die Bestellnummer?"
+        },
+        {
+          "german": "der Produkname",
+          "article": "der",
+          "plural": "die Produktnamen",
+          "meaning_en": "product name",
+          "meaning_fa": "نام محصول",
+          "example": "Der Produkname ist..."
+        }
+      ]
+    },
+    "Lektion 6": {
+      "title": "Büro & Technik (Office & Technology)",
+      "theme": "Hören: Telefongespräche; Sprechen: Telefonstrategien; Lesen: E-Mail und SMS",
+      "words": [
+        {
+          "german": "das Büro",
+          "article": "das",
+          "plural": "die Büros",
+          "meaning_en": "office",
+          "meaning_fa": "دفتر",
+          "example": "Ich brauche kein Büro."
+        },
+        {
+          "german": "der Arbeitsplatz",
+          "article": "der",
+          "plural": "die Arbeitsplätze",
+          "meaning_en": "workplace",
+          "meaning_fa": "محل کار",
+          "example": "Der Arbeitsplatz ist nett."
+        },
+        {
+          "german": "der Computer",
+          "article": "der",
+          "plural": "die Computer",
+          "meaning_en": "computer",
+          "meaning_fa": "کامپیوتر",
+          "example": "Der Computer ist schnell."
+        },
+        {
+          "german": "der Laptop",
+          "article": "der",
+          "plural": "die Laptops",
+          "meaning_en": "laptop",
+          "meaning_fa": "لپ‌تاپ",
+          "example": "Der Laptop ist neu."
+        },
+        {
+          "german": "der Drucker",
+          "article": "der",
+          "plural": "die Drucker",
+          "meaning_en": "printer",
+          "meaning_fa": "پرینتر",
+          "example": "Der Drucker funktioniert nicht."
+        },
+        {
+          "german": "die Maus",
+          "article": "die",
+          "plural": "die Mäuse",
+          "meaning_en": "mouse (computer)",
+          "meaning_fa": "ماوس",
+          "example": "Die Maus ist kabellos."
+        },
+        {
+          "german": "der Bildschirm",
+          "article": "der",
+          "plural": "die Bildschirme",
+          "meaning_en": "screen / monitor",
+          "meaning_fa": "صفحه نمایش",
+          "example": "Der Bildschirm ist groß."
+        },
+        {
+          "german": "das Handy",
+          "article": "das",
+          "plural": "die Handys",
+          "meaning_en": "mobile phone",
+          "meaning_fa": "موبایل",
+          "example": "Das Handy ist neu."
+        },
+        {
+          "german": "die SMS",
+          "article": "die",
+          "plural": "die SMS",
+          "meaning_en": "text message",
+          "meaning_fa": "پیامک",
+          "example": "Ich schreibe eine SMS."
+        },
+        {
+          "german": "der Kalender",
+          "article": "der",
+          "plural": "die Kalender",
+          "meaning_en": "calendar",
+          "meaning_fa": "تقویم",
+          "example": "Der Kalender ist auf dem Tisch."
+        },
+        {
+          "german": "der Termin",
+          "article": "der",
+          "plural": "die Termine",
+          "meaning_en": "appointment",
+          "meaning_fa": "قرار",
+          "example": "Ich habe einen Termin."
+        },
+        {
+          "german": "die Rechnung",
+          "article": "die",
+          "plural": "die Rechnungen",
+          "meaning_en": "bill",
+          "meaning_fa": "قبض",
+          "example": "Die Rechnung, bitte."
+        },
+        {
+          "german": "der Stift",
+          "article": "der",
+          "plural": "die Stifte",
+          "meaning_en": "pen",
+          "meaning_fa": "قلم",
+          "example": "Gibt es einen Stift?"
+        },
+        {
+          "german": "das Notizbuch",
+          "article": "das",
+          "plural": "die Notizbücher",
+          "meaning_en": "notebook",
+          "meaning_fa": "دفترچه یادداشت",
+          "example": "Das Notizbuch ist neu."
+        },
+        {
+          "german": "das Formular",
+          "article": "das",
+          "plural": "die Formulare",
+          "meaning_en": "form",
+          "meaning_fa": "فرم",
+          "example": "Füllen Sie das Formular aus."
+        },
+        {
+          "german": "die Firma",
+          "article": "die",
+          "plural": "die Firmen",
+          "meaning_en": "company",
+          "meaning_fa": "شرکت",
+          "example": "Ich arbeite bei einer großen Firma."
+        },
+        {
+          "german": "der Chef",
+          "article": "der",
+          "plural": "die Chefs",
+          "meaning_en": "boss",
+          "meaning_fa": "رئیس",
+          "example": "Der Chef ist nett."
+        },
+        {
+          "german": "die Chefin",
+          "article": "die",
+          "plural": "die Chefinnen",
+          "meaning_en": "boss (female)",
+          "meaning_fa": "رئیس (زن)",
+          "example": "Die Chefin ist streng."
+        },
+        {
+          "german": "das Foto",
+          "article": "das",
+          "plural": "die Fotos",
+          "meaning_en": "photo",
+          "meaning_fa": "عکس",
+          "example": "Das Foto ist schön."
+        },
+        {
+          "german": "der Gruß",
+          "article": "der",
+          "plural": "die Grüße",
+          "meaning_en": "greeting",
+          "meaning_fa": "سلام",
+          "example": "Viele Grüße!"
+        },
+        {
+          "german": "die Briefmarke",
+          "article": "die",
+          "plural": "die Briefmarken",
+          "meaning_en": "stamp",
+          "meaning_fa": "تمبر",
+          "example": "Ich brauche eine Briefmarke."
+        },
+        {
+          "german": "der Brief",
+          "article": "der",
+          "plural": "die Briefe",
+          "meaning_en": "letter",
+          "meaning_fa": "نامه",
+          "example": "Der Brief ist da."
+        },
+        {
+          "german": "die Postkarte",
+          "article": "die",
+          "plural": "die Postkarten",
+          "meaning_en": "postcard",
+          "meaning_fa": "کارت پستال",
+          "example": "Ich schreibe eine Postkarte."
+        },
+        {
+          "german": "die Telefonnummer",
+          "article": "die",
+          "plural": "die Telefonnummern",
+          "meaning_en": "phone number",
+          "meaning_fa": "شماره تلفن",
+          "example": "Was ist Ihre Telefonnummer?"
+        },
+        {
+          "german": "der Anruf",
+          "article": "der",
+          "plural": "die Anrufe",
+          "meaning_en": "call",
+          "meaning_fa": "تماس",
+          "example": "Ich habe einen Anruf."
+        },
+        {
+          "german": "anrufen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to call",
+          "meaning_fa": "تماس گرفتن",
+          "example": "Ich rufe dich an."
+        },
+        {
+          "german": "die Nachricht",
+          "article": "die",
+          "plural": "die Nachrichten",
+          "meaning_en": "message / news",
+          "meaning_fa": "پیام / خبر",
+          "example": "Ich schreibe eine Nachricht."
+        },
+        {
+          "german": "wieder",
+          "article": "",
+          "plural": "",
+          "meaning_en": "again",
+          "meaning_fa": "دوباره",
+          "example": "Ich komme wieder."
+        },
+        {
+          "german": "nur",
+          "article": "",
+          "plural": "",
+          "meaning_en": "only",
+          "meaning_fa": "فقط",
+          "example": "Nur ein Moment."
+        },
+        {
+          "german": "vielleicht",
+          "article": "",
+          "plural": "",
+          "meaning_en": "maybe",
+          "meaning_fa": "شاید",
+          "example": "Vielleicht komme ich morgen."
+        },
+        {
+          "german": "immer",
+          "article": "",
+          "plural": "",
+          "meaning_en": "always",
+          "meaning_fa": "همیشه",
+          "example": "Ich arbeite immer hier."
+        },
+        {
+          "german": "nie",
+          "article": "",
+          "plural": "",
+          "meaning_en": "never",
+          "meaning_fa": "هرگز",
+          "example": "Ich rufe nie an."
+        },
+        {
+          "german": "manchmal",
+          "article": "",
+          "plural": "",
+          "meaning_en": "sometimes",
+          "meaning_fa": "گاهی",
+          "example": "Ich rufe manchmal an."
+        }
+      ]
+    },
+    "Lektion 7": {
+      "title": "Freizeit, Komplimente (Free Time, Compliments)",
+      "theme": "Hören: Aussagen zu Freizeitaktivitäten; Sprechen: Komplimente machen; über Hobbys/Fähigkeiten sprechen",
+      "words": [
+        {
+          "german": "die Freizeit",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "free time",
+          "meaning_fa": "اوقات فراغت",
+          "example": "Was machst du in der Freizeit?"
+        },
+        {
+          "german": "das Hobby",
+          "article": "das",
+          "plural": "die Hobbys",
+          "meaning_en": "hobby",
+          "meaning_fa": "سرگرمی",
+          "example": "Mein Hobby ist Lesen."
+        },
+        {
+          "german": "lesen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to read",
+          "meaning_fa": "خواندن",
+          "example": "Ich lese gern."
+        },
+        {
+          "german": "schwimmen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to swim",
+          "meaning_fa": "شنا کردن",
+          "example": "Ich schwimme gern."
+        },
+        {
+          "german": "fernsehen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to watch TV",
+          "meaning_fa": "تلویزیون تماشا کردن",
+          "example": "Ich sehe abends fern."
+        },
+        {
+          "german": "Musik hören",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to listen to music",
+          "meaning_fa": "موسیقی گوش دادن",
+          "example": "Ich höre gern Musik."
+        },
+        {
+          "german": "spielen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to play",
+          "meaning_fa": "بازی کردن",
+          "example": "Ich spiele gern Fußball."
+        },
+        {
+          "german": "kochen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to cook",
+          "meaning_fa": "آشپزی کردن",
+          "example": "Ich koche gern."
+        },
+        {
+          "german": "einkaufen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to shop",
+          "meaning_fa": "خرید کردن",
+          "example": "Ich gehe gern einkaufen."
+        },
+        {
+          "german": "wandern",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to hike",
+          "meaning_fa": "پیاده‌روی کردن",
+          "example": "Ich wandere gern in den Bergen."
+        },
+        {
+          "german": "reisen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to travel",
+          "meaning_fa": "سفر کردن",
+          "example": "Ich reise gern."
+        },
+        {
+          "german": "tanzen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to dance",
+          "meaning_fa": "رقصیدن",
+          "example": "Ich tanze gern."
+        },
+        {
+          "german": "singen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to sing",
+          "meaning_fa": "خواندن",
+          "example": "Ich singe gern."
+        },
+        {
+          "german": "malen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to paint / to draw",
+          "meaning_fa": "نقاشی کردن",
+          "example": "Ich male gern."
+        },
+        {
+          "german": "fotografieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to take photos",
+          "meaning_fa": "عکس گرفتن",
+          "example": "Ich fotografiere gern."
+        },
+        {
+          "german": "gern",
+          "article": "",
+          "plural": "",
+          "meaning_en": "gladly / with pleasure",
+          "meaning_fa": "با کمال میل",
+          "example": "Ich lese gern."
+        },
+        {
+          "german": "nicht gern",
+          "article": "",
+          "plural": "",
+          "meaning_en": "not gladly / don't like",
+          "meaning_fa": "دوست ندارم",
+          "example": "Ich koche nicht gern."
+        },
+        {
+          "german": "am liebsten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "most of all / favorite",
+          "meaning_fa": "بیش از همه",
+          "example": "Am liebsten schwimme ich."
+        },
+        {
+          "german": "können",
+          "article": "",
+          "plural": "",
+          "meaning_en": "can / to be able to",
+          "meaning_fa": "توانستن",
+          "example": "Ich kann gut schwimmen."
+        },
+        {
+          "german": "toll",
+          "article": "",
+          "plural": "",
+          "meaning_en": "great",
+          "meaning_fa": "عالی",
+          "example": "Du kannst wirklich toll kochen!"
+        },
+        {
+          "german": "super",
+          "article": "",
+          "plural": "",
+          "meaning_en": "super / great",
+          "meaning_fa": "عالی",
+          "example": "Super! Das ist toll!"
+        },
+        {
+          "german": "prima",
+          "article": "",
+          "plural": "",
+          "meaning_en": "great / fine",
+          "meaning_fa": "عالی",
+          "example": "Prima! Das machst du gut!"
+        },
+        {
+          "german": "Das gefällt mir",
+          "article": "",
+          "plural": "",
+          "meaning_en": "I like that",
+          "meaning_fa": "این خوشم آمد",
+          "example": "Das gefällt mir sehr!"
+        },
+        {
+          "german": "Danke, das ist nett",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Thanks, that's nice",
+          "meaning_fa": "ممنون، مهربانی می‌کنی",
+          "example": "Danke, das ist sehr nett von dir."
+        },
+        {
+          "german": "Das stimmt",
+          "article": "",
+          "plural": "",
+          "meaning_en": "That's right / true",
+          "meaning_fa": "درسته",
+          "example": "Ja, das stimmt."
+        },
+        {
+          "german": "die Fähigkeit",
+          "article": "die",
+          "plural": "die Fähigkeiten",
+          "meaning_en": "ability / skill",
+          "meaning_fa": "توانایی",
+          "example": "Welche Fähigkeiten hast du?"
+        },
+        {
+          "german": "der Ausflug",
+          "article": "der",
+          "plural": "die Ausflüge",
+          "meaning_en": "excursion / trip",
+          "meaning_fa": "گردش",
+          "example": "Wir machen einen Ausflug."
+        },
+        {
+          "german": "der Film",
+          "article": "der",
+          "plural": "die Filme",
+          "meaning_en": "movie / film",
+          "meaning_fa": "فیلم",
+          "example": "Der Film ist spannend."
+        },
+        {
+          "german": "das Gespräch",
+          "article": "das",
+          "plural": "die Gespräche",
+          "meaning_en": "conversation",
+          "meaning_fa": "مکالمه",
+          "example": "Das Gespräch ist interessant."
+        },
+        {
+          "german": "das Konzert",
+          "article": "das",
+          "plural": "die Konzerte",
+          "meaning_en": "concert",
+          "meaning_fa": "کنسرت",
+          "example": "Wir gehen auf ein Konzert."
+        },
+        {
+          "german": "das Kino",
+          "article": "das",
+          "plural": "die Kinos",
+          "meaning_en": "cinema",
+          "meaning_fa": "سینما",
+          "example": "Wir gehen ins Kino."
+        },
+        {
+          "german": "der Sport",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "sport",
+          "meaning_fa": "ورزش",
+          "example": "Ich mache gerne Sport."
+        },
+        {
+          "german": "das Museum",
+          "article": "das",
+          "plural": "die Museen",
+          "meaning_en": "museum",
+          "meaning_fa": "موزه",
+          "example": "Wir gehen ins Museum."
+        },
+        {
+          "german": "der Park",
+          "article": "der",
+          "plural": "die Parks",
+          "meaning_en": "park",
+          "meaning_fa": "پارک",
+          "example": "Wir gehen in den Park."
+        }
+      ]
+    },
+    "Lektion 8": {
+      "title": "Freizeit, Verabredungen (Free Time, Appointments)",
+      "theme": "Sprechen: Sich verabreden; einen Vorschlag machen und darauf reagieren",
+      "words": [
+        {
+          "german": "sich verabreden",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to make an appointment",
+          "meaning_fa": "قرار گذاشتن",
+          "example": "Lass uns uns verabreden!"
+        },
+        {
+          "german": "vorschlagen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to suggest",
+          "meaning_fa": "پیشنهاد دادن",
+          "example": "Ich schlage vor, ins Kino zu gehen."
+        },
+        {
+          "german": "einladen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to invite",
+          "meaning_fa": "دعوت کردن",
+          "example": "Ich lade dich zum Essen ein."
+        },
+        {
+          "german": "absagen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to cancel",
+          "meaning_fa": "لغو کردن",
+          "example": "Ich muss leider absagen."
+        },
+        {
+          "german": "Kein Problem",
+          "article": "",
+          "plural": "",
+          "meaning_en": "No problem",
+          "meaning_fa": "مشکلی نیست",
+          "example": "Kein Problem, ein anderes Mal."
+        },
+        {
+          "german": "Ich habe Zeit",
+          "article": "",
+          "plural": "",
+          "meaning_en": "I have time",
+          "meaning_fa": "وقت دارم",
+          "example": "Kein Problem. Ich habe Zeit!"
+        },
+        {
+          "german": "die Zeit",
+          "article": "die",
+          "plural": "die Zeiten",
+          "meaning_en": "time",
+          "meaning_fa": "وقت",
+          "example": "Wann hast du Zeit?"
+        },
+        {
+          "german": "wann",
+          "article": "",
+          "plural": "",
+          "meaning_en": "when",
+          "meaning_fa": "کی",
+          "example": "Wann treffen wir uns?"
+        },
+        {
+          "german": "heute",
+          "article": "",
+          "plural": "",
+          "meaning_en": "today",
+          "meaning_fa": "امروز",
+          "example": "Heute Abend?"
+        },
+        {
+          "german": "morgen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "tomorrow",
+          "meaning_fa": "فردا",
+          "example": "Morgen Abend?"
+        },
+        {
+          "german": "übermorgen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "the day after tomorrow",
+          "meaning_fa": "پس‌فردا",
+          "example": "Was machst du übermorgen?"
+        },
+        {
+          "german": "gestern",
+          "article": "",
+          "plural": "",
+          "meaning_en": "yesterday",
+          "meaning_fa": "دیروز",
+          "example": "Gestern war ich im Kino."
+        },
+        {
+          "german": "Das ist eine gute Idee",
+          "article": "",
+          "plural": "",
+          "meaning_en": "That's a good idea",
+          "meaning_fa": "این یک ایده خوب است",
+          "example": "Ja, das ist eine gute Idee!"
+        },
+        {
+          "german": "leider",
+          "article": "",
+          "plural": "",
+          "meaning_en": "unfortunately",
+          "meaning_fa": "متأسفانه",
+          "example": "Leider habe ich keine Zeit."
+        },
+        {
+          "german": "freuen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be glad / to look forward",
+          "meaning_fa": "خوشحال شدن",
+          "example": "Ich freue mich drauf!"
+        },
+        {
+          "german": "sich freuen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be happy / to look forward to",
+          "meaning_fa": "خوشحال بودن",
+          "example": "Ich freue mich auf den Abend."
+        },
+        {
+          "german": "möglich",
+          "article": "",
+          "plural": "",
+          "meaning_en": "possible",
+          "meaning_fa": "ممکن",
+          "example": "Ist das möglich?"
+        },
+        {
+          "german": "gerne",
+          "article": "",
+          "plural": "",
+          "meaning_en": "gladly",
+          "meaning_fa": "با کمال میل",
+          "example": "Gerne, bis morgen!"
+        },
+        {
+          "german": "bis",
+          "article": "",
+          "plural": "",
+          "meaning_en": "until / see you",
+          "meaning_fa": "تا",
+          "example": "Bis morgen!"
+        },
+        {
+          "german": "Bis bald",
+          "article": "",
+          "plural": "",
+          "meaning_en": "See you soon",
+          "meaning_fa": "تا زودی",
+          "example": "Bis bald! Tschüss!"
+        },
+        {
+          "german": "Bis dann",
+          "article": "",
+          "plural": "",
+          "meaning_en": "See you then",
+          "meaning_fa": "تا اونموقع",
+          "example": "Bis dann! Um acht Uhr."
+        },
+        {
+          "german": "Bis später",
+          "article": "",
+          "plural": "",
+          "meaning_en": "See you later",
+          "meaning_fa": "تا بعد",
+          "example": "Bis später!"
+        },
+        {
+          "german": "das Treffen",
+          "article": "das",
+          "plural": "die Treffen",
+          "meaning_en": "meeting",
+          "meaning_fa": "ملاقات",
+          "example": "Das Treffen ist um 10 Uhr."
+        },
+        {
+          "german": "um",
+          "article": "",
+          "plural": "",
+          "meaning_en": "at (time)",
+          "meaning_fa": "ساعت",
+          "example": "Wir treffen uns um 8 Uhr."
+        },
+        {
+          "german": "am",
+          "article": "",
+          "plural": "",
+          "meaning_en": "on (day)",
+          "meaning_fa": "در (روز)",
+          "example": "Am Montag?"
+        }
+      ]
+    },
+    "Lektion 9": {
+      "title": "Essen, Einladung zu Hause (Eating, Invitation at Home)",
+      "theme": "Hören: Gespräch über Vorlieben beim Essen; Sprechen: über Essgewohnheiten sprechen; Lesen: Comic",
+      "words": [
+        {
+          "german": "das Essen",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "food / eating",
+          "meaning_fa": "غذا",
+          "example": "Das Essen ist lecker."
+        },
+        {
+          "german": "der Kuchen",
+          "article": "der",
+          "plural": "die Kuchen",
+          "meaning_en": "cake",
+          "meaning_fa": "کیک",
+          "example": "Der Kuchen schmeckt gut."
+        },
+        {
+          "german": "lecker",
+          "article": "",
+          "plural": "",
+          "meaning_en": "delicious",
+          "meaning_fa": "خوشمزه",
+          "example": "Das Essen ist sehr lecker!"
+        },
+        {
+          "german": "schmecken",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to taste",
+          "meaning_fa": "مزه دادن",
+          "example": "Das schmeckt gut."
+        },
+        {
+          "german": "mögen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to like",
+          "meaning_fa": "دوست داشتن",
+          "example": "Ich mag Pizza."
+        },
+        {
+          "german": "möchte",
+          "article": "",
+          "plural": "",
+          "meaning_en": "would like",
+          "meaning_fa": "می‌خواهم",
+          "example": "Ich möchte einen Kaffee."
+        },
+        {
+          "german": "der Kaffee",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "coffee",
+          "meaning_fa": "قهوه",
+          "example": "Möchten Sie Kaffee?"
+        },
+        {
+          "german": "der Tee",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "tea",
+          "meaning_fa": "چای",
+          "example": "Ich trinke Tee."
+        },
+        {
+          "german": "das Wasser",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "water",
+          "meaning_fa": "آب",
+          "example": "Ein Glas Wasser, bitte."
+        },
+        {
+          "german": "der Apfel",
+          "article": "der",
+          "plural": "die Äpfel",
+          "meaning_en": "apple",
+          "meaning_fa": "سیب",
+          "example": "Der Apfel ist rot."
+        },
+        {
+          "german": "die Kartoffel",
+          "article": "die",
+          "plural": "die Kartoffeln",
+          "meaning_en": "potato",
+          "meaning_fa": "سیب‌زمینی",
+          "example": "Die Kartoffeln sind gut."
+        },
+        {
+          "german": "die Orange",
+          "article": "die",
+          "plural": "die Orangen",
+          "meaning_en": "orange (fruit)",
+          "meaning_fa": "پرتقال",
+          "example": "Die Orange ist süß."
+        },
+        {
+          "german": "das Ei",
+          "article": "das",
+          "plural": "die Eier",
+          "meaning_en": "egg",
+          "meaning_fa": "تخم‌مرغ",
+          "example": "Das Ei ist frisch."
+        },
+        {
+          "german": "der Fisch",
+          "article": "der",
+          "plural": "die Fische",
+          "meaning_en": "fish",
+          "meaning_fa": "ماهی",
+          "example": "Der Fisch ist frisch."
+        },
+        {
+          "german": "die Milch",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "milk",
+          "meaning_fa": "شیر",
+          "example": "Die Milch ist kalt."
+        },
+        {
+          "german": "das Frühstück",
+          "article": "das",
+          "plural": "die Frühstücke",
+          "meaning_en": "breakfast",
+          "meaning_fa": "صبحانه",
+          "example": "Ich esse das Frühstück."
+        },
+        {
+          "german": "das Brot",
+          "article": "das",
+          "plural": "die Brote",
+          "meaning_en": "bread",
+          "meaning_fa": "نان",
+          "example": "Das Brot ist frisch."
+        },
+        {
+          "german": "das Brötchen",
+          "article": "das",
+          "plural": "die Brötchen",
+          "meaning_en": "roll / bun",
+          "meaning_fa": "نان رولی",
+          "example": "Die Brötchen sind lecker."
+        },
+        {
+          "german": "die Schokolade",
+          "article": "die",
+          "plural": "die Schokoladen",
+          "meaning_en": "chocolate",
+          "meaning_fa": "شکلات",
+          "example": "Ich mag Schokolade."
+        },
+        {
+          "german": "der Salat",
+          "article": "der",
+          "plural": "die Salate",
+          "meaning_en": "salad",
+          "meaning_fa": "سالاد",
+          "example": "Der Salat ist frisch."
+        },
+        {
+          "german": "die Suppe",
+          "article": "die",
+          "plural": "die Suppen",
+          "meaning_en": "soup",
+          "meaning_fa": "سوپ",
+          "example": "Die Suppe ist heiß."
+        },
+        {
+          "german": "die Speisekarte",
+          "article": "die",
+          "plural": "die Speisekarten",
+          "meaning_en": "menu",
+          "meaning_fa": "منو",
+          "example": "Die Speisekarte, bitte."
+        },
+        {
+          "german": "die Einladung",
+          "article": "die",
+          "plural": "die Einladungen",
+          "meaning_en": "invitation",
+          "meaning_fa": "دعوت‌نامه",
+          "example": "Danke für die Einladung."
+        },
+        {
+          "german": "der Kühlschrank",
+          "article": "der",
+          "plural": "die Kühlschränke",
+          "meaning_en": "refrigerator",
+          "meaning_fa": "یخچال",
+          "example": "Das ist im Kühlschrank."
+        },
+        {
+          "german": "der Supermarkt",
+          "article": "der",
+          "plural": "die Supermärkte",
+          "meaning_en": "supermarket",
+          "meaning_fa": "سوپرمارکت",
+          "example": "Ich gehe in den Supermarkt."
+        },
+        {
+          "german": "der Preis",
+          "article": "der",
+          "plural": "die Preise",
+          "meaning_en": "price",
+          "meaning_fa": "قیمت",
+          "example": "Der Preis ist okay."
+        },
+        {
+          "german": "bestellen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to order",
+          "meaning_fa": "سفارش دادن",
+          "example": "Ich möchte bestellen."
+        },
+        {
+          "german": "bezahlen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to pay",
+          "meaning_fa": "پرداخت کردن",
+          "example": "Ich möchte bitte bezahlen."
+        },
+        {
+          "german": "Guten Appetit",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Enjoy your meal",
+          "meaning_fa": "نوش جان",
+          "example": "Guten Appetit!"
+        },
+        {
+          "german": "Prost",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Cheers",
+          "meaning_fa": "به سلامتی",
+          "example": "Prost!"
+        }
+      ]
+    },
+    "Lektion 10": {
+      "title": "Reisen, Verkehrsmittel (Travel, Transportation)",
+      "theme": "Hören: Durchsagen; Sprechen: sich informieren; ein Telefonat beenden",
+      "words": [
+        {
+          "german": "das Verkehrsmittel",
+          "article": "das",
+          "plural": "die Verkehrsmittel",
+          "meaning_en": "means of transportation",
+          "meaning_fa": "وسیله نقلیه",
+          "example": "Welches Verkehrsmittel nimmst du?"
+        },
+        {
+          "german": "der Zug",
+          "article": "der",
+          "plural": "die Züge",
+          "meaning_en": "train",
+          "meaning_fa": "قطار",
+          "example": "Der Zug fährt um 10 Uhr."
+        },
+        {
+          "german": "der Bus",
+          "article": "der",
+          "plural": "die Busse",
+          "meaning_en": "bus",
+          "meaning_fa": "اتوبوس",
+          "example": "Der Bus kommt um 8 Uhr."
+        },
+        {
+          "german": "die U-Bahn",
+          "article": "die",
+          "plural": "die U-Bahnen",
+          "meaning_en": "subway / metro",
+          "meaning_fa": "مترو",
+          "example": "Ich steige in die U-Bahn ein."
+        },
+        {
+          "german": "die S-Bahn",
+          "article": "die",
+          "plural": "die S-Bahnen",
+          "meaning_en": "suburban train",
+          "meaning_fa": "قطار حومه‌ای",
+          "example": "Die S-Bahn kommt gleich."
+        },
+        {
+          "german": "das Fahrrad",
+          "article": "das",
+          "plural": "die Fahrräder",
+          "meaning_en": "bicycle",
+          "meaning_fa": "دوچرخه",
+          "example": "Ich fahre mit dem Fahrrad."
+        },
+        {
+          "german": "das Auto",
+          "article": "das",
+          "plural": "die Autos",
+          "meaning_en": "car",
+          "meaning_fa": "ماشین",
+          "example": "Wir fahren mit dem Auto."
+        },
+        {
+          "german": "das Flugzeug",
+          "article": "das",
+          "plural": "die Flugzeuge",
+          "meaning_en": "airplane",
+          "meaning_fa": "هواپیما",
+          "example": "Wir fliegen mit dem Flugzeug."
+        },
+        {
+          "german": "das Taxi",
+          "article": "das",
+          "plural": "die Taxis",
+          "meaning_en": "taxi",
+          "meaning_fa": "تاکسی",
+          "example": "Ich nehme ein Taxi."
+        },
+        {
+          "german": "das Schiff",
+          "article": "das",
+          "plural": "die Schiffe",
+          "meaning_en": "ship",
+          "meaning_fa": "کشتی",
+          "example": "Wir fahren mit dem Schiff."
+        },
+        {
+          "german": "fahren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to drive / to go by",
+          "meaning_fa": "راندن / رفتن با",
+          "example": "Ich fahre mit dem Zug."
+        },
+        {
+          "german": "fliegen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to fly",
+          "meaning_fa": "پرواز کردن",
+          "example": "Wir fliegen nach Berlin."
+        },
+        {
+          "german": "einsteigen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to get in / to board",
+          "meaning_fa": "سوار شدن",
+          "example": "Ich steige in die U-Bahn ein."
+        },
+        {
+          "german": "aussteigen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to get out / to disembark",
+          "meaning_fa": "پیاده شدن",
+          "example": "Ich steige an der nächsten Station aus."
+        },
+        {
+          "german": "der Bahnhof",
+          "article": "der",
+          "plural": "die Bahnhöfe",
+          "meaning_en": "train station",
+          "meaning_fa": "ایستگاه قطار",
+          "example": "Der Bahnhof ist groß."
+        },
+        {
+          "german": "der Bahnsteig",
+          "article": "der",
+          "plural": "die Bahnsteige",
+          "meaning_en": "platform",
+          "meaning_fa": "سکو",
+          "example": "Der Zug kommt auf Bahnsteig 3."
+        },
+        {
+          "german": "die Haltestelle",
+          "article": "die",
+          "plural": "die Haltestellen",
+          "meaning_en": "stop (bus/train)",
+          "meaning_fa": "ایستگاه",
+          "example": "Die nächste Haltestelle ist..."
+        },
+        {
+          "german": "die Fahrkarte",
+          "article": "die",
+          "plural": "die Fahrkarten",
+          "meaning_en": "ticket",
+          "meaning_fa": "بلیط",
+          "example": "Ich brauche eine Fahrkarte."
+        },
+        {
+          "german": "eine Fahrkarte",
+          "article": "eine",
+          "plural": "",
+          "meaning_en": "a ticket",
+          "meaning_fa": "یک بلیط",
+          "example": "Eine Fahrkarte nach Berlin, bitte."
+        },
+        {
+          "german": "der Flughafen",
+          "article": "der",
+          "plural": "die Flughäfen",
+          "meaning_en": "airport",
+          "meaning_fa": "فرودگاه",
+          "example": "Wir fahren zum Flughafen."
+        },
+        {
+          "german": "die Reise",
+          "article": "die",
+          "plural": "die Reisen",
+          "meaning_en": "trip / journey",
+          "meaning_fa": "سفر",
+          "example": "Die Reise ist lang."
+        },
+        {
+          "german": "das Hotel",
+          "article": "das",
+          "plural": "die Hotels",
+          "meaning_en": "hotel",
+          "meaning_fa": "هتل",
+          "example": "Das Hotel ist teuer."
+        },
+        {
+          "german": "der Koffer",
+          "article": "der",
+          "plural": "die Koffer",
+          "meaning_en": "suitcase",
+          "meaning_fa": "چمدان",
+          "example": "Der Koffer ist schwer."
+        },
+        {
+          "german": "die Karte",
+          "article": "die",
+          "plural": "die Karten",
+          "meaning_en": "map / card / ticket",
+          "meaning_fa": "نقشه / کارت / بلیط",
+          "example": "Haben Sie eine Karte?"
+        },
+        {
+          "german": "die Landkarte",
+          "article": "die",
+          "plural": "die Landkarten",
+          "meaning_en": "map",
+          "meaning_fa": "نقشه جغرافیایی",
+          "example": "Die Landkarte zeigt Deutschland."
+        },
+        {
+          "german": "links",
+          "article": "",
+          "plural": "",
+          "meaning_en": "left",
+          "meaning_fa": "چپ",
+          "example": "Gehen Sie links."
+        },
+        {
+          "german": "rechts",
+          "article": "",
+          "plural": "",
+          "meaning_en": "right",
+          "meaning_fa": "راست",
+          "example": "Gehen Sie rechts."
+        },
+        {
+          "german": "geradeaus",
+          "article": "",
+          "plural": "",
+          "meaning_en": "straight ahead",
+          "meaning_fa": "مستقیم",
+          "example": "Gehen Sie geradeaus."
+        },
+        {
+          "german": "Wo ist...?",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Where is...?",
+          "meaning_fa": "کجاست...؟",
+          "example": "Wo ist der Bahnhof?"
+        },
+        {
+          "german": "Wie komme ich zu...?",
+          "article": "",
+          "plural": "",
+          "meaning_en": "How do I get to...?",
+          "meaning_fa": "چطور به... بروم؟",
+          "example": "Wie komme ich zum Flughafen?"
+        },
+        {
+          "german": "nächste",
+          "article": "",
+          "plural": "",
+          "meaning_en": "next",
+          "meaning_fa": "بعدی",
+          "example": "Die nächste Station ist..."
+        },
+        {
+          "german": "der Aufenthalt",
+          "article": "der",
+          "plural": "die Aufenthalte",
+          "meaning_en": "stay / delay",
+          "meaning_fa": "توقف",
+          "example": "Kurzer Aufenthalt."
+        }
+      ]
+    },
+    "Lektion 11": {
+      "title": "Tagesablauf, Vergangenes (Daily Routine, Past Events)",
+      "theme": "Sprechen: über Vergangenes sprechen; Lesen: Terminkalender, E-Mail; Schreiben: einen Tagesablauf beschreiben",
+      "words": [
+        {
+          "german": "machen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to do / to make",
+          "meaning_fa": "انجام دادن",
+          "example": "Was hast du heute gemacht?"
+        },
+        {
+          "german": "gestern",
+          "article": "",
+          "plural": "",
+          "meaning_en": "yesterday",
+          "meaning_fa": "دیروز",
+          "example": "Gestern war ich im Kino."
+        },
+        {
+          "german": "heute",
+          "article": "",
+          "plural": "",
+          "meaning_en": "today",
+          "meaning_fa": "امروز",
+          "example": "Heute lerne ich Deutsch."
+        },
+        {
+          "german": "morgen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "tomorrow",
+          "meaning_fa": "فردا",
+          "example": "Morgen gehe ich einkaufen."
+        },
+        {
+          "german": "die Hausaufgaben",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "homework",
+          "meaning_fa": "تکالیف خانه",
+          "example": "Ich mache die Hausaufgaben."
+        },
+        {
+          "german": "lernen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to learn / to study",
+          "meaning_fa": "یاد گرفتن / درس خواندن",
+          "example": "Ich lerne Deutsch."
+        },
+        {
+          "german": "schreiben",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to write",
+          "meaning_fa": "نوشتن",
+          "example": "Ich schreibe eine E-Mail."
+        },
+        {
+          "german": "fernsehen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to watch TV",
+          "meaning_fa": "تلویزیون تماشا کردن",
+          "example": "Ich sehe abends fern."
+        },
+        {
+          "german": "einkaufen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to shop",
+          "meaning_fa": "خرید کردن",
+          "example": "Ich kaufe im Supermarkt ein."
+        },
+        {
+          "german": "schlafen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to sleep",
+          "meaning_fa": "خوابیدن",
+          "example": "Ich schlafe um 22 Uhr."
+        },
+        {
+          "german": "aufräumen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to tidy up",
+          "meaning_fa": "مرتب کردن",
+          "example": "Ich räume die Wohnung auf."
+        },
+        {
+          "german": "arbeiten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to work",
+          "meaning_fa": "کار کردن",
+          "example": "Ich arbeite viel."
+        },
+        {
+          "german": "lesen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to read",
+          "meaning_fa": "خواندن",
+          "example": "Ich lese die Zeitung."
+        },
+        {
+          "german": "kochen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to cook",
+          "meaning_fa": "آشپزی کردن",
+          "example": "Ich koche Kaffee."
+        },
+        {
+          "german": "das Perfekt",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "present perfect tense",
+          "meaning_fa": "زمان حال کامل",
+          "example": "Ich habe Deutsch gelernt."
+        },
+        {
+          "german": "haben",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to have (auxiliary verb)",
+          "meaning_fa": "داشتن (فعل کمکی)",
+          "example": "Ich habe gearbeitet."
+        },
+        {
+          "german": "sein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be (auxiliary verb)",
+          "meaning_fa": "بودن (فعل کمکی)",
+          "example": "Ich bin gegangen."
+        },
+        {
+          "german": "die Zeitung",
+          "article": "die",
+          "plural": "die Zeitungen",
+          "meaning_en": "newspaper",
+          "meaning_fa": "روزنامه",
+          "example": "Ich lese die Zeitung."
+        },
+        {
+          "german": "das Buch",
+          "article": "das",
+          "plural": "die Bücher",
+          "meaning_en": "book",
+          "meaning_fa": "کتاب",
+          "example": "Ich lese ein Buch."
+        },
+        {
+          "german": "der Tag",
+          "article": "der",
+          "plural": "die Tage",
+          "meaning_en": "day",
+          "meaning_fa": "روز",
+          "example": "Wie war dein Tag?"
+        },
+        {
+          "german": "der Morgen",
+          "article": "der",
+          "plural": "die Morgen",
+          "meaning_en": "morning",
+          "meaning_fa": "صبح",
+          "example": "Am Morgen frühstücke ich."
+        },
+        {
+          "german": "der Vormittag",
+          "article": "der",
+          "plural": "die Vormittage",
+          "meaning_en": "forenoon",
+          "meaning_fa": "قبل از ظهر",
+          "example": "Am Vormittag arbeite ich."
+        },
+        {
+          "german": "der Mittag",
+          "article": "der",
+          "plural": "die Mittage",
+          "meaning_en": "noon",
+          "meaning_fa": "ظهر",
+          "example": "Am Mittag esse ich."
+        },
+        {
+          "german": "der Nachmittag",
+          "article": "der",
+          "plural": "die Nachmittage",
+          "meaning_en": "afternoon",
+          "meaning_fa": "بعدازظهر",
+          "example": "Am Nachmittag lerne ich."
+        },
+        {
+          "german": "der Abend",
+          "article": "der",
+          "plural": "die Abende",
+          "meaning_en": "evening",
+          "meaning_fa": "عصر / شب",
+          "example": "Am Abend sehe ich fern."
+        },
+        {
+          "german": "die Nacht",
+          "article": "die",
+          "plural": "die Nächte",
+          "meaning_en": "night",
+          "meaning_fa": "شب",
+          "example": "In der Nacht schlafe ich."
+        },
+        {
+          "german": "die Woche",
+          "article": "die",
+          "plural": "die Wochen",
+          "meaning_en": "week",
+          "meaning_fa": "هفته",
+          "example": "Ich arbeite五 Tage die Woche."
+        },
+        {
+          "german": "der Montag",
+          "article": "der",
+          "plural": "die Montage",
+          "meaning_en": "Monday",
+          "meaning_fa": "دوشنبه",
+          "example": "Am Montag arbeite ich."
+        },
+        {
+          "german": "der Dienstag",
+          "article": "der",
+          "plural": "die Dienstage",
+          "meaning_en": "Tuesday",
+          "meaning_fa": "سه‌شنبه",
+          "example": "Am Dienstag lerne ich."
+        },
+        {
+          "german": "der Mittwoch",
+          "article": "der",
+          "plural": "die Mittwoche",
+          "meaning_en": "Wednesday",
+          "meaning_fa": "چهارشنبه",
+          "example": "Am Mittwoch schwimme ich."
+        },
+        {
+          "german": "der Donnerstag",
+          "article": "der",
+          "plural": "die Donnerstage",
+          "meaning_en": "Thursday",
+          "meaning_fa": "پنجشنبه",
+          "example": "Am Donnerstag kaufe ich ein."
+        },
+        {
+          "german": "der Freitag",
+          "article": "der",
+          "plural": "die Freitage",
+          "meaning_en": "Friday",
+          "meaning_fa": "جمعه",
+          "example": "Am Freitag feiere ich."
+        },
+        {
+          "german": "der Samstag",
+          "article": "der",
+          "plural": "die Samstage",
+          "meaning_en": "Saturday",
+          "meaning_fa": "شنبه",
+          "example": "Am Samstag gehe ich einkaufen."
+        },
+        {
+          "german": "der Sonntag",
+          "article": "der",
+          "plural": "die Sonntage",
+          "meaning_en": "Sunday",
+          "meaning_fa": "یکشنبه",
+          "example": "Am Sonntag ruhe ich mich aus."
+        },
+        {
+          "german": "die Überraschung",
+          "article": "die",
+          "plural": "die Überraschungen",
+          "meaning_en": "surprise",
+          "meaning_fa": "سورپرایز",
+          "example": "Das ist eine Überraschung!"
+        }
+      ]
+    },
+    "Lektion 12": {
+      "title": "Feste, Vergangenes (Celebrations, Past Events)",
+      "theme": "Hören: Interviews; Sprechen: über Feste und Reisen sprechen; Lesen: Informationstexte",
+      "words": [
+        {
+          "german": "feiern",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to celebrate",
+          "meaning_fa": "جشن گرفتن",
+          "example": "Wir feiern Geburtstag."
+        },
+        {
+          "german": "der Geburtstag",
+          "article": "der",
+          "plural": "die Geburtstage",
+          "meaning_en": "birthday",
+          "meaning_fa": "تولد",
+          "example": "Heute ist mein Geburtstag."
+        },
+        {
+          "german": "Alles Gute zum Geburtstag",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Happy Birthday",
+          "meaning_fa": "تولدت مبارک",
+          "example": "Alles Gute zum Geburtstag!"
+        },
+        {
+          "german": "das Geschenk",
+          "article": "das",
+          "plural": "die Geschenke",
+          "meaning_en": "gift / present",
+          "meaning_fa": "هدیه",
+          "example": "Das Geschenk ist schön."
+        },
+        {
+          "german": "die Party",
+          "article": "die",
+          "plural": "die Partys",
+          "meaning_en": "party",
+          "meaning_fa": "جشن / مهمانی",
+          "example": "Die Party ist toll!"
+        },
+        {
+          "german": "das Fest",
+          "article": "das",
+          "plural": "die Feste",
+          "meaning_en": "celebration / festival",
+          "meaning_fa": "جشن",
+          "example": "Das Fest ist groß."
+        },
+        {
+          "german": "das Weihnachten",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "Christmas",
+          "meaning_fa": "کریسمس",
+          "example": "Weihnachten ist im Dezember."
+        },
+        {
+          "german": "der Silvester",
+          "article": "der",
+          "plural": "die Silvester",
+          "meaning_en": "New Year's Eve",
+          "meaning_fa": "شب سال نو",
+          "example": "Silvester ist am 31. Dezember."
+        },
+        {
+          "german": "das Neujahr",
+          "article": "das",
+          "plural": "die Neujahre",
+          "meaning_en": "New Year",
+          "meaning_fa": "سال نو",
+          "example": "Frohes Neujahr!"
+        },
+        {
+          "german": "das Ostern",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "Easter",
+          "meaning_fa": "عید پاک",
+          "example": "Ostern ist im Frühling."
+        },
+        {
+          "german": "das Frühjahr",
+          "article": "das",
+          "plural": "die Frühjahre",
+          "meaning_en": "spring",
+          "meaning_fa": "بهار",
+          "example": "Im Frühjahr ist es schön."
+        },
+        {
+          "german": "der Frühling",
+          "article": "der",
+          "plural": "die Frühlinge",
+          "meaning_en": "spring",
+          "meaning_fa": "بهار",
+          "example": "Der Frühling ist meine Lieblingsjahreszeit."
+        },
+        {
+          "german": "der Sommer",
+          "article": "der",
+          "plural": "die Sommer",
+          "meaning_en": "summer",
+          "meaning_fa": "تابستان",
+          "example": "Im Sommer ist es heiß."
+        },
+        {
+          "german": "der Herbst",
+          "article": "der",
+          "plural": "die Herbste",
+          "meaning_en": "autumn / fall",
+          "meaning_fa": "پاییز",
+          "example": "Im Herbst werden die Blätter bunt."
+        },
+        {
+          "german": "der Winter",
+          "article": "der",
+          "plural": "die Winter",
+          "meaning_en": "winter",
+          "meaning_fa": "زمستان",
+          "example": "Im Winter ist es kalt."
+        },
+        {
+          "german": "die Jahreszeit",
+          "article": "die",
+          "plural": "die Jahreszeiten",
+          "meaning_en": "season",
+          "meaning_fa": "فصل",
+          "example": "Welche Jahreszeit magst du?"
+        },
+        {
+          "german": "der Monat",
+          "article": "der",
+          "plural": "die Monate",
+          "meaning_en": "month",
+          "meaning_fa": "ماه",
+          "example": "Es gibt zwölf Monate."
+        },
+        {
+          "german": "der Januar",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "January",
+          "meaning_fa": "ژانویه",
+          "example": "Der Januar ist der erste Monat."
+        },
+        {
+          "german": "der Februar",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "February",
+          "meaning_fa": "فوریه",
+          "example": "Im Februar ist es kalt."
+        },
+        {
+          "german": "der März",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "March",
+          "meaning_fa": "مارس",
+          "example": "Im März beginnt der Frühling."
+        },
+        {
+          "german": "der April",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "April",
+          "meaning_fa": "آوریل",
+          "example": "Im April regnet es oft."
+        },
+        {
+          "german": "der Mai",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "May",
+          "meaning_fa": "مه",
+          "example": "Im Mai blühen die Blumen."
+        },
+        {
+          "german": "der Juni",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "June",
+          "meaning_fa": "ژوئن",
+          "example": "Im Juni wird es warm."
+        },
+        {
+          "german": "der Juli",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "July",
+          "meaning_fa": "ژوئیه",
+          "example": "Im Juli ist es heiß."
+        },
+        {
+          "german": "der August",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "August",
+          "meaning_fa": "آگوست",
+          "example": "Im August fahren viele Leute in den Urlaub."
+        },
+        {
+          "german": "der September",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "September",
+          "meaning_fa": "سپتامبر",
+          "example": "Im September beginnt die Schule."
+        },
+        {
+          "german": "der Oktober",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "October",
+          "meaning_fa": "اکتبر",
+          "example": "Im Oktober werden die Blätter bunt."
+        },
+        {
+          "german": "der November",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "November",
+          "meaning_fa": "نوامبر",
+          "example": "Im November ist es kalt."
+        },
+        {
+          "german": "der Dezember",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "December",
+          "meaning_fa": "دسامبر",
+          "example": "Im Dezember ist Weihnachten."
+        },
+        {
+          "german": "die Reise",
+          "article": "die",
+          "plural": "die Reisen",
+          "meaning_en": "trip / journey",
+          "meaning_fa": "سفر",
+          "example": "Die Reise war schön."
+        },
+        {
+          "german": "der Urlaub",
+          "article": "der",
+          "plural": "die Urlaube",
+          "meaning_en": "vacation / holiday",
+          "meaning_fa": "تعطیلات",
+          "example": "Ich fahre in den Urlaub."
+        },
+        {
+          "german": "der Nationalfeiertag",
+          "article": "der",
+          "plural": "die Nationalfeiertage",
+          "meaning_en": "national holiday",
+          "meaning_fa": "روز ملی",
+          "example": "Der Nationalfeiertag ist am 3. Oktober."
+        },
+        {
+          "german": "der Feiertag",
+          "article": "der",
+          "plural": "die Feiertage",
+          "meaning_en": "public holiday",
+          "meaning_fa": "روز تعطیل",
+          "example": "Am Feiertag arbeite ich nicht."
+        },
+        {
+          "german": "verreisen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to travel / to go on a trip",
+          "meaning_fa": "سفر رفتن",
+          "example": "Wir verreisen nach Spanien."
+        },
+        {
+          "german": "der Terminkalender",
+          "article": "der",
+          "plural": "die Terminkalender",
+          "meaning_en": "appointment calendar",
+          "meaning_fa": "تقویم قرارها",
+          "example": "Schau in deinen Terminkalender."
+        }
+      ]
+    }
+  }
+}
