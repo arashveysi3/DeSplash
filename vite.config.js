@@ -315,7 +315,7 @@ export default defineConfig({
     react(),
     devApiPlugin(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       includeAssets: ['favicon.svg', 'icons.svg'],
       manifest: {
         name: 'GermanSplash - Menschen Flashcards',
@@ -338,6 +338,7 @@ export default defineConfig({
           { urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i, handler: 'CacheFirst', options: { cacheName: 'google-fonts-cache', expiration: { maxEntries: 10, maxAgeSeconds: 60*60*24*365 } } },
         ],
       },
+      devOptions: { enabled: false },
     }),
   ],
 })

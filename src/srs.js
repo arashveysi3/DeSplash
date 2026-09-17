@@ -33,4 +33,23 @@ export function qualityFromLabel(label){
   }
 }
 
-export const XP_MAP = { Again: 2, Hard: 5, Good: 10, Easy: 15 };
+export const XP_MAP = { Again: 1, Hard: 2, Good: 3, Easy: 5 };
+
+// Balanced economy: swiping is cheap, mastery & quizzes pay more
+export const QUIZ_XP = {
+  artikel: 8,
+  dictation: 12,
+  fa: 12,
+  choice: 10,
+  // games
+  matchPair: 4,        // per pair in Match Dash (6 pairs = 24 max + bonus)
+  matchBonus: 12,      // perfect match bonus
+  sprintPerCorrect: 6, // per correct in Sprint, streak multiplier up to 2x
+};
+
+export const GAME_XP = {
+  matchPair: 4,
+  matchPerfectBonus: 16,
+  sprintBase: 6,
+  scramblePerWord: 10,
+};

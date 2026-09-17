@@ -12,9 +12,10 @@ import { Notification } from 'baseui/notification';
 import { Spinner } from 'baseui/spinner';
 import { db, initDB, getStats, updateStreak, addXP, COMPETITORS, getAllWords, addCustomWord, deleteCustomWord, fetchOnlineLeaderboard, submitOnlineScore, deleteOnlineScore, resetOnlineBoard } from './db';
 import { signup, login, fetchMe, logout, fetchUsers, deleteUser, fetchProgress, saveProgress, saveProgressOne, fetchStatsOnline, saveStatsOnline } from './auth';
-import { sm2, qualityFromLabel, XP_MAP } from './srs';
+import { sm2, qualityFromLabel, XP_MAP, QUIZ_XP, GAME_XP } from './srs';
 import { genderColor, genderBg } from './theme';
 import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
+import PWAUpdater from './components/PWAUpdater.jsx';
 
 function isWordMastered(progress) {
   if (!progress) return false;
@@ -319,6 +320,25 @@ export default function App() {
   const [quizArtikelChoice, setQuizArtikelChoice] = useState('');
   const [quizBook, setQuizBook] = useState(() => localStorage.getItem('gs_quiz_book') || 'a1.1');
   const [quizLektion, setQuizLektion] = useState(() => localStorage.getItem('gs_quiz_lektion') || 'all');
+  // 4-answer choice quiz
+  const [choiceOptions, setChoiceOptions] = useState([]);
+  const [choicePick, setChoicePick] = useState('');
+  // Match Dash game
+  const [matchBoard, setMatchBoard] = useState([]); // [{id, word, type:'de'|'en', pairId, flipped, matched}]
+  const [matchPicks, setMatchPicks] = useState([]);
+  const [matchMatched, setMatchMatched] = useState(0);
+  const [matchMoves, setMatchMoves] = useState(0);
+  const [matchStarted, setMatchStarted] = useState(false);
+  const [matchDone, setMatchDone] = useState(false);
+  const [matchXp, setMatchXp] = useState(0);
+  // Lightning Sprint game
+  const [sprintActive, setSprintActive] = useState(false);
+  const [sprintQueue, setSprintQueue] = useState([]);
+  const [sprintIdx, setSprintIdx] = useState(0);
+  const [sprintOptions, setSprintOptions] = useState([]);
+  const [sprintTime, setSprintTime] = useState(45);
+  const [sprintScore, setSprintScore] = useState({ correct:0, total:0, streak:0, best:0, xp:0 });
+  const [sprintFeedback, setSprintFeedback] = useState(null);
 
   // pack study
   const [packWords, setPackWords] = useState([]);
@@ -647,7 +667,6 @@ export default function App() {
   const buildQuizQueue = useCallback((count = 10, mode = quizMode) => {
     let pool = quizScopeWords;
     if (!pool.length) return [];
-    // prioritize weak within scope
     const weakInScope = pool.filter(w=> weakIds.has(w.id));
     let candidates = [...weakInScope];
     candidates.sort((a,b)=>{
@@ -680,7 +699,20 @@ export default function App() {
     return out.slice(0, count);
   }, [quizScopeWords, weakIds, progressMap, quizMode]);
 
+  const buildChoiceOptions = useCallback((word, pool) => {
+    const correct = word.meaning_en || word.english;
+    const distractors = pool.filter(w=> w.id !== word.id).sort(()=> 0.5 - Math.random()).slice(0, 12).map(w=> w.meaning_en || w.english).filter(Boolean)
+    const uniq = [...new Set(distractors.filter(d=> d !== correct))].slice(0,3)
+    // if not enough, pad with random german meanings
+    while (uniq.length < 3) uniq.push(['house','time','water','people','work'][uniq.length] || '—')
+    const opts = [...uniq, correct].sort(()=> 0.5 - Math.random())
+    return { correct, opts }
+  }, []);
+
   const startQuiz = (mode, count=10) => {
+    // handle games separately
+    if (mode === 'match') { startMatchGame(); return; }
+    if (mode === 'sprint') { startSprintGame(count); return; }
     const q = buildQuizQueue(count, mode);
     if (q.length===0) { setToast('No words for this scope/mode'); setTimeout(()=> setToast(null),1500); return; }
     setQuizMode(mode);
@@ -688,9 +720,14 @@ export default function App() {
     setQuizIdx(0);
     setQuizAnswer('');
     setQuizArtikelChoice('');
+    setChoicePick('');
     setQuizFeedback(null);
     setQuizScore({ correct:0, total:0, xp:0 });
     setQuizStarted(true);
+    if (mode === 'choice' && q[0]) {
+      const { opts } = buildChoiceOptions(q[0], quizScopeWords);
+      setChoiceOptions(opts);
+    }
     setTimeout(()=> { if ((mode==='dictation' || mode==='mixed') && q[0]) { const w=q[0]; if (mode==='dictation' || (mode==='mixed' && !w.article)) speakGerman(w.german); } }, 300);
   };
 
@@ -698,18 +735,23 @@ export default function App() {
 
   const submitQuiz = async () => {
     if (!currentQuizWord) return;
-    const isArtikelQ = quizMode==='artikel' || (quizMode==='mixed' && currentQuizWord.article && quizIdx %2===0);
+    const isChoiceQ = quizMode === 'choice';
+    const isArtikelQ = !isChoiceQ && (quizMode==='artikel' || (quizMode==='mixed' && currentQuizWord.article && quizIdx %2===0));
     const isFaQ = quizMode==='fa';
     let correct = false;
     let xpAdd = 0;
-    if (isArtikelQ) {
+    if (isChoiceQ) {
+      const correctAns = currentQuizWord.meaning_en || currentQuizWord.english;
+      correct = choicePick === correctAns;
+      xpAdd = correct ? QUIZ_XP.choice : 0;
+    } else if (isArtikelQ) {
       correct = quizArtikelChoice === currentQuizWord.article;
-      xpAdd = correct ? 10 : 0;
+      xpAdd = correct ? QUIZ_XP.artikel : 0;
     } else if (isFaQ) {
       const ans = quizAnswer.trim();
       const expected = (currentQuizWord.meaning_fa||'').trim();
       correct = ans === expected;
-      xpAdd = correct ? 15 : 0;
+      xpAdd = correct ? QUIZ_XP.fa : 0;
     } else {
       const expected = currentQuizWord.german;
       const ans = quizAnswer.trim();
@@ -717,7 +759,7 @@ export default function App() {
       const expFullNorm = (currentQuizWord.fullGerman||expected).trim();
       correct = ans === expNorm || ans === expFullNorm;
       if (!correct) correct = ans.toLowerCase() === expNorm.toLowerCase() || ans.toLowerCase() === expFullNorm.toLowerCase();
-      xpAdd = correct ? 15 : 0;
+      xpAdd = correct ? QUIZ_XP.dictation : 0;
     }
     const q = qualityFromLabel(correct ? 'Good' : 'Again');
     const prev = progressMap[currentQuizWord.id] || { interval:0, repetition:0, ease:2.5, due:0, lapses:0 };
@@ -754,9 +796,25 @@ export default function App() {
         const s=await getStats(); setStats(s);
         if (useOnline && username) submitOnlineScore(username, s.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
       }
+    } else {
+      // still count as review for streak even if wrong
+      if (authToken && authUser) {
+        const today = new Date().toISOString().slice(0,10);
+        if (stats.lastStudyDate !== today) {
+          const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+          let newStreak = stats.streak || 0;
+          let newLast = stats.lastStudyDate;
+          if (!stats.lastStudyDate) newStreak = 1;
+          else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
+          else { const diff=(new Date(today)-new Date(stats.lastStudyDate))/86400000; newStreak = diff===1 ? (stats.streak||0)+1 : 1; }
+          newLast = today;
+          const newStats = { ...stats, totalReviews:(stats.totalReviews||0)+1, streak:newStreak, lastStudyDate:newLast };
+          setStats(newStats); try{ await saveStatsOnline(newStats);}catch{}
+        }
+      }
     }
     setQuizScore(sc=> ({ correct: sc.correct + (correct?1:0), total: sc.total+1, xp: sc.xp + xpAdd }));
-    setQuizFeedback({ correct, expected: currentQuizWord.article ? `${currentQuizWord.article} ${currentQuizWord.german}` : currentQuizWord.german, expectedFa: currentQuizWord.meaning_fa, xp: xpAdd });
+    setQuizFeedback({ correct, expected: currentQuizWord.article ? `${currentQuizWord.article} ${currentQuizWord.german}` : currentQuizWord.german, expectedFa: currentQuizWord.meaning_fa, expectedEn: currentQuizWord.meaning_en || currentQuizWord.english, xp: xpAdd });
     setToast(correct ? `+${xpAdd} XP ✓` : `was "${currentQuizWord.article ? currentQuizWord.article+' '+currentQuizWord.german : currentQuizWord.german}"`);
     setTimeout(()=> setToast(null),1400);
   };
@@ -773,13 +831,181 @@ export default function App() {
     setQuizIdx(nextIdx);
     setQuizAnswer('');
     setQuizArtikelChoice('');
+    setChoicePick('');
     setQuizFeedback(null);
     const w = quizQueue[nextIdx];
+    if (quizMode === 'choice') {
+      const { opts } = buildChoiceOptions(w, quizScopeWords);
+      setChoiceOptions(opts);
+    }
     const isArtikelNext = quizMode==='artikel' || (quizMode==='mixed' && w.article && nextIdx %2===0);
-    if (!isArtikelNext && quizMode !== 'fa') setTimeout(()=> speakGerman(w.german), 250);
+    if (!isArtikelNext && quizMode !== 'fa' && quizMode !== 'choice') setTimeout(()=> speakGerman(w.german), 250);
   };
 
   const insertUmlaut = (ch) => setQuizAnswer(a=> a + ch);
+
+  // ---- Games ----
+  const startMatchGame = useCallback(() => {
+    const pool = quizScopeWords.length >= 6 ? quizScopeWords : allWords;
+    const picks = [...pool].sort(()=> 0.5 - Math.random()).slice(0,6);
+    const tiles = [];
+    picks.forEach((w, idx) => {
+      tiles.push({ uid: `${w.id}-de`, pairId: w.id, label: w.article ? `${w.article} ${w.german}` : w.german, sub: w.lektion, type:'de', word:w, matched:false, flipped:false });
+      tiles.push({ uid: `${w.id}-en`, pairId: w.id, label: w.meaning_en || w.english, sub: w.meaning_fa?.slice(0,18) || '', type:'en', word:w, matched:false, flipped:false });
+    });
+    for (let i=tiles.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [tiles[i],tiles[j]]=[tiles[j],tiles[i]]; }
+    setMatchBoard(tiles);
+    setMatchPicks([]);
+    setMatchMatched(0);
+    setMatchMoves(0);
+    setMatchXp(0);
+    setMatchDone(false);
+    setMatchStarted(true);
+    setQuizMode('match');
+    setQuizStarted(true);
+  }, [quizScopeWords, allWords]);
+
+  const handleMatchPick = (uid) => {
+    if (matchDone) return;
+    const tile = matchBoard.find(t=> t.uid===uid);
+    if (!tile || tile.matched || tile.flipped) return;
+    if (matchPicks.length >= 2) return;
+    const nextBoard = matchBoard.map(t=> t.uid===uid ? {...t, flipped:true} : t);
+    const nextPicks = [...matchPicks, uid];
+    setMatchBoard(nextBoard);
+    setMatchPicks(nextPicks);
+    if (nextPicks.length === 2) {
+      setMatchMoves(m=> m+1);
+      const [a,b] = nextPicks.map(id=> nextBoard.find(t=> t.uid===id));
+      const isMatch = a.pairId === b.pairId && a.type !== b.type;
+      setTimeout(()=> {
+        if (isMatch) {
+          const updated = nextBoard.map(t=> (t.uid===a.uid || t.uid===b.uid) ? {...t, matched:true} : t);
+          setMatchBoard(updated);
+          const xpAdd = GAME_XP.matchPair;
+          setMatchXp(x=> x + xpAdd);
+          setMatchMatched(v=> {
+            const nv = v + 1;
+            if (nv === 6) {
+              const bonus = GAME_XP.matchPerfectBonus + Math.max(0, 12 - matchMoves) ;
+              const totalAward = 6 * GAME_XP.matchPair + bonus;
+              setMatchXp(totalAward);
+              setMatchDone(true);
+              setTimeout(()=> awardGameXP(totalAward, 6), 420);
+            }
+            return nv;
+          });
+          setMatchPicks([]);
+        } else {
+          setMatchBoard(prev=> prev.map(t=> nextPicks.includes(t.uid) ? {...t, flipped:false} : t));
+          setMatchPicks([]);
+        }
+      }, 650);
+    }
+  };
+
+  const awardGameXP = async (xpAdd, reviews=1) => {
+    if (xpAdd<=0) return;
+    if (authToken && authUser) {
+      const today = new Date().toISOString().slice(0,10);
+      const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+      let newStreak = stats.streak || 0;
+      let newLast = stats.lastStudyDate;
+      if (stats.lastStudyDate !== today) {
+        if (!stats.lastStudyDate) newStreak = 1;
+        else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
+        else { const diff=(new Date(today)-new Date(stats.lastStudyDate))/86400000; newStreak = diff===1 ? (stats.streak||0)+1 : 1; }
+        newLast = today;
+      }
+      const newStats = {...stats, xp:(stats.xp||0)+xpAdd, totalReviews:(stats.totalReviews||0)+reviews, streak:newStreak, lastStudyDate:newLast};
+      setStats(newStats); try{ await saveStatsOnline(newStats);}catch{};
+      if (useOnline) submitOnlineScore(authUser.username, newStats.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
+    } else {
+      await db.stats.put({id:'main', xp:(stats.xp||0)+xpAdd, streak: stats.streak, lastStudyDate: stats.lastStudyDate, totalReviews:(stats.totalReviews||0)+reviews});
+      const s=await getStats(); setStats(s);
+      if (useOnline && username) submitOnlineScore(username, s.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
+    }
+    setToast(`+${xpAdd} XP 🎮`);
+    setTimeout(()=> setToast(null),1800);
+  };
+
+  const startSprintGame = useCallback((count=12) => {
+    const pool = quizScopeWords.length >= count ? quizScopeWords : allWords;
+    const picks = [...pool].sort(()=> 0.5 - Math.random()).slice(0, count);
+    const queue = picks.map(w=> {
+      const correct = w.meaning_en || w.english;
+      const distractors = pool.filter(x=> x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,8).map(x=> x.meaning_en || x.english).filter(Boolean);
+      const uniq=[...new Set(distractors.filter(d=> d!==correct))].slice(0,3);
+      while(uniq.length<3) uniq.push('—');
+      const opts=[...uniq, correct].sort(()=>0.5-Math.random());
+      return { word:w, correct, opts };
+    });
+    setSprintQueue(queue);
+    setSprintIdx(0);
+    setSprintOptions(queue[0]?.opts || []);
+    setSprintScore({ correct:0, total:0, streak:0, best:0, xp:0 });
+    setSprintActive(true);
+    setSprintTime(45);
+    setSprintFeedback(null);
+    setQuizMode('sprint');
+    setQuizStarted(true);
+  }, [quizScopeWords, allWords]);
+
+  const sprintTimerRef = useRef(null);
+  const sprintScoreRef = useRef(sprintScore);
+  useEffect(()=> { sprintScoreRef.current = sprintScore; }, [sprintScore]);
+  useEffect(()=> {
+    if (!sprintActive) { if (sprintTimerRef.current) clearInterval(sprintTimerRef.current); return; }
+    sprintTimerRef.current = setInterval(()=> {
+      setSprintTime(t=> {
+        if (t<=1) {
+          clearInterval(sprintTimerRef.current);
+          setSprintActive(false);
+          const final = sprintScoreRef.current;
+          if (final.xp>0) awardGameXP(final.xp, final.total);
+          setToast(`Sprint done: ${final.correct}/${final.total} • +${final.xp} XP`);
+          setTimeout(()=> setToast(null),2200);
+          return 0;
+        }
+        return t-1;
+      });
+    },1000);
+    return ()=> clearInterval(sprintTimerRef.current);
+  }, [sprintActive]);
+
+  const handleSprintPick = (opt) => {
+    if (!sprintActive || sprintFeedback) return;
+    const cur = sprintQueue[sprintIdx];
+    const correct = opt === cur.correct;
+    const streak = correct ? sprintScore.streak + 1 : 0;
+    const mult = Math.min(2, 1 + streak*0.15);
+    const xpAdd = correct ? Math.round(GAME_XP.sprintBase * mult) : 0;
+    setSprintFeedback({ correct, expected: cur.correct, xp: xpAdd });
+    setSprintScore(s=> ({ correct: s.correct + (correct?1:0), total: s.total+1, streak, best: Math.max(s.best, streak), xp: s.xp + xpAdd }));
+    setTimeout(()=> {
+      setSprintFeedback(null);
+      if (sprintIdx +1 >= sprintQueue.length) {
+        // reshuffle new batch
+        const pool = quizScopeWords.length >=8 ? quizScopeWords : allWords;
+        const picks = [...pool].sort(()=>0.5-Math.random()).slice(0,8);
+        const more = picks.map(w=> {
+          const c=w.meaning_en||w.english;
+          const d=pool.filter(x=>x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,6).map(x=>x.meaning_en||x.english).filter(Boolean);
+          const u=[...new Set(d.filter(x=>x!==c))].slice(0,3);
+          while(u.length<3) u.push('—');
+          const o=[...u,c].sort(()=>0.5-Math.random());
+          return {word:w, correct:c, opts:o};
+        });
+        const newQ=[...sprintQueue, ...more];
+        setSprintQueue(newQ);
+        setSprintIdx(i=> i+1);
+        setSprintOptions(newQ[sprintIdx+1]?.opts || []);
+      } else {
+        setSprintIdx(i=> i+1);
+        setSprintOptions(sprintQueue[sprintIdx+1]?.opts || []);
+      }
+    }, 700);
+  };
 
   // custom add - now book/lektion aware
   const handleAddCard = async () => {
@@ -897,6 +1123,7 @@ export default function App() {
           </Block>
         </Block>
         <Block display="flex" alignItems="center" gridGap="6px">
+          <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{fontWeight:700}}}} onClick={()=> window.dispatchEvent(new CustomEvent('gs:check-update'))} title="Check for update">↻</Button>
           <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setShowAdd(true)}>＋ Add</Button>
           {authUser ? (
             <Block display="flex" alignItems="center" gridGap="6px">
@@ -917,6 +1144,7 @@ export default function App() {
         </Block>
       </Block>
 
+      <PWAUpdater />
       {toast && (
         <Block overrides={{ Block: { style: { position: 'fixed', top: '70px', left: '50%', transform: 'translateX(-50%)', zIndex: 20 } } }}>
           <Notification overrides={{ Body: { style: { backgroundColor: '#000', color: '#fff', borderRadius: '999px', paddingTop: '8px', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px', fontWeight: 700, fontSize: '13px' } } }}>{toast}</Notification>
@@ -1186,6 +1414,7 @@ export default function App() {
                       <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='dictation'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('dictation')}>Dictation DE</Button>
                       <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='artikel'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('artikel')}>Artikel</Button>
                       <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='mixed'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('mixed')}>Mixed</Button>
+                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='choice'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('choice')}>4-Choice ✨</Button>
                       <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='fa'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('fa')}>DE → فارسی</Button>
                     </Block>
                     <Block display="flex" gridGap="8px" marginTop="12px">
@@ -1195,16 +1424,48 @@ export default function App() {
                     </Block>
                     <ParagraphSmall color="#9a9a9a" marginTop="8px">{quizScopeWords.length} words in {quizBookMeta?.label} {quizLektion==='all' ? 'whole book' : quizLektion} • {quizScopeWords.filter(w=> weakIds.has(w.id)).length} weak • {quizScopeWords.filter(w=> w.article).length} nouns</ParagraphSmall>
                   </UberCard>
-                  <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
-                    <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-                      <ParagraphSmall margin={0}><b>Dictation:</b> Hear German → type exact word (<b>ä ö ü Ä Ö Ü ß</b> strict). Toolbar below input. +15 XP.</ParagraphSmall>
+                  <Block display="flex" flexDirection="column" gridGap="10px" marginTop="12px">
+                    <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px', borderLeftWidth:'3px', borderLeftColor:'#4f46e5'}}>
+                      <ParagraphSmall margin={0}><b>4-Choice ✨ NEW:</b> German word → pick 1 of 4 English meanings. Distractors from same Lektion so you really have to know it. <b>+{QUIZ_XP.choice} XP</b> per correct. Most efficient way to earn!</ParagraphSmall>
                     </UberCard>
                     <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-                      <ParagraphSmall margin={0}><b>Artikel:</b> Pick <span style={{color:genderColor('der'), fontWeight:700}}>der</span> / <span style={{color:genderColor('die'), fontWeight:700}}>die</span> / <span style={{color:genderColor('das'), fontWeight:700}}>das</span>. +10 XP.</ParagraphSmall>
+                      <ParagraphSmall margin={0}><b>Dictation:</b> Hear German → type exact word (<b>ä ö ü Ä Ö Ü ß</b> strict). <b>+{QUIZ_XP.dictation} XP</b>.</ParagraphSmall>
                     </UberCard>
                     <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-                      <ParagraphSmall margin={0}><b>فارسی:</b> See German → type Persian meaning exactly (from JSON). Great for recall. +15 XP.</ParagraphSmall>
+                      <ParagraphSmall margin={0}><b>Artikel:</b> Pick <span style={{color:genderColor('der'), fontWeight:700}}>der</span> / <span style={{color:genderColor('die'), fontWeight:700}}>die</span> / <span style={{color:genderColor('das'), fontWeight:700}}>das</span>. <b>+{QUIZ_XP.artikel} XP</b>.</ParagraphSmall>
                     </UberCard>
+                    <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
+                      <ParagraphSmall margin={0}><b>فارسی:</b> See German → type Persian meaning exactly. <b>+{QUIZ_XP.fa} XP</b>.</ParagraphSmall>
+                    </UberCard>
+                    <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px', backgroundColor:'#fff7ed', borderColor:'#ffedd5'}}>
+                      <LabelSmall>💡 Economy rebalanced</LabelSmall>
+                      <ParagraphSmall margin="4px 0 0" color="#9a5400">Swipes now give only <b>+{XP_MAP.Good} XP (Good)</b> — mastery matters. Quizzes & games pay 3-4× more. No more XP farming by swiping!</ParagraphSmall>
+                    </UberCard>
+                  </Block>
+                  {/* Two new games */}
+                  <Heading $style={{fontSize:16, margin:'16px 0 8px'}}>🎮 Games — earn big XP</Heading>
+                  <Block display="flex" flexDirection="column" gridGap="10px">
+                    <UberCard styleOverride={{background:'linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%)', color:'#fff', borderWidth:0, paddingTop:'14px', paddingBottom:'14px'}}>
+                      <Block display="flex" justifyContent="space-between" alignItems="center">
+                        <Block>
+                          <div style={{fontWeight:800, fontSize:15}}>🧩 Match Dash</div>
+                          <div style={{fontSize:12, opacity:0.9, marginTop:2}}>Flip tiles • Match DE ↔ EN • 6 pairs</div>
+                          <div style={{fontSize:11, opacity:0.8, marginTop:4}}>+{GAME_XP.matchPair} per pair + {GAME_XP.matchPerfectBonus} perfect bonus = up to ~40 XP</div>
+                        </Block>
+                        <Button size={SIZE.compact} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#4f46e5', fontWeight:800}}}} onClick={()=> startQuiz('match', 6)}>Play →</Button>
+                      </Block>
+                    </UberCard>
+                    <UberCard styleOverride={{background:'linear-gradient(135deg,#ea580c 0%,#f59e0b 100%)', color:'#fff', borderWidth:0, paddingTop:'14px', paddingBottom:'14px'}}>
+                      <Block display="flex" justifyContent="space-between" alignItems="center">
+                        <Block>
+                          <div style={{fontWeight:800, fontSize:15}}>⚡ Lightning Sprint</div>
+                          <div style={{fontSize:12, opacity:0.9, marginTop:2}}>45s • Rapid 4-choice • Streak multiplier 2×</div>
+                          <div style={{fontSize:11, opacity:0.8, marginTop:4}}>+{GAME_XP.sprintBase} base per correct, faster streak = more XP</div>
+                        </Block>
+                        <Button size={SIZE.compact} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#ea580c', fontWeight:800}}}} onClick={()=> startQuiz('sprint', 12)}>Sprint →</Button>
+                      </Block>
+                    </UberCard>
+                    <ParagraphSmall color="#9a9a9a">Both games pull from your selected scope ({quizBookMeta?.label} {quizLektion}) — switch scope above to focus on weak Lektionen.</ParagraphSmall>
                   </Block>
                 </>
               ) : (
@@ -1213,6 +1474,78 @@ export default function App() {
                     <LabelSmall color="#6b6b6b">Quiz {quizIdx+1}/{quizQueue.length} • {quizMode} • {quizBookMeta?.label} {quizLektion}</LabelSmall>
                     <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{quizScore.correct}/{quizScore.total} • {quizScore.xp} XP</LabelSmall>
                   </Block>
+                  {quizMode==='match' ? (
+                    <>
+                      <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
+                        <LabelSmall color="#6b6b6b">Match Dash • {matchMatched}/6 pairs • {matchMoves} moves</LabelSmall>
+                        <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{matchXp} XP</LabelSmall>
+                      </Block>
+                      <div style={{display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8, marginTop:12}}>
+                        {matchBoard.map(t=> (
+                          <div key={t.uid} onClick={()=> handleMatchPick(t.uid)} style={{minHeight:72, background: t.matched ? '#dcfce7' : t.flipped ? '#fff' : '#f7f7f7', border:`1.5px solid ${t.matched ? '#22c55e' : t.flipped ? '#000' : '#e5e5e5'}`, borderRadius:14, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'8px 6px', cursor: t.matched ? 'default' : 'pointer', textAlign:'center', opacity: t.matched?0.9:1, transform: t.flipped? 'scale(1.02)': 'scale(1)', transition:'all 0.2s', boxShadow: t.flipped? '0 4px 12px rgba(0,0,0,0.08)': 'none'}}>
+                            <div style={{fontWeight: t.type==='de'?800:600, fontSize: t.type==='de'?13:12, color: t.type==='de' ? (t.word.article? genderColor(t.word.article):'#000') : '#333', lineHeight:1.2}}>{t.label}</div>
+                            <div style={{fontSize:10, color:'#9a9a9a', marginTop:2, lineHeight:1}}>{t.type==='de' ? t.word.meaning_en?.slice(0,18) : t.word.lektion}</div>
+                            <div style={{fontSize:9, color:'#6b6b6b', marginTop:2}}>{t.type==='de' ? 'DE' : 'EN'}</div>
+                          </div>
+                        ))}
+                      </div>
+                      {matchDone && (
+                        <UberCard styleOverride={{marginTop:'12px', textAlign:'center', backgroundColor:'#f0fdf4', borderColor:'#bbf7d0'}}>
+                          <div style={{fontSize:24}}>🎉</div>
+                          <div style={{fontWeight:800, marginTop:4}}>Match complete! {matchMatched}/6 in {matchMoves} moves</div>
+                          <div style={{fontSize:13, color:'#16a34a', marginTop:4}}>+{matchXp} XP earned</div>
+                          <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
+                            <Button shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setMatchStarted(false); }}>Done</Button>
+                            <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={startMatchGame}>Play again</Button>
+                          </Block>
+                        </UberCard>
+                      )}
+                      {!matchDone && <Block marginTop="12px" display="flex" justifyContent="center"><Button kind={KIND.secondary} size={SIZE.mini} shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setMatchStarted(false); }}>Exit game</Button></Block>}
+                    </>
+                  ) : quizMode==='sprint' ? (
+                    <>
+                      <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
+                        <LabelSmall color="#6b6b6b">⚡ Sprint • {sprintScore.correct}/{sprintScore.total} • streak {sprintScore.streak} (best {sprintScore.best})</LabelSmall>
+                        <Block display="flex" gridGap="8px" alignItems="center">
+                          <span style={{background: sprintTime<=10 ? '#fef2f2' : '#fff7ed', color: sprintTime<=10 ? '#dc2626' : '#ea580c', padding:'4px 8px', borderRadius:999, fontWeight:800, fontSize:12, border:'1px solid #ffedd5'}}>{sprintTime}s</span>
+                          <span style={{background:'#000', color:'#fff', padding:'4px 8px', borderRadius:999, fontWeight:800, fontSize:12}}>{sprintScore.xp} XP</span>
+                        </Block>
+                      </Block>
+                      <div style={{height:6, background:'#eee', borderRadius:999, overflow:'hidden'}}><div style={{height:'100%', width:`${(sprintTime/45)*100}%`, background: sprintTime<=10 ? '#dc2626' : '#ea580c', transition:'width 1s linear'}}/></div>
+                      {!sprintActive && sprintTime===0 ? (
+                        <UberCard styleOverride={{marginTop:'12px', textAlign:'center'}}>
+                          <div style={{fontSize:28}}>⏱️</div>
+                          <div style={{fontWeight:800, marginTop:6}}>Time&apos;s up!</div>
+                          <div style={{fontSize:13, color:'#6b6b6b', marginTop:4}}>{sprintScore.correct}/{sprintScore.total} correct • best streak {sprintScore.best} • +{sprintScore.xp} XP</div>
+                          <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
+                            <Button shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setSprintActive(false); }}>Done</Button>
+                            <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> startSprintGame(12)}>Again</Button>
+                          </Block>
+                        </UberCard>
+                      ) : sprintQueue[sprintIdx] ? (
+                        <UberCard styleOverride={{marginTop:'12px', minHeight:'260px'}}>
+                          <Block textAlign="center">
+                            <LabelSmall color="#6b6b6b">Pick the correct English</LabelSmall>
+                            <div style={{fontSize:26, fontWeight:800, marginTop:8, color: sprintQueue[sprintIdx].word.article ? genderColor(sprintQueue[sprintIdx].word.article): '#000'}}>{sprintQueue[sprintIdx].word.article ? `${sprintQueue[sprintIdx].word.article} ` : ''}{sprintQueue[sprintIdx].word.german}</div>
+                            <div style={{fontSize:11, color:'#9a9a9a'}}>{sprintQueue[sprintIdx].word.lektion} • {sprintQueue[sprintIdx].word.plural ? `Pl: ${sprintQueue[sprintIdx].word.plural}`: ''}</div>
+                            {sprintFeedback ? (
+                              <Block marginTop="12px" padding="10px" backgroundColor={sprintFeedback.correct? '#dcfce7':'#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
+                                <LabelSmall>{sprintFeedback.correct ? `✅ +${sprintFeedback.xp} XP (×${(1+ sprintScore.streak*0.15).toFixed(2)})` : `❌ was "${sprintFeedback.expected}"`}</LabelSmall>
+                              </Block>
+                            ) : (
+                              <Block display="grid" gridGap="8px" marginTop="14px" overrides={{Block:{style:{gridTemplateColumns:'1fr 1fr'}}}}>
+                                {sprintOptions.map(opt=> (
+                                  <Button key={opt} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', borderColor:'#e5e5e5', borderWidth:'1.5px', fontWeight:600, minHeight:'44px', whiteSpace:'normal', lineHeight:1.2}}}} onClick={()=> handleSprintPick(opt)}>{opt}</Button>
+                                ))}
+                              </Block>
+                            )}
+                          </Block>
+                        </UberCard>
+                      ) : null}
+                      {sprintActive && <Block marginTop="12px" display="flex" justifyContent="center"><Button kind={KIND.secondary} size={SIZE.mini} shape={SHAPE.pill} onClick={()=> { setSprintActive(false); setQuizStarted(false); }}>Exit sprint</Button></Block>}
+                    </>
+                  ) : (
+                  <>
                   <ProgressBar value={quizQueue.length ? (quizIdx/quizQueue.length)*100 : 0} overrides={{ BarProgress:{style:{backgroundColor:'#000'}}, BarContainer:{style:{backgroundColor:'#eee', height:'4px', borderRadius:'999px'}}, Bar:{style:{height:'4px'}} }} />
                   {currentQuizWord && (
                     <UberCard styleOverride={{marginTop:'12px', minHeight:'280px'}}>
@@ -1238,6 +1571,36 @@ export default function App() {
                             <Button shape={SHAPE.pill} disabled={!quizArtikelChoice} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'16px', width:'100%'}}}}>Check</Button>
                           ) : (
                             <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'16px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
+                          )}
+                        </Block>
+                      ) : quizMode==='choice' ? (
+                        <Block textAlign="center">
+                          <LabelSmall color="#6b6b6b">4-CHOICE — Pick the right meaning</LabelSmall>
+                          <div style={{fontSize:26, fontWeight:800, marginTop:8, color: currentQuizWord.article ? genderColor(currentQuizWord.article) : '#000'}}>{currentQuizWord.article ? `${currentQuizWord.article} ` : ''}{currentQuizWord.german}</div>
+                          <div style={{fontSize:12, color:'#9a9a9a', marginTop:2, fontFamily:'Vazirmatn', direction:'rtl'}}>{currentQuizWord.meaning_fa}</div>
+                          <div style={{fontSize:11, color:'#9a9a9a'}}>{currentQuizWord.lektion} • {currentQuizWord.plural ? `Pl: ${currentQuizWord.plural}` : currentQuizWord.example?.slice(0,48)}</div>
+                          <Block marginTop="10px"><Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>🔊 Listen</Button></Block>
+                          {!quizFeedback ? (
+                            <Block display="grid" gridGap="8px" marginTop="14px" overrides={{Block:{style:{gridTemplateColumns:'1fr 1fr'}}}}>
+                              {choiceOptions.map(opt=> {
+                                const isPicked = choicePick===opt;
+                                return (
+                                  <Button key={opt} kind={isPicked?KIND.primary:KIND.secondary} shape={SHAPE.pill}
+                                    overrides={{BaseButton:{style:{backgroundColor: isPicked ? '#000' : '#fff', color: isPicked ? '#fff' : '#000', borderColor:'#e5e5e5', borderWidth:'1.5px', minHeight:'48px', whiteSpace:'normal', lineHeight:1.2, fontWeight:600}}}}
+                                    onClick={()=> setChoicePick(opt)}>{opt}</Button>
+                                );
+                              })}
+                            </Block>
+                          ) : (
+                            <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
+                              <LabelSmall>{quizFeedback.correct ? `✅ Correct! "${quizFeedback.expectedEn}" +${quizFeedback.xp} XP` : `❌ "${choicePick}" → "${quizFeedback.expectedEn}"`}</LabelSmall>
+                              <div style={{fontFamily:'Vazirmatn', direction:'rtl', fontSize:12, color:'#6b6b6b', marginTop:4}}>{quizFeedback.expectedFa}</div>
+                            </Block>
+                          )}
+                          {!quizFeedback ? (
+                            <Button shape={SHAPE.pill} disabled={!choicePick} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%'}}}}>Check</Button>
+                          ) : (
+                            <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
                           )}
                         </Block>
                       ) : quizMode==='fa' ? (
@@ -1298,6 +1661,8 @@ export default function App() {
                   <Block marginTop="12px" display="flex" justifyContent="center">
                     <Button kind={KIND.secondary} size={SIZE.mini} shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setQuizFeedback(null); }}>Exit quiz</Button>
                   </Block>
+                </>
+                  )}
                 </>
               )}
             </Block>
