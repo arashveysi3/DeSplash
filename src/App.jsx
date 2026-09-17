@@ -15,6 +15,7 @@ import { signup, login, fetchMe, logout, fetchUsers, deleteUser, fetchProgress, 
 import { sm2, qualityFromLabel, XP_MAP, QUIZ_XP, GAME_XP } from './srs';
 import { genderColor, genderBg } from './theme';
 import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
+import { filterWordsByScope, getMeaningDisplay, buildChallengeChoices, normalizeLessonSelection } from './gameUtils.js';
 import PWAUpdater from './components/PWAUpdater.jsx';
 
 function isWordMastered(progress) {
@@ -306,6 +307,12 @@ export default function App() {
   // Book / Lektion scope
   const [selectedBook, setSelectedBook] = useState(() => localStorage.getItem('gs_book') || 'a1.1');
   const [selectedLektion, setSelectedLektion] = useState(() => localStorage.getItem('gs_lektion') || 'all');
+  const [selectedLektionen, setSelectedLektionen] = useState(() => {
+    try {
+      const raw = localStorage.getItem('gs_lektionen');
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  });
   const [bookView, setBookView] = useState(null); // which book detail is open in Books tab
   const [flipped, setFlipped] = useState(false);
 
@@ -351,6 +358,7 @@ export default function App() {
 
   useEffect(()=>{ localStorage.setItem('gs_book', selectedBook); },[selectedBook]);
   useEffect(()=>{ localStorage.setItem('gs_lektion', selectedLektion); },[selectedLektion]);
+  useEffect(()=>{ localStorage.setItem('gs_lektionen', JSON.stringify(selectedLektionen)); },[selectedLektionen]);
   useEffect(()=>{ localStorage.setItem('gs_quiz_book', quizBook); },[quizBook]);
   useEffect(()=>{ localStorage.setItem('gs_quiz_lektion', quizLektion); },[quizLektion]);
 
@@ -466,24 +474,42 @@ export default function App() {
     })();
   }, [authUser, authToken, dbReady, loadProgressForUser, loadStatsForUser]);
 
+  const selectedLessonList = useMemo(() => {
+    const normalized = normalizeLessonSelection(selectedLektionen.length ? selectedLektionen : (selectedLektion === 'all' ? [] : [selectedLektion]));
+    return normalized;
+  }, [selectedLektionen, selectedLektion]);
+
+  const scopeLessonLabel = selectedLessonList.length ? selectedLessonList.join(', ') : 'Whole book';
+
+  const toggleLesson = (lesson) => {
+    if (!lesson || lesson === 'all') {
+      setSelectedLektion('all');
+      setSelectedLektionen([]);
+      return;
+    }
+    setSelectedLektionen((prev) => {
+      const exists = prev.includes(lesson);
+      const next = exists ? prev.filter((item) => item !== lesson) : [...prev, lesson];
+      setSelectedLektion(next.length ? next[0] : 'all');
+      return next;
+    });
+  };
+
   // scope words helper
   const scopeWords = useMemo(()=>{
     const book = selectedBook;
-    const lek = selectedLektion;
     if (!book) return allWords;
-    let w = allWords.filter(x=> x.book === book);
-    if (lek && lek !== 'all') w = w.filter(x=> x.lektion === lek);
+    let w = filterWordsByScope(allWords, book, selectedLessonList);
     if (search.trim()) {
       const q = search.toLowerCase();
       w = w.filter(x => x.german.toLowerCase().includes(q) || (x.meaning_en||x.english||'').toLowerCase().includes(q) || (x.meaning_fa||'').includes(q) || x.lektion.toLowerCase().includes(q));
     }
     return w;
-  }, [allWords, selectedBook, selectedLektion, search]);
+  }, [allWords, selectedBook, selectedLessonList, search]);
 
   const quizScopeWords = useMemo(()=>{
-    let w = allWords.filter(x=> x.book === quizBook);
-    if (quizLektion && quizLektion !== 'all') w = w.filter(x=> x.lektion === quizLektion);
-    return w;
+    const lessons = quizLektion && quizLektion !== 'all' ? [quizLektion] : [];
+    return filterWordsByScope(allWords, quizBook, lessons);
   }, [allWords, quizBook, quizLektion]);
 
   const filteredWordsForSearch = useMemo(() => {
@@ -701,18 +727,72 @@ export default function App() {
 
   const buildChoiceOptions = useCallback((word, pool) => {
     const correct = word.meaning_en || word.english;
-    const distractors = pool.filter(w=> w.id !== word.id).sort(()=> 0.5 - Math.random()).slice(0, 12).map(w=> w.meaning_en || w.english).filter(Boolean)
-    const uniq = [...new Set(distractors.filter(d=> d !== correct))].slice(0,3)
-    // if not enough, pad with random german meanings
-    while (uniq.length < 3) uniq.push(['house','time','water','people','work'][uniq.length] || '—')
-    const opts = [...uniq, correct].sort(()=> 0.5 - Math.random())
-    return { correct, opts }
+    const opts = buildChallengeChoices(word, pool);
+    if (!opts.includes(correct)) opts.unshift(correct);
+    while (opts.length < 4) opts.push(['house', 'time', 'water', 'people', 'work'][opts.length] || '—');
+    return { correct, opts: [...new Set(opts)].slice(0, 4).sort(() => 0.5 - Math.random()) };
   }, []);
+
+  const startBridgeGame = useCallback(() => {
+    const pool = quizScopeWords.length >= 8 ? quizScopeWords : allWords;
+    const picks = [...pool].sort(() => 0.5 - Math.random()).slice(0, 8);
+    const queue = picks.map((w) => {
+      const correct = w.meaning_en || w.english || '—';
+      const distractors = pool
+        .filter((x) => x.id !== w.id)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 8)
+        .map((x) => x.meaning_en || x.english || x.meaning_fa)
+        .filter(Boolean);
+      const uniq = [...new Set(distractors.filter((d) => d !== correct))].slice(0, 3);
+      while (uniq.length < 3) uniq.push('—');
+      return { word: w, correct, prompt: w.meaning_fa || 'Translate to English', opts: [...uniq, correct].sort(() => 0.5 - Math.random()) };
+    });
+    setQuizMode('bridge');
+    setQuizQueue(queue);
+    setQuizIdx(0);
+    setQuizAnswer('');
+    setQuizArtikelChoice('');
+    setChoicePick('');
+    setQuizFeedback(null);
+    setQuizScore({ correct: 0, total: 0, xp: 0 });
+    setQuizStarted(true);
+    setChoiceOptions(queue[0]?.opts || []);
+  }, [quizScopeWords, allWords]);
+
+  const startRelayGame = useCallback(() => {
+    const pool = quizScopeWords.length >= 8 ? quizScopeWords : allWords;
+    const picks = [...pool].sort(() => 0.5 - Math.random()).slice(0, 8);
+    const queue = picks.map((w) => {
+      const correct = w.meaning_fa || '—';
+      const distractors = pool
+        .filter((x) => x.id !== w.id)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 8)
+        .map((x) => x.meaning_fa || x.meaning_en || x.english)
+        .filter(Boolean);
+      const uniq = [...new Set(distractors.filter((d) => d !== correct))].slice(0, 3);
+      while (uniq.length < 3) uniq.push('—');
+      return { word: w, correct, prompt: w.meaning_en || w.english || 'Translate to Persian', opts: [...uniq, correct].sort(() => 0.5 - Math.random()) };
+    });
+    setQuizMode('relay');
+    setQuizQueue(queue);
+    setQuizIdx(0);
+    setQuizAnswer('');
+    setQuizArtikelChoice('');
+    setChoicePick('');
+    setQuizFeedback(null);
+    setQuizScore({ correct: 0, total: 0, xp: 0 });
+    setQuizStarted(true);
+    setChoiceOptions(queue[0]?.opts || []);
+  }, [quizScopeWords, allWords]);
 
   const startQuiz = (mode, count=10) => {
     // handle games separately
     if (mode === 'match') { startMatchGame(); return; }
     if (mode === 'sprint') { startSprintGame(count); return; }
+    if (mode === 'bridge') { startBridgeGame(); return; }
+    if (mode === 'relay') { startRelayGame(); return; }
     const q = buildQuizQueue(count, mode);
     if (q.length===0) { setToast('No words for this scope/mode'); setTimeout(()=> setToast(null),1500); return; }
     setQuizMode(mode);
@@ -735,13 +815,13 @@ export default function App() {
 
   const submitQuiz = async () => {
     if (!currentQuizWord) return;
-    const isChoiceQ = quizMode === 'choice';
+    const isChoiceQ = quizMode === 'choice' || quizMode === 'bridge' || quizMode === 'relay';
     const isArtikelQ = !isChoiceQ && (quizMode==='artikel' || (quizMode==='mixed' && currentQuizWord.article && quizIdx %2===0));
     const isFaQ = quizMode==='fa';
     let correct = false;
     let xpAdd = 0;
     if (isChoiceQ) {
-      const correctAns = currentQuizWord.meaning_en || currentQuizWord.english;
+      const correctAns = currentQuizWord.correct || currentQuizWord.meaning_en || currentQuizWord.english;
       correct = choicePick === correctAns;
       xpAdd = correct ? QUIZ_XP.choice : 0;
     } else if (isArtikelQ) {
@@ -834,12 +914,12 @@ export default function App() {
     setChoicePick('');
     setQuizFeedback(null);
     const w = quizQueue[nextIdx];
-    if (quizMode === 'choice') {
+    if (quizMode === 'choice' || quizMode === 'bridge' || quizMode === 'relay') {
       const { opts } = buildChoiceOptions(w, quizScopeWords);
       setChoiceOptions(opts);
     }
     const isArtikelNext = quizMode==='artikel' || (quizMode==='mixed' && w.article && nextIdx %2===0);
-    if (!isArtikelNext && quizMode !== 'fa' && quizMode !== 'choice') setTimeout(()=> speakGerman(w.german), 250);
+    if (!isArtikelNext && quizMode !== 'fa' && quizMode !== 'choice' && quizMode !== 'bridge' && quizMode !== 'relay') setTimeout(()=> speakGerman(w.german), 250);
   };
 
   const insertUmlaut = (ch) => setQuizAnswer(a=> a + ch);
@@ -849,9 +929,11 @@ export default function App() {
     const pool = quizScopeWords.length >= 6 ? quizScopeWords : allWords;
     const picks = [...pool].sort(()=> 0.5 - Math.random()).slice(0,6);
     const tiles = [];
-    picks.forEach((w, idx) => {
-      tiles.push({ uid: `${w.id}-de`, pairId: w.id, label: w.article ? `${w.article} ${w.german}` : w.german, sub: w.lektion, type:'de', word:w, matched:false, flipped:false });
-      tiles.push({ uid: `${w.id}-en`, pairId: w.id, label: w.meaning_en || w.english, sub: w.meaning_fa?.slice(0,18) || '', type:'en', word:w, matched:false, flipped:false });
+    picks.forEach((w) => {
+      const enText = w.meaning_en || w.english || '—';
+      const faText = w.meaning_fa || '';
+      tiles.push({ uid: `${w.id}-de`, pairId: w.id, label: w.article ? `${w.article} ${w.german}` : w.german, sub: `${w.lektion} • ${faText || enText}`, type:'de', word:w, matched:false, flipped:false });
+      tiles.push({ uid: `${w.id}-en`, pairId: w.id, label: faText ? `${enText} • ${faText}` : enText, sub: 'English + فارسی', type:'en', word:w, matched:false, flipped:false });
     });
     for (let i=tiles.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [tiles[i],tiles[j]]=[tiles[j],tiles[i]]; }
     setMatchBoard(tiles);
@@ -933,12 +1015,17 @@ export default function App() {
     const pool = quizScopeWords.length >= count ? quizScopeWords : allWords;
     const picks = [...pool].sort(()=> 0.5 - Math.random()).slice(0, count);
     const queue = picks.map(w=> {
-      const correct = w.meaning_en || w.english;
-      const distractors = pool.filter(x=> x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,8).map(x=> x.meaning_en || x.english).filter(Boolean);
+      const english = w.meaning_en || w.english || '—';
+      const persian = w.meaning_fa || '—';
+      const chooseFa = Math.random() > 0.5;
+      const correct = chooseFa ? persian : english;
+      const distractors = pool.filter(x=> x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,10)
+        .map(x=> chooseFa ? (x.meaning_fa || x.meaning_en || x.english) : (x.meaning_en || x.english || x.meaning_fa))
+        .filter(Boolean);
       const uniq=[...new Set(distractors.filter(d=> d!==correct))].slice(0,3);
       while(uniq.length<3) uniq.push('—');
       const opts=[...uniq, correct].sort(()=>0.5-Math.random());
-      return { word:w, correct, opts };
+      return { word:w, correct, targetLanguage: chooseFa ? 'fa' : 'en', opts };
     });
     setSprintQueue(queue);
     setSprintIdx(0);
@@ -980,21 +1067,23 @@ export default function App() {
     const streak = correct ? sprintScore.streak + 1 : 0;
     const mult = Math.min(2, 1 + streak*0.15);
     const xpAdd = correct ? Math.round(GAME_XP.sprintBase * mult) : 0;
-    setSprintFeedback({ correct, expected: cur.correct, xp: xpAdd });
+    setSprintFeedback({ correct, expected: cur.correct, xp: xpAdd, language: cur.targetLanguage });
     setSprintScore(s=> ({ correct: s.correct + (correct?1:0), total: s.total+1, streak, best: Math.max(s.best, streak), xp: s.xp + xpAdd }));
     setTimeout(()=> {
       setSprintFeedback(null);
       if (sprintIdx +1 >= sprintQueue.length) {
-        // reshuffle new batch
         const pool = quizScopeWords.length >=8 ? quizScopeWords : allWords;
         const picks = [...pool].sort(()=>0.5-Math.random()).slice(0,8);
         const more = picks.map(w=> {
-          const c=w.meaning_en||w.english;
-          const d=pool.filter(x=>x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,6).map(x=>x.meaning_en||x.english).filter(Boolean);
+          const english = w.meaning_en || w.english || '—';
+          const persian = w.meaning_fa || '—';
+          const chooseFa = Math.random() > 0.5;
+          const c = chooseFa ? persian : english;
+          const d = pool.filter(x=>x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,8).map(x=> chooseFa ? (x.meaning_fa || x.meaning_en || x.english) : (x.meaning_en || x.english || x.meaning_fa)).filter(Boolean);
           const u=[...new Set(d.filter(x=>x!==c))].slice(0,3);
           while(u.length<3) u.push('—');
           const o=[...u,c].sort(()=>0.5-Math.random());
-          return {word:w, correct:c, opts:o};
+          return {word:w, correct:c, targetLanguage: chooseFa ? 'fa' : 'en', opts:o};
         });
         const newQ=[...sprintQueue, ...more];
         setSprintQueue(newQ);
@@ -1234,7 +1323,7 @@ export default function App() {
                             <div style={{height:'100%', width:`${mastery.pct}%`, background:'#fff', borderRadius:999, transition:'width 0.5s'}} />
                           </div>
                           <Block display="flex" gridGap="8px" marginTop="14px">
-                            <Button size={SIZE.mini} kind={KIND.primary} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#000', fontWeight:700}}}} onClick={(e)=>{e.stopPropagation(); setSelectedBook(book.id); setSelectedLektion('all'); setActiveKey('1');}}>📖 Whole book — Study</Button>
+                            <Button size={SIZE.mini} kind={KIND.primary} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#000', fontWeight:700}}}} onClick={(e)=>{e.stopPropagation(); setSelectedBook(book.id); setSelectedLektion('all'); setSelectedLektionen([]); setActiveKey('1');}}>📖 Whole book — Study</Button>
                             <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'rgba(255,255,255,0.2)', color:'#fff', backdropFilter:'blur(8px)'}}}} onClick={(e)=>{e.stopPropagation(); setBookView(book.id);}}>Lektionen →</Button>
                           </Block>
                         </Block>
@@ -1268,7 +1357,7 @@ export default function App() {
                               <div style={{fontWeight:800, fontSize:18}}>{book.label} — Alle Lektionen</div>
                               <div style={{fontSize:12, opacity:0.9}}>{book.total} Wörter • Tap a Lektion to focus</div>
                             </Block>
-                            <Button size={SIZE.mini} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#000', fontWeight:700}}}} onClick={()=> { setSelectedBook(book.id); setSelectedLektion('all'); setActiveKey('1'); }}>Study whole book</Button>
+                            <Button size={SIZE.mini} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#000', fontWeight:700}}}} onClick={()=> { setSelectedBook(book.id); setSelectedLektion('all'); setSelectedLektionen([]); setActiveKey('1'); }}>Study whole book</Button>
                           </Block>
                         </Block>
                         <Block display="grid" gridGap="10px" marginTop="12px" overrides={{Block:{style:{gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))'}}}}>
@@ -1297,7 +1386,7 @@ export default function App() {
                                   <LabelSmall color={mastery.pct>=80 ? '#16a34a' : '#9a9a9a'}>{mastery.pct>=80 ? '✓ Studied' : mastery.pct>=30 ? '● In progress' : '○ Not started'}</LabelSmall>
                                 </Block>
                                 <Block display="flex" gridGap="6px" marginTop="10px">
-                                  <Button size={SIZE.mini} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1, fontWeight:700, backgroundColor: isActive ? '#000' : undefined, color: isActive ? '#fff' : undefined}}}} onClick={()=> { setSelectedBook(l.book); setSelectedLektion(l.lektion); setActiveKey('1'); }}>{isActive? '● Studying' : 'Study'}</Button>
+                                  <Button size={SIZE.mini} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1, fontWeight:700, backgroundColor: isActive ? '#000' : undefined, color: isActive ? '#fff' : undefined}}}} onClick={()=> { setSelectedBook(l.book); setSelectedLektion(l.lektion); setSelectedLektionen([l.lektion]); setActiveKey('1'); }}>{isActive? '● Studying' : 'Study'}</Button>
                                   <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setQuizBook(l.book); setQuizLektion(l.lektion); setActiveKey('2');}}>Quiz</Button>
                                   <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={()=> speakGerman(words[0]?.german || l.title)}>🔊</Button>
                                 </Block>
@@ -1320,18 +1409,23 @@ export default function App() {
                 <Block display="flex" justifyContent="space-between" alignItems="center">
                   <Block>
                     <LabelSmall color="#6b6b6b">Scope</LabelSmall>
-                    <div style={{fontWeight:800, fontSize:14}}>{selectedBookMeta?.label} • {selectedLektion==='all' ? 'Whole book' : selectedLektion}</div>
+                    <div style={{fontWeight:800, fontSize:14}}>{selectedBookMeta?.label} • {scopeLessonLabel}</div>
                     <div style={{fontSize:11, color:'#6b6b6b'}}>{scopeWords.length} words • {weakForScope.length} weak</div>
                   </Block>
                   <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setActiveKey('0')}>Change book →</Button>
                 </Block>
                 <Block display="flex" gridGap="8px" marginTop="10px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-                  <Select options={BOOKS.map(b=> ({id:b.id, label:b.label}))} value={[{id:selectedBook, label:selectedBookMeta?.label}]} onChange={({value})=> { if(value[0]) { setSelectedBook(value[0].id); setSelectedLektion('all'); }}} size="compact" overrides={{ControlContainer:{style:{minWidth:'140px', borderRadius:'999px'}}}} />
-                  <Select options={[{id:'all', label:'Whole book'}, ...lektionenForBook(selectedBook).map(l=> ({id:l.lektion, label: `${l.lektion} — ${l.title.slice(0,18)}…`}))]} value={selectedLektion==='all' ? [{id:'all', label:'Whole book'}] : [{id:selectedLektion, label:selectedLektion}]} onChange={({value})=> setSelectedLektion(value[0]?.id || 'all')} size="compact" overrides={{ControlContainer:{style:{minWidth:'160px', borderRadius:'999px'}}}} />
+                  <Select options={BOOKS.map(b=> ({id:b.id, label:b.label}))} value={[{id:selectedBook, label:selectedBookMeta?.label}]} onChange={({value})=> { if(value[0]) { setSelectedBook(value[0].id); setSelectedLektion('all'); setSelectedLektionen([]); }}} size="compact" overrides={{ControlContainer:{style:{minWidth:'140px', borderRadius:'999px'}}}} />
+                  <Select options={[{id:'all', label:'Whole book'}, ...lektionenForBook(selectedBook).map(l=> ({id:l.lektion, label: `${l.lektion} — ${l.title.slice(0,18)}…`}))]} value={selectedLessonList.length ? selectedLessonList.map((l) => ({ id: l, label: l })) : [{ id: 'all', label: 'Whole book' }]} onChange={({value})=> {
+                    const next = value?.length ? value.map((item) => item.id).filter((id) => id !== 'all') : [];
+                    setSelectedLektionen(next);
+                    setSelectedLektion(next.length ? next[0] : 'all');
+                  }} multi size="compact" overrides={{ControlContainer:{style:{minWidth:'200px', borderRadius:'999px'}}}} />
                   <Select options={[{id:10, label:'10 / pack'},{id:20, label:'20 / pack'},{id:50, label:'50 / pack'}]} value={[{id:packSize, label:`${packSize} / pack`}]} onChange={({value})=> setPackSize(value[0].id)} size="compact" overrides={{ ControlContainer: { style: { minWidth: '110px', borderRadius:'999px' } } }} />
                 </Block>
-                <Block display="flex" gridGap="8px" marginTop="10px">
+                <Block display="flex" gridGap="8px" marginTop="10px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
                   <Button size={SIZE.mini} shape={SHAPE.pill} onClick={startNewPack}>New pack</Button>
+                  <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setSelectedLektionen([]); setSelectedLektion('all'); }}>Whole book</Button>
                   <LabelSmall color="#6b6b6b" overrides={{Block:{style:{alignSelf:'center'}}}}>{studyQueue.length} due in scope</LabelSmall>
                 </Block>
               </UberCard>
@@ -1411,11 +1505,13 @@ export default function App() {
                       <Select options={[{id:'all', label:'Whole book'}, ...lektionenForBook(quizBook).map(l=> ({id:l.lektion, label: l.lektion}))]} value={quizLektion==='all' ? [{id:'all', label:'Whole book'}] : [{id:quizLektion, label:quizLektion}]} onChange={({value})=> setQuizLektion(value[0]?.id || 'all')} size="compact" overrides={{ControlContainer:{style:{minWidth:'140px', borderRadius:'999px'}}}} />
                     </Block>
                     <Block display="flex" gridGap="8px" marginTop="12px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='dictation'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('dictation')}>Dictation DE</Button>
+                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='dictation'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('dictation')}>Dictation</Button>
                       <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='artikel'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('artikel')}>Artikel</Button>
                       <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='mixed'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('mixed')}>Mixed</Button>
-                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='choice'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('choice')}>4-Choice ✨</Button>
-                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='fa'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('fa')}>DE → فارسی</Button>
+                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='choice'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('choice')}>4-Choice</Button>
+                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='fa'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('fa')}>DE → FA</Button>
+                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='bridge'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('bridge')}>Bridge</Button>
+                      <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='relay'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('relay')}>Relay</Button>
                     </Block>
                     <Block display="flex" gridGap="8px" marginTop="12px">
                       <Button shape={SHAPE.pill} onClick={()=> startQuiz(quizMode, 5)}>Start 5</Button>
@@ -1426,31 +1522,26 @@ export default function App() {
                   </UberCard>
                   <Block display="flex" flexDirection="column" gridGap="10px" marginTop="12px">
                     <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px', borderLeftWidth:'3px', borderLeftColor:'#4f46e5'}}>
-                      <ParagraphSmall margin={0}><b>4-Choice ✨ NEW:</b> German word → pick 1 of 4 English meanings. Distractors from same Lektion so you really have to know it. <b>+{QUIZ_XP.choice} XP</b> per correct. Most efficient way to earn!</ParagraphSmall>
+                      <ParagraphSmall margin={0}><b>4-Choice:</b> German word → pick the right English meaning from four options. Strong for quick confidence building.</ParagraphSmall>
                     </UberCard>
                     <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-                      <ParagraphSmall margin={0}><b>Dictation:</b> Hear German → type exact word (<b>ä ö ü Ä Ö Ü ß</b> strict). <b>+{QUIZ_XP.dictation} XP</b>.</ParagraphSmall>
+                      <ParagraphSmall margin={0}><b>Dictation:</b> Hear German and type the exact word with umlauts. This is the best way to lock pronunciation.</ParagraphSmall>
                     </UberCard>
                     <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-                      <ParagraphSmall margin={0}><b>Artikel:</b> Pick <span style={{color:genderColor('der'), fontWeight:700}}>der</span> / <span style={{color:genderColor('die'), fontWeight:700}}>die</span> / <span style={{color:genderColor('das'), fontWeight:700}}>das</span>. <b>+{QUIZ_XP.artikel} XP</b>.</ParagraphSmall>
+                      <ParagraphSmall margin={0}><b>Artikel:</b> Secure der, die, and das before you move on. It becomes automatic with repetition.</ParagraphSmall>
                     </UberCard>
                     <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-                      <ParagraphSmall margin={0}><b>فارسی:</b> See German → type Persian meaning exactly. <b>+{QUIZ_XP.fa} XP</b>.</ParagraphSmall>
-                    </UberCard>
-                    <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px', backgroundColor:'#fff7ed', borderColor:'#ffedd5'}}>
-                      <LabelSmall>💡 Economy rebalanced</LabelSmall>
-                      <ParagraphSmall margin="4px 0 0" color="#9a5400">Swipes now give only <b>+{XP_MAP.Good} XP (Good)</b> — mastery matters. Quizzes & games pay 3-4× more. No more XP farming by swiping!</ParagraphSmall>
+                      <ParagraphSmall margin={0}><b>Persian:</b> Practice DE → FA for a clean bilingual review loop. German stays on one side; Persian and English sit on the other.</ParagraphSmall>
                     </UberCard>
                   </Block>
-                  {/* Two new games */}
-                  <Heading $style={{fontSize:16, margin:'16px 0 8px'}}>🎮 Games — earn big XP</Heading>
+                  <Heading $style={{fontSize:16, margin:'16px 0 8px'}}>🎮 Games</Heading>
                   <Block display="flex" flexDirection="column" gridGap="10px">
                     <UberCard styleOverride={{background:'linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%)', color:'#fff', borderWidth:0, paddingTop:'14px', paddingBottom:'14px'}}>
                       <Block display="flex" justifyContent="space-between" alignItems="center">
                         <Block>
                           <div style={{fontWeight:800, fontSize:15}}>🧩 Match Dash</div>
-                          <div style={{fontSize:12, opacity:0.9, marginTop:2}}>Flip tiles • Match DE ↔ EN • 6 pairs</div>
-                          <div style={{fontSize:11, opacity:0.8, marginTop:4}}>+{GAME_XP.matchPair} per pair + {GAME_XP.matchPerfectBonus} perfect bonus = up to ~40 XP</div>
+                          <div style={{fontSize:12, opacity:0.9, marginTop:2}}>German on one side • English + Persian on the other</div>
+                          <div style={{fontSize:11, opacity:0.8, marginTop:4}}>Match 6 pairs and collect a clean bonus reward.</div>
                         </Block>
                         <Button size={SIZE.compact} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#4f46e5', fontWeight:800}}}} onClick={()=> startQuiz('match', 6)}>Play →</Button>
                       </Block>
@@ -1459,13 +1550,33 @@ export default function App() {
                       <Block display="flex" justifyContent="space-between" alignItems="center">
                         <Block>
                           <div style={{fontWeight:800, fontSize:15}}>⚡ Lightning Sprint</div>
-                          <div style={{fontSize:12, opacity:0.9, marginTop:2}}>45s • Rapid 4-choice • Streak multiplier 2×</div>
-                          <div style={{fontSize:11, opacity:0.8, marginTop:4}}>+{GAME_XP.sprintBase} base per correct, faster streak = more XP</div>
+                          <div style={{fontSize:12, opacity:0.9, marginTop:2}}>45s challenge with English and Persian targets</div>
+                          <div style={{fontSize:11, opacity:0.8, marginTop:4}}>Fast recognition, good streaks, and real pressure.</div>
                         </Block>
                         <Button size={SIZE.compact} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#ea580c', fontWeight:800}}}} onClick={()=> startQuiz('sprint', 12)}>Sprint →</Button>
                       </Block>
                     </UberCard>
-                    <ParagraphSmall color="#9a9a9a">Both games pull from your selected scope ({quizBookMeta?.label} {quizLektion}) — switch scope above to focus on weak Lektionen.</ParagraphSmall>
+                    <UberCard styleOverride={{background:'linear-gradient(135deg,#0f766e 0%,#14b8a6 100%)', color:'#fff', borderWidth:0, paddingTop:'14px', paddingBottom:'14px'}}>
+                      <Block display="flex" justifyContent="space-between" alignItems="center">
+                        <Block>
+                          <div style={{fontWeight:800, fontSize:15}}>🌉 Bridge Builder</div>
+                          <div style={{fontSize:12, opacity:0.9, marginTop:2}}>German clue → match the correct English bridge</div>
+                          <div style={{fontSize:11, opacity:0.8, marginTop:4}}>Built for deeper transfer between meaning and recall.</div>
+                        </Block>
+                        <Button size={SIZE.compact} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#0f766e', fontWeight:800}}}} onClick={()=> startQuiz('bridge', 8)}>Play →</Button>
+                      </Block>
+                    </UberCard>
+                    <UberCard styleOverride={{background:'linear-gradient(135deg,#7c2d12 0%,#f97316 100%)', color:'#fff', borderWidth:0, paddingTop:'14px', paddingBottom:'14px'}}>
+                      <Block display="flex" justifyContent="space-between" alignItems="center">
+                        <Block>
+                          <div style={{fontWeight:800, fontSize:15}}>🧠 Relay Rush</div>
+                          <div style={{fontSize:12, opacity:0.9, marginTop:2}}>German + English cue → choose the Persian match</div>
+                          <div style={{fontSize:11, opacity:0.8, marginTop:4}}>Fast switching between English and Persian under pressure.</div>
+                        </Block>
+                        <Button size={SIZE.compact} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#7c2d12', fontWeight:800}}}} onClick={()=> startQuiz('relay', 8)}>Play →</Button>
+                      </Block>
+                    </UberCard>
+                    <ParagraphSmall color="#9a9a9a">All games pull from the selected scope. Use the study filters below to combine multiple lessons in the same book.</ParagraphSmall>
                   </Block>
                 </>
               ) : (
@@ -1484,8 +1595,8 @@ export default function App() {
                         {matchBoard.map(t=> (
                           <div key={t.uid} onClick={()=> handleMatchPick(t.uid)} style={{minHeight:72, background: t.matched ? '#dcfce7' : t.flipped ? '#fff' : '#f7f7f7', border:`1.5px solid ${t.matched ? '#22c55e' : t.flipped ? '#000' : '#e5e5e5'}`, borderRadius:14, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'8px 6px', cursor: t.matched ? 'default' : 'pointer', textAlign:'center', opacity: t.matched?0.9:1, transform: t.flipped? 'scale(1.02)': 'scale(1)', transition:'all 0.2s', boxShadow: t.flipped? '0 4px 12px rgba(0,0,0,0.08)': 'none'}}>
                             <div style={{fontWeight: t.type==='de'?800:600, fontSize: t.type==='de'?13:12, color: t.type==='de' ? (t.word.article? genderColor(t.word.article):'#000') : '#333', lineHeight:1.2}}>{t.label}</div>
-                            <div style={{fontSize:10, color:'#9a9a9a', marginTop:2, lineHeight:1}}>{t.type==='de' ? t.word.meaning_en?.slice(0,18) : t.word.lektion}</div>
-                            <div style={{fontSize:9, color:'#6b6b6b', marginTop:2}}>{t.type==='de' ? 'DE' : 'EN'}</div>
+                            <div style={{fontSize:10, color:'#9a9a9a', marginTop:2, lineHeight:1}}>{t.type==='de' ? t.word.lektion : 'EN • FA'}</div>
+                            <div style={{fontSize:9, color:'#6b6b6b', marginTop:2}}>{t.type==='de' ? 'DE' : 'MEANING'}</div>
                           </div>
                         ))}
                       </div>
@@ -1525,7 +1636,7 @@ export default function App() {
                       ) : sprintQueue[sprintIdx] ? (
                         <UberCard styleOverride={{marginTop:'12px', minHeight:'260px'}}>
                           <Block textAlign="center">
-                            <LabelSmall color="#6b6b6b">Pick the correct English</LabelSmall>
+                            <LabelSmall color="#6b6b6b">{sprintQueue[sprintIdx].targetLanguage === 'fa' ? 'Pick the correct Persian meaning' : 'Pick the correct English meaning'}</LabelSmall>
                             <div style={{fontSize:26, fontWeight:800, marginTop:8, color: sprintQueue[sprintIdx].word.article ? genderColor(sprintQueue[sprintIdx].word.article): '#000'}}>{sprintQueue[sprintIdx].word.article ? `${sprintQueue[sprintIdx].word.article} ` : ''}{sprintQueue[sprintIdx].word.german}</div>
                             <div style={{fontSize:11, color:'#9a9a9a'}}>{sprintQueue[sprintIdx].word.lektion} • {sprintQueue[sprintIdx].word.plural ? `Pl: ${sprintQueue[sprintIdx].word.plural}`: ''}</div>
                             {sprintFeedback ? (
@@ -1595,6 +1706,54 @@ export default function App() {
                             <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
                               <LabelSmall>{quizFeedback.correct ? `✅ Correct! "${quizFeedback.expectedEn}" +${quizFeedback.xp} XP` : `❌ "${choicePick}" → "${quizFeedback.expectedEn}"`}</LabelSmall>
                               <div style={{fontFamily:'Vazirmatn', direction:'rtl', fontSize:12, color:'#6b6b6b', marginTop:4}}>{quizFeedback.expectedFa}</div>
+                            </Block>
+                          )}
+                          {!quizFeedback ? (
+                            <Button shape={SHAPE.pill} disabled={!choicePick} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%'}}}}>Check</Button>
+                          ) : (
+                            <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
+                          )}
+                        </Block>
+                      ) : quizMode==='bridge' ? (
+                        <Block textAlign="center">
+                          <LabelSmall color="#6b6b6b">BRIDGE BUILDER — German clue, choose the English match</LabelSmall>
+                          <div style={{fontSize:26, fontWeight:800, marginTop:8, color: currentQuizWord.article ? genderColor(currentQuizWord.article) : '#000'}}>{currentQuizWord.article ? `${currentQuizWord.article} ` : ''}{currentQuizWord.german}</div>
+                          <div style={{fontFamily:'Vazirmatn', direction:'rtl', fontSize:13, color:'#6b6b6b', marginTop:4}}>{currentQuizWord.meaning_fa || 'Persian clue'} </div>
+                          <div style={{fontSize:11, color:'#9a9a9a', marginTop:4}}>{currentQuizWord.lektion} • {currentQuizWord.plural || 'bridge mode'}</div>
+                          {!quizFeedback ? (
+                            <Block display="grid" gridGap="8px" marginTop="14px" overrides={{Block:{style:{gridTemplateColumns:'1fr 1fr'}}}}>
+                              {choiceOptions.map(opt=> {
+                                const isPicked = choicePick===opt;
+                                return <Button key={opt} kind={isPicked ? KIND.primary : KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:isPicked ? '#0f766e' : '#fff', color: isPicked ? '#fff' : '#000', borderColor:'#d1fae5', borderWidth:'1.5px', minHeight:'48px', whiteSpace:'normal', lineHeight:1.2, fontWeight:600}}}} onClick={()=> setChoicePick(opt)}>{opt}</Button>;
+                              })}
+                            </Block>
+                          ) : (
+                            <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
+                              <LabelSmall>{quizFeedback.correct ? `✅ Correct! "${quizFeedback.expectedEn}" +${quizFeedback.xp} XP` : `❌ "${choicePick}" → "${quizFeedback.expectedEn}"`}</LabelSmall>
+                            </Block>
+                          )}
+                          {!quizFeedback ? (
+                            <Button shape={SHAPE.pill} disabled={!choicePick} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%'}}}}>Check</Button>
+                          ) : (
+                            <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
+                          )}
+                        </Block>
+                      ) : quizMode==='relay' ? (
+                        <Block textAlign="center">
+                          <LabelSmall color="#6b6b6b">RELAY RUSH — German + English cue, choose the Persian answer</LabelSmall>
+                          <div style={{fontSize:26, fontWeight:800, marginTop:8, color: currentQuizWord.article ? genderColor(currentQuizWord.article) : '#000'}}>{currentQuizWord.article ? `${currentQuizWord.article} ` : ''}{currentQuizWord.german}</div>
+                          <div style={{fontSize:13, color:'#6b6b6b', marginTop:4}}>{currentQuizWord.meaning_en || 'English cue'}</div>
+                          <div style={{fontSize:11, color:'#9a9a9a', marginTop:4}}>{currentQuizWord.lektion} • {currentQuizWord.plural || 'relay mode'}</div>
+                          {!quizFeedback ? (
+                            <Block display="grid" gridGap="8px" marginTop="14px" overrides={{Block:{style:{gridTemplateColumns:'1fr 1fr'}}}}>
+                              {choiceOptions.map(opt=> {
+                                const isPicked = choicePick===opt;
+                                return <Button key={opt} kind={isPicked ? KIND.primary : KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:isPicked ? '#7c2d12' : '#fff', color: isPicked ? '#fff' : '#000', borderColor:'#fed7aa', borderWidth:'1.5px', minHeight:'48px', whiteSpace:'normal', lineHeight:1.2, fontWeight:600}}}} onClick={()=> setChoicePick(opt)}>{opt}</Button>;
+                              })}
+                            </Block>
+                          ) : (
+                            <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
+                              <LabelSmall>{quizFeedback.correct ? `✅ Correct! "${quizFeedback.expectedFa}" +${quizFeedback.xp} XP` : `❌ "${choicePick}" → "${quizFeedback.expectedFa}"`}</LabelSmall>
                             </Block>
                           )}
                           {!quizFeedback ? (
