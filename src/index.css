@@ -1,5 +1,11 @@
 * { box-sizing: border-box; }
-html, body { margin:0; padding:0; font-family: Inter, system-ui, -apple-system, sans-serif; background:#fff; color:#000; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+html, body { margin:0; padding:0; font-family: Inter, system-ui, -apple-system, sans-serif; background: radial-gradient(1200px 600px at 50% -10%, #f6f5ff 0%, #ffffff 55%, #fffaf0 100%) fixed; color:#0f0f12; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 #root { min-height: 100vh; display:flex; flex-direction:column; overflow-x: hidden; }
-/* hide scrollbar but allow scroll */
 ::-webkit-scrollbar { display:none; }
+/* card hover lift */
+.gs-card { transition: transform 0.18s cubic-bezier(.2,.8,.2,1), box-shadow 0.18s; }
+.gs-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(16,16,30,0.08); }
+.gs-shimmer { position:relative; overflow:hidden; }
+.gs-shimmer::after{content:''; position:absolute; inset:0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent); transform: translateX(-100%); animation: gs-shimmer 1.8s infinite;}
+@keyframes gs-shimmer { 100% { transform: translateX(100%); } }
+@keyframes gs-float { 0% { transform: translateY(0)} 50%{ transform: translateY(-4px)} 100%{ transform: translateY(0)} }
