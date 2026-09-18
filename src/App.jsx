@@ -246,7 +246,7 @@ export default function App() {
     })();
   }, [authUser, authToken, dbReady, loadProgressForUser, loadStatsForUser]);
 
-  // scope words helper — multi-lektion
+  // scope words helper — multi-lektion (canonical: word belongs only to its first lesson)
   const scopeWords = useMemo(()=>{
     const book = selectedBook;
     const leks = selectedLektions;
@@ -255,7 +255,7 @@ export default function App() {
     if (leks && leks.length > 0) w = w.filter(x=> leks.includes(x.lektion));
     if (search.trim()) {
       const q = search.toLowerCase();
-      w = w.filter(x => x.german.toLowerCase().includes(q) || (x.meaning_en||x.english||'').toLowerCase().includes(q) || (x.meaning_fa||'').includes(q) || x.lektion.toLowerCase().includes(q));
+      w = w.filter(x => x.german.toLowerCase().includes(q) || (x.meaning_en||x.english||'').toLowerCase().includes(q) || (x.meaning_fa||'').includes(q) || x.lektion.toLowerCase().includes(q) || (x.appearsInLessons||[]).join(' ').toLowerCase().includes(q) || (x.canonicalLesson||'').toLowerCase().includes(q));
     }
     return w;
   }, [allWords, selectedBook, selectedLektions, search]);
@@ -270,7 +270,7 @@ export default function App() {
     let w = allWords;
     if (search.trim()) {
       const q = search.toLowerCase();
-      w = w.filter((x) => x.german.toLowerCase().includes(q) || (x.meaning_en||x.english||'').toLowerCase().includes(q) || (x.meaning_fa||'').includes(q) || (x.level||'').toLowerCase().includes(q) || (x.lektion||'').toLowerCase().includes(q));
+      w = w.filter((x) => x.german.toLowerCase().includes(q) || (x.meaning_en||x.english||'').toLowerCase().includes(q) || (x.meaning_fa||'').includes(q) || (x.level||'').toLowerCase().includes(q) || (x.lektion||'').toLowerCase().includes(q) || (x.appearsInLessons||[]).join(' ').toLowerCase().includes(q) || (x.canonicalLesson||'').toLowerCase().includes(q) || (x.page||'').toLowerCase().includes(q));
     }
     return w;
   }, [allWords, search]);

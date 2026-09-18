@@ -31,7 +31,7 @@ export const BOOKS = [
     publisher: a12Raw.metadata.publisher,
     isbn: a12Raw.metadata.isbn,
     levels: a12Raw.metadata.levels,
-    total: 448,
+    total: a12Raw.metadata.total_words,
     note: a12Raw.metadata.note,
     color: '#ea580c',
     color2: '#f59e0b',
@@ -83,6 +83,9 @@ for (const book of BOOKS) {
           fullGerman = `${article} ${rawGerman}`;
         }
       }
+      // Preserve canonical lesson + appearsInLessons for A1.2 deduplication
+      const canonicalLesson = w.canonicalLesson || lektion;
+      const appearsInLessons = w.appearsInLessons || [lektion];
       ALL_MENSCHEN_WORDS.push({
         id: _id++,
         german,
@@ -100,8 +103,11 @@ for (const book of BOOKS) {
         book: book.id,
         bookLabel: book.label,
         lektion,
-        lektionTitle: data.title,
-        theme: data.theme,
+        // canonicalLesson is the first lesson where word appears; lektion === canonicalLesson for deduped data
+        canonicalLesson,
+        appearsInLessons,
+        page: w.page || '',
+        type: w.type || '',
         isCustom: 0,
       });
     }

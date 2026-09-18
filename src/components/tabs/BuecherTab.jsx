@@ -14,7 +14,7 @@ export default function BuecherTab({ selectedBook, setSelectedBook, selectedLekt
       <>
         <Block marginBottom="12px">
           <Heading $style={{fontSize:22, margin:'0 0 4px', letterSpacing:'-0.5px'}}>Wähle dein Buch</Heading>
-          <ParagraphSmall color="#6b6b6b" margin="0">Menschen A1 — 24 Lektionen • 885 Wörter • Deutsch + English + فارسی</ParagraphSmall>
+          <ParagraphSmall color="#6b6b6b" margin="0">Menschen A1 — 24 Lektionen • {BOOKS.reduce((a,b)=>a+b.total,0)} Wörter • Deutsch + English + فارسی</ParagraphSmall>
         </Block>
         <Block display="flex" flexDirection="column" gridGap="12px">
           {BOOKS.map(book=>{

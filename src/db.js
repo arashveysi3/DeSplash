@@ -46,6 +46,19 @@ db.version(4).stores({
     if (w.plural === undefined) w.plural = '';
   });
 });
+db.version(5).stores({
+  progress: 'id, level, due, ease, interval, reps, lapses, book, lektion',
+  stats: 'id',
+  words: 'id, level, german, english, isCustom, book, lektion',
+}).upgrade(tx => {
+  // Add canonicalLesson / appearsInLessons for A1.2 deduplication support
+  return tx.table('words').toCollection().modify(w => {
+    if (w.canonicalLesson === undefined) w.canonicalLesson = w.lektion || null;
+    if (w.appearsInLessons === undefined) w.appearsInLessons = w.lektion ? [w.lektion] : [];
+    if (w.page === undefined) w.page = '';
+    if (w.type === undefined) w.type = '';
+  });
+});
 
 export const COMPETITORS = [
   { name: 'Lena M.', xp: 4820, avatar: 'LM' },
@@ -57,6 +70,45 @@ export const COMPETITORS = [
   { name: 'Mia S.', xp: 2100, avatar: 'MS' },
   { name: 'Paul W.', xp: 1800, avatar: 'PW' },
 ];
+
+function lexKeyForMigration(w) {
+  // Mirrors generation dedup key: noun -> base lower without article, verb -> infinitive/german lower, other -> german lower
+  // For migration we have limited POS info: if article present => noun, else use german lower
+  // Verbs in old dataset had pos 'other' or 'verb' – we treat any word where isVerb-like? Use german lower as fallback
+  // This is best-effort to preserve progress for lexical matches
+  const art = (w.article || '').toLowerCase();
+  let base = (w.german || '').trim();
+  if (art && (art === 'der' || art === 'die' || art === 'das')) {
+    // strip if german already stripped, base is already without article, else ensure
+    // For old DB, w.german is already base (no article) after version 4 fix, so keep as is
+    base = base.toLowerCase();
+    return `noun:${base}`;
+  }
+  // For verbs and others: use german lower (for verbs, german === infinitive)
+  // Also include article-less nouns that had no article detection but are nouns – they would be treated as other, but still same string so maps correctly
+  const norm = base.toLowerCase().replace(/\s+/g, ' ').trim();
+  // Distinguish verb vs other by checking if word was verb in new dataset: we cannot know old pos, so try both
+  // Return generic other key; dedicated verb keys will be handled via fallback
+  return `other:${norm}`;
+}
+
+function lexKeyForNew(w) {
+  // For new ALL_MENSCHEN_WORDS, compute key consistent with lexKeyForMigration
+  const art = (w.article || '').toLowerCase();
+  let base = (w.german || '').trim().toLowerCase().replace(/\s+/g, ' ').trim();
+  if (art && (art === 'der' || art === 'die' || art === 'das')) {
+    return `noun:${base}`;
+  }
+  // Check if it's a verb by pos or type
+  if (w.pos === 'verb' || w.type === 'verb') {
+    return `verb:${base}`;
+  }
+  // For new words, verbs will have pos other but type verb – we already handled
+  // All non-nouns use other prefix, but verbs need verb prefix to match correctly
+  // Fallback: if word is verb, use verb prefix, else other
+  // For migration we map both verb: and other: variants to maximise matches
+  return `other:${base}`;
+}
 
 export async function initDB() {
   // Migration to Menschen books: if no Menschen words present, seed them (keep custom words)
@@ -73,7 +125,110 @@ export async function initDB() {
   }
   const refreshed = needsPatch ? await db.words.toArray() : all;
   const hasMenschen = refreshed.some(w => w.book === 'a1.1' || w.book === 'a1.2' || w.id >= 10001);
-  if (!hasMenschen) {
+
+  // --- A1.2 authoritative replacement detection ---
+  // New A1.2 dataset is canonical deduplicated (1198 vs old 448) and includes appearsInLessons
+  const existingA12 = refreshed.filter(w => w.book === 'a1.2' && w.isCustom !== 1);
+  const needsA12Replacement = (() => {
+    if (!hasMenschen) return false; // will be seeded anyway
+    if (existingA12.length === 0) return true;
+    // If counts mismatch or any lacks appearsInLessons, or version marker mismatch
+    const newCount = ALL_MENSCHEN_WORDS.filter(w => w.book === 'a1.2').length;
+    if (existingA12.length !== newCount) return true;
+    if (existingA12.some(w => !w.appearsInLessons || !w.canonicalLesson)) return true;
+    // Also detect obsolete old A1.2 words that are not in new set (by lex key)
+    const newLexSet = new Set(ALL_MENSCHEN_WORDS.filter(w=>w.book==='a1.2').map(lexKeyForNew));
+    // Also add verb-variant keys for fallback
+    const newLexSetExpanded = new Set([...newLexSet]);
+    for (const k of newLexSet) {
+      if (k.startsWith('verb:')) newLexSetExpanded.add(k.replace('verb:','other:'));
+      if (k.startsWith('other:')) newLexSetExpanded.add(k.replace('other:','verb:'));
+    }
+    const obsolete = existingA12.filter(w => !newLexSetExpanded.has(lexKeyForMigration(w)));
+    if (obsolete.length > 0) return true;
+    return false;
+  })();
+
+  if (needsA12Replacement) {
+    // Preserve progress for words that have lexical equivalent in new set
+    const allProgress = await db.progress.toArray();
+    const newA12Words = ALL_MENSCHEN_WORDS.filter(w => w.book === 'a1.2');
+    // Build lex -> newId map (support both verb/other prefixes)
+    const newLexToId = new Map();
+    for (const nw of newA12Words) {
+      const k = lexKeyForNew(nw);
+      newLexToId.set(k, nw.id);
+      // also add cross-variant for migration fallback
+      if (k.startsWith('verb:')) newLexToId.set(k.replace('verb:','other:'), nw.id);
+      if (k.startsWith('other:')) newLexToId.set(k.replace('other:','verb:'), nw.id);
+    }
+    const oldLexToId = new Map();
+    for (const ow of existingA12) {
+      oldLexToId.set(lexKeyForMigration(ow), ow.id);
+    }
+    // Map oldProgress -> newProgress
+    const progressToMigrate = [];
+    const obsoleteProgressIds = [];
+    for (const p of allProgress) {
+      const oldWord = existingA12.find(w => w.id === p.id);
+      if (!oldWord) continue; // not an A1.2 word, keep
+      const lk = lexKeyForMigration(oldWord);
+      const newId = newLexToId.get(lk);
+      if (newId && newId !== p.id) {
+        progressToMigrate.push({ oldId: p.id, newId, data: p });
+      } else if (!newId) {
+        obsoleteProgressIds.push(p.id);
+      }
+    }
+    // Delete all existing A1.2 non-custom words
+    const idsToDelete = existingA12.map(w => w.id);
+    if (idsToDelete.length) await db.words.bulkDelete(idsToDelete);
+    // Remove obsolete progress
+    if (obsoleteProgressIds.length) await db.progress.bulkDelete(obsoleteProgressIds);
+    // Migrate progress IDs where lex match but ID changed
+    for (const m of progressToMigrate) {
+      const existingProgress = await db.progress.get(m.oldId);
+      if (existingProgress) {
+        await db.progress.delete(m.oldId);
+        // preserve progress data but update id and lektion/book to new canonical
+        const targetWord = newA12Words.find(w=> w.id===m.newId);
+        const newProg = { ...existingProgress, id: m.newId, book: targetWord?.book || existingProgress.book, lektion: targetWord?.lektion || existingProgress.lektion };
+        await db.progress.put(newProg);
+      }
+    }
+    // Ensure all new A1.2 words are present (bulkPut)
+    await db.words.bulkPut(newA12Words.map(w => ({ ...w })));
+    // Patch any existing A1.2 progress that already had correct IDs but lektion may have changed due to canonical shift
+    // No further action needed
+    // Refresh for subsequent logic
+    const afterA12 = await db.words.toArray();
+    // Ensure any other missing Menschen words (A1.1) are present
+    const existingIds2 = new Set(afterA12.map(w=>w.id));
+    const missing2 = ALL_MENSCHEN_WORDS.filter(w => !existingIds2.has(w.id));
+    if (missing2.length) await db.words.bulkPut(missing2);
+    // Patch fields for all words to ensure appearsInLessons etc match latest
+    for (const fresh of ALL_MENSCHEN_WORDS) {
+      const cur = afterA12.find(x=> x.id===fresh.id);
+      if (cur) {
+        const needsUpdate = cur.meaning_en !== fresh.meaning_en || cur.meaning_fa !== fresh.meaning_fa || cur.plural !== fresh.plural
+          || cur.example !== fresh.example || JSON.stringify(cur.appearsInLessons||[]) !== JSON.stringify(fresh.appearsInLessons||[])
+          || cur.canonicalLesson !== fresh.canonicalLesson || cur.page !== fresh.page;
+        if (needsUpdate) {
+          await db.words.update(fresh.id, {
+            meaning_en: fresh.meaning_en,
+            meaning_fa: fresh.meaning_fa,
+            plural: fresh.plural,
+            english: fresh.meaning_en,
+            example: fresh.example,
+            appearsInLessons: fresh.appearsInLessons,
+            canonicalLesson: fresh.canonicalLesson,
+            page: fresh.page,
+            type: fresh.type,
+          });
+        }
+      }
+    }
+  } else if (!hasMenschen) {
     // keep custom words, remove old non-custom Menschen/A1 generic words if they are from old seed
     const customs = refreshed.filter(w => w.isCustom === 1);
     // clear non-custom old words if we detect old seed (count >0 and no menschen)
@@ -90,10 +245,19 @@ export async function initDB() {
     // also patch existing to ensure fields match latest JSON (meanings/plural)
     for (const fresh of ALL_MENSCHEN_WORDS) {
       const cur = refreshed.find(x=> x.id===fresh.id);
-      if (cur && (cur.meaning_fa !== fresh.meaning_fa || cur.plural !== fresh.plural || cur.meaning_en !== fresh.meaning_en)) {
-        await db.words.update(fresh.id, { meaning_en: fresh.meaning_en, meaning_fa: fresh.meaning_fa, plural: fresh.plural, english: fresh.meaning_en });
+      if (cur && (cur.meaning_fa !== fresh.meaning_fa || cur.plural !== fresh.plural || cur.meaning_en !== fresh.meaning_en
+        || JSON.stringify(cur.appearsInLessons||[]) !== JSON.stringify(fresh.appearsInLessons||[]) || cur.canonicalLesson !== fresh.canonicalLesson)) {
+        await db.words.update(fresh.id, {
+          meaning_en: fresh.meaning_en, meaning_fa: fresh.meaning_fa, plural: fresh.plural, english: fresh.meaning_en,
+          appearsInLessons: fresh.appearsInLessons, canonicalLesson: fresh.canonicalLesson, page: fresh.page, type: fresh.type,
+          example: fresh.example,
+        });
       }
     }
+    // Remove any obsolete A1.2 words that are not in new set (orphans) – safety cleanup
+    const newIds = new Set(ALL_MENSCHEN_WORDS.map(w=> w.id));
+    const obsoleteWords = refreshed.filter(w => w.book==='a1.2' && w.isCustom!==1 && !newIds.has(w.id));
+    if (obsoleteWords.length) await db.words.bulkDelete(obsoleteWords.map(w=> w.id));
   }
   // also fallback: if DB was empty
   const count = await db.words.count();
