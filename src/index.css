@@ -1,5 +1,57 @@
+/* IRANSans — Persian only — from public/fonts/iransans.woff (variants mapped to same file) */
+@font-face {
+  font-family: 'IRANSans';
+  src: url('/fonts/iransans.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200D;
+}
+@font-face {
+  font-family: 'IRANSans';
+  src: url('/fonts/iransans.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200D;
+}
+@font-face {
+  font-family: 'IRANSans';
+  src: url('/fonts/iransans.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200D;
+}
+@font-face {
+  font-family: 'IRANSans';
+  src: url('/fonts/iransans.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200D;
+}
+@font-face {
+  font-family: 'IRANSans';
+  src: url('/fonts/iransans.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200D;
+}
+@font-face {
+  font-family: 'IRANSans';
+  src: url('/fonts/iransans.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200D;
+}
+.font-fa, .persian, [lang="fa"] {
+  font-family: 'IRANSans', Tahoma, sans-serif;
+}
 * { box-sizing: border-box; }
-html, body { margin:0; padding:0; font-family: Inter, system-ui, -apple-system, sans-serif; background: radial-gradient(1200px 600px at 50% -10%, #f6f5ff 0%, #ffffff 55%, #fffaf0 100%) fixed; color:#0f0f12; -webkit-font-smoothing: antialiased; overflow-x: hidden; max-width: 100vw; }
+html, body { margin:0; padding:0; font-family: Inter, 'IRANSans', system-ui, -apple-system, sans-serif; background: radial-gradient(1200px 600px at 50% -10%, #f6f5ff 0%, #ffffff 55%, #fffaf0 100%) fixed; color:#0f0f12; -webkit-font-smoothing: antialiased; overflow-x: hidden; max-width: 100vw; }
 #root { min-height: 100vh; display:flex; flex-direction:column; overflow-x: hidden; max-width: 100vw; }
 ::-webkit-scrollbar { display:none; }
 html, body, #root { overflow-x: clip; }
@@ -95,4 +147,56 @@ html, body, #root { overflow-x: clip; }
 @media (prefers-reduced-motion: reduce) {
   .gs-tabs [data-baseweb="tab-panel"] > div,
   .gs-tabs [data-baseweb="tab-panel"] .gs-card { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* Match Dash — correct fade, slide, wrong shake */
+.gs-match-card { will-change: transform, opacity, height, min-height, margin, padding, border-color; }
+.gs-shake {
+  animation: gs-shake 420ms cubic-bezier(.36,.07,.19,.97) both;
+  border-color: #dc2626 !important;
+}
+@keyframes gs-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+.gs-fading {
+  opacity: 0 !important;
+  transform: scale(0.95) !important;
+}
+.gs-matched {
+  background: #e6f9ed !important;
+  border-color: #16a34a !important;
+}
+.gs-matched-collapsed {
+  height: 0 !important;
+  min-height: 0 !important;
+  opacity: 0 !important;
+  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-width: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+/* responsive Match Dash */
+@media (max-width: 520px) {
+  .gs-match-card { min-height: 72px !important; height: auto !important; }
+  .gs-match-card.gs-matched-collapsed { min-height: 0 !important; height: 0 !important; }
+}
+
+/* header glass — more transparent but blurred */
+.gs-header {
+  backdrop-filter: blur(16px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.2) !important;
+}
+
+/* inputs/buttons — Persian (فارسی) uses IRANSans via unicode-range, German/English stays Inter */
+input, textarea, select, button, [data-baseweb="input"] input, [data-baseweb="textarea"] textarea, [data-baseweb="button"] {
+  font-family: Inter, 'IRANSans', system-ui, -apple-system, sans-serif;
+}
+input::placeholder, textarea::placeholder {
+  font-family: Inter, 'IRANSans', system-ui, -apple-system, sans-serif;
 }

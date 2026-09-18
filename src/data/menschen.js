@@ -55,7 +55,20 @@ function derivePos(article) {
 }
 
 // Build flat words array
-let _id = 10001;
+// Per-book ID bases to keep A1.2 IDs stable after A1.1 expansion.
+// Old sequential: A1.1 10001-10437 (437), A1.2 10438-11635 (1198).
+// New A1.1 has 704 items -> would overlap if sequential. To keep A1.2 exactly
+// unchanged (10438-11635) and ensure unique IDs, put A1.1 in a separate high range.
+// A1.1 is being replaced, so its IDs will change and be migrated via lexical keys;
+// A1.2 must remain untouched per spec.
+const ID_BASE = {
+  'a1.1': 50001,
+  'a1.2': 10438,
+};
+const idCounters = {
+  'a1.1': ID_BASE['a1.1'],
+  'a1.2': ID_BASE['a1.2'],
+};
 const rawMap = {
   'a1.1': a11Raw.lektionen,
   'a1.2': a12Raw.lektionen,
@@ -87,7 +100,7 @@ for (const book of BOOKS) {
       const canonicalLesson = w.canonicalLesson || lektion;
       const appearsInLessons = w.appearsInLessons || [lektion];
       ALL_MENSCHEN_WORDS.push({
-        id: _id++,
+        id: idCounters[book.id]++,
         german,
         fullGerman,
         english: w.meaning_en,

@@ -9,6 +9,8 @@ export default function PWAUpdater() {
   const [progress, setProgress] = useState(0)
   const [dismissed, setDismissed] = useState(false)
   const [checking, setChecking] = useState(false)
+  const [changelog, setChangelog] = useState(null)
+  const [changelogLoading, setChangelogLoading] = useState(false)
 
   // Hook into vite-plugin-pwa virtual module
   useEffect(() => {
@@ -55,6 +57,31 @@ export default function PWAUpdater() {
       if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
     }
   }, [])
+
+  // Fetch changelog when an update is available — English commit details
+  useEffect(() => {
+    if (!needRefresh || changelog || changelogLoading) return
+    let cancelled = false
+    setChangelogLoading(true)
+    fetch(`/changelog.json?v=${Date.now()}`, { cache: 'no-store' })
+      .then(r => {
+        if (!r.ok) throw new Error('no changelog')
+        return r.json()
+      })
+      .then(data => {
+        if (cancelled) return
+        // support both {commits:[]} and plain array
+        const commits = Array.isArray(data) ? data : data.commits || data.changelog || []
+        setChangelog(commits.length ? commits.slice(0, 8) : null)
+      })
+      .catch(() => {
+        if (!cancelled) setChangelog(null)
+      })
+      .finally(() => {
+        if (!cancelled) setChangelogLoading(false)
+      })
+    return () => { cancelled = true }
+  }, [needRefresh, changelog, changelogLoading])
 
   const doUpdate = useCallback(async () => {
     if (!updateFn) {
@@ -193,6 +220,33 @@ export default function PWAUpdater() {
                     <span style={{fontSize:11, fontWeight:700, background:'#f7f7f7', border:'1px solid #eee', padding:'4px 8px', borderRadius:999}}>⚡ Instant reload</span>
                     <span style={{fontSize:11, fontWeight:700, background:'#f0fdf4', border:'1px solid #dcfce7', color:'#16a34a', padding:'4px 8px', borderRadius:999}}>✓ Progress kept</span>
                     <span style={{fontSize:11, fontWeight:700, background:'#eff6ff', border:'1px solid #dbeafe', color:'#2563eb', padding:'4px 8px', borderRadius:999}}>📚 Latest Menschen data</span>
+                  </div>
+                  {/* Changelog — English, from git commits */}
+                  <div style={{marginTop:14, background:'#f9fafb', border:'1px solid #e5e7eb', borderRadius:12, overflow:'hidden'}}>
+                    <div style={{padding:'8px 12px 6px', fontSize:11, fontWeight:800, letterSpacing:0.5, color:'#6b7280', borderBottom:'1px solid #e5e7eb', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                      <span>WHAT'S NEW • CHANGELOG</span>
+                      {changelogLoading && <span style={{fontWeight:600, color:'#9ca3af'}}>Loading…</span>}
+                    </div>
+                    <div style={{maxHeight:160, overflowY:'auto', padding:'6px 12px'}}>
+                      {changelog && changelog.length ? changelog.map((c,i)=> (
+                        <div key={c.hash || c.fullHash || i} style={{display:'flex', gap:8, padding:'7px 0', borderTop: i? '1px solid #f3f4f6':'none'}}>
+                          <a href={c.url || `https://github.com/arashveysi3/DeSplash/commit/${c.hash}`} target="_blank" rel="noreferrer" style={{fontFamily:'ui-monospace, SFMono-Regular, Menlo, monospace', fontSize:11, color:'#6b7280', background:'#fff', border:'1px solid #e5e7eb', padding:'2px 5px', borderRadius:6, height:'fit-content', textDecoration:'none', flexShrink:0}}>{(c.hash || '').slice(0,7) || '—'}</a>
+                          <div style={{flex:1, minWidth:0}}>
+                            <div style={{fontSize:13, fontWeight:600, lineHeight:1.35, color:'#111', wordBreak:'break-word'}}>{c.subject || c.message || 'Update'}</div>
+                            <div style={{fontSize:11, color:'#6b7280', marginTop:2}}>{c.author || 'GermanSplash'} • {c.date || ''}</div>
+                          </div>
+                        </div>
+                      )) : (
+                        <div style={{fontSize:13, color:'#6b7280', padding:'8px 0', lineHeight:1.5}}>
+                          {changelogLoading ? 'Fetching latest changes…' : 'Fresh words, smoother cards & bug fixes. Your progress stays safe.'}
+                        </div>
+                      )}
+                    </div>
+                    {changelog && changelog.length > 0 && (
+                      <div style={{padding:'6px 12px 8px', borderTop:'1px solid #e5e7eb', textAlign:'center'}}>
+                        <a href="https://github.com/arashveysi3/DeSplash/commits/main" target="_blank" rel="noreferrer" style={{fontSize:11, fontWeight:600, color:'#4f46e5', textDecoration:'none'}}>View full history on GitHub →</a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

@@ -23,6 +23,62 @@ import AdminTab from './components/tabs/AdminTab.jsx';
 import { speakGerman } from './utils/speak.js';
 import { playCorrect, playIncorrect, playPackComplete, playQuizComplete, playGameWin, playGameOver, playMatchPair, playXp, playStreak, playTap, primeAudio } from './utils/sounds.js';
 
+// --- helpers: shuffle & vocab presentation ---
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function shuffleIfMulti(lektions, arr) {
+  if (lektions && lektions.length > 1) return shuffleArray(arr);
+  return arr;
+}
+// Decide if a word's german string is a full sentence vs vocab item
+// Vocabulary items are short (<=3-4 tokens) or nouns/verbs with article; educational sentences are longer and contain sentence punctuation
+function isVocabLike(word) {
+  if (!word || !word.german) return true;
+  const g = word.german.trim();
+  // slash alternatives like "die Großmutter / die Oma" are considered vocab phrases, keep them
+  if (g.includes('/')) {
+    const parts = g.split('/').map(s=>s.trim()).filter(Boolean);
+    // if each alternative is short (<=3 tokens), treat as vocab phrase
+    if (parts.every(p=> p.split(/\s+/).length <= 4)) return true;
+  }
+  const tokens = g.split(/\s+/).filter(Boolean);
+  // short entries are vocab
+  if (tokens.length <= 4) return true;
+  // nouns with article that are still vocab even if long? rare — treat as vocab if type is noun and first token is article
+  if (word.type === 'noun' && tokens.length <= 5) return true;
+  // if it looks like a sentence (contains ? ! . and many tokens) -> not vocab
+  const hasSentencePunct = /[?!.]$/.test(g) || g.includes('?') || (g.includes('.') && tokens.length > 5);
+  if (hasSentencePunct && tokens.length > 5) return false;
+  // long "other" phrases that are actually vocabulary lists (e.g., "ich / du / Sie") are short per slash check above, else consider vocab if only pronouns
+  if (tokens.length > 6) return false;
+  return true;
+}
+function isEducationalSentence(word) {
+  return !isVocabLike(word);
+}
+function filterVocabForGames(words) {
+  // keep custom words and short vocab; exclude long educational sentences from vocab games
+  return words.filter(w=> isVocabLike(w));
+}
+function getVocabDisplayGerman(word) {
+  if (!word) return '';
+  // For vocab contexts, if the entry is a sentence but contains a clear target vocab word that is also a separate entry,
+  // we prefer to show the shortest meaningful phrase. For now, handle slash: show first alternative for compactness.
+  const g = word.german || '';
+  if (g.includes(' / ')) {
+    // for vocab games, show first variant to keep card compact and avoid slash clutter
+    // but preserve full for educational context elsewhere
+    return g.split(' / ')[0].trim();
+  }
+  return g;
+}
+
 export default function App() {
   const [activeKey, setActiveKey] = useState('0');
   const [stats, setStats] = useState({ xp: 0, streak: 0, lastStudyDate: null, totalReviews: 0 });
@@ -93,6 +149,10 @@ export default function App() {
   const [matchStarted, setMatchStarted] = useState(false);
   const [matchDone, setMatchDone] = useState(false);
   const [matchXp, setMatchXp] = useState(0);
+  const [matchFadingIds, setMatchFadingIds] = useState(new Set());
+  const [matchShakeIds, setMatchShakeIds] = useState(new Set());
+  const [matchWrongIds, setMatchWrongIds] = useState(new Set());
+  const [matchHiddenIds, setMatchHiddenIds] = useState(new Set());
   // Lightning Sprint — DE prompt -> EN+FA options
   const [sprintActive, setSprintActive] = useState(false);
   const [sprintQueue, setSprintQueue] = useState([]);
@@ -307,9 +367,23 @@ export default function App() {
       if (!a.isNew && b.isNew) return -1;
       return b.score - a.score;
     });
-    const res = withScore.map((x) => x.w);
+    let res = withScore.map((x) => x.w);
+    // Multi-Lektion: shuffle new words segment so lesson order doesn't dominate (due words keep SRS order)
+    if (selectedLektions.length > 1) {
+      const isNewCheck = (w) => {
+        const p = progressMap[w.id];
+        return !p || p.repetition === 0;
+      };
+      const duePart = res.filter(w => !isNewCheck(w));
+      const newPart = res.filter(w => isNewCheck(w));
+      const shuffledNew = shuffleArray(newPart);
+      // also shuffle duePart lightly if it still resembles lesson order — but keep SRS priority, so only shuffle within same score bands?
+      // For true cross-lesson randomness, shuffle duePart when it contains many lessons and no strong score differences
+      // We keep duePart as is to respect SRS, shuffle only newPart for now
+      res = [...duePart, ...shuffledNew];
+    }
     return res;
-  }, [scopeWords, progressMap, weakIds]);
+  }, [scopeWords, progressMap, weakIds, selectedLektions]);
 
   // pack logic
   const sessionReviewedIds = useRef(new Set());
@@ -330,7 +404,11 @@ export default function App() {
     const today = new Date().toISOString().slice(0,10);
     if (sessionDay.current !== today) { sessionDay.current = today; sessionReviewedIds.current.clear(); }
     const available = studyQueue.filter(w => !sessionReviewedIds.current.has(w.id));
-    const pack = available.slice(0, packSize);
+    let pack = available.slice(0, packSize);
+    // Multi-lesson: shuffle pack order so presentation isn't lesson-by-lesson
+    if (selectedLektions.length > 1) {
+      pack = shuffleArray(pack);
+    }
     if (pack.length === 0) {
       setToast(available.length === 0 ? 'No more words in this scope — try another Lektion or whole book' : 'All words reviewed');
       setTimeout(()=> setToast(null),1800);
@@ -343,7 +421,7 @@ export default function App() {
     setShowPackSummary(false);
     setFlipped(false);
     setTranscript('');
-  }, [studyQueue, packSize]);
+  }, [studyQueue, packSize, selectedLektions]);
 
   const handlePackRate = useCallback((label) => {
     const word = packWords[packIdx];
@@ -454,7 +532,11 @@ export default function App() {
   const buildQuizQueue = useCallback((count = 10, mode = quizMode) => {
     let pool = quizScopeWords;
     if (!pool.length) return [];
-    const weakInScope = pool.filter(w=> weakIds.has(w.id));
+    // For vocab games, filter out long educational sentences — keep them for SatzBau instead
+    // For general quiz modes (dictation, artikel, choice, fa), we keep vocab-like only
+    const vocabPool = (mode === 'satz' ? pool : filterVocabForGames(pool));
+    const effectivePool = vocabPool.length >= 4 ? vocabPool : pool;
+    const weakInScope = effectivePool.filter(w=> weakIds.has(w.id));
     let candidates = [...weakInScope];
     candidates.sort((a,b)=>{
       const pa = progressMap[a.id] || { lapses:0, ease:2.5, due:0 };
@@ -465,35 +547,39 @@ export default function App() {
     });
     let out = [...candidates];
     if (out.length < count) {
-      const remaining = pool.filter(w => !weakIds.has(w.id));
+      const remaining = effectivePool.filter(w => !weakIds.has(w.id));
+      // sort by difficulty then shuffle to avoid lesson/id order
       remaining.sort((a,b)=>{
         const pa = progressMap[a.id]; const pb = progressMap[b.id];
         const ea = pa ? pa.ease : 2.5; const eb = pb ? pb.ease : 2.5;
         if (ea !== eb) return ea - eb;
-        return a.id - b.id;
+        return 0;
       });
-      out.push(...remaining.slice(0, count - out.length));
+      const shuffledRemaining = shuffleArray(remaining);
+      out.push(...shuffledRemaining.slice(0, count - out.length));
     }
     if (mode === 'artikel') {
       out = out.filter(w => w.article);
       if (out.length < count) {
-        const nouns = pool.filter(w => w.article && !out.includes(w));
-        for (let i = nouns.length -1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [nouns[i], nouns[j]]=[nouns[j], nouns[i]]; }
-        out.push(...nouns.slice(0, count - out.length));
+        const nouns = effectivePool.filter(w => w.article && !out.includes(w));
+        const shuffledNouns = shuffleArray(nouns);
+        out.push(...shuffledNouns.slice(0, count - out.length));
       }
     }
-    for (let i = out.length -1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [out[i], out[j]]=[out[j], out[i]]; }
-    return out.slice(0, count);
+    const shuffledOut = shuffleArray(out);
+    // Multi-lesson: ensure final order is not lesson order regardless — already shuffled, but also ensure cross-lesson mixing
+    // Single-lesson already shuffled within lesson
+    return shuffledOut.slice(0, count);
   }, [quizScopeWords, weakIds, progressMap, quizMode]);
 
   const buildChoiceOptions = useCallback((word, pool) => {
     const correct = { en: word.meaning_en || word.english, fa: word.meaning_fa || '', id: word.id };
-    const distractors = pool.filter(w=> w.id !== word.id).sort(()=> 0.5 - Math.random()).slice(0, 12).map(w=> ({ en: w.meaning_en || w.english, fa: w.meaning_fa || '', id: w.id })).filter(d=> d.en && d.en !== correct.en)
+    const distractors = shuffleArray(pool.filter(w=> w.id !== word.id)).slice(0, 12).map(w=> ({ en: w.meaning_en || w.english, fa: w.meaning_fa || '', id: w.id })).filter(d=> d.en && d.en !== correct.en)
     const uniqMap = new Map();
     for (const d of distractors) if (!uniqMap.has(d.en)) uniqMap.set(d.en, d);
     let uniq = [...uniqMap.values()].slice(0,3)
     while (uniq.length < 3) uniq.push({ en: ['house','time','water'][uniq.length] || '—', fa: '—', id: 'pad'+uniq.length })
-    const opts = [...uniq, correct].sort(()=> 0.5 - Math.random())
+    const opts = shuffleArray([...uniq, correct])
     return { correct, opts }
   }, []);
 
@@ -644,16 +730,24 @@ export default function App() {
 
   // ---- Games ----
   const startMatchGame = useCallback(() => {
-    const pool = quizScopeWords.length >= 6 ? quizScopeWords : allWords;
-    const picks = [...pool].sort(()=> 0.5 - Math.random()).slice(0,6);
-    const tiles = [];
+    const basePool = quizScopeWords.length >= 6 ? quizScopeWords : allWords;
+    // Filter out long educational sentences for vocab Match Dash — keep vocab-like only, fallback to basePool if not enough
+    const vocabFiltered = filterVocabForGames(basePool);
+    const pool = vocabFiltered.length >= 6 ? vocabFiltered : basePool;
+    // Proper shuffle (Fisher-Yates) respecting multi-lesson — picks already randomized across lessons
+    const shuffledPool = shuffleArray(pool);
+    const picks = shuffledPool.slice(0,6);
+    // Create left (DE) and right (EN+FA) tiles and shuffle each column independently
+    const leftTiles = [];
+    const rightTiles = [];
     picks.forEach((w) => {
-      // DE side — German only (no spoiler)
-      tiles.push({ uid: `${w.id}-de`, pairId: w.id, label: w.article ? `${w.article} ${w.german}` : w.german, sub: w.plural ? `Pl: ${w.plural}` : w.lektion, type:'de', word:w, matched:false, flipped:false });
-      // Translation side — English + Persian stacked (German never shown here)
-      tiles.push({ uid: `${w.id}-tr`, pairId: w.id, label: w.meaning_en || w.english, sub: w.meaning_fa || '', sub2: w.lektion, type:'tr', word:w, matched:false, flipped:false });
+      const displayGerman = getVocabDisplayGerman(w);
+      leftTiles.push({ uid: `${w.id}-de`, pairId: w.id, label: w.article ? `${w.article} ${displayGerman}` : displayGerman, sub: w.plural ? `Pl: ${w.plural}` : w.lektion, type:'de', word:w, matched:false, flipped:false });
+      rightTiles.push({ uid: `${w.id}-tr`, pairId: w.id, label: w.meaning_en || w.english, sub: w.meaning_fa || '', sub2: w.lektion, type:'tr', word:w, matched:false, flipped:false });
     });
-    for (let i=tiles.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [tiles[i],tiles[j]]=[tiles[j],tiles[i]]; }
+    const shuffledLeft = shuffleArray(leftTiles);
+    const shuffledRight = shuffleArray(rightTiles);
+    const tiles = [...shuffledLeft, ...shuffledRight];
     setMatchBoard(tiles);
     setMatchPicks([]);
     setMatchMatched(0);
@@ -661,6 +755,10 @@ export default function App() {
     setMatchXp(0);
     setMatchDone(false);
     setMatchStarted(true);
+    setMatchFadingIds(new Set());
+    setMatchShakeIds(new Set());
+    setMatchWrongIds(new Set());
+    setMatchHiddenIds(new Set());
     setQuizMode('match');
     setQuizStarted(true);
   }, [quizScopeWords, allWords]);
@@ -669,6 +767,7 @@ export default function App() {
     primeAudio();
     playTap();
     if (matchDone) return;
+    if (matchFadingIds.size > 0 || matchShakeIds.size > 0) return;
     const tile = matchBoard.find(t=> t.uid===uid);
     if (!tile || tile.matched || tile.flipped) return;
     if (matchPicks.length >= 2) return;
@@ -680,31 +779,49 @@ export default function App() {
       setMatchMoves(m=> m+1);
       const [a,b] = nextPicks.map(id=> nextBoard.find(t=> t.uid===id));
       const isMatch = a.pairId === b.pairId && a.type !== b.type;
-      setTimeout(()=> {
-        if (isMatch) {
-          playMatchPair();
-          const updated = nextBoard.map(t=> (t.uid===a.uid || t.uid===b.uid) ? {...t, matched:true} : t);
-          setMatchBoard(updated);
-          const xpAdd = GAME_XP.matchPair;
-          setMatchXp(x=> x + xpAdd);
-          setMatchMatched(v=> {
-            const nv = v + 1;
-            if (nv === 6) {
-              const bonus = GAME_XP.matchPerfectBonus + Math.max(0, 12 - matchMoves) ;
-              const totalAward = 6 * GAME_XP.matchPair + bonus;
-              setMatchXp(totalAward);
-              setMatchDone(true);
-              setTimeout(() => { playGameWin(); awardGameXP(totalAward, 6); }, 420);
-            }
-            return nv;
-          });
-          setMatchPicks([]);
-        } else {
-          playIncorrect();
+      if (isMatch) {
+        // Correct: briefly show green, then fade out, then slide remaining up
+        playMatchPair();
+        // Mark as matched to show green border (but not yet fading)
+        const withMatched = nextBoard.map(t=> (t.uid===a.uid || t.uid===b.uid) ? {...t, matched:true} : t);
+        // Keep board with green for brief moment
+        setTimeout(()=> setMatchBoard(withMatched), 10);
+        setTimeout(()=> {
+          // Start fade after 360ms — smooth opacity decrease
+          setMatchFadingIds(new Set([a.uid, b.uid]));
+          // After fade (400ms), hide collapsed → remaining cards slide up once
+          setTimeout(()=> {
+            setMatchFadingIds(new Set());
+            setMatchHiddenIds(prev=> { const s=new Set(prev); s.add(a.uid); s.add(b.uid); return s; });
+            // keep matched tiles in board but they will collapse to height 0 via hidden (slide-up)
+            const xpAdd = GAME_XP.matchPair;
+            setMatchXp(x=> x + xpAdd);
+            setMatchMatched(v=> {
+              const nv = v + 1;
+              if (nv === 6) {
+                const bonus = GAME_XP.matchPerfectBonus + Math.max(0, 12 - matchMoves) ;
+                const totalAward = 6 * GAME_XP.matchPair + bonus;
+                setMatchXp(totalAward);
+                setMatchDone(true);
+                setTimeout(() => { playGameWin(); awardGameXP(totalAward, 6); }, 420);
+              }
+              return nv;
+            });
+            setMatchPicks([]);
+          }, 400);
+        }, 360);
+      } else {
+        // Wrong: show red + shake, then reset
+        playIncorrect();
+        setMatchWrongIds(new Set([a.uid, b.uid]));
+        setMatchShakeIds(new Set([a.uid, b.uid]));
+        setTimeout(()=> {
+          setMatchShakeIds(new Set());
+          setMatchWrongIds(new Set());
           setMatchBoard(prev=> prev.map(t=> nextPicks.includes(t.uid) ? {...t, flipped:false} : t));
           setMatchPicks([]);
-        }
-      }, 650);
+        }, 520);
+      }
     }
   };
 
@@ -734,28 +851,31 @@ export default function App() {
   };
 
   const startSprintGame = useCallback((count=12) => {
-    const pool = quizScopeWords.length >= count ? quizScopeWords : allWords;
-    const picks = [...pool].sort(()=> 0.5 - Math.random()).slice(0, count);
+    const basePool = quizScopeWords.length >= count ? quizScopeWords : allWords;
+    const vocabFiltered = filterVocabForGames(basePool);
+    const pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
+    const picks = shuffleArray(pool).slice(0, count);
     const queue = picks.map(w=> {
       const correct = { en: w.meaning_en || w.english, fa: w.meaning_fa || '' };
-      const distractors = pool.filter(x=> x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,12).map(x=> ({ en: x.meaning_en || x.english, fa: x.meaning_fa || '' })).filter(d=> d.en && d.en !== correct.en);
+      const distractors = shuffleArray(pool.filter(x=> x.id!==w.id)).slice(0,12).map(x=> ({ en: x.meaning_en || x.english, fa: x.meaning_fa || '' })).filter(d=> d.en && d.en !== correct.en);
       const uniqMap = new Map();
       for (const d of distractors) if (!uniqMap.has(d.en)) uniqMap.set(d.en,d);
       let uniq=[...uniqMap.values()].slice(0,3);
       while(uniq.length<3) uniq.push({ en:'—', fa:'—'});
-      const opts=[...uniq, correct].sort(()=>0.5-Math.random());
+      const opts=shuffleArray([...uniq, correct]);
       return { word:w, correct, opts };
     });
-    setSprintQueue(queue);
+    const shuffledQueue = shuffleIfMulti(quizLektions, queue);
+    setSprintQueue(shuffledQueue);
     setSprintIdx(0);
-    setSprintOptions(queue[0]?.opts || []);
+    setSprintOptions(shuffledQueue[0]?.opts || []);
     setSprintScore({ correct:0, total:0, streak:0, best:0, xp:0 });
     setSprintActive(true);
     setSprintTime(45);
     setSprintFeedback(null);
     setQuizMode('sprint');
     setQuizStarted(true);
-  }, [quizScopeWords, allWords]);
+  }, [quizScopeWords, allWords, quizLektions]);
 
   const sprintTimerRef = useRef(null);
   const sprintScoreRef = useRef(sprintScore);
@@ -795,14 +915,16 @@ export default function App() {
     setTimeout(()=> {
       setSprintFeedback(null);
       if (sprintIdx +1 >= sprintQueue.length) {
-        const pool = quizScopeWords.length >=8 ? quizScopeWords : allWords;
-        const picks = [...pool].sort(()=>0.5-Math.random()).slice(0,8);
-        const more = picks.map(w=> {
+        const basePool = quizScopeWords.length >=8 ? quizScopeWords : allWords;
+        const vocabFilteredRefill = filterVocabForGames(basePool);
+        const pool = vocabFilteredRefill.length >= 8 ? vocabFilteredRefill : basePool;
+        const picks = shuffleArray(pool).slice(0,8);
+        const more = shuffleArray(picks).map(w=> {
           const c={ en: w.meaning_en||w.english, fa: w.meaning_fa||''};
-          const d=pool.filter(x=>x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,12).map(x=>({ en:x.meaning_en||x.english, fa:x.meaning_fa||''})).filter(Boolean);
+          const d=shuffleArray(pool.filter(x=>x.id!==w.id)).slice(0,12).map(x=>({ en:x.meaning_en||x.english, fa:x.meaning_fa||''})).filter(Boolean);
           const uniqMap=new Map(); for(const it of d) if(it.en!==c.en && !uniqMap.has(it.en)) uniqMap.set(it.en,it);
           let u=[...uniqMap.values()].slice(0,3); while(u.length<3) u.push({en:'—',fa:'—'});
-          const o=[...u,c].sort(()=>0.5-Math.random());
+          const o=shuffleArray([...u,c]);
           return {word:w, correct:c, opts:o};
         });
         const newQ=[...sprintQueue, ...more];
@@ -819,16 +941,27 @@ export default function App() {
   // ===== NEW GAME: SatzBau — Sentence Forge =====
   const startSatzGame = useCallback((count=8) => {
     const pool = quizScopeWords.length >= 8 ? quizScopeWords : allWords;
-    const withSentences = pool.filter(w=> w.example && w.example.split(' ').length >= 4 && w.example.split(' ').length <= 9);
-    const picks = [...withSentences].sort(()=>0.5-Math.random()).slice(0, count);
+    // Use german field for sentences — example is empty in new dataset; preserve educational sentences intact
+    const withSentences = pool.filter(w=> {
+      const g = w.german || '';
+      const tokens = g.replace(/[.!?،؟]/g,'').split(' ').filter(Boolean);
+      return tokens.length >= 4 && tokens.length <= 12 && isEducationalSentence(w);
+    });
+    const effectiveWithSentences = withSentences.length >= 4 ? withSentences : pool.filter(w=> {
+      const g = (w.example || w.german || '');
+      const tokens = g.replace(/[.!?،؟]/g,'').split(' ').filter(Boolean);
+      return tokens.length >= 4 && tokens.length <= 12;
+    });
+    const picks = shuffleArray(effectiveWithSentences).slice(0, count);
     if (picks.length < 4) {
       setToast('Not enough sentences in this scope — try whole book');
       setTimeout(()=> setToast(null),1800); return;
     }
-    const queue = picks.map(w=> {
-      const tokens = w.example.replace(/[.!?،؟]/g,'').split(' ').filter(Boolean);
-      const shuffled = [...tokens].sort(()=>0.5-Math.random());
-      return { word:w, tokens, shuffled, hintEn: w.meaning_en || w.english, hintFa: w.meaning_fa || '' };
+    const queue = shuffleArray(picks).map(w=> {
+      const source = (w.example && w.example.trim()) ? w.example : w.german;
+      const tokens = source.replace(/[.!?،؟]/g,'').split(' ').filter(Boolean);
+      const shuffled = shuffleArray(tokens);
+      return { word:w, tokens, shuffled, hintEn: w.meaning_en || w.english, hintFa: w.meaning_fa || '', source };
     });
     setSatzQueue(queue);
     setSatzIdx(0);
@@ -844,14 +977,16 @@ export default function App() {
   const handleSatzPick = (token, idx) => {
     primeAudio();
     playTap();
-    if (satzFeedback) return;
+    if (satzFeedback?.correct) return;
+    if (satzFeedback && !satzFeedback.correct) setSatzFeedback(null);
     setSatzBuilt(b=> [...b, token]);
     setSatzPool(p=> p.filter((_,i)=> i!==idx));
   };
   const handleSatzRemove = (idx) => {
     primeAudio();
     playTap();
-    if (satzFeedback) return;
+    if (satzFeedback?.correct) return;
+    if (satzFeedback && !satzFeedback.correct) setSatzFeedback(null);
     const tok = satzBuilt[idx];
     setSatzBuilt(b=> b.filter((_,i)=> i!==idx));
     setSatzPool(p=> [...p, tok]);
@@ -862,38 +997,48 @@ export default function App() {
     const builtStr = satzBuilt.join(' ');
     const correctStr = cur.tokens.join(' ');
     const correct = builtStr.trim() === correctStr.trim();
-    const xpAdd = correct ? (GAME_XP.scramblePerWord + Math.max(0, 8 - satzBuilt.length)) : 0;
-    setSatzFeedback({ correct, expected: correctStr, xp: xpAdd });
-    setSatzScore(s=> ({ correct: s.correct + (correct?1:0), total: s.total+1, xp: s.xp + xpAdd }));
-    if (correct) playCorrect(); else playIncorrect();
-    if (xpAdd>0) setTimeout(()=> { playXp(); awardGameXP(xpAdd,1); }, 300);
-    setTimeout(()=> {
-      setSatzFeedback(null);
-      if (satzIdx +1 >= satzQueue.length) {
-        setSatzActive(false);
-        if (correct) playGameWin(); else if (satzIdx +1 >= satzQueue.length) playGameOver();
-        if (satzScore.xp + xpAdd > 0) awardGameXP(0,0);
-        setToast(`Forge done: ${satzScore.correct + (correct?1:0)}/${satzQueue.length} • +${satzScore.xp + xpAdd} XP`);
-        setTimeout(()=> setToast(null),2000);
-      } else {
-        const ni = satzIdx +1;
-        setSatzIdx(ni);
-        setSatzBuilt([]);
-        setSatzPool(satzQueue[ni].shuffled);
-      }
-    }, 1400);
+    if (correct) {
+      const xpAdd = GAME_XP.scramblePerWord + Math.max(0, 8 - satzBuilt.length);
+      const perPos = cur.tokens.map((_,i)=> true);
+      setSatzFeedback({ correct:true, expected: correctStr, xp: xpAdd, perPos, built:[...satzBuilt] });
+      setSatzScore(s=> ({ correct: s.correct+1, total: s.total+1, xp: s.xp + xpAdd }));
+      playCorrect();
+      if (xpAdd>0) setTimeout(()=> { playXp(); awardGameXP(xpAdd,1); }, 300);
+      setTimeout(()=> {
+        setSatzFeedback(null);
+        if (satzIdx +1 >= satzQueue.length) {
+          setSatzActive(false);
+          playGameWin();
+          setToast(`Forge done: ${satzScore.correct+1}/${satzQueue.length} • +${satzScore.xp + xpAdd} XP`);
+          setTimeout(()=> setToast(null),2000);
+        } else {
+          const ni = satzIdx +1;
+          setSatzIdx(ni);
+          setSatzBuilt([]);
+          setSatzPool(satzQueue[ni].shuffled);
+        }
+      }, 1800);
+    } else {
+      const perPos = satzBuilt.map((tok,i)=> tok === cur.tokens[i]);
+      // also mark missing/extra as incorrect
+      setSatzFeedback({ correct:false, expected: correctStr, xp:0, perPos, built:[...satzBuilt] });
+      setSatzScore(s=> ({ ...s, total: s.total+1 }));
+      playIncorrect();
+    }
   };
 
   // ===== NEW GAME: WortSturm — Word Rain =====
   const startRainGame = useCallback((count=12) => {
-    const pool = quizScopeWords.length >= count ? quizScopeWords : allWords;
-    const picks = [...pool].sort(()=>0.5-Math.random()).slice(0,count);
-    const queue = picks.map(w=> {
+    const basePool = quizScopeWords.length >= count ? quizScopeWords : allWords;
+    const vocabFiltered = filterVocabForGames(basePool);
+    const pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
+    const picks = shuffleArray(pool).slice(0,count);
+    const queue = shuffleArray(picks).map(w=> {
       const correct = { en: w.meaning_en || w.english, fa: w.meaning_fa || '' };
-      const distractors = pool.filter(x=> x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,10).map(x=> ({ en: x.meaning_en || x.english, fa: x.meaning_fa||''})).filter(Boolean);
+      const distractors = shuffleArray(pool.filter(x=> x.id!==w.id)).slice(0,10).map(x=> ({ en: x.meaning_en || x.english, fa: x.meaning_fa||''})).filter(Boolean);
       const uniqMap=new Map(); for(const d of distractors) if(d.en!==correct.en && !uniqMap.has(d.en)) uniqMap.set(d.en,d);
       let uniq=[...uniqMap.values()].slice(0,2); while(uniq.length<2) uniq.push({en:'—',fa:'—'});
-      const opts=[...uniq, correct].sort(()=>0.5-Math.random());
+      const opts=shuffleArray([...uniq, correct]);
       return { word:w, correct, opts };
     });
     setRainQueue(queue);
@@ -947,14 +1092,16 @@ export default function App() {
               }
             } else {
               // if lives remain but queue exhausted, refill
-              const pool = quizScopeWords.length>=8 ? quizScopeWords : allWords;
-              const picks=[...pool].sort(()=>0.5-Math.random()).slice(0,6);
-              const more=picks.map(w=> {
+              const basePool2 = quizScopeWords.length>=8 ? quizScopeWords : allWords;
+              const vocabFiltered2 = filterVocabForGames(basePool2);
+              const pool = vocabFiltered2.length>=8 ? vocabFiltered2 : basePool2;
+              const picks=shuffleArray(pool).slice(0,6);
+              const more=shuffleArray(picks).map(w=> {
                 const c={en:w.meaning_en||w.english, fa:w.meaning_fa||''};
-                const d=pool.filter(x=>x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,8).map(x=>({en:x.meaning_en||x.english, fa:x.meaning_fa||''})).filter(Boolean);
+                const d=shuffleArray(pool.filter(x=>x.id!==w.id)).slice(0,8).map(x=>({en:x.meaning_en||x.english, fa:x.meaning_fa||''})).filter(Boolean);
                 const m=new Map(); for(const it of d) if(it.en!==c.en && !m.has(it.en)) m.set(it.en,it);
                 let u=[...m.values()].slice(0,2); while(u.length<2) u.push({en:'—',fa:'—'});
-                const o=[...u,c].sort(()=>0.5-Math.random());
+                const o=shuffleArray([...u,c]);
                 return {word:w, correct:c, opts:o};
               });
               setRainQueue(q=> [...q, ...more]);
@@ -997,14 +1144,16 @@ export default function App() {
         return;
       }
       if (rainIdx+1 >= rainQueue.length) {
-        const pool = quizScopeWords.length>=8 ? quizScopeWords : allWords;
-        const picks=[...pool].sort(()=>0.5-Math.random()).slice(0,6);
-        const more=picks.map(w=> {
+        const basePool3 = quizScopeWords.length>=8 ? quizScopeWords : allWords;
+        const vocabFiltered3 = filterVocabForGames(basePool3);
+        const pool = vocabFiltered3.length>=8 ? vocabFiltered3 : basePool3;
+        const picks=shuffleArray(pool).slice(0,6);
+        const more=shuffleArray(picks).map(w=> {
           const c={en:w.meaning_en||w.english, fa:w.meaning_fa||''};
-          const d=pool.filter(x=>x.id!==w.id).sort(()=>0.5-Math.random()).slice(0,8).map(x=>({en:x.meaning_en||x.english, fa:x.meaning_fa||''})).filter(Boolean);
+          const d=shuffleArray(pool.filter(x=>x.id!==w.id)).slice(0,8).map(x=>({en:x.meaning_en||x.english, fa:x.meaning_fa||''})).filter(Boolean);
           const m=new Map(); for(const it of d) if(it.en!==c.en && !m.has(it.en)) m.set(it.en,it);
           let u=[...m.values()].slice(0,2); while(u.length<2) u.push({en:'—',fa:'—'});
-          const o=[...u,c].sort(()=>0.5-Math.random());
+          const o=shuffleArray([...u,c]);
           return {word:w, correct:c, opts:o};
         });
         const nq=[...rainQueue, ...more];
@@ -1248,7 +1397,7 @@ export default function App() {
           </Tab>
           <Tab title="Quiz">
             <Block paddingTop="16px">
-              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} />
+              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} />
             </Block>
           </Tab>
           <Tab title="Suche">

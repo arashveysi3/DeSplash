@@ -20,17 +20,17 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
             position: 'sticky',
             top: 0,
             zIndex: 10,
-            background: 'rgba(255,255,255,0.92)',
-            backdropFilter: 'blur(14px)',
-            WebkitBackdropFilter: 'blur(14px)',
+            background: 'rgba(255,255,255,0.62)',
+            backdropFilter: 'blur(16px) saturate(1.2)',
+            WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
             borderBottomWidth: '1px',
             borderBottomStyle: 'solid',
-            borderBottomColor: '#e9e8f0',
-            paddingTop: 'calc(12px + env(safe-area-inset-top))',
-            paddingBottom: '12px',
+            borderBottomColor: 'rgba(233,232,240,0.6)',
+            paddingTop: 'calc(8px + env(safe-area-inset-top))',
+            paddingBottom: '8px',
             paddingLeft: '16px',
             paddingRight: '16px',
-            boxShadow: '0 4px 20px rgba(15,15,18,0.04)',
+            boxShadow: '0 2px 16px rgba(15,15,18,0.06)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -58,10 +58,10 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
           },
         }}
       >
-        <div className="gs-header-logo" style={{ width: 40, height: 40, background: 'linear-gradient(135deg,#0f0f12 0%,#4f46e5 55%,#06b6d4 100%)', color: '#fff', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 15, boxShadow: '0 6px 16px rgba(79,70,229,0.28)', letterSpacing: '-0.5px', flexShrink: 0 }}>GS</div>
+        <div className="gs-header-logo" style={{ width: 36, height: 36, background: 'linear-gradient(135deg,#0f0f12 0%,#4f46e5 55%,#06b6d4 100%)', color: '#fff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 14, boxShadow: '0 4px 12px rgba(79,70,229,0.24)', letterSpacing: '-0.5px', flexShrink: 0 }}>GS</div>
         <Block overrides={{ Block: { style: { minWidth: 0, overflow: 'hidden' }, props: { className: 'gs-header-text' } } }}>
-          <div className="gs-header-title" style={{ fontWeight: 900, fontSize: 17, letterSpacing: '-0.7px', lineHeight: 1, display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>GermanSplash</span>
+          <div className="gs-header-title" style={{ fontWeight: 900, fontSize: 16, letterSpacing: '-0.6px', lineHeight: 1, display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>📖 GermanSplash</span>
             <span className="gs-header-badge" style={{ fontSize: 10, background: 'linear-gradient(135deg,#4f46e5,#06b6d4)', color: '#fff', padding: '2px 6px', borderRadius: 999, fontWeight: 800, flexShrink: 0 }}>PRO</span>
           </div>
           <div className="gs-header-subtitle" style={{ fontSize: 11, color: '#6b6b7a', letterSpacing: '0.2px', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>MENSCHEN A1.1 + A1.2 • {totalWords} • DE ↔ EN+FA</div>

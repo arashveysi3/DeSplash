@@ -32,7 +32,7 @@ export default function WeakTab({ weakWords, weakForScope, weakIds, scopeWords, 
           (scopeWords.filter(w=> weakIds.has(w.id)).length ? scopeWords.filter(w=> weakIds.has(w.id)) : weakWords).slice(0, 60).map((w) => (
             <UberCard key={w.id} styleOverride={{ borderColor: '#fecaca' }}>
               <Block display="flex" justifyContent="space-between" alignItems="center">
-                <div><span style={{ fontWeight: 700, color: genderColor(w.article) }}>{w.fullGerman || (w.article? `${w.article} ${w.german}`: w.german)}</span> <span style={{ color: '#6b6b6b' }}>— {w.meaning_en || w.english}</span> <span style={{fontFamily:'Vazirmatn', direction:'rtl', color:'#9a9a9a'}}>— {w.meaning_fa}</span> <span style={{ fontSize: 11, background: '#000', color: '#fff', borderRadius: '999px', padding: '2px 6px', marginLeft: 6 }}>{w.lektion}</span></div>
+                <div><span style={{ fontWeight: 700, color: genderColor(w.article) }}>{w.fullGerman || (w.article? `${w.article} ${w.german}`: w.german)}</span> <span style={{ color: '#6b6b6b' }}>— {w.meaning_en || w.english}</span> <span style={{fontFamily:'IRANSans, Tahoma, sans-serif', direction:'rtl', color:'#9a9a9a'}}>— {w.meaning_fa}</span> <span style={{ fontSize: 11, background: '#000', color: '#fff', borderRadius: '999px', padding: '2px 6px', marginLeft: 6 }}>{w.lektion}</span></div>
                 <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => speakGerman(w.german)}>🔊</Button>
               </Block>
               <div style={{ fontSize: 12, fontStyle: 'italic', color: '#6b6b6b', marginTop: 6 }}>{w.example}</div>

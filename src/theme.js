@@ -16,14 +16,14 @@ const primitives = {
 export const theme = createTheme(primitives, {
   name: 'germansplash-neo',
   typography: {
-    font100: { fontFamily: 'Inter, system-ui, -apple-system, sans-serif' },
-    font200: { fontFamily: 'Inter, system-ui, -apple-system, sans-serif' },
-    font300: { fontFamily: 'Inter, system-ui, -apple-system, sans-serif' },
-    font350: { fontFamily: 'Inter, system-ui, -apple-system, sans-serif' },
-    font400: { fontFamily: 'Inter, system-ui, -apple-system, sans-serif' },
-    font450: { fontFamily: 'Inter, system-ui, -apple-system, sans-serif' },
-    font550: { fontFamily: 'Inter, system-ui, -apple-system, sans-serif' },
-    LabelMedium: { fontFamily: 'Inter, system-ui, -apple-system, sans-serif' },
+    font100: { fontFamily: 'Inter, \'IRANSans\', system-ui, -apple-system, sans-serif' },
+    font200: { fontFamily: 'Inter, \'IRANSans\', system-ui, -apple-system, sans-serif' },
+    font300: { fontFamily: 'Inter, \'IRANSans\', system-ui, -apple-system, sans-serif' },
+    font350: { fontFamily: 'Inter, \'IRANSans\', system-ui, -apple-system, sans-serif' },
+    font400: { fontFamily: 'Inter, \'IRANSans\', system-ui, -apple-system, sans-serif' },
+    font450: { fontFamily: 'Inter, \'IRANSans\', system-ui, -apple-system, sans-serif' },
+    font550: { fontFamily: 'Inter, \'IRANSans\', system-ui, -apple-system, sans-serif' },
+    LabelMedium: { fontFamily: 'Inter, \'IRANSans\', system-ui, -apple-system, sans-serif' },
   },
   colors: {
     backgroundPrimary: '#ffffff',

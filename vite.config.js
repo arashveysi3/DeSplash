@@ -4,6 +4,66 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { Redis } from '@upstash/redis'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import fs from 'fs'
+import path from 'path'
+import { execSync } from 'child_process'
+
+// Auto-generate changelog.json from git commits for PWA updater
+function changelogPlugin() {
+  const generate = () => {
+    try {
+      const outPath = path.resolve(process.cwd(), 'public/changelog.json')
+      let commits = []
+      try {
+        const log = execSync('git log --oneline -15 --no-merges --pretty=format:"%h%x1f%s%x1f%an%x1f%ar%x1f%H"', { encoding: 'utf-8' }).trim()
+        if (log) {
+          commits = log.split('\n').filter(Boolean).map(line => {
+            const [hash, subject, author, date, fullHash] = line.split('\x1f')
+            return {
+              hash,
+              fullHash,
+              subject,
+              author,
+              date,
+              url: `https://github.com/arashveysi3/DeSplash/commit/${hash}`
+            }
+          })
+        }
+      } catch {}
+      // fallback to existing file if git fails (e.g. no .git in prod)
+      if (!commits.length) {
+        try {
+          const existing = JSON.parse(fs.readFileSync(outPath, 'utf-8'))
+          commits = existing.commits || []
+        } catch {}
+      }
+      const version = commits[0]?.hash || 'dev'
+      const payload = {
+        version,
+        generatedAt: new Date().toISOString(),
+        repo: 'https://github.com/arashveysi3/DeSplash',
+        commits
+      }
+      fs.mkdirSync(path.dirname(outPath), { recursive: true })
+      fs.writeFileSync(outPath, JSON.stringify(payload, null, 2))
+      // also ensure dist copy if dist exists (for already-built cases)
+      const distPath = path.resolve(process.cwd(), 'dist/changelog.json')
+      if (fs.existsSync(path.resolve(process.cwd(), 'dist'))) {
+        try { fs.writeFileSync(distPath, JSON.stringify(payload, null, 2)) } catch {}
+      }
+    } catch (e) {
+      console.warn('[changelog] failed', e?.message)
+    }
+  }
+  return {
+    name: 'changelog-generator',
+    buildStart: generate,
+    configureServer(server) {
+      // regenerate on dev start
+      generate()
+    }
+  }
+}
 
 // Dev-only in-memory fallback for /api/* so `npm run dev` works without Vercel
 let devMemoryBoard = [
@@ -313,6 +373,7 @@ function devApiPlugin() {
 export default defineConfig({
   plugins: [
     react(),
+    changelogPlugin(),
     devApiPlugin(),
     VitePWA({
       registerType: 'prompt',
@@ -331,10 +392,11 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,json,svg,png,woff2}'],
+        globPatterns: ['**/*.{js,css,html,json,svg,png,woff,woff2}'],
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           { urlPattern: /^\/api\/.*/i, handler: 'NetworkOnly' },
+          { urlPattern: /\/changelog\.json$/i, handler: 'NetworkFirst', options: { cacheName: 'changelog-cache', networkTimeoutSeconds: 4, expiration: { maxEntries: 3, maxAgeSeconds: 60*60 } } },
           { urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i, handler: 'CacheFirst', options: { cacheName: 'google-fonts-cache', expiration: { maxEntries: 10, maxAgeSeconds: 60*60*24*365 } } },
         ],
       },

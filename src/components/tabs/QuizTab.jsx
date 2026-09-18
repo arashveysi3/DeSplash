@@ -22,6 +22,7 @@ export default function QuizTab(props) {
     quizFeedback, quizScore, submitQuiz, nextQuiz, insertUmlaut,
     // match
     matchBoard, matchMatched, matchMoves, matchDone, matchXp, handleMatchPick, startMatchGame, matchStarted, setMatchStarted,
+    matchFadingIds, matchShakeIds, matchWrongIds, matchHiddenIds,
     // sprint
     sprintActive, setSprintActive, sprintQueue, sprintIdx, sprintOptions, sprintTime, sprintScore, sprintFeedback, handleSprintPick, startSprintGame,
     // satz
@@ -144,25 +145,52 @@ export default function QuizTab(props) {
             <LabelSmall color="#6b6b6b">DE ↔ EN+FA • {matchMatched}/6 pairs • {matchMoves} moves</LabelSmall>
             <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{matchXp} XP</LabelSmall>
           </Block>
-          <div style={{display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginTop:12}}>
-            {matchBoard.map(t=> (
-              <div key={t.uid} onClick={()=> handleMatchPick(t.uid)} style={{minHeight:84, background: t.matched ? '#e6f9ed' : t.flipped ? '#ffffff' : t.type==='de' ? '#0f0f12' : '#f7f7fb', border:`1.8px solid ${t.matched ? '#16a34a' : t.flipped ? '#0f0f12' : t.type==='de' ? '#1a1a20' : '#e9e8f0'}`, borderRadius:16, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'10px 8px', cursor: t.matched ? 'default' : 'pointer', textAlign:'center', opacity: t.matched?0.92:1, transform: t.flipped? 'scale(1.03)': 'scale(1)', transition:'all 0.2s cubic-bezier(.2,.8,.2,1)', boxShadow: t.flipped? '0 8px 20px rgba(15,15,18,0.10)': '0 2px 8px rgba(15,15,18,0.04)', color: !t.flipped && t.type==='de' ? '#fff' : t.type==='de' ? (t.word.article? genderColor(t.word.article):'#0f0f12') : '#0f0f12'}}>
-                {t.type==='de' ? (
-                  <>
-                    <div style={{fontWeight:800, fontSize:14, lineHeight:1.2, color: t.flipped ? (t.word.article? genderColor(t.word.article):'#0f0f12') : '#fff'}}>{t.label}</div>
-                    <div style={{fontSize:10, color: t.flipped ? '#9aa0b2' : 'rgba(255,255,255,0.72)', marginTop:3}}>{t.sub}</div>
-                    <div style={{fontSize:9, fontWeight:800, letterSpacing:0.6, color: t.flipped ? '#0f0f12' : 'rgba(255,255,255,0.9)', marginTop:4, background: t.flipped ? '#f7f7fb' : 'rgba(255,255,255,0.16)', padding:'2px 6px', borderRadius:999}}>DE</div>
-                  </>
-                ) : (
-                  <>
-                    <div style={{fontWeight:700, fontSize:12, lineHeight:1.2}}>{t.label}</div>
-                    <div style={{fontSize:11, color:'#6b6b7a', marginTop:2, fontFamily:'Vazirmatn, sans-serif', direction:'rtl'}}>{t.sub}</div>
-                    <div style={{fontSize:9, color:'#9aa0b2', marginTop:2}}>{t.sub2}</div>
-                    <div style={{fontSize:9, fontWeight:800, letterSpacing:0.6, color:'#4f46e5', marginTop:4, background:'#eef2ff', padding:'2px 6px', borderRadius:999}}>EN+FA</div>
-                  </>
-                )}
-              </div>
-            ))}
+          <div style={{display:'flex', justifyContent:'space-between', marginTop:10, padding:'0 2px', fontSize:10, fontWeight:800, letterSpacing:1, color:'#9aa0b2'}}>
+            <span style={{flex:1, textAlign:'center'}}>DEUTSCH — LEFT</span>
+            <span style={{flex:1, textAlign:'center'}}>EN + فارسی — RIGHT</span>
+          </div>
+          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginTop:8, alignItems:'start'}}>
+            {/* LEFT — German */}
+            <div style={{display:'flex', flexDirection:'column', gap:0, minWidth:0}}>
+              {matchBoard.filter(t=> t.type==='de').map(t=> {
+                const isFading = matchFadingIds?.has(t.uid);
+                const isShake = matchShakeIds?.has(t.uid);
+                const isWrong = matchWrongIds?.has(t.uid);
+                const isMatched = t.matched;
+                const isHidden = matchHiddenIds?.has(t.uid);
+                const collapsed = isHidden;
+                const borderColor = isWrong ? '#dc2626' : isMatched ? '#16a34a' : t.flipped ? '#0f0f12' : '#1a1a20';
+                const bg = isHidden ? '#e6f9ed' : isFading ? '#e6f9ed' : isMatched ? '#e6f9ed' : isWrong ? '#fef2f2' : t.flipped ? '#ffffff' : '#0f0f12';
+                const isGreen = isMatched || isFading || isHidden;
+                return (
+                <div key={t.uid} onClick={()=> handleMatchPick(t.uid)} className={`gs-match-card ${isFading ? 'gs-fading' : ''} ${isShake ? 'gs-shake' : ''} ${collapsed ? 'gs-matched-collapsed' : isMatched ? 'gs-matched' : ''}`} style={{minHeight: collapsed ? 0 : 84, height: collapsed ? 0 : 84, background: bg, border: collapsed ? '0px solid transparent' : `1.8px solid ${borderColor}`, borderRadius: collapsed ? 0 : 16, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding: collapsed ? '0px 8px' : '10px 8px', margin: collapsed ? '0px' : '0 0 10px 0', cursor: (isMatched || isFading || isHidden) ? 'default' : 'pointer', textAlign:'center', opacity: (isFading || isHidden) ? 0 : 1, transform: isShake ? undefined : isFading ? 'scale(0.95)' : t.flipped ? 'scale(1.02)' : 'scale(1)', transition:'opacity 0.38s cubic-bezier(0.2,0.8,0.2,1), transform 0.38s cubic-bezier(0.2,0.8,0.2,1), border-color 0.2s, background-color 0.2s, height 0.35s cubic-bezier(0.2,0.8,0.2,1), min-height 0.35s ease, margin 0.35s ease, padding 0.35s ease, border-width 0.35s ease', boxShadow: t.flipped && !isMatched && !isHidden ? '0 8px 20px rgba(15,15,18,0.10)': 'none', color: !t.flipped && !isWrong && !isMatched && !isHidden ? '#fff' : t.word.article? genderColor(t.word.article):'#0f0f12', overflow:'hidden', pointerEvents: (isMatched || isFading || isHidden) ? 'none' : 'auto'}}>
+                    <div style={{fontWeight:800, fontSize:14, lineHeight:1.2, color: (t.flipped || isWrong || isGreen) ? (t.word.article? genderColor(t.word.article):'#0f0f12') : '#fff'}}>{t.label}</div>
+                    <div style={{fontSize:10, color: (t.flipped || isWrong || isGreen) ? '#9aa0b2' : 'rgba(255,255,255,0.72)', marginTop: collapsed ? 0 : 3}}>{collapsed ? '' : t.sub}</div>
+                    <div style={{fontSize:9, fontWeight:800, letterSpacing:0.6, color: (t.flipped || isWrong || isGreen) ? '#0f0f12' : 'rgba(255,255,255,0.9)', marginTop: collapsed ? 0 : 4, background: (t.flipped || isWrong || isGreen) ? '#f7f7fb' : 'rgba(255,255,255,0.16)', padding:'2px 6px', borderRadius:999, display: collapsed ? 'none' : 'block'}}>DE</div>
+                </div>
+              )})}
+            </div>
+            {/* RIGHT — EN+FA */}
+            <div style={{display:'flex', flexDirection:'column', gap:0, minWidth:0}}>
+              {matchBoard.filter(t=> t.type==='tr').map(t=> {
+                const isFading = matchFadingIds?.has(t.uid);
+                const isShake = matchShakeIds?.has(t.uid);
+                const isWrong = matchWrongIds?.has(t.uid);
+                const isMatched = t.matched;
+                const isHidden = matchHiddenIds?.has(t.uid);
+                const collapsed = isHidden;
+                const borderColor = isWrong ? '#dc2626' : isMatched ? '#16a34a' : t.flipped ? '#0f0f12' : '#e9e8f0';
+                const bg = isHidden ? '#e6f9ed' : isFading ? '#e6f9ed' : isMatched ? '#e6f9ed' : isWrong ? '#fef2f2' : t.flipped ? '#ffffff' : '#f7f7fb';
+                const isGreen = isMatched || isFading || isHidden;
+                return (
+                <div key={t.uid} onClick={()=> handleMatchPick(t.uid)} className={`gs-match-card ${isFading ? 'gs-fading' : ''} ${isShake ? 'gs-shake' : ''} ${collapsed ? 'gs-matched-collapsed' : isMatched ? 'gs-matched' : ''}`} style={{minHeight: collapsed ? 0 : 84, height: collapsed ? 0 : 84, background: bg, border: collapsed ? '0px solid transparent' : `1.8px solid ${borderColor}`, borderRadius: collapsed ? 0 : 16, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding: collapsed ? '0px 8px' : '10px 8px', margin: collapsed ? '0px' : '0 0 10px 0', cursor: (isMatched || isFading || isHidden) ? 'default' : 'pointer', textAlign:'center', opacity: (isFading || isHidden) ? 0 : 1, transform: isShake ? undefined : isFading ? 'scale(0.95)' : t.flipped ? 'scale(1.02)' : 'scale(1)', transition:'opacity 0.38s cubic-bezier(0.2,0.8,0.2,1), transform 0.38s cubic-bezier(0.2,0.8,0.2,1), border-color 0.2s, background-color 0.2s, height 0.35s cubic-bezier(0.2,0.8,0.2,1), min-height 0.35s ease, margin 0.35s ease, padding 0.35s ease, border-width 0.35s ease', boxShadow: t.flipped && !isMatched && !isHidden ? '0 8px 20px rgba(15,15,18,0.10)': '0 2px 8px rgba(15,15,18,0.04)', color:'#0f0f12', overflow:'hidden', pointerEvents: (isMatched || isFading || isHidden) ? 'none' : 'auto'}}>
+                    <div style={{fontWeight:700, fontSize:12, lineHeight:1.2}}>{collapsed ? '' : t.label}</div>
+                    <div style={{fontSize:11, color:'#6b6b7a', marginTop: collapsed ? 0 : 2, fontFamily:'IRANSans, sans-serif', direction:'rtl', display: collapsed ? 'none' : 'block'}}>{t.sub}</div>
+                    <div style={{fontSize:9, color:'#9aa0b2', marginTop: collapsed ? 0 : 2, display: collapsed ? 'none' : 'block'}}>{t.sub2}</div>
+                    <div style={{fontSize:9, fontWeight:800, letterSpacing:0.6, color:'#4f46e5', marginTop: collapsed ? 0 : 4, background:'#eef2ff', padding:'2px 6px', borderRadius:999, display: collapsed ? 'none' : 'block'}}>EN+FA</div>
+                </div>
+              )})}
+            </div>
           </div>
           {matchDone && (
             <UberCard styleOverride={{marginTop:'12px', textAlign:'center', backgroundColor:'#f0fdf4', borderColor:'#bbf7d0'}}>
@@ -215,7 +243,7 @@ export default function QuizTab(props) {
                       return (
                       <Button key={en+i} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', borderColor:'#e9e8f0', borderWidth:'1.5px', fontWeight:600, minHeight:'56px', whiteSpace:'normal', lineHeight:1.2, flexDirection:'column', paddingTop:'8px', paddingBottom:'8px'}}}} onClick={()=> handleSprintPick(opt)}>
                         <span style={{fontWeight:700, fontSize:12}}>{en}</span>
-                        {fa && <span style={{fontFamily:'Vazirmatn', direction:'rtl', fontSize:11, color:'#6b6b7a', marginTop:2}}>{fa}</span>}
+                        {fa && <span style={{fontFamily:'IRANSans', direction:'rtl', fontSize:11, color:'#6b6b7a', marginTop:2}}>{fa}</span>}
                       </Button>
                       );
                     })}
@@ -236,30 +264,47 @@ export default function QuizTab(props) {
             <UberCard styleOverride={{marginTop:'8px'}}>
               <Block textAlign="center">
                 <LabelSmall color="#6b6b6b">Rebuild the sentence — tap words in order</LabelSmall>
-                <div style={{fontSize:13, color:'#6b6b6b', marginTop:6, fontStyle:'italic'}}>Hint: {satzQueue[satzIdx].hintEn} <span style={{fontFamily:'Vazirmatn', direction:'rtl'}}>— {satzQueue[satzIdx].hintFa}</span> • {satzQueue[satzIdx].word.lektion}</div>
+                <div style={{fontSize:13, color:'#6b6b6b', marginTop:6, fontStyle:'italic'}}>Hint: {satzQueue[satzIdx].hintEn} <span style={{fontFamily:'IRANSans', direction:'rtl'}}>— {satzQueue[satzIdx].hintFa}</span> • {satzQueue[satzIdx].word.lektion}</div>
                 <Block marginTop="8px" display="flex" justifyContent="center" gridGap="6px">
-                  <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(satzQueue[satzIdx].word.example)}>🔊 Play sentence</Button>
-                  <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); }}>↺ Reset</Button>
+                  <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(satzQueue[satzIdx].source || satzQueue[satzIdx].word.example || satzQueue[satzIdx].tokens.join(' '))}>🔊 Play sentence</Button>
+                  <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); setSatzFeedback(null); }}>↺ Reset</Button>
                 </Block>
                 <div style={{minHeight:56, background:'#f7f7fb', border:'1.5px dashed #e9e8f0', borderRadius:14, padding:10, marginTop:12, display:'flex', flexWrap:'wrap', gap:6, justifyContent:'center', alignItems:'center'}}>
-                  {satzBuilt.length===0 ? <span style={{color:'#9a9a9a', fontSize:12}}>Tap words below…</span> : satzBuilt.map((t,i)=> (
-                    <span key={i} onClick={()=> handleSatzRemove(i)} style={{background:'#0f0f12', color:'#fff', padding:'6px 10px', borderRadius:999, fontWeight:700, fontSize:13, cursor:'pointer'}}>{t} ×</span>
-                  ))}
+                  {satzBuilt.length===0 ? <span style={{color:'#9a9a9a', fontSize:12}}>Tap words below…</span> : satzBuilt.map((t,i)=> {
+                    const isCorrectPos = satzFeedback && !satzFeedback.correct && satzFeedback.perPos ? satzFeedback.perPos[i] : null;
+                    const bg = satzFeedback && !satzFeedback.correct ? (isCorrectPos ? '#dcfce7' : '#fee2e2') : '#0f0f12';
+                    const color = satzFeedback && !satzFeedback.correct ? (isCorrectPos ? '#16a34a' : '#dc2626') : '#fff';
+                    const border = satzFeedback && !satzFeedback.correct ? (isCorrectPos ? '1.5px solid #16a34a' : '1.5px solid #dc2626') : 'none';
+                    return (
+                    <span key={i} onClick={()=> handleSatzRemove(i)} style={{background:bg, color, padding:'6px 10px', borderRadius:999, fontWeight:700, fontSize:13, cursor:'pointer', border, transition:'all 0.2s'}}>{t} ×</span>
+                  )})}
                 </div>
                 <Block display="flex" gridGap="6px" marginTop="12px" overrides={{Block:{style:{flexWrap:'wrap', justifyContent:'center'}}}}>
                   {satzPool.map((tok,i)=> (
                     <Button key={tok+i} size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{background:'#fff', borderColor:'#e9e8f0', fontWeight:700}}}} onClick={()=> handleSatzPick(tok,i)}>{tok}</Button>
                   ))}
                 </Block>
-                {satzFeedback ? (
-                  <Block marginTop="12px" padding="10px" backgroundColor={satzFeedback.correct? '#dcfce7':'#fef2f2'} overrides={{Block:{style:{borderRadius:12}}}}>
-                    <LabelSmall>{satzFeedback.correct? `✅ Perfect! +${satzFeedback.xp} XP` : `❌ "${satzBuilt.join(' ')}" → "${satzFeedback.expected}"`}</LabelSmall>
+                {satzFeedback?.correct ? (
+                  <Block marginTop="12px" padding="10px" backgroundColor={'#dcfce7'} overrides={{Block:{style:{borderRadius:12}}}}>
+                    <LabelSmall>✅ Perfect! +{satzFeedback.xp} XP — “{satzFeedback.expected}”</LabelSmall>
                   </Block>
-                ) : (
-                  <Button shape={SHAPE.pill} disabled={satzBuilt.length===0} onClick={checkSatz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%', backgroundColor:'#0f0f12'}}}}>Check</Button>
+                ) : satzFeedback && !satzFeedback.correct ? (
+                  <Block marginTop="12px" padding="10px" backgroundColor={'#fef2f2'} overrides={{Block:{style:{borderRadius:12}}}}>
+                    <LabelSmall>❌ Not quite — correct positions in <span style={{color:'#16a34a', fontWeight:800}}>green</span>, wrong in <span style={{color:'#dc2626', fontWeight:800}}>red</span>. Fix the red ones and try again.</LabelSmall>
+                    <div style={{marginTop:6, fontSize:12, color:'#6b6b6b'}}>You: “{satzFeedback.built?.join(' ') || satzBuilt.join(' ')}”</div>
+                    <div style={{marginTop:4, fontSize:13, fontWeight:700, color:'#0f0f12'}}>Correct: “{satzFeedback.expected}”</div>
+                    <div style={{marginTop:6, fontSize:11, color:'#9aa0b2'}}>Tap red word to remove it, then pick correct word.</div>
+                  </Block>
+                ) : null}
+                {!satzFeedback?.correct && (
+                  <Button shape={SHAPE.pill} disabled={satzBuilt.length===0} onClick={checkSatz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%', backgroundColor: satzFeedback && !satzFeedback.correct ? '#dc2626' : '#0f0f12'}}}}>{satzFeedback && !satzFeedback.correct ? 'Try again →' : 'Check'}</Button>
                 )}
                 {satzFeedback && !satzFeedback.correct && (
-                  <Button shape={SHAPE.pill} onClick={()=> { setSatzFeedback(null); if (satzIdx+1>=satzQueue.length){ setSatzActive(false); setQuizStarted(false);} else { const ni=satzIdx+1; setSatzIdx(ni); setSatzBuilt([]); setSatzPool(satzQueue[ni].shuffled); } }} overrides={{BaseButton:{style:{marginTop:'10px', width:'100%'}}}}>{satzIdx+1>=satzQueue.length?'Finish':'Next →'}</Button>
+                  <Block display="flex" gridGap="6px" marginTop="8px">
+                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); setSatzFeedback(null); }}>↺ Reset</Button>
+                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzBuilt([...satzQueue[satzIdx].tokens]); setSatzPool([]); setSatzFeedback(null); }}>👁 Show answer</Button>
+                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzFeedback(null); if (satzIdx+1>=satzQueue.length){ setSatzActive(false); setQuizStarted(false);} else { const ni=satzIdx+1; setSatzIdx(ni); setSatzBuilt([]); setSatzPool(satzQueue[ni].shuffled); } }}>Skip →</Button>
+                  </Block>
                 )}
               </Block>
             </UberCard>
@@ -313,7 +358,7 @@ export default function QuizTab(props) {
                       return (
                         <Button key={en+i} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{background:'#fff', borderColor:'#e9e8f0', borderWidth:'1.5px', fontWeight:700, minHeight:'52px', justifyContent:'space-between', paddingLeft:'16px', paddingRight:'16px'}}}} onClick={()=> handleRainPick(opt)}>
                           <span style={{fontWeight:700}}>{en}</span>
-                          <span style={{fontFamily:'Vazirmatn', direction:'rtl', color:'#6b6b7a', fontSize:12}}>{fa}</span>
+                          <span style={{fontFamily:'IRANSans', direction:'rtl', color:'#6b6b7a', fontSize:12}}>{fa}</span>
                         </Button>
                       )
                     })}
@@ -333,7 +378,7 @@ export default function QuizTab(props) {
             <Block textAlign="center">
               <LabelSmall color="#6b6b6b">ARTIKEL — Wähle den Artikel</LabelSmall>
               <div style={{fontSize:28, fontWeight:800, marginTop:8}}>{currentQuizWord.german} <span style={{fontWeight:400, color:'#6b6b6b', fontSize:14}}>- {currentQuizWord.meaning_en}</span></div>
-              <div style={{fontSize:12, color:'#9a9a9a', marginTop:4, fontFamily:'Vazirmatn', direction:'rtl'}}>{currentQuizWord.meaning_fa}</div>
+              <div style={{fontSize:12, color:'#9a9a9a', marginTop:4, fontFamily:'IRANSans', direction:'rtl'}}>{currentQuizWord.meaning_fa}</div>
               <div style={{fontSize:12, color:'#9a9a9a', marginTop:4}}>{currentQuizWord.lektion} • {currentQuizWord.example}</div>
               {!quizFeedback ? (
                 <Block display="flex" gridGap="8px" marginTop="16px" justifyContent="center">
@@ -344,7 +389,7 @@ export default function QuizTab(props) {
               ) : (
                 <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
                   <LabelSmall>{quizFeedback.correct ? '✅ Correct!' : `Was "${quizFeedback.expected}"`} {quizFeedback.correct ? `+${quizFeedback.xp} XP` : ''}</LabelSmall>
-                  {quizFeedback.expectedFa && <div style={{fontFamily:'Vazirmatn', direction:'rtl', fontSize:12, color:'#6b6b6b'}}>{quizFeedback.expectedFa}</div>}
+                  {quizFeedback.expectedFa && <div style={{fontFamily:'IRANSans', direction:'rtl', fontSize:12, color:'#6b6b6b'}}>{quizFeedback.expectedFa}</div>}
                 </Block>
               )}
               {!quizFeedback ? (
@@ -357,7 +402,7 @@ export default function QuizTab(props) {
             <Block textAlign="center">
               <LabelSmall color="#6b6b6b">4-CHOICE — Pick the right meaning</LabelSmall>
               <div style={{fontSize:26, fontWeight:800, marginTop:8, color: currentQuizWord.article ? genderColor(currentQuizWord.article) : '#000'}}>{currentQuizWord.article ? `${currentQuizWord.article} ` : ''}{currentQuizWord.german}</div>
-              <div style={{fontSize:12, color:'#9a9a9a', marginTop:2, fontFamily:'Vazirmatn', direction:'rtl'}}>{currentQuizWord.meaning_fa}</div>
+              <div style={{fontSize:12, color:'#9a9a9a', marginTop:2, fontFamily:'IRANSans', direction:'rtl'}}>{currentQuizWord.meaning_fa}</div>
               <div style={{fontSize:11, color:'#9a9a9a'}}>{currentQuizWord.lektion} • {currentQuizWord.plural ? `Pl: ${currentQuizWord.plural}` : currentQuizWord.example?.slice(0,48)}</div>
               <Block marginTop="10px"><Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>🔊 Listen</Button></Block>
               {!quizFeedback ? (
@@ -372,7 +417,7 @@ export default function QuizTab(props) {
                         overrides={{BaseButton:{style:{backgroundColor: isPicked ? '#0f0f12' : '#fff', color: isPicked ? '#fff' : '#0f0f12', borderColor:'#e9e8f0', borderWidth:'1.5px', minHeight:'58px', whiteSpace:'normal', lineHeight:1.15, fontWeight:600, flexDirection:'column', paddingTop:'8px', paddingBottom:'8px'}}}}
                         onClick={()=> setChoicePick(opt)}>
                         <span style={{fontSize:12, fontWeight:700}}>{en}</span>
-                        {fa && <span style={{fontFamily:'Vazirmatn', direction:'rtl', fontSize:11, color: isPicked? 'rgba(255,255,255,0.8)' : '#6b6b7a'}}>{fa}</span>}
+                        {fa && <span style={{fontFamily:'IRANSans', direction:'rtl', fontSize:11, color: isPicked? 'rgba(255,255,255,0.8)' : '#6b6b7a'}}>{fa}</span>}
                       </Button>
                     );
                   })}
@@ -380,7 +425,7 @@ export default function QuizTab(props) {
               ) : (
                 <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
                   <LabelSmall>{quizFeedback.correct ? `✅ Correct! "${quizFeedback.expectedEn}" +${quizFeedback.xp} XP` : `❌ "${typeof choicePick==='object'? choicePick.en : choicePick}" → "${quizFeedback.expectedEn}"`}</LabelSmall>
-                  <div style={{fontFamily:'Vazirmatn', direction:'rtl', fontSize:12, color:'#6b6b6b', marginTop:4}}>{quizFeedback.expectedFa}</div>
+                  <div style={{fontFamily:'IRANSans', direction:'rtl', fontSize:12, color:'#6b6b6b', marginTop:4}}>{quizFeedback.expectedFa}</div>
                 </Block>
               )}
               {!quizFeedback ? (
@@ -415,7 +460,7 @@ export default function QuizTab(props) {
             <Block textAlign="center">
               <LabelSmall color="#6b6b6b">DICTATION — Höre und tippe (Umlaute wichtig!)</LabelSmall>
               <DisplaySmall $style={{fontSize:16, color:'#6b6b6b', marginTop:'8px'}}>{currentQuizWord.meaning_en} — {currentQuizWord.lektion}</DisplaySmall>
-              <div style={{fontFamily:'Vazirmatn', direction:'rtl', fontSize:13, color:'#9a9a9a'}}>{currentQuizWord.meaning_fa}</div>
+              <div style={{fontFamily:'IRANSans', direction:'rtl', fontSize:13, color:'#9a9a9a'}}>{currentQuizWord.meaning_fa}</div>
               <Block marginTop="12px">
                 <Button size={SIZE.compact} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>▶ Play German</Button>
                 <Button size={SIZE.compact} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.example)} overrides={{BaseButton:{style:{marginLeft:'8px'}}}}>Sentence</Button>

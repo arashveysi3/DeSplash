@@ -1,0 +1,127 @@
+{
+  "version": "372496a",
+  "generatedAt": "2026-09-18T11:44:52.218Z",
+  "repo": "https://github.com/arashveysi3/DeSplash",
+  "commits": [
+    {
+      "hash": "372496a",
+      "fullHash": "372496ad835138f5ff26c363d62cded7cc69a7f9",
+      "subject": "feat: replace A1.2 vocabulary with authoritative book-derived dataset (L13-24)",
+      "author": "arashveysi3",
+      "date": "89 minutes ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/372496a"
+    },
+    {
+      "hash": "eb7d655",
+      "fullHash": "eb7d655ff7993453b7593a09b7749a1eb4fc13e0",
+      "subject": "fix: black underline dragged with overshoot + cards rise from bottom (reversible)",
+      "author": "arashveysi3",
+      "date": "16 hours ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/eb7d655"
+    },
+    {
+      "hash": "f416d25",
+      "fullHash": "f416d253bcc560b62f47b56df0d1a63d8edf767e",
+      "subject": "feat: add ghost sound effects (WebAudio) for quiz/flashcards/games",
+      "author": "arashveysi3",
+      "date": "16 hours ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/f416d25"
+    },
+    {
+      "hash": "9f042d8",
+      "fullHash": "9f042d8470a6c09149743166edbb70179f3b3a63",
+      "subject": "fix: selectedLektion ReferenceError, modularize App into components, responsive header for mobile",
+      "author": "arashveysi3",
+      "date": "17 hours ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/9f042d8"
+    },
+    {
+      "hash": "ad02032",
+      "fullHash": "ad020321ca6f7709c37d4a864391ae553cc71661",
+      "subject": "fix: Match Dash no spoiler (DE | EN+FA), Persian Sprint/Match, multi-Lektion, remove dev tips, premium redesign + SatzBau & WortSturm games",
+      "author": "arashveysi3",
+      "date": "23 hours ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/ad02032"
+    },
+    {
+      "hash": "4e3e0bd",
+      "fullHash": "4e3e0bdfe312d0353d51371e5d26f9708e4e1b70",
+      "subject": "back to prev commit",
+      "author": "arashveysi3",
+      "date": "23 hours ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/4e3e0bd"
+    },
+    {
+      "hash": "9c66890",
+      "fullHash": "9c668908a25c278744854b28c378a9be997d2c8f",
+      "subject": "Fix multilingual scope and add bridge/relay challenge games",
+      "author": "arashveysi3",
+      "date": "23 hours ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/9c66890"
+    },
+    {
+      "hash": "267ad61",
+      "fullHash": "267ad610c058a57154fa6f81788cdd91627befa2",
+      "subject": "feat: stunning PWA updater + XP rebalance + 4-choice & 2 games",
+      "author": "arashveysi3",
+      "date": "24 hours ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/267ad61"
+    },
+    {
+      "hash": "ebd4f26",
+      "fullHash": "ebd4f26203ca3332482632467374725fc8615a65",
+      "subject": "book forwarding progress added",
+      "author": "arashveysi3",
+      "date": "27 hours ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/ebd4f26"
+    },
+    {
+      "hash": "6fc5293",
+      "fullHash": "6fc5293d4537d34aa4ad4238f4f87653e286fc64",
+      "subject": "added level system",
+      "author": "arashveysi3",
+      "date": "7 days ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/6fc5293"
+    },
+    {
+      "hash": "2fc67d1",
+      "fullHash": "2fc67d1044691379d91fa51c932918897946b456",
+      "subject": "overflow fixed",
+      "author": "arashveysi3",
+      "date": "7 days ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/2fc67d1"
+    },
+    {
+      "hash": "9e1c85a",
+      "fullHash": "9e1c85a1aa0669fdb8102e316b9da3fb16c66273",
+      "subject": "updated & bug fixes",
+      "author": "arashveysi3",
+      "date": "8 days ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/9e1c85a"
+    },
+    {
+      "hash": "06a5b14",
+      "fullHash": "06a5b149cf1018da8e66f317dbddf4e28b7838f6",
+      "subject": "added online login signup",
+      "author": "arashveysi3",
+      "date": "8 days ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/06a5b14"
+    },
+    {
+      "hash": "d92e8a1",
+      "fullHash": "d92e8a19ed29b6d1a7854e3fef784be85edae2d5",
+      "subject": "fixed leaderboard.js",
+      "author": "arashveysi3",
+      "date": "8 days ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/d92e8a1"
+    },
+    {
+      "hash": "aad50d3",
+      "fullHash": "aad50d3420a29a2c1de0a3edf73a456335330d65",
+      "subject": "added quiz func",
+      "author": "arashveysi3",
+      "date": "8 days ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/aad50d3"
+    }
+  ]
+}

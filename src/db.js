@@ -71,43 +71,48 @@ export const COMPETITORS = [
   { name: 'Paul W.', xp: 1800, avatar: 'PW' },
 ];
 
+function stripTrailingParen(s) {
+  // Remove trailing " (...)" annotation like " (Sg.)", " (Pl.)", " (der Buchstabe F)", " (Ich mache gern ...)"
+  return s.replace(/\s*\(.*\)\s*$/, '').trim();
+}
 function lexKeyForMigration(w) {
-  // Mirrors generation dedup key: noun -> base lower without article, verb -> infinitive/german lower, other -> german lower
-  // For migration we have limited POS info: if article present => noun, else use german lower
-  // Verbs in old dataset had pos 'other' or 'verb' – we treat any word where isVerb-like? Use german lower as fallback
-  // This is best-effort to preserve progress for lexical matches
+  // Mirrors generation dedup key: noun -> base lower without article, verb -> infinitive, other -> german lower
   const art = (w.article || '').toLowerCase();
   let base = (w.german || '').trim();
+  // Noun with article -> noun key (strip trailing paren, lower)
   if (art && (art === 'der' || art === 'die' || art === 'das')) {
-    // strip if german already stripped, base is already without article, else ensure
-    // For old DB, w.german is already base (no article) after version 4 fix, so keep as is
-    base = base.toLowerCase();
-    return `noun:${base}`;
+    let norm = stripTrailingParen(base).toLowerCase().replace(/\s+/g, ' ').trim();
+    return `noun:${norm}`;
   }
-  // For verbs and others: use german lower (for verbs, german === infinitive)
-  // Also include article-less nouns that had no article detection but are nouns – they would be treated as other, but still same string so maps correctly
-  const norm = base.toLowerCase().replace(/\s+/g, ' ').trim();
-  // Distinguish verb vs other by checking if word was verb in new dataset: we cannot know old pos, so try both
-  // Return generic other key; dedicated verb keys will be handled via fallback
+  // Verb detection: check pos/type
+  const isVerb = (w.pos === 'verb' || w.type === 'verb');
+  if (isVerb) {
+    let norm = base.split('(')[0].trim().toLowerCase().replace(/\s+/g, ' ').trim();
+    return `verb:${norm}`;
+  }
+  // Other: strip trailing paren, lower, collapse spaces
+  let norm = stripTrailingParen(base).toLowerCase().replace(/\s+/g, ' ').trim();
   return `other:${norm}`;
 }
 
 function lexKeyForNew(w) {
-  // For new ALL_MENSCHEN_WORDS, compute key consistent with lexKeyForMigration
   const art = (w.article || '').toLowerCase();
-  let base = (w.german || '').trim().toLowerCase().replace(/\s+/g, ' ').trim();
+  let base = (w.german || '').trim();
+  // Noun
   if (art && (art === 'der' || art === 'die' || art === 'das')) {
-    return `noun:${base}`;
+    let norm = stripTrailingParen(base).toLowerCase().replace(/\s+/g, ' ').trim();
+    // Also strip leading parenthetical article like "(das)" if present in base (for new words where article is "" but german is "(das) Deutschland")
+    // But for new words, article is already extracted, base is without article, so not needed.
+    return `noun:${norm}`;
   }
-  // Check if it's a verb by pos or type
+  // Verb
   if (w.pos === 'verb' || w.type === 'verb') {
-    return `verb:${base}`;
+    let norm = base.split('(')[0].trim().toLowerCase().replace(/\s+/g, ' ').trim();
+    return `verb:${norm}`;
   }
-  // For new words, verbs will have pos other but type verb – we already handled
-  // All non-nouns use other prefix, but verbs need verb prefix to match correctly
-  // Fallback: if word is verb, use verb prefix, else other
-  // For migration we map both verb: and other: variants to maximise matches
-  return `other:${base}`;
+  // Other (including adjectives, adverbs, other_vocabulary)
+  let norm = stripTrailingParen(base).toLowerCase().replace(/\s+/g, ' ').trim();
+  return `other:${norm}`;
 }
 
 export async function initDB() {
@@ -149,6 +154,8 @@ export async function initDB() {
     return false;
   })();
 
+  // --- Handle A1.2 replacement (existing logic, keep isolated) ---
+  let workingWords = refreshed;
   if (needsA12Replacement) {
     // Preserve progress for words that have lexical equivalent in new set
     const allProgress = await db.progress.toArray();
@@ -198,16 +205,14 @@ export async function initDB() {
     }
     // Ensure all new A1.2 words are present (bulkPut)
     await db.words.bulkPut(newA12Words.map(w => ({ ...w })));
-    // Patch any existing A1.2 progress that already had correct IDs but lektion may have changed due to canonical shift
-    // No further action needed
     // Refresh for subsequent logic
     const afterA12 = await db.words.toArray();
-    // Ensure any other missing Menschen words (A1.1) are present
+    // Ensure any other missing Menschen words (A1.1) are present — but A1.1 may need replacement, handle separately below
     const existingIds2 = new Set(afterA12.map(w=>w.id));
-    const missing2 = ALL_MENSCHEN_WORDS.filter(w => !existingIds2.has(w.id));
+    const missing2 = ALL_MENSCHEN_WORDS.filter(w => w.book === 'a1.2' && !existingIds2.has(w.id));
     if (missing2.length) await db.words.bulkPut(missing2);
-    // Patch fields for all words to ensure appearsInLessons etc match latest
-    for (const fresh of ALL_MENSCHEN_WORDS) {
+    // Patch fields for all A1.2 words to ensure appearsInLessons etc match latest
+    for (const fresh of newA12Words) {
       const cur = afterA12.find(x=> x.id===fresh.id);
       if (cur) {
         const needsUpdate = cur.meaning_en !== fresh.meaning_en || cur.meaning_fa !== fresh.meaning_fa || cur.plural !== fresh.plural
@@ -228,23 +233,111 @@ export async function initDB() {
         }
       }
     }
-  } else if (!hasMenschen) {
+    workingWords = await db.words.toArray();
+  }
+
+  // --- A1.1 authoritative replacement (ONLY A1.1, leave A1.2 untouched) ---
+  const newA11Words = ALL_MENSCHEN_WORDS.filter(w => w.book === 'a1.1');
+  const existingA11 = workingWords.filter(w => w.book === 'a1.1' && w.isCustom !== 1);
+  const needsA11Replacement = (() => {
+    if (!hasMenschen) return false; // will be seeded via !hasMenschen branch
+    if (existingA11.length === 0 && newA11Words.length > 0) return true;
+    const newCount = newA11Words.length;
+    if (existingA11.length !== newCount) return true;
+    if (existingA11.some(w => !w.appearsInLessons || !w.canonicalLesson)) return true;
+    const newLexSet = new Set(newA11Words.map(lexKeyForNew));
+    const newLexSetExpanded = new Set([...newLexSet]);
+    for (const k of newLexSet) {
+      if (k.startsWith('verb:')) newLexSetExpanded.add(k.replace('verb:','other:'));
+      if (k.startsWith('other:')) newLexSetExpanded.add(k.replace('other:','verb:'));
+    }
+    const obsolete = existingA11.filter(w => !newLexSetExpanded.has(lexKeyForMigration(w)));
+    if (obsolete.length > 0) return true;
+    // Also check if any lex key count mismatch due to dedup change
+    const oldLexSet = new Set(existingA11.map(lexKeyForMigration));
+    if (oldLexSet.size !== newLexSet.size) return true;
+    return false;
+  })();
+
+  if (needsA11Replacement) {
+    const allProgress = await db.progress.toArray();
+    // Build lex -> newId map for A1.1
+    const newLexToId = new Map();
+    for (const nw of newA11Words) {
+      const k = lexKeyForNew(nw);
+      newLexToId.set(k, nw.id);
+      if (k.startsWith('verb:')) newLexToId.set(k.replace('verb:','other:'), nw.id);
+      if (k.startsWith('other:')) newLexToId.set(k.replace('other:','verb:'), nw.id);
+    }
+    const progressToMigrate = [];
+    const obsoleteProgressIds = [];
+    for (const p of allProgress) {
+      const oldWord = existingA11.find(w => w.id === p.id);
+      if (!oldWord) continue;
+      const lk = lexKeyForMigration(oldWord);
+      const newId = newLexToId.get(lk);
+      if (newId && newId !== p.id) {
+        progressToMigrate.push({ oldId: p.id, newId, data: p });
+      } else if (!newId) {
+        obsoleteProgressIds.push(p.id);
+      }
+    }
+    const idsToDelete = existingA11.map(w => w.id);
+    if (idsToDelete.length) await db.words.bulkDelete(idsToDelete);
+    if (obsoleteProgressIds.length) await db.progress.bulkDelete(obsoleteProgressIds);
+    for (const m of progressToMigrate) {
+      const existingProgress = await db.progress.get(m.oldId);
+      if (existingProgress) {
+        await db.progress.delete(m.oldId);
+        const targetWord = newA11Words.find(w=> w.id===m.newId);
+        const newProg = { ...existingProgress, id: m.newId, book: targetWord?.book || existingProgress.book, lektion: targetWord?.lektion || existingProgress.lektion };
+        await db.progress.put(newProg);
+      }
+    }
+    await db.words.bulkPut(newA11Words.map(w => ({ ...w })));
+    // Patch ensures fields match
+    const afterA11 = await db.words.toArray();
+    for (const fresh of newA11Words) {
+      const cur = afterA11.find(x=> x.id===fresh.id);
+      if (cur) {
+        const needsUpdate = cur.meaning_en !== fresh.meaning_en || cur.meaning_fa !== fresh.meaning_fa || cur.plural !== fresh.plural
+          || cur.example !== fresh.example || JSON.stringify(cur.appearsInLessons||[]) !== JSON.stringify(fresh.appearsInLessons||[])
+          || cur.canonicalLesson !== fresh.canonicalLesson || cur.page !== fresh.page;
+        if (needsUpdate) {
+          await db.words.update(fresh.id, {
+            meaning_en: fresh.meaning_en,
+            meaning_fa: fresh.meaning_fa,
+            plural: fresh.plural,
+            english: fresh.meaning_en,
+            example: fresh.example,
+            appearsInLessons: fresh.appearsInLessons,
+            canonicalLesson: fresh.canonicalLesson,
+            page: fresh.page,
+            type: fresh.type,
+          });
+        }
+      }
+    }
+    workingWords = await db.words.toArray();
+  }
+
+  if (!hasMenschen) {
     // keep custom words, remove old non-custom Menschen/A1 generic words if they are from old seed
-    const customs = refreshed.filter(w => w.isCustom === 1);
+    const customs = workingWords.filter(w => w.isCustom === 1);
     // clear non-custom old words if we detect old seed (count >0 and no menschen)
-    if (refreshed.length > 0 && refreshed.filter(w => !w.isCustom).length > 0) {
+    if (workingWords.length > 0 && workingWords.filter(w => !w.isCustom).length > 0) {
       await db.words.clear();
       if (customs.length) await db.words.bulkPut(customs);
     }
     await db.words.bulkPut(ALL_MENSCHEN_WORDS.map(w => ({ ...w })));
-  } else {
-    // ensure any missing Menschen words are present (e.g. after JSON update)
-    const existingIds = new Set(refreshed.map(w => w.id));
+  } else if (!needsA12Replacement && !needsA11Replacement) {
+    // ensure any missing Menschen words are present (e.g. after JSON update) — only if no replacement already handled
+    const existingIds = new Set(workingWords.map(w => w.id));
     const missing = ALL_MENSCHEN_WORDS.filter(w => !existingIds.has(w.id));
     if (missing.length) await db.words.bulkPut(missing);
     // also patch existing to ensure fields match latest JSON (meanings/plural)
     for (const fresh of ALL_MENSCHEN_WORDS) {
-      const cur = refreshed.find(x=> x.id===fresh.id);
+      const cur = workingWords.find(x=> x.id===fresh.id);
       if (cur && (cur.meaning_fa !== fresh.meaning_fa || cur.plural !== fresh.plural || cur.meaning_en !== fresh.meaning_en
         || JSON.stringify(cur.appearsInLessons||[]) !== JSON.stringify(fresh.appearsInLessons||[]) || cur.canonicalLesson !== fresh.canonicalLesson)) {
         await db.words.update(fresh.id, {
@@ -254,10 +347,16 @@ export async function initDB() {
         });
       }
     }
-    // Remove any obsolete A1.2 words that are not in new set (orphans) – safety cleanup
+    // Safety cleanup: remove obsolete words that are not in new set for any book (but keep custom)
     const newIds = new Set(ALL_MENSCHEN_WORDS.map(w=> w.id));
-    const obsoleteWords = refreshed.filter(w => w.book==='a1.2' && w.isCustom!==1 && !newIds.has(w.id));
+    const obsoleteWords = workingWords.filter(w => w.isCustom!==1 && (w.book==='a1.1' || w.book==='a1.2') && !newIds.has(w.id));
     if (obsoleteWords.length) await db.words.bulkDelete(obsoleteWords.map(w=> w.id));
+  } else {
+    // If one of the replacements happened, ensure the other book's missing words are still handled (already done in each block)
+    // Just ensure no leftover missing for the book that was not replaced
+    const existingIds = new Set((await db.words.toArray()).map(w=> w.id));
+    const missing = ALL_MENSCHEN_WORDS.filter(w => !existingIds.has(w.id));
+    if (missing.length) await db.words.bulkPut(missing);
   }
   // also fallback: if DB was empty
   const count = await db.words.count();
