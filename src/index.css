@@ -213,6 +213,20 @@ input::placeholder, textarea::placeholder {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.gs-choice-return-left {
+  animation: gs-choice-return-left 380ms cubic-bezier(0.4,0,0.2,1) both;
+}
+.gs-choice-return-right {
+  animation: gs-choice-return-right 380ms cubic-bezier(0.4,0,0.2,1) both;
+}
+@keyframes gs-choice-return-left {
+  from { opacity: 0; transform: translateX(-130%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes gs-choice-return-right {
+  from { opacity: 0; transform: translateX(130%); }
+  to { opacity: 1; transform: translateX(0); }
+}
 .gs-choice-correct {
   animation: gs-choice-correct-pop 340ms cubic-bezier(0.2,0.8,0.2,1);
 }
@@ -226,6 +240,8 @@ input::placeholder, textarea::placeholder {
 }
 @media (prefers-reduced-motion: reduce) {
   .gs-question { transition: none !important; }
-  .gs-choice-tile.gs-choice-enter { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .gs-choice-tile.gs-choice-enter,
+  .gs-choice-return-left,
+  .gs-choice-return-right { animation: none !important; opacity: 1 !important; transform: none !important; }
   .gs-choice-correct { animation: none !important; }
 }

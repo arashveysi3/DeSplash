@@ -242,7 +242,7 @@ export default function App() {
   const [choiceEliminated, setChoiceEliminated] = useState(new Set());
   const [choiceCorrectLocked, setChoiceCorrectLocked] = useState(false);
   const [choiceCorrectEn, setChoiceCorrectEn] = useState(null);
-  const [choiceTransition, setChoiceTransition] = useState('idle'); // idle | exiting | entering
+  const [choiceTransition, setChoiceTransition] = useState('idle'); // idle | exiting | entering (initial bottom-up) | returning (side-in after correct)
   const [questionFade, setQuestionFade] = useState(false);
   const [choiceAnimKey, setChoiceAnimKey] = useState(0);
   const choiceProcessedRef = useRef(false);
@@ -1022,8 +1022,8 @@ export default function App() {
           setChoiceOptions(opts);
           setChoiceAnimKey(k=>k+1);
           setQuestionFade(false);
-          setChoiceTransition('entering');
-          // after entering animation, go idle
+          setChoiceTransition('returning');
+          // after side-return animation, go idle
           setTimeout(()=> setChoiceTransition('idle'), 520);
         } else {
           setQuestionFade(false);

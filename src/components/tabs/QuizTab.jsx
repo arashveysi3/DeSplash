@@ -408,7 +408,7 @@ export default function QuizTab(props) {
                 <div style={{fontSize:11, color:'#9a9a9a', marginTop:2}}>{currentQuizWord.lektion} • {currentQuizWord.plural ? `Pl: ${currentQuizWord.plural}` : currentQuizWord.example?.slice(0,48) || currentQuizWord.type}</div>
               </div>
               <Block marginTop="10px"><Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>🔊 Listen</Button></Block>
-              <div key={choiceAnimKey} className={`gs-choice-grid ${choiceTransition==='entering' ? 'gs-choice-entering' : ''} ${choiceTransition==='exiting' ? 'gs-choice-exiting' : ''}`} style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px', marginTop:'14px'}}>
+              <div key={choiceAnimKey} className={`gs-choice-grid ${choiceTransition==='entering' ? 'gs-choice-entering' : ''} ${choiceTransition==='exiting' ? 'gs-choice-exiting' : ''} ${choiceTransition==='returning' ? 'gs-choice-returning' : ''}`} style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px', marginTop:'14px'}}>
                 {choiceOptions.map((opt,i)=> {
                   const en = typeof opt==='object'? opt.en : opt;
                   const fa = typeof opt==='object'? opt.fa : '';
@@ -449,13 +449,15 @@ export default function QuizTab(props) {
                     transform = isLeft ? 'translateX(-130%)' : 'translateX(130%)';
                     opacity = 0;
                   }
-                  const animDelay = choiceTransition==='entering' || choiceTransition==='idle' ? `${i*70}ms` : '0ms';
+                  const isReturning = choiceTransition==='returning';
+                  const isEntering = choiceTransition==='entering';
+                  const animDelay = (isEntering || isReturning || choiceTransition==='idle') ? `${i*65}ms` : '0ms';
                   return (
                     <button
                       key={en+'-'+i+'-'+choiceAnimKey}
                       onClick={()=> handleChoiceSelect && handleChoiceSelect(opt)}
-                      disabled={isLocked || isEliminated || choiceTransition==='exiting'}
-                      className={`gs-choice-tile ${isCorrect && isLocked ? 'gs-choice-correct' : ''} ${isEliminated ? 'gs-choice-eliminated' : ''} ${choiceTransition==='entering' ? 'gs-choice-enter' : ''}`}
+                      disabled={isLocked || isEliminated || choiceTransition==='exiting' || isReturning}
+                      className={`gs-choice-tile ${isCorrect && isLocked ? 'gs-choice-correct' : ''} ${isEliminated ? 'gs-choice-eliminated' : ''} ${isEntering ? 'gs-choice-enter' : ''} ${isReturning ? (isLeft ? 'gs-choice-return-left' : 'gs-choice-return-right') : ''}`}
                       style={{
                         backgroundColor: bg,
                         color,
@@ -468,9 +470,9 @@ export default function QuizTab(props) {
                         flexDirection:'column',
                         alignItems:'center',
                         justifyContent:'center',
-                        cursor: (isLocked || isEliminated || choiceTransition==='exiting') ? 'default' : 'pointer',
-                        opacity,
-                        transform,
+                        cursor: (isLocked || isEliminated || choiceTransition==='exiting' || isReturning) ? 'default' : 'pointer',
+                        opacity: isReturning ? undefined : opacity,
+                        transform: isReturning ? undefined : transform,
                         transition: choiceTransition==='exiting' ? 'transform 380ms cubic-bezier(0.4,0,0.2,1), opacity 280ms ease, background-color 200ms, border-color 200ms' : 'background-color 200ms, border-color 200ms, opacity 200ms, transform 200ms',
                         boxShadow,
                         animationDelay: animDelay,
