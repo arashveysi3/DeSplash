@@ -79,6 +79,103 @@ function getVocabDisplayGerman(word) {
   return g;
 }
 
+// --- daily word exposure tracking (max 2 per day) ---
+const DAILY_LIMIT = 2;
+const DAILY_STORAGE_KEY = 'gs_daily_seen';
+function getTodayKey() { return new Date().toISOString().slice(0,10); }
+function getDailyCountsMap() {
+  try {
+    if (typeof localStorage === 'undefined') return {};
+    const raw = localStorage.getItem(DAILY_STORAGE_KEY);
+    if (!raw) return {};
+    const obj = JSON.parse(raw);
+    if (obj.date !== getTodayKey()) return {};
+    return obj.counts || {};
+  } catch { return {}; }
+}
+function incDailyWordCounts(wordIds) {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    const today = getTodayKey();
+    const raw = localStorage.getItem(DAILY_STORAGE_KEY);
+    let obj = raw ? JSON.parse(raw) : null;
+    if (!obj || obj.date !== today) obj = { date: today, counts: {} };
+    for (const id of wordIds) {
+      const k = String(id);
+      obj.counts[k] = (obj.counts[k] || 0) + 1;
+    }
+    localStorage.setItem(DAILY_STORAGE_KEY, JSON.stringify(obj));
+  } catch {}
+}
+function isWordUnderDailyLimit(id, countsMap) {
+  const c = countsMap[String(id)] || 0;
+  return c < DAILY_LIMIT;
+}
+// --- distractor scoring (semantic relevance) ---
+function scoreDistractor(target, candidate) {
+  let score = 0;
+  // same type is strongest signal (noun vs verb vs other)
+  if ((candidate.type || 'other') === (target.type || 'other')) score += 10;
+  if ((candidate.pos || 'other') === (target.pos || 'other')) score += 4;
+  // same lektion = topical relevance
+  if (candidate.lektion === target.lektion) score += 12;
+  else if (candidate.book === target.book) score += 3;
+  // same article for nouns => grammatical plausibility
+  if (target.article && candidate.article && target.article === candidate.article) score += 6;
+  // lexical overlap in English meanings
+  const tEn = (target.meaning_en || target.english || '').toLowerCase();
+  const cEn = (candidate.meaning_en || candidate.english || '').toLowerCase();
+  const tTokens = tEn.split(/[\s\(\)\/,;.-]+/).filter(s=> s.length>2);
+  const cTokens = cEn.split(/[\s\(\)\/,;.-]+/).filter(s=> s.length>2);
+  let shared = 0;
+  for (const tok of tTokens) if (cTokens.includes(tok)) shared++;
+  score += shared * 5;
+  // penalize very short vs long mismatch slightly is ok, but prefer similar length
+  const lenDiff = Math.abs(tEn.length - cEn.length);
+  if (lenDiff < 8) score += 2;
+  else if (lenDiff > 20) score -= 1;
+  // prefer words that are not identical obviously handled outside, but penalize identical english
+  if (tEn && cEn && tEn === cEn) score -= 100;
+  // same first letter bonus (often similar semantic field coincidence? small)
+  if (tEn[0] && cEn[0] && tEn[0] === cEn[0]) score += 0.5;
+  return score;
+}
+function selectPlausibleDistractors(targetWord, pool, need = 3) {
+  const candidates = pool.filter(w => w.id !== targetWord.id && (w.meaning_en || w.english));
+  // score all
+  const scored = candidates.map(w => {
+    const en = w.meaning_en || w.english;
+    const fa = w.meaning_fa || '';
+    return { w, en, fa, score: scoreDistractor(targetWord, w) + Math.random()*1.5 };
+  });
+  scored.sort((a,b)=> b.score - a.score);
+  // filter unique english
+  const uniq = [];
+  const seen = new Set();
+  const targetEn = (targetWord.meaning_en || targetWord.english || '').toLowerCase().trim();
+  for (const s of scored) {
+    const key = s.en.toLowerCase().trim();
+    if (key === targetEn) continue;
+    if (seen.has(key)) continue;
+    if (!s.en || s.en.trim()==='') continue;
+    seen.add(key);
+    uniq.push({ en: s.en, fa: s.fa, id: s.w.id });
+    if (uniq.length >= need) break;
+  }
+  // fallback if not enough
+  while (uniq.length < need) {
+    const poolAny = pool.filter(w=> w.id!==targetWord.id);
+    const rnd = poolAny[Math.floor(Math.random()*poolAny.length)];
+    if (!rnd) break;
+    const en = rnd.meaning_en || rnd.english || '—';
+    const low = en.toLowerCase().trim();
+    if (low === targetEn || seen.has(low)) continue;
+    seen.add(low);
+    uniq.push({ en, fa: rnd.meaning_fa||'', id: rnd.id });
+  }
+  return uniq;
+}
+
 export default function App() {
   const [activeKey, setActiveKey] = useState('0');
   const [stats, setStats] = useState({ xp: 0, streak: 0, lastStudyDate: null, totalReviews: 0 });
@@ -141,6 +238,19 @@ export default function App() {
   // 4-answer choice quiz
   const [choiceOptions, setChoiceOptions] = useState([]);
   const [choicePick, setChoicePick] = useState('');
+  // choice interaction states (correct/wrong behavior + animations)
+  const [choiceEliminated, setChoiceEliminated] = useState(new Set());
+  const [choiceCorrectLocked, setChoiceCorrectLocked] = useState(false);
+  const [choiceCorrectEn, setChoiceCorrectEn] = useState(null);
+  const [choiceTransition, setChoiceTransition] = useState('idle'); // idle | exiting | entering
+  const [questionFade, setQuestionFade] = useState(false);
+  const [choiceAnimKey, setChoiceAnimKey] = useState(0);
+  const choiceProcessedRef = useRef(false);
+  // quiz submission idempotency guard
+  const [quizSubmitting, setQuizSubmitting] = useState(false);
+  const quizSubmitLockRef = useRef(false);
+  const quizProcessedIdxRef = useRef(-1);
+  const nextLockRef = useRef(false);
   // Match Dash game — DE vs EN+FA (no spoiler)
   const [matchBoard, setMatchBoard] = useState([]);
   const [matchPicks, setMatchPicks] = useState([]);
@@ -535,7 +645,12 @@ export default function App() {
     // For vocab games, filter out long educational sentences — keep them for SatzBau instead
     // For general quiz modes (dictation, artikel, choice, fa), we keep vocab-like only
     const vocabPool = (mode === 'satz' ? pool : filterVocabForGames(pool));
-    const effectivePool = vocabPool.length >= 4 ? vocabPool : pool;
+    let effectivePool = vocabPool.length >= 4 ? vocabPool : pool;
+    // enforce daily repetition limit (max 2 per day) — prioritize words under limit
+    const dailyMap = getDailyCountsMap();
+    const underLimitPool = effectivePool.filter(w=> isWordUnderDailyLimit(w.id, dailyMap));
+    // if enough under-limit words, prefer them; otherwise keep full pool but will prioritize later
+    if (underLimitPool.length >= count) effectivePool = underLimitPool;
     const weakInScope = effectivePool.filter(w=> weakIds.has(w.id));
     let candidates = [...weakInScope];
     candidates.sort((a,b)=>{
@@ -544,6 +659,12 @@ export default function App() {
       if (pb.lapses !== pa.lapses) return pb.lapses - pa.lapses;
       if (pa.ease !== pb.ease) return pa.ease - pb.ease;
       return (pa.due||Infinity) - (pb.due||Infinity);
+    });
+    // stable prioritize under-limit within weak
+    candidates.sort((a,b)=> {
+      const aUnder = isWordUnderDailyLimit(a.id, dailyMap) ? 0 : 1;
+      const bUnder = isWordUnderDailyLimit(b.id, dailyMap) ? 0 : 1;
+      return aUnder - bUnder;
     });
     let out = [...candidates];
     if (out.length < count) {
@@ -555,31 +676,46 @@ export default function App() {
         if (ea !== eb) return ea - eb;
         return 0;
       });
-      const shuffledRemaining = shuffleArray(remaining);
-      out.push(...shuffledRemaining.slice(0, count - out.length));
+      // prioritize under-limit for variety before shuffle
+      const under = remaining.filter(w=> isWordUnderDailyLimit(w.id, dailyMap));
+      const over = remaining.filter(w=> !isWordUnderDailyLimit(w.id, dailyMap));
+      const shuffledUnder = shuffleArray(under);
+      const shuffledOver = shuffleArray(over);
+      const combined = [...shuffledUnder, ...shuffledOver];
+      out.push(...combined.slice(0, count - out.length));
     }
     if (mode === 'artikel') {
       out = out.filter(w => w.article);
       if (out.length < count) {
         const nouns = effectivePool.filter(w => w.article && !out.includes(w));
-        const shuffledNouns = shuffleArray(nouns);
+        // prioritize under-limit nouns
+        const nounsUnder = nouns.filter(w=> isWordUnderDailyLimit(w.id, dailyMap));
+        const nounsOver = nouns.filter(w=> !isWordUnderDailyLimit(w.id, dailyMap));
+        const shuffledNouns = [...shuffleArray(nounsUnder), ...shuffleArray(nounsOver)];
         out.push(...shuffledNouns.slice(0, count - out.length));
       }
     }
-    const shuffledOut = shuffleArray(out);
-    // Multi-lesson: ensure final order is not lesson order regardless — already shuffled, but also ensure cross-lesson mixing
-    // Single-lesson already shuffled within lesson
-    return shuffledOut.slice(0, count);
+    // final variety: prefer under-limit but keep some randomness
+    // sort by daily count weight then shuffle within bands
+    const outUnder = out.filter(w=> isWordUnderDailyLimit(w.id, dailyMap));
+    const outOver = out.filter(w=> !isWordUnderDailyLimit(w.id, dailyMap));
+    const shuffledOut = [...shuffleArray(outUnder), ...shuffleArray(outOver)];
+    // if we have more under-limit than needed, just take under; else mix
+    let final = shuffledOut.slice(0, count);
+    // if still not enough under-limit and we filtered initially, allow fallback to original pool's over-limit randomly to fill
+    if (final.length < count && underLimitPool.length < count) {
+      const fallbackPool = vocabPool.length >=4 ? vocabPool : pool;
+      const extra = shuffleArray(fallbackPool.filter(w=> !final.includes(w))).slice(0, count - final.length);
+      final = [...final, ...extra];
+    }
+    // Ensure cross-lesson randomness: already shuffled
+    return final.slice(0, count);
   }, [quizScopeWords, weakIds, progressMap, quizMode]);
 
   const buildChoiceOptions = useCallback((word, pool) => {
     const correct = { en: word.meaning_en || word.english, fa: word.meaning_fa || '', id: word.id };
-    const distractors = shuffleArray(pool.filter(w=> w.id !== word.id)).slice(0, 12).map(w=> ({ en: w.meaning_en || w.english, fa: w.meaning_fa || '', id: w.id })).filter(d=> d.en && d.en !== correct.en)
-    const uniqMap = new Map();
-    for (const d of distractors) if (!uniqMap.has(d.en)) uniqMap.set(d.en, d);
-    let uniq = [...uniqMap.values()].slice(0,3)
-    while (uniq.length < 3) uniq.push({ en: ['house','time','water'][uniq.length] || '—', fa: '—', id: 'pad'+uniq.length })
-    const opts = shuffleArray([...uniq, correct])
+    const distractors = selectPlausibleDistractors(word, pool, 3);
+    const opts = shuffleArray([...distractors, correct]);
     return { correct, opts }
   }, []);
 
@@ -592,6 +728,8 @@ export default function App() {
     if (mode === 'rain') { startRainGame(count); return; }
     const q = buildQuizQueue(count, mode);
     if (q.length===0) { setToast('No words for this scope/mode'); setTimeout(()=> setToast(null),1500); return; }
+    // track daily exposure for variety (increment counts for selected words)
+    incDailyWordCounts(q.map(w=> w.id));
     setQuizMode(mode);
     setQuizQueue(q);
     setQuizIdx(0);
@@ -601,10 +739,22 @@ export default function App() {
     setQuizFeedback(null);
     setQuizScore({ correct:0, total:0, xp:0 });
     setQuizStarted(true);
+    // reset choice-specific interaction state
+    setChoiceEliminated(new Set());
+    setChoiceCorrectLocked(false);
+    setChoiceCorrectEn(null);
+    setChoiceTransition('entering');
+    setQuestionFade(false);
+    setChoiceAnimKey(k=>k+1);
+    choiceProcessedRef.current = false;
+    quizSubmitLockRef.current = false;
+    setQuizSubmitting(false);
+    quizProcessedIdxRef.current = -1;
     if (mode === 'choice' && q[0]) {
       const { opts } = buildChoiceOptions(q[0], quizScopeWords);
       setChoiceOptions(opts);
     }
+    setTimeout(()=> setChoiceTransition('idle'), 560);
     setTimeout(()=> { if ((mode==='dictation' || mode==='mixed') && q[0]) { const w=q[0]; if (mode==='dictation' || (mode==='mixed' && !w.article)) speakGerman(w.german); } }, 300);
   };
 
@@ -613,6 +763,17 @@ export default function App() {
   const submitQuiz = async () => {
     primeAudio();
     if (!currentQuizWord) return;
+    // idempotency guard: prevent double processing of same quiz index
+    if (quizSubmitLockRef.current) return;
+    if (quizProcessedIdxRef.current === quizIdx && quizFeedback) return;
+    // also prevent if already submitting
+    if (quizSubmitting) return;
+    // for choice mode, delegate to direct handler if choicePick exists — but still guard
+    // lock immediately synchronously
+    quizSubmitLockRef.current = true;
+    setQuizSubmitting(true);
+    // mark this idx as processed to prevent re-entry before nextQuiz resets
+    quizProcessedIdxRef.current = quizIdx;
     const isChoiceQ = quizMode === 'choice';
     const isArtikelQ = !isChoiceQ && (quizMode==='artikel' || (quizMode==='mixed' && currentQuizWord.article && quizIdx %2===0));
     const isFaQ = quizMode==='fa';
@@ -702,13 +863,27 @@ export default function App() {
 
   const nextQuiz = () => {
     primeAudio();
+    if (nextLockRef.current) return;
+    nextLockRef.current = true;
+    setTimeout(()=> { nextLockRef.current = false; }, 600);
+    // reset submission lock for next question
+    quizSubmitLockRef.current = false;
+    setQuizSubmitting(false);
+    choiceProcessedRef.current = false;
     if (quizIdx +1 >= quizQueue.length) {
       setQuizFeedback(null);
       setQuizStarted(false);
+      // reset choice states as well
+      setChoiceEliminated(new Set());
+      setChoiceCorrectLocked(false);
+      setChoiceCorrectEn(null);
+      setChoiceTransition('idle');
+      setQuestionFade(false);
       const doneOk = quizScore.correct + (quizFeedback?.correct?1:0) > quizQueue.length / 2;
       if (doneOk) playQuizComplete(); else playGameOver();
       setToast(`Quiz done: ${quizScore.correct + (quizFeedback?.correct?1:0)}/${quizScore.total +1} • +${quizScore.xp + (quizFeedback?.xp||0)} XP`);
       setTimeout(()=> setToast(null),2000);
+      quizProcessedIdxRef.current = -1;
       return;
     }
     const nextIdx = quizIdx +1;
@@ -717,6 +892,13 @@ export default function App() {
     setQuizArtikelChoice('');
     setChoicePick('');
     setQuizFeedback(null);
+    setChoiceEliminated(new Set());
+    setChoiceCorrectLocked(false);
+    setChoiceCorrectEn(null);
+    setChoiceTransition('idle');
+    setQuestionFade(false);
+    setChoiceAnimKey(k=>k+1);
+    quizProcessedIdxRef.current = -1;
     const w = quizQueue[nextIdx];
     if (quizMode === 'choice') {
       const { opts } = buildChoiceOptions(w, quizScopeWords);
@@ -726,6 +908,132 @@ export default function App() {
     if (!isArtikelNext && quizMode !== 'fa' && quizMode !== 'choice') setTimeout(()=> speakGerman(w.german), 250);
   };
 
+  // Direct choice selection handler (new 4-choice behavior: correct => green + transition, wrong => gray eliminated)
+  const handleChoiceSelect = async (opt) => {
+    if (!currentQuizWord || quizMode !== 'choice') return;
+    if (choiceTransition === 'exiting' || choiceCorrectLocked) return;
+    const pickedEn = typeof opt === 'object' ? opt.en : opt;
+    if (choiceEliminated.has(pickedEn)) return;
+    if (choiceProcessedRef.current) return;
+    const correctEn = currentQuizWord.meaning_en || currentQuizWord.english;
+    const isCorrect = pickedEn === correctEn;
+    const xpAdd = isCorrect ? QUIZ_XP.choice : 0;
+    if (!isCorrect) {
+      primeAudio();
+      playIncorrect();
+      setChoiceEliminated(prev => { const s = new Set(prev); s.add(pickedEn); return s; });
+      setToast(`Not "${pickedEn}" — try another`);
+      setTimeout(()=> setToast(null), 1100);
+      return;
+    }
+    // correct path — lock immediately, award once
+    if (choiceProcessedRef.current) return;
+    choiceProcessedRef.current = true;
+    // also lock general quiz submit guard
+    quizSubmitLockRef.current = true;
+    setQuizSubmitting(true);
+    quizProcessedIdxRef.current = quizIdx;
+    setChoiceCorrectLocked(true);
+    setChoiceCorrectEn(correctEn);
+    primeAudio();
+    playCorrect();
+    if (xpAdd >= 8) setTimeout(()=> playXp(), 160);
+    // SM2 & XP persistence (idempotent)
+    const q = qualityFromLabel('Good');
+    const prev = progressMap[currentQuizWord.id] || { interval:0, repetition:0, ease:2.5, due:0, lapses:0 };
+    const next = sm2(prev, q);
+    if (authToken && authUser) {
+      setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, level: currentQuizWord.level, book: currentQuizWord.book, lektion: currentQuizWord.lektion, ...next }}));
+      try { await saveProgressOne({ id: currentQuizWord.id, level: currentQuizWord.level, book: currentQuizWord.book, lektion: currentQuizWord.lektion, ...next }); } catch {}
+    } else {
+      await db.progress.put({ id: currentQuizWord.id, level: currentQuizWord.level, book: currentQuizWord.book, lektion: currentQuizWord.lektion, ...next });
+      setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, ...next }}));
+    }
+    if (xpAdd > 0) {
+      if (authToken && authUser) {
+        const today = new Date().toISOString().slice(0,10);
+        const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+        let newStreak = stats.streak || 0;
+        let newLast = stats.lastStudyDate;
+        if (stats.lastStudyDate !== today) {
+          if (!stats.lastStudyDate) newStreak = 1;
+          else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
+          else { const diff=(new Date(today)-new Date(stats.lastStudyDate))/86400000; newStreak = diff===1 ? (stats.streak||0)+1 : 1; }
+          newLast = today;
+        }
+        const newStats = { ...stats, xp: (stats.xp||0)+xpAdd, totalReviews: (stats.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
+        setStats(newStats);
+        try { await saveStatsOnline(newStats); } catch {}
+        if (useOnline) submitOnlineScore(authUser.username, newStats.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
+      } else {
+        await addXP(xpAdd); await updateStreak();
+        const s=await getStats(); setStats(s);
+        if (useOnline && username) submitOnlineScore(username, s.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
+      }
+    }
+    setQuizScore(sc=> ({ correct: sc.correct+1, total: sc.total+1, xp: sc.xp + xpAdd }));
+    // keep quizFeedback null for choice — we use choiceCorrectLocked UI instead, but set a minimal feedback for scoring on finish
+    setQuizFeedback({ correct: true, expected: currentQuizWord.german, expectedEn: correctEn, expectedFa: currentQuizWord.meaning_fa, xp: xpAdd });
+    setToast(`+${xpAdd} XP ✓`);
+    setTimeout(()=> setToast(null), 1200);
+    // transition to next question after visible green period
+    setTimeout(()=> {
+      setQuestionFade(true);
+      setChoiceTransition('exiting');
+      setTimeout(async ()=> {
+        if (quizIdx +1 >= quizQueue.length) {
+          // finish quiz
+          setQuizFeedback(null);
+          setQuizStarted(false);
+          setChoiceEliminated(new Set());
+          setChoiceCorrectLocked(false);
+          setChoiceCorrectEn(null);
+          setChoiceTransition('idle');
+          setQuestionFade(false);
+          quizSubmitLockRef.current = false;
+          setQuizSubmitting(false);
+          choiceProcessedRef.current = false;
+          quizProcessedIdxRef.current = -1;
+          // compute final score including this correct
+          const finalCorrect = quizScore.correct + 1;
+          const finalTotal = quizScore.total + 1;
+          const finalXp = quizScore.xp + xpAdd;
+          const doneOk = finalCorrect > quizQueue.length / 2;
+          if (doneOk) playQuizComplete(); else playGameOver();
+          setToast(`Quiz done: ${finalCorrect}/${quizQueue.length} • +${finalXp} XP`);
+          setTimeout(()=> setToast(null), 2200);
+          return;
+        }
+        const nextIdx = quizIdx + 1;
+        setQuizIdx(nextIdx);
+        setChoiceEliminated(new Set());
+        setChoiceCorrectLocked(false);
+        setChoiceCorrectEn(null);
+        setChoicePick('');
+        // keep feedback null for next question's tiles; but preserve score
+        // reset submission lock for next question
+        quizSubmitLockRef.current = false;
+        setQuizSubmitting(false);
+        choiceProcessedRef.current = false;
+        quizProcessedIdxRef.current = -1;
+        const w = quizQueue[nextIdx];
+        if (w) {
+          const { opts } = buildChoiceOptions(w, quizScopeWords);
+          setChoiceOptions(opts);
+          setChoiceAnimKey(k=>k+1);
+          setQuestionFade(false);
+          setChoiceTransition('entering');
+          // after entering animation, go idle
+          setTimeout(()=> setChoiceTransition('idle'), 520);
+        } else {
+          setQuestionFade(false);
+          setChoiceTransition('idle');
+        }
+        // do not call speak for choice
+      }, 400);
+    }, 900);
+  };
+
   const insertUmlaut = (ch) => setQuizAnswer(a=> a + ch);
 
   // ---- Games ----
@@ -733,10 +1041,14 @@ export default function App() {
     const basePool = quizScopeWords.length >= 6 ? quizScopeWords : allWords;
     // Filter out long educational sentences for vocab Match Dash — keep vocab-like only, fallback to basePool if not enough
     const vocabFiltered = filterVocabForGames(basePool);
-    const pool = vocabFiltered.length >= 6 ? vocabFiltered : basePool;
+    let pool = vocabFiltered.length >= 6 ? vocabFiltered : basePool;
+    const dailyMapM = getDailyCountsMap();
+    const underM = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMapM));
+    if (underM.length >=6) pool = underM;
     // Proper shuffle (Fisher-Yates) respecting multi-lesson — picks already randomized across lessons
     const shuffledPool = shuffleArray(pool);
     const picks = shuffledPool.slice(0,6);
+    incDailyWordCounts(picks.map(w=> w.id));
     // Create left (DE) and right (EN+FA) tiles and shuffle each column independently
     const leftTiles = [];
     const rightTiles = [];
@@ -853,16 +1165,17 @@ export default function App() {
   const startSprintGame = useCallback((count=12) => {
     const basePool = quizScopeWords.length >= count ? quizScopeWords : allWords;
     const vocabFiltered = filterVocabForGames(basePool);
-    const pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
+    let pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
+    // apply daily limit to sprint picks for variety
+    const dailyMapS = getDailyCountsMap();
+    const underS = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMapS));
+    if (underS.length >= count) pool = underS;
     const picks = shuffleArray(pool).slice(0, count);
+    incDailyWordCounts(picks.map(w=> w.id));
     const queue = picks.map(w=> {
       const correct = { en: w.meaning_en || w.english, fa: w.meaning_fa || '' };
-      const distractors = shuffleArray(pool.filter(x=> x.id!==w.id)).slice(0,12).map(x=> ({ en: x.meaning_en || x.english, fa: x.meaning_fa || '' })).filter(d=> d.en && d.en !== correct.en);
-      const uniqMap = new Map();
-      for (const d of distractors) if (!uniqMap.has(d.en)) uniqMap.set(d.en,d);
-      let uniq=[...uniqMap.values()].slice(0,3);
-      while(uniq.length<3) uniq.push({ en:'—', fa:'—'});
-      const opts=shuffleArray([...uniq, correct]);
+      const distractors = selectPlausibleDistractors(w, pool, 3);
+      const opts=shuffleArray([...distractors, correct]);
       return { word:w, correct, opts };
     });
     const shuffledQueue = shuffleIfMulti(quizLektions, queue);
@@ -917,14 +1230,16 @@ export default function App() {
       if (sprintIdx +1 >= sprintQueue.length) {
         const basePool = quizScopeWords.length >=8 ? quizScopeWords : allWords;
         const vocabFilteredRefill = filterVocabForGames(basePool);
-        const pool = vocabFilteredRefill.length >= 8 ? vocabFilteredRefill : basePool;
+        let pool = vocabFilteredRefill.length >= 8 ? vocabFilteredRefill : basePool;
+        const dailyMapR = getDailyCountsMap();
+        const underR = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMapR));
+        if (underR.length >= 8) pool = underR;
         const picks = shuffleArray(pool).slice(0,8);
+        incDailyWordCounts(picks.map(w=> w.id));
         const more = shuffleArray(picks).map(w=> {
           const c={ en: w.meaning_en||w.english, fa: w.meaning_fa||''};
-          const d=shuffleArray(pool.filter(x=>x.id!==w.id)).slice(0,12).map(x=>({ en:x.meaning_en||x.english, fa:x.meaning_fa||''})).filter(Boolean);
-          const uniqMap=new Map(); for(const it of d) if(it.en!==c.en && !uniqMap.has(it.en)) uniqMap.set(it.en,it);
-          let u=[...uniqMap.values()].slice(0,3); while(u.length<3) u.push({en:'—',fa:'—'});
-          const o=shuffleArray([...u,c]);
+          const distractors = selectPlausibleDistractors(w, pool, 3);
+          const o=shuffleArray([...distractors, c]);
           return {word:w, correct:c, opts:o};
         });
         const newQ=[...sprintQueue, ...more];
@@ -1031,14 +1346,16 @@ export default function App() {
   const startRainGame = useCallback((count=12) => {
     const basePool = quizScopeWords.length >= count ? quizScopeWords : allWords;
     const vocabFiltered = filterVocabForGames(basePool);
-    const pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
+    let pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
+    const dailyMapRain = getDailyCountsMap();
+    const underRain = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMapRain));
+    if (underRain.length >= count) pool = underRain;
     const picks = shuffleArray(pool).slice(0,count);
+    incDailyWordCounts(picks.map(w=> w.id));
     const queue = shuffleArray(picks).map(w=> {
       const correct = { en: w.meaning_en || w.english, fa: w.meaning_fa || '' };
-      const distractors = shuffleArray(pool.filter(x=> x.id!==w.id)).slice(0,10).map(x=> ({ en: x.meaning_en || x.english, fa: x.meaning_fa||''})).filter(Boolean);
-      const uniqMap=new Map(); for(const d of distractors) if(d.en!==correct.en && !uniqMap.has(d.en)) uniqMap.set(d.en,d);
-      let uniq=[...uniqMap.values()].slice(0,2); while(uniq.length<2) uniq.push({en:'—',fa:'—'});
-      const opts=shuffleArray([...uniq, correct]);
+      const distractors = selectPlausibleDistractors(w, pool, 2);
+      const opts=shuffleArray([...distractors, correct]);
       return { word:w, correct, opts };
     });
     setRainQueue(queue);
@@ -1094,14 +1411,16 @@ export default function App() {
               // if lives remain but queue exhausted, refill
               const basePool2 = quizScopeWords.length>=8 ? quizScopeWords : allWords;
               const vocabFiltered2 = filterVocabForGames(basePool2);
-              const pool = vocabFiltered2.length>=8 ? vocabFiltered2 : basePool2;
+              let pool = vocabFiltered2.length>=8 ? vocabFiltered2 : basePool2;
+              const dailyMap2 = getDailyCountsMap();
+              const under2 = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMap2));
+              if (under2.length >=6) pool = under2;
               const picks=shuffleArray(pool).slice(0,6);
+              incDailyWordCounts(picks.map(w=> w.id));
               const more=shuffleArray(picks).map(w=> {
                 const c={en:w.meaning_en||w.english, fa:w.meaning_fa||''};
-                const d=shuffleArray(pool.filter(x=>x.id!==w.id)).slice(0,8).map(x=>({en:x.meaning_en||x.english, fa:x.meaning_fa||''})).filter(Boolean);
-                const m=new Map(); for(const it of d) if(it.en!==c.en && !m.has(it.en)) m.set(it.en,it);
-                let u=[...m.values()].slice(0,2); while(u.length<2) u.push({en:'—',fa:'—'});
-                const o=shuffleArray([...u,c]);
+                const distractors = selectPlausibleDistractors(w, pool, 2);
+                const o=shuffleArray([...distractors, c]);
                 return {word:w, correct:c, opts:o};
               });
               setRainQueue(q=> [...q, ...more]);
@@ -1146,14 +1465,16 @@ export default function App() {
       if (rainIdx+1 >= rainQueue.length) {
         const basePool3 = quizScopeWords.length>=8 ? quizScopeWords : allWords;
         const vocabFiltered3 = filterVocabForGames(basePool3);
-        const pool = vocabFiltered3.length>=8 ? vocabFiltered3 : basePool3;
+        let pool = vocabFiltered3.length>=8 ? vocabFiltered3 : basePool3;
+        const dailyMap3 = getDailyCountsMap();
+        const under3 = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMap3));
+        if (under3.length >=6) pool = under3;
         const picks=shuffleArray(pool).slice(0,6);
+        incDailyWordCounts(picks.map(w=> w.id));
         const more=shuffleArray(picks).map(w=> {
           const c={en:w.meaning_en||w.english, fa:w.meaning_fa||''};
-          const d=shuffleArray(pool.filter(x=>x.id!==w.id)).slice(0,8).map(x=>({en:x.meaning_en||x.english, fa:x.meaning_fa||''})).filter(Boolean);
-          const m=new Map(); for(const it of d) if(it.en!==c.en && !m.has(it.en)) m.set(it.en,it);
-          let u=[...m.values()].slice(0,2); while(u.length<2) u.push({en:'—',fa:'—'});
-          const o=shuffleArray([...u,c]);
+          const distractors = selectPlausibleDistractors(w, pool, 2);
+          const o=shuffleArray([...distractors, c]);
           return {word:w, correct:c, opts:o};
         });
         const nq=[...rainQueue, ...more];
@@ -1397,7 +1718,7 @@ export default function App() {
           </Tab>
           <Tab title="Quiz">
             <Block paddingTop="16px">
-              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} />
+              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} />
             </Block>
           </Tab>
           <Tab title="Suche">

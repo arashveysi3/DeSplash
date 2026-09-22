@@ -20,6 +20,8 @@ export default function QuizTab(props) {
     choiceOptions, choicePick, setChoicePick,
     quizAnswer, setQuizAnswer, quizArtikelChoice, setQuizArtikelChoice,
     quizFeedback, quizScore, submitQuiz, nextQuiz, insertUmlaut,
+    // choice enhanced
+    choiceEliminated, choiceCorrectLocked, choiceCorrectEn, choiceTransition, questionFade, choiceAnimKey, quizSubmitting, handleChoiceSelect,
     // match
     matchBoard, matchMatched, matchMoves, matchDone, matchXp, handleMatchPick, startMatchGame, matchStarted, setMatchStarted,
     matchFadingIds, matchShakeIds, matchWrongIds, matchHiddenIds,
@@ -393,7 +395,7 @@ export default function QuizTab(props) {
                 </Block>
               )}
               {!quizFeedback ? (
-                <Button shape={SHAPE.pill} disabled={!quizArtikelChoice} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'16px', width:'100%'}}}}>Check</Button>
+                <Button shape={SHAPE.pill} disabled={!!quizSubmitting || !quizArtikelChoice} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'16px', width:'100%', opacity: quizSubmitting ? 0.6 : 1}}}}>Check</Button>
               ) : (
                 <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'16px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
               )}
@@ -401,38 +403,89 @@ export default function QuizTab(props) {
           ) : quizMode==='choice' ? (
             <Block textAlign="center">
               <LabelSmall color="#6b6b6b">4-CHOICE — Pick the right meaning</LabelSmall>
-              <div style={{fontSize:26, fontWeight:800, marginTop:8, color: currentQuizWord.article ? genderColor(currentQuizWord.article) : '#000'}}>{currentQuizWord.article ? `${currentQuizWord.article} ` : ''}{currentQuizWord.german}</div>
-              <div style={{fontSize:12, color:'#9a9a9a', marginTop:2, fontFamily:'IRANSans', direction:'rtl'}}>{currentQuizWord.meaning_fa}</div>
-              <div style={{fontSize:11, color:'#9a9a9a'}}>{currentQuizWord.lektion} • {currentQuizWord.plural ? `Pl: ${currentQuizWord.plural}` : currentQuizWord.example?.slice(0,48)}</div>
+              <div className={`gs-question ${questionFade ? 'gs-question-fading' : ''}`} style={{transition:'opacity 320ms ease'}}>
+                <div style={{fontSize:26, fontWeight:800, marginTop:8, color: currentQuizWord.article ? genderColor(currentQuizWord.article) : '#000'}}>{currentQuizWord.article ? `${currentQuizWord.article} ` : ''}{currentQuizWord.german}</div>
+                <div style={{fontSize:11, color:'#9a9a9a', marginTop:2}}>{currentQuizWord.lektion} • {currentQuizWord.plural ? `Pl: ${currentQuizWord.plural}` : currentQuizWord.example?.slice(0,48) || currentQuizWord.type}</div>
+              </div>
               <Block marginTop="10px"><Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>🔊 Listen</Button></Block>
-              {!quizFeedback ? (
-                <Block display="grid" gridGap="8px" marginTop="14px" overrides={{Block:{style:{gridTemplateColumns:'1fr 1fr'}}}}>
-                  {choiceOptions.map((opt,i)=> {
-                    const en = typeof opt==='object'? opt.en : opt;
-                    const fa = typeof opt==='object'? opt.fa : '';
-                    const pickedEn = typeof choicePick==='object'? choicePick.en : choicePick;
-                    const isPicked = pickedEn===en;
-                    return (
-                      <Button key={en+i} kind={isPicked?KIND.primary:KIND.secondary} shape={SHAPE.pill}
-                        overrides={{BaseButton:{style:{backgroundColor: isPicked ? '#0f0f12' : '#fff', color: isPicked ? '#fff' : '#0f0f12', borderColor:'#e9e8f0', borderWidth:'1.5px', minHeight:'58px', whiteSpace:'normal', lineHeight:1.15, fontWeight:600, flexDirection:'column', paddingTop:'8px', paddingBottom:'8px'}}}}
-                        onClick={()=> setChoicePick(opt)}>
-                        <span style={{fontSize:12, fontWeight:700}}>{en}</span>
-                        {fa && <span style={{fontFamily:'IRANSans', direction:'rtl', fontSize:11, color: isPicked? 'rgba(255,255,255,0.8)' : '#6b6b7a'}}>{fa}</span>}
-                      </Button>
-                    );
-                  })}
-                </Block>
-              ) : (
-                <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
-                  <LabelSmall>{quizFeedback.correct ? `✅ Correct! "${quizFeedback.expectedEn}" +${quizFeedback.xp} XP` : `❌ "${typeof choicePick==='object'? choicePick.en : choicePick}" → "${quizFeedback.expectedEn}"`}</LabelSmall>
-                  <div style={{fontFamily:'IRANSans', direction:'rtl', fontSize:12, color:'#6b6b6b', marginTop:4}}>{quizFeedback.expectedFa}</div>
-                </Block>
-              )}
-              {!quizFeedback ? (
-                <Button shape={SHAPE.pill} disabled={!choicePick} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%'}}}}>Check</Button>
-              ) : (
-                <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
-              )}
+              <div key={choiceAnimKey} className={`gs-choice-grid ${choiceTransition==='entering' ? 'gs-choice-entering' : ''} ${choiceTransition==='exiting' ? 'gs-choice-exiting' : ''}`} style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px', marginTop:'14px'}}>
+                {choiceOptions.map((opt,i)=> {
+                  const en = typeof opt==='object'? opt.en : opt;
+                  const fa = typeof opt==='object'? opt.fa : '';
+                  const isCorrect = choiceCorrectEn ? en === choiceCorrectEn : false;
+                  const isEliminated = choiceEliminated ? choiceEliminated.has(en) : false;
+                  const isLocked = !!choiceCorrectLocked;
+                  const isLeft = i % 2 === 0;
+                  // styling logic
+                  let bg = '#fff';
+                  let borderColor = '#e9e8f0';
+                  let color = '#0f0f12';
+                  let opacity = 1;
+                  let pointerEvents = 'auto';
+                  let transform = undefined;
+                  let boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
+                  if (isLocked) {
+                    if (isCorrect) {
+                      bg = '#dcfce7';
+                      borderColor = '#16a34a';
+                      color = '#0f0f12';
+                      boxShadow = '0 4px 12px rgba(22,163,74,0.18)';
+                    } else {
+                      bg = '#f3f3f3';
+                      borderColor = '#e5e5e5';
+                      color = '#9aa0b2';
+                      opacity = 0.52;
+                      pointerEvents = 'none';
+                    }
+                  } else if (isEliminated) {
+                    bg = '#f1f1f3';
+                    borderColor = '#e0e0e6';
+                    color = '#9aa0b2';
+                    opacity = 0.48;
+                    pointerEvents = 'none';
+                  }
+                  // exit swipe transform
+                  if (choiceTransition==='exiting') {
+                    transform = isLeft ? 'translateX(-130%)' : 'translateX(130%)';
+                    opacity = 0;
+                  }
+                  const animDelay = choiceTransition==='entering' || choiceTransition==='idle' ? `${i*70}ms` : '0ms';
+                  return (
+                    <button
+                      key={en+'-'+i+'-'+choiceAnimKey}
+                      onClick={()=> handleChoiceSelect && handleChoiceSelect(opt)}
+                      disabled={isLocked || isEliminated || choiceTransition==='exiting'}
+                      className={`gs-choice-tile ${isCorrect && isLocked ? 'gs-choice-correct' : ''} ${isEliminated ? 'gs-choice-eliminated' : ''} ${choiceTransition==='entering' ? 'gs-choice-enter' : ''}`}
+                      style={{
+                        backgroundColor: bg,
+                        color,
+                        border: `1.8px solid ${borderColor}`,
+                        borderRadius:'999px',
+                        minHeight:'58px',
+                        padding:'8px 10px',
+                        fontWeight:600,
+                        display:'flex',
+                        flexDirection:'column',
+                        alignItems:'center',
+                        justifyContent:'center',
+                        cursor: (isLocked || isEliminated || choiceTransition==='exiting') ? 'default' : 'pointer',
+                        opacity,
+                        transform,
+                        transition: choiceTransition==='exiting' ? 'transform 380ms cubic-bezier(0.4,0,0.2,1), opacity 280ms ease, background-color 200ms, border-color 200ms' : 'background-color 200ms, border-color 200ms, opacity 200ms, transform 200ms',
+                        boxShadow,
+                        animationDelay: animDelay,
+                        pointerEvents,
+                        lineHeight:1.15,
+                        width:'100%',
+                      }}
+                    >
+                      <span style={{fontSize:12, fontWeight:700, textAlign:'center'}}>{en}</span>
+                      {fa && <span style={{fontFamily:'IRANSans', direction:'rtl', fontSize:11, color: (isCorrect && isLocked) ? '#16a34a' : (isEliminated || (isLocked && !isCorrect)) ? '#9aa0b2' : '#6b6b7a', marginTop:2, textAlign:'center'}}>{fa}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+              {/* No Check/Next buttons for choice — direct interaction with auto-advance after correct */}
             </Block>
           ) : quizMode==='fa' ? (
             <Block textAlign="center">
@@ -444,8 +497,8 @@ export default function QuizTab(props) {
               </Block>
               {!quizFeedback ? (
                 <>
-                  <Input value={quizAnswer} onChange={(e)=> setQuizAnswer(e.target.value)} placeholder="فارسی را تایپ کنید..." onKeyDown={(e)=> { if(e.key==='Enter') submitQuiz(); }} autoFocus overrides={{ Root:{style:{marginTop:'12px', borderRadius:'12px'}}}} />
-                  <Button shape={SHAPE.pill} disabled={!quizAnswer.trim()} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>Check</Button>
+                  <Input value={quizAnswer} onChange={(e)=> setQuizAnswer(e.target.value)} placeholder="فارسی را تایپ کنید..." onKeyDown={(e)=> { if(e.key==='Enter' && !quizSubmitting) submitQuiz(); }} autoFocus overrides={{ Root:{style:{marginTop:'12px', borderRadius:'12px'}}}} />
+                  <Button shape={SHAPE.pill} disabled={!!quizSubmitting || !quizAnswer.trim()} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%', opacity: quizSubmitting ? 0.6 : 1}}}}>Check</Button>
                 </>
               ) : (
                 <>
@@ -467,14 +520,14 @@ export default function QuizTab(props) {
               </Block>
               {!quizFeedback ? (
                 <>
-                  <Input value={quizAnswer} onChange={(e)=> setQuizAnswer(e.target.value)} placeholder="Tippe das deutsche Wort..." onKeyDown={(e)=> { if(e.key==='Enter') submitQuiz(); }} autoFocus overrides={{ Root:{style:{marginTop:'12px', borderRadius:'12px'}}}} />
+                  <Input value={quizAnswer} onChange={(e)=> setQuizAnswer(e.target.value)} placeholder="Tippe das deutsche Wort..." onKeyDown={(e)=> { if(e.key==='Enter' && !quizSubmitting) submitQuiz(); }} autoFocus overrides={{ Root:{style:{marginTop:'12px', borderRadius:'12px'}}}} />
                   <Block display="flex" gridGap="6px" marginTop="8px" justifyContent="center" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
                     {['ä','ö','ü','Ä','Ö','Ü','ß'].map(ch=>(
                       <Button key={ch} size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={()=> insertUmlaut(ch)}>{ch}</Button>
                     ))}
                     <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setQuizAnswer('')}>Clear</Button>
                   </Block>
-                  <Button shape={SHAPE.pill} disabled={!quizAnswer.trim()} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>Check</Button>
+                  <Button shape={SHAPE.pill} disabled={!!quizSubmitting || !quizAnswer.trim()} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%', opacity: quizSubmitting ? 0.6 : 1}}}}>Check</Button>
                 </>
               ) : (
                 <>
