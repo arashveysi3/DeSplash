@@ -104,3 +104,24 @@ export async function saveStatsOnline(stats) {
     body: JSON.stringify(stats),
   });
 }
+
+// Authoritative streak confirmation (server-validated; null when offline).
+export async function submitStreakActivity(activities) {
+  const token = getToken();
+  if (!token) return null;
+  const r = await fetch('/api/streak', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ activities }),
+  });
+  if (!r.ok) return null;
+  return await r.json();
+}
+export async function fetchStreakState({ start = null, end = null } = {}) {
+  const token = getToken();
+  if (!token) return null;
+  const qs = start && end ? `?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}` : '';
+  const r = await fetch(`/api/streak${qs}`, { headers: { Authorization: `Bearer ${token}` } });
+  if (!r.ok) return null;
+  return await r.json();
+}

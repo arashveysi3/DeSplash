@@ -1,6 +1,15 @@
 import Dexie from 'dexie';
 import wordsData from './data/words.js';
 import { ALL_MENSCHEN_WORDS } from './data/menschen.js';
+import {
+  addUtcDays,
+  applyStreakActivities,
+  buildStreakMonth,
+  isStreakDayKey,
+  normalizeStreakAttempts,
+  summarizeStreak,
+  utcDayKey,
+} from './utils/streak.js';
 
 export const db = new Dexie('GermanSplashDB');
 db.version(1).stores({
@@ -68,6 +77,23 @@ db.version(6).stores({
   // lektion, mode, correct (0/1), xp }. Progress (SRS) stays the source of
   // truth for mastery; this table only adds per-answer accuracy history.
   quizAttempts: '++id, sessionId, timestamp, book, lektion, wordId, mode',
+});
+db.version(7).stores({
+  progress: 'id, level, due, ease, interval, reps, lapses, book, lektion',
+  stats: 'id',
+  words: 'id, level, german, english, isCustom, book, lektion',
+  quizAttempts: '++id, sessionId, timestamp, book, lektion, wordId, mode',
+  // Streak system (normalized event/history design):
+  // - streakDays: one row per credited UTC day (primary key `date` enforces
+  //   one streak day per calendar day). status: 'completed' | 'protected'.
+  // - streakRewards: one row per claimed milestone (`milestone-<N>` primary
+  //   key makes reward grants idempotent).
+  // - streakFreezeLedger: audit log of freeze earn/consume/refund events
+  //   (`&ref` unique). Balance is DERIVED (earned from rewards minus
+  //   protected-day count), never stored, so merges stay consistent.
+  streakDays: 'date, status, updatedAt',
+  streakRewards: 'id, milestone, createdAt',
+  streakFreezeLedger: '++id, &ref, type, createdAt',
 });
 
 export const COMPETITORS = [
@@ -558,4 +584,310 @@ export async function resetOnlineBoard(adminToken) {
     if (!r.ok) throw new Error('reset failed ' + r.status);
     return await r.json();
   } catch (e) { console.warn('[leaderboard] RESET failed', e); return null; }
+}
+
+// ================= Streak system persistence =================
+// The streak domain engine (src/utils/streak.js) computes state transitions;
+// these helpers persist them in Dexie with unique constraints + transactions
+// so retries/refreshes/concurrent requests cannot duplicate days or rewards.
+//
+// - streakDays (PK `date`): exactly one row per credited UTC day.
+// - streakRewards (PK `milestone-<N>`): exactly one row per claimed milestone.
+// - streakFreezeLedger (`&ref` unique): audit log of freeze earn/consume/refund.
+// - Freeze balance is DERIVED: sum(reward freezes) - protected-day count.
+
+const STREAK_LEGACY_SEED_CAP = 365;
+
+function serializeStreakDay(d) {
+  return {
+    date: d.date,
+    status: d.status,
+    sessions: d.sessions || {},
+    sources: d.sources || {},
+    attempts: d.attempts || 0,
+    xp: d.xp || 0,
+    firstAt: d.firstAt ?? null,
+    lastAt: d.lastAt ?? null,
+    updatedAt: d.updatedAt ?? null,
+  };
+}
+
+function deriveFreezeCounts(days, rewards) {
+  const earned = (rewards || []).reduce((a, r) => a + (Number(r.freezes) || 0), 0);
+  const consumed = (days || []).filter((d) => d.status === 'protected').length;
+  return { earned, consumed };
+}
+
+function latestCompletedDate(days, fallback) {
+  const dates = (days || []).filter((d) => d.status === 'completed').map((d) => d.date).sort();
+  const latest = dates.length ? dates[dates.length - 1] : null;
+  if (latest && (!fallback || latest > fallback)) return latest;
+  return fallback || latest;
+}
+
+/**
+ * One-time continuity migration: the legacy system stored only
+ * { streak, lastStudyDate }, which implies a consecutive run ending at
+ * lastStudyDate. Seed those implied days (marked source 'legacy') so
+ * existing users keep their streak. No history is fabricated beyond that
+ * implied trailing run, and seeding is capped.
+ */
+export async function ensureStreakBaseline(now = Date.now()) {
+  try {
+    if (await db.streakDays.count() > 0) return false;
+    const stats = await getStats();
+    const last = stats?.lastStudyDate;
+    const streak = Math.floor(stats?.streak || 0);
+    if (!isStreakDayKey(last) || streak <= 0) return false;
+    if (last > utcDayKey(now)) return false;
+    const length = Math.min(streak, STREAK_LEGACY_SEED_CAP);
+    const start = addUtcDays(last, -(length - 1));
+    const rows = [];
+    for (let i = 0; i < length; i += 1) {
+      const date = addUtcDays(start, i);
+      const at = Date.parse(`${date}T12:00:00Z`);
+      rows.push({
+        date, status: 'completed', sessions: {}, sources: { legacy: 1 },
+        attempts: 0, xp: 0, firstAt: at, lastAt: at, updatedAt: now,
+      });
+    }
+    await db.streakDays.bulkPut(rows);
+    return true;
+  } catch (err) {
+    console.warn('[streak] baseline migration failed', err);
+    return false;
+  }
+}
+
+/**
+ * Common completion funnel for streak credit. Call with persisted learning
+ * attempts (packs, quizzes, games all converge here). Persists the attempts
+ * and folds them into streak days transactionally; returns the confirmed
+ * persisted result (stats + events) or { ok: false } — never throws into
+ * learning flows.
+ */
+export async function recordLearningActivity(entries, opts = {}) {
+  const now = opts.now || Date.now();
+  let valid = [];
+  try {
+    valid = normalizeStreakAttempts(entries, now);
+  } catch {
+    return { ok: false, reason: 'invalid-activity' };
+  }
+  if (valid.length === 0) return { ok: false, reason: 'no-qualifying-activity' };
+  const today = utcDayKey(now);
+  try {
+    const applied = await db.transaction('rw', db.quizAttempts, db.streakDays, db.streakRewards, db.streakFreezeLedger, db.stats, async () => {
+      await db.quizAttempts.bulkAdd(valid.map((a) => ({
+        sessionId: a.sessionId,
+        timestamp: a.timestamp,
+        wordId: a.wordId,
+        book: a.book,
+        lektion: a.lektion,
+        mode: a.mode,
+        correct: a.correct ? 1 : 0,
+        xp: a.xp,
+      })));
+      await ensureStreakBaseline(now);
+      const days = await db.streakDays.toArray();
+      const rewards = await db.streakRewards.toArray();
+      const { earned, consumed } = deriveFreezeCounts(days, rewards);
+      const result = applyStreakActivities({
+        days,
+        claimedMilestones: rewards.map((r) => r.id),
+        earnedFreezes: earned,
+        consumedFreezes: consumed,
+        activities: valid,
+        today,
+        now,
+      });
+      for (const d of result.days) await db.streakDays.put(serializeStreakDay(d));
+      for (const m of result.events.awardedMilestones) {
+        const exists = await db.streakRewards.get(m.id);
+        if (!exists) {
+          await db.streakRewards.put({ id: m.id, milestone: m.milestone, freezes: m.freezes, createdAt: now });
+          try {
+            await db.streakFreezeLedger.add({ type: 'earn', ref: `earn-${m.id}`, milestone: m.milestone, freezes: m.freezes, createdAt: now });
+          } catch {}
+        }
+      }
+      for (const date of result.events.protectedDates) {
+        try {
+          await db.streakFreezeLedger.add({ type: 'consume', ref: `protect-${date}`, date, createdAt: now });
+        } catch {}
+      }
+      for (const date of result.events.upgradedDates) {
+        await db.streakFreezeLedger.where('ref').equals(`protect-${date}`).delete();
+        try {
+          await db.streakFreezeLedger.add({ type: 'refund', ref: `refund-${date}`, date, createdAt: now });
+        } catch {}
+      }
+      const stats = await getStats();
+      await db.stats.put({
+        ...stats,
+        id: 'main',
+        streak: result.summary.current,
+        lastStudyDate: latestCompletedDate(result.days, stats.lastStudyDate),
+        longestStreak: Math.max(stats.longestStreak || 0, result.summary.longest),
+      });
+      return result;
+    });
+    const stats = await getStats();
+    return { ok: true, stats, ...applied };
+  } catch (err) {
+    console.warn('[streak] recordLearningActivity failed', err);
+    try { await recordQuizAttempts(entries); } catch {}
+    return { ok: false, reason: 'persistence-failed' };
+  }
+}
+
+/** XP-only stats update (no streak math — streaks go through recordLearningActivity). */
+export async function applyLearningXp(xpAdd = 0, reviews = 0) {
+  const xp = Math.max(0, Math.floor(Number(xpAdd) || 0));
+  const rev = Math.max(0, Math.floor(Number(reviews) || 0));
+  if (xp <= 0 && rev <= 0) return getStats();
+  const stats = await getStats();
+  const next = { ...stats, id: 'main', xp: (stats.xp || 0) + xp, totalReviews: (stats.totalReviews || 0) + rev };
+  await db.stats.put(next);
+  return next;
+}
+
+function buildFreezeHistory(days, rewards, ledger) {
+  const earns = (rewards || []).map((r) => ({
+    type: 'earn', ref: `earn-${r.id}`, milestone: r.milestone, freezes: r.freezes, createdAt: r.createdAt || 0,
+  }));
+  const consumes = (days || []).filter((d) => d.status === 'protected').map((d) => ({
+    type: 'consume', ref: `protect-${d.date}`, date: d.date, createdAt: d.updatedAt || 0,
+  }));
+  const refunds = (ledger || []).filter((l) => l.type === 'refund').map((l) => ({
+    type: 'refund', ref: l.ref, date: l.date, createdAt: l.createdAt || 0,
+  }));
+  return [...earns, ...consumes, ...refunds].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+}
+
+/** Confirmed streak state: summary over full history + days + rewards + freeze history. */
+export async function getStreakState({ now = Date.now(), start = null, end = null } = {}) {
+  const today = utcDayKey(now);
+  await ensureStreakBaseline(now);
+  const [days, rewards, ledger] = await Promise.all([
+    db.streakDays.toArray(),
+    db.streakRewards.toArray(),
+    db.streakFreezeLedger.toArray(),
+  ]);
+  const { earned, consumed } = deriveFreezeCounts(days, rewards);
+  const summary = summarizeStreak({ days, earnedFreezes: earned, consumedFreezes: consumed, today });
+  const sorted = [...days].sort((a, b) => (a.date < b.date ? -1 : 1));
+  const visible = start && end ? sorted.filter((d) => d.date >= start && d.date <= end) : sorted;
+  return {
+    summary,
+    days: visible,
+    rewards: [...rewards].sort((a, b) => a.milestone - b.milestone),
+    freezeHistory: buildFreezeHistory(days, rewards, ledger),
+  };
+}
+
+/** Bounded Gregorian-month calendar with synchronized Shamsi info per cell. */
+export async function getStreakCalendar({ year, month, now = Date.now() } = {}) {
+  const today = utcDayKey(now);
+  await ensureStreakBaseline(now);
+  const [days, rewards, ledger] = await Promise.all([
+    db.streakDays.toArray(),
+    db.streakRewards.toArray(),
+    db.streakFreezeLedger.toArray(),
+  ]);
+  const { earned, consumed } = deriveFreezeCounts(days, rewards);
+  const summary = summarizeStreak({ days, earnedFreezes: earned, consumedFreezes: consumed, today });
+  return {
+    summary,
+    month: buildStreakMonth({ days, today, year, month }),
+    rewards: [...rewards].sort((a, b) => a.milestone - b.milestone),
+    freezeHistory: buildFreezeHistory(days, rewards, ledger),
+  };
+}
+
+/**
+ * Union-merge server-authoritative streak days/rewards into the local store
+ * (completed wins over protected; rewards union by id). Balance stays correct
+ * because it is derived. Returns confirmed merged state plus newly arrived
+ * events for celebration feedback.
+ */
+export async function mergeServerStreak(server, opts = {}) {
+  const now = opts.now || Date.now();
+  const today = utcDayKey(now);
+  const serverDays = Array.isArray(server?.days) ? server.days : [];
+  const serverRewards = Array.isArray(server?.rewards) ? server.rewards : [];
+  const beforeDays = await db.streakDays.toArray().catch(() => []);
+  const beforeRewards = await db.streakRewards.toArray().catch(() => []);
+  const beforeClaimed = new Set(beforeRewards.map((r) => r.id));
+  const beforeProtected = new Set(beforeDays.filter((d) => d.status === 'protected').map((d) => d.date));
+  await db.transaction('rw', db.streakDays, db.streakRewards, db.streakFreezeLedger, db.stats, async () => {
+    for (const d of serverDays) {
+      if (!d || !isStreakDayKey(d.date)) continue;
+      if (d.status !== 'completed' && d.status !== 'protected') continue;
+      const local = await db.streakDays.get(d.date);
+      if (!local) {
+        await db.streakDays.put({
+          date: d.date, status: d.status, sessions: {}, sources: { sync: 1 },
+          attempts: Number(d.attempts) || 0, xp: Number(d.xp) || 0,
+          firstAt: d.firstAt ?? null, lastAt: d.lastAt ?? null, updatedAt: now,
+        });
+      } else if (local.status === 'protected' && d.status === 'completed') {
+        await db.streakDays.put({
+          ...local,
+          status: 'completed',
+          attempts: Math.max(local.attempts || 0, Number(d.attempts) || 0),
+          xp: Math.max(local.xp || 0, Number(d.xp) || 0),
+          updatedAt: now,
+        });
+        await db.streakFreezeLedger.where('ref').equals(`protect-${d.date}`).delete();
+      }
+    }
+    for (const r of serverRewards) {
+      const id = typeof r?.id === 'string' && /^milestone-\d+$/.test(r.id)
+        ? r.id
+        : (Number.isFinite(Number(r?.milestone)) ? `milestone-${r.milestone}` : null);
+      if (!id) continue;
+      const exists = await db.streakRewards.get(id);
+      if (!exists) {
+        const milestone = Number(r.milestone) || Number(id.split('-')[1]);
+        const freezes = Number(r.freezes) || 0;
+        await db.streakRewards.put({ id, milestone, freezes, createdAt: r.createdAt || now });
+        try {
+          await db.streakFreezeLedger.add({ type: 'earn', ref: `earn-${id}`, milestone, freezes, createdAt: now });
+        } catch {}
+      }
+    }
+    const days = await db.streakDays.toArray();
+    for (const d of days) {
+      if (d.status !== 'protected') continue;
+      try {
+        await db.streakFreezeLedger.add({ type: 'consume', ref: `protect-${d.date}`, date: d.date, createdAt: now });
+      } catch {}
+    }
+    const rewards = await db.streakRewards.toArray();
+    const { earned, consumed } = deriveFreezeCounts(days, rewards);
+    const summary = summarizeStreak({ days, earnedFreezes: earned, consumedFreezes: consumed, today });
+    const stats = await getStats();
+    await db.stats.put({
+      ...stats,
+      id: 'main',
+      streak: summary.current,
+      lastStudyDate: latestCompletedDate(days, stats.lastStudyDate),
+      longestStreak: Math.max(stats.longestStreak || 0, summary.longest),
+    });
+  });
+  const state = await getStreakState({ now });
+  const stats = await getStats();
+  return {
+    ...state,
+    stats,
+    events: {
+      awardedMilestones: state.rewards
+        .filter((r) => !beforeClaimed.has(r.id))
+        .map((r) => ({ milestone: r.milestone, freezes: r.freezes, id: r.id })),
+      protectedDates: state.days
+        .filter((d) => d.status === 'protected' && !beforeProtected.has(d.date))
+        .map((d) => d.date),
+    },
+  };
 }
