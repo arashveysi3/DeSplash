@@ -7,8 +7,9 @@ import { BOOKS, lektionenForBook } from '../../data/menschen.js';
 import { getBookMastery, getLektionMastery } from '../../utils/progress.js';
 import { speakGerman } from '../../utils/speak.js';
 import UberCard from '../cards/UberCard.jsx';
+import BookAnalytics from '../analytics/BookAnalytics.jsx';
 
-export default function BuecherTab({ selectedBook, setSelectedBook, selectedLektions, setSelectedLektions, bookView, setBookView, allWords, progressMap, scopeWords, setActiveKey, setQuizBook, setQuizLektions, selectedBookMeta }) {
+export default function BuecherTab({ selectedBook, setSelectedBook, selectedLektions, setSelectedLektions, bookView, setBookView, allWords, progressMap, scopeWords, setActiveKey, setQuizBook, setQuizLektions, selectedBookMeta, quizHistory, historyLoading, historyError, onReloadHistory }) {
   if (!bookView) {
     return (
       <>
@@ -88,6 +89,23 @@ export default function BuecherTab({ selectedBook, setSelectedBook, selectedLekt
             {selectedBook===book.id && selectedLektions.length>0 && <div style={{fontSize:11, opacity:0.9, fontWeight:600}}>{selectedLektions.join(', ')}</div>}
           </div>
         </Block>
+      </Block>
+      <Block marginTop="12px">
+        <BookAnalytics
+          book={book}
+          allWords={allWords}
+          progressMap={progressMap}
+          attempts={quizHistory}
+          loading={historyLoading}
+          error={historyError}
+          onRetry={onReloadHistory}
+          actions={{
+            onStudy: () => { setSelectedBook(book.id); setSelectedLektions([]); setActiveKey('1'); },
+            onQuizBook: () => { setQuizBook(book.id); setQuizLektions([]); setActiveKey('2'); },
+            onQuizLektion: (lektion) => { setQuizBook(book.id); setQuizLektions([lektion]); setActiveKey('2'); },
+            onPracticeWeak: () => setActiveKey('4'),
+          }}
+        />
       </Block>
       <Block display="grid" gridGap="10px" marginTop="12px" overrides={{Block:{style:{gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))'}}}}>
         {lektions.map(l=>{

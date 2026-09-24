@@ -59,6 +59,16 @@ db.version(5).stores({
     if (w.type === undefined) w.type = '';
   });
 });
+db.version(6).stores({
+  progress: 'id, level, due, ease, interval, reps, lapses, book, lektion',
+  stats: 'id',
+  words: 'id, level, german, english, isCustom, book, lektion',
+  // Quiz/game attempt history for learning analytics (Issue #2).
+  // One row per answered question: { sessionId, timestamp, wordId, book,
+  // lektion, mode, correct (0/1), xp }. Progress (SRS) stays the source of
+  // truth for mastery; this table only adds per-answer accuracy history.
+  quizAttempts: '++id, sessionId, timestamp, book, lektion, wordId, mode',
+});
 
 export const COMPETITORS = [
   { name: 'Lena M.', xp: 4820, avatar: 'LM' },
@@ -409,6 +419,48 @@ export async function getProgress(id) {
 }
 export async function getAllProgress() {
   return await db.progress.toArray();
+}
+
+// --- Quiz attempt history (Issue #2: quiz reports + book analytics) ---
+// Entry: { sessionId, timestamp, wordId, book, lektion, mode, correct (0/1), xp }
+export async function recordQuizAttempts(entries) {
+  if (!entries || entries.length === 0) return [];
+  const rows = entries.map((e) => ({
+    sessionId: e.sessionId || 'unknown',
+    timestamp: e.timestamp || Date.now(),
+    wordId: e.wordId,
+    book: e.book || null,
+    lektion: e.lektion || null,
+    mode: e.mode || 'quiz',
+    correct: e.correct ? 1 : 0,
+    xp: Number(e.xp) || 0,
+  }));
+  try {
+    await db.quizAttempts.bulkAdd(rows);
+  } catch (err) {
+    // Table may not exist if an old DB version is open in another tab; never break quizzes.
+    console.warn('[analytics] recordQuizAttempts failed', err);
+  }
+  return rows;
+}
+
+/** Newest-first attempt history, capped to keep payloads small. Returns plain attempts with boolean correct. */
+export async function getQuizAttempts(limit = 3000) {
+  try {
+    const rows = await db.quizAttempts.orderBy('timestamp').reverse().limit(limit).toArray();
+    return rows.map((r) => ({ ...r, correct: !!r.correct }));
+  } catch (err) {
+    console.warn('[analytics] getQuizAttempts failed', err);
+    return [];
+  }
+}
+
+export async function clearQuizHistory() {
+  try {
+    await db.quizAttempts.clear();
+  } catch (err) {
+    console.warn('[analytics] clearQuizHistory failed', err);
+  }
 }
 
 export async function getAllWords() {

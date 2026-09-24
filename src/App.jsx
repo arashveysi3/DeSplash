@@ -4,9 +4,10 @@ import { Block } from 'baseui/block';
 import { HeadingLevel } from 'baseui/heading';
 import { Notification } from 'baseui/notification';
 import { Spinner } from 'baseui/spinner';
-import { db, initDB, getStats, updateStreak, addXP, COMPETITORS, getAllWords, addCustomWord, deleteCustomWord, fetchOnlineLeaderboard, submitOnlineScore, deleteOnlineScore, resetOnlineBoard } from './db';
+import { db, initDB, getStats, updateStreak, addXP, COMPETITORS, getAllWords, addCustomWord, deleteCustomWord, fetchOnlineLeaderboard, submitOnlineScore, deleteOnlineScore, resetOnlineBoard, recordQuizAttempts, getQuizAttempts } from './db';
 import { signup, login, fetchMe, logout, fetchUsers, deleteUser, fetchProgress, saveProgress, saveProgressOne, fetchStatsOnline, saveStatsOnline } from './auth';
 import { sm2, qualityFromLabel, XP_MAP, QUIZ_XP, GAME_XP } from './srs';
+import { calcQuizReport } from './utils/analytics.js';
 import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
 import PWAUpdater from './components/PWAUpdater.jsx';
 import Header from './components/layout/Header.jsx';
@@ -251,6 +252,16 @@ export default function App() {
   const quizSubmitLockRef = useRef(false);
   const quizProcessedIdxRef = useRef(-1);
   const nextLockRef = useRef(false);
+  // === Quiz analytics (Issue #2): per-question attempts for the report + history ===
+  // quizDetailRef is the source of truth for the completion report.
+  const quizDetailRef = useRef([]);
+  const quizSessionRef = useRef(null);
+  const choiceWrongRef = useRef(0);
+  const [lastQuizReport, setLastQuizReport] = useState(null); // { report, meta }
+  const [showQuizReport, setShowQuizReport] = useState(false);
+  const [quizHistory, setQuizHistory] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(true);
+  const [historyError, setHistoryError] = useState(null);
   // Match Dash game — DE vs EN+FA (no spoiler)
   const [matchBoard, setMatchBoard] = useState([]);
   const [matchPicks, setMatchPicks] = useState([]);
@@ -415,6 +426,32 @@ export default function App() {
       setPackWords([]); setPackIdx(0); setFlipped(false);
     })();
   }, [authUser, authToken, dbReady, loadProgressForUser, loadStatsForUser]);
+
+  // === Quiz history (Issue #2): single bulk read, filtered in memory — no N+1 ===
+  const reloadHistory = useCallback(async () => {
+    setHistoryLoading(true);
+    setHistoryError(null);
+    try {
+      const rows = await getQuizAttempts(3000);
+      setQuizHistory(rows);
+    } catch {
+      setHistoryError('History unavailable — quiz reports still work for new quizzes.');
+    } finally {
+      setHistoryLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!dbReady) return;
+    reloadHistory();
+  }, [dbReady, reloadHistory]);
+
+  // Persist attempts (fire-and-forget safe) and optimistically extend in-memory history.
+  const persistAttempts = useCallback((entries) => {
+    if (!entries || entries.length === 0) return;
+    setQuizHistory((prev) => [...entries.map((e) => ({ ...e, correct: !!e.correct })), ...prev].slice(0, 3000));
+    recordQuizAttempts(entries).catch(() => {});
+  }, []);
 
   // scope words helper — multi-lektion (canonical: word belongs only to its first lesson)
   const scopeWords = useMemo(()=>{
@@ -739,6 +776,12 @@ export default function App() {
     setQuizFeedback(null);
     setQuizScore({ correct:0, total:0, xp:0 });
     setQuizStarted(true);
+    // reset analytics for this run (Issue #2)
+    quizSessionRef.current = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    quizDetailRef.current = [];
+    choiceWrongRef.current = 0;
+    setLastQuizReport(null);
+    setShowQuizReport(false);
     // reset choice-specific interaction state
     setChoiceEliminated(new Set());
     setChoiceCorrectLocked(false);
@@ -802,6 +845,9 @@ export default function App() {
       if (!correct) correct = ans.toLowerCase() === expNorm.toLowerCase() || ans.toLowerCase() === expFullNorm.toLowerCase();
       xpAdd = correct ? QUIZ_XP.dictation : 0;
     }
+    // record per-question attempt for the completion report (Issue #2)
+    const attempt = { wordId: currentQuizWord.id, book: currentQuizWord.book || null, lektion: currentQuizWord.lektion || null, correct, xp: xpAdd, mode: quizMode };
+    quizDetailRef.current = [...quizDetailRef.current, attempt];
     const q = qualityFromLabel(correct ? 'Good' : 'Again');
     const prev = progressMap[currentQuizWord.id] || { interval:0, repetition:0, ease:2.5, due:0, lapses:0 };
     const next = sm2(prev, q);
@@ -861,6 +907,29 @@ export default function App() {
     setTimeout(()=> setToast(null),1400);
   };
 
+  // Build + persist the completion report (Issue #2). quizDetailRef is source of truth.
+  const finishQuizReport = useCallback(() => {
+    const list = quizDetailRef.current;
+    const report = calcQuizReport(list);
+    const bookLabel = (BOOKS.find((b) => b.id === quizBook) || {}).label || quizBook;
+    setLastQuizReport({
+      report,
+      meta: {
+        mode: quizMode,
+        bookLabel,
+        scopeLabel: `${bookLabel} ${quizLektions.length ? quizLektions.join(', ') : 'whole book'}`,
+        timestamp: Date.now(),
+        count: quizQueue.length,
+      },
+    });
+    setShowQuizReport(true);
+    if (list.length > 0) {
+      const sessionId = quizSessionRef.current || `${Date.now()}-quiz`;
+      const ts = Date.now();
+      persistAttempts(list.map((a) => ({ ...a, sessionId, timestamp: ts, mode: a.mode || quizMode })));
+    }
+  }, [quizMode, quizBook, quizLektions, quizQueue.length, persistAttempts]);
+
   const nextQuiz = () => {
     primeAudio();
     if (nextLockRef.current) return;
@@ -870,6 +939,7 @@ export default function App() {
     quizSubmitLockRef.current = false;
     setQuizSubmitting(false);
     choiceProcessedRef.current = false;
+    choiceWrongRef.current = 0;
     if (quizIdx +1 >= quizQueue.length) {
       setQuizFeedback(null);
       setQuizStarted(false);
@@ -884,6 +954,7 @@ export default function App() {
       setToast(`Quiz done: ${quizScore.correct + (quizFeedback?.correct?1:0)}/${quizScore.total +1} • +${quizScore.xp + (quizFeedback?.xp||0)} XP`);
       setTimeout(()=> setToast(null),2000);
       quizProcessedIdxRef.current = -1;
+      finishQuizReport();
       return;
     }
     const nextIdx = quizIdx +1;
@@ -921,6 +992,7 @@ export default function App() {
     if (!isCorrect) {
       primeAudio();
       playIncorrect();
+      choiceWrongRef.current += 1;
       setChoiceEliminated(prev => { const s = new Set(prev); s.add(pickedEn); return s; });
       setToast(`Not "${pickedEn}" — try another`);
       setTimeout(()=> setToast(null), 1100);
@@ -935,6 +1007,10 @@ export default function App() {
     quizProcessedIdxRef.current = quizIdx;
     setChoiceCorrectLocked(true);
     setChoiceCorrectEn(correctEn);
+    // record one attempt per question: correct only if solved at first try (Issue #2)
+    const firstTry = choiceWrongRef.current === 0;
+    const cAttempt = { wordId: currentQuizWord.id, book: currentQuizWord.book || null, lektion: currentQuizWord.lektion || null, correct: firstTry, xp: xpAdd, mode: 'choice' };
+    quizDetailRef.current = [...quizDetailRef.current, cAttempt];
     primeAudio();
     playCorrect();
     if (xpAdd >= 8) setTimeout(()=> playXp(), 160);
@@ -1002,6 +1078,7 @@ export default function App() {
           if (doneOk) playQuizComplete(); else playGameOver();
           setToast(`Quiz done: ${finalCorrect}/${quizQueue.length} • +${finalXp} XP`);
           setTimeout(()=> setToast(null), 2200);
+          finishQuizReport();
           return;
         }
         const nextIdx = quizIdx + 1;
@@ -1015,6 +1092,7 @@ export default function App() {
         quizSubmitLockRef.current = false;
         setQuizSubmitting(false);
         choiceProcessedRef.current = false;
+        choiceWrongRef.current = 0;
         quizProcessedIdxRef.current = -1;
         const w = quizQueue[nextIdx];
         if (w) {
@@ -1163,6 +1241,7 @@ export default function App() {
   };
 
   const startSprintGame = useCallback((count=12) => {
+    quizSessionRef.current = `${Date.now()}-sprint-${Math.random().toString(36).slice(2, 6)}`;
     const basePool = quizScopeWords.length >= count ? quizScopeWords : allWords;
     const vocabFiltered = filterVocabForGames(basePool);
     let pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
@@ -1223,6 +1302,10 @@ export default function App() {
     const streak = correct ? sprintScore.streak + 1 : 0;
     const mult = Math.min(2, 1 + streak*0.15);
     const xpAdd = correct ? Math.round(GAME_XP.sprintBase * mult) : 0;
+    // record for book-level accuracy history (Issue #2); Sprint always advances so every pick counts
+    if (cur?.word) {
+      persistAttempts([{ sessionId: quizSessionRef.current || `${Date.now()}-sprint`, timestamp: Date.now(), wordId: cur.word.id, book: cur.word.book || null, lektion: cur.word.lektion || null, correct, xp: xpAdd, mode: 'sprint' }]);
+    }
     setSprintFeedback({ correct, expected: cur.correct, xp: xpAdd });
     setSprintScore(s=> ({ correct: s.correct + (correct?1:0), total: s.total+1, streak, best: Math.max(s.best, streak), xp: s.xp + xpAdd }));
     setTimeout(()=> {
@@ -1344,6 +1427,7 @@ export default function App() {
 
   // ===== NEW GAME: WortSturm — Word Rain =====
   const startRainGame = useCallback((count=12) => {
+    quizSessionRef.current = `${Date.now()}-rain-${Math.random().toString(36).slice(2, 6)}`;
     const basePool = quizScopeWords.length >= count ? quizScopeWords : allWords;
     const vocabFiltered = filterVocabForGames(basePool);
     let pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
@@ -1448,6 +1532,10 @@ export default function App() {
     const streak = correct ? rainScore.streak+1 : 0;
     const mult = Math.min(2, 1 + streak*0.12);
     const xpAdd = correct ? Math.round(6*mult) : 0;
+    // record for book-level accuracy history (Issue #2)
+    if (cur?.word) {
+      persistAttempts([{ sessionId: quizSessionRef.current || `${Date.now()}-rain`, timestamp: Date.now(), wordId: cur.word.id, book: cur.word.book || null, lektion: cur.word.lektion || null, correct, xp: xpAdd, mode: 'rain' }]);
+    }
     setRainFeedback({ correct, expected: cur.correct, xp: xpAdd });
     setRainScore(s=> ({ correct: s.correct + (correct?1:0), total: s.total+1, streak, best: Math.max(s.best, streak), xp: s.xp + xpAdd }));
     if (!correct) setRainLives(l=> l-1);
@@ -1600,6 +1688,34 @@ export default function App() {
     }
   }, [activeKey]);
 
+  // === Quiz report navigation (Issue #2): reuse tab + scope routing ===
+  const retakeQuiz = () => {
+    if (!lastQuizReport) return;
+    const count = lastQuizReport.meta?.count || quizQueue.length || 10;
+    const mode = lastQuizReport.meta?.mode || quizMode;
+    setShowQuizReport(false);
+    setLastQuizReport(null);
+    startQuiz(mode, count);
+  };
+  const practiceReportLektion = (lektion) => {
+    const w = allWords.find((x) => x.lektion === lektion);
+    const book = w?.book || quizBook;
+    setQuizBook(book);
+    setQuizLektions([lektion]);
+    setShowQuizReport(false);
+    setActiveKey('2');
+  };
+  const goWeakFromReport = () => {
+    setShowQuizReport(false);
+    setActiveKey('4');
+  };
+  const goBookFromQuiz = (bookId) => {
+    const target = bookId || quizBook;
+    setSelectedBook(target);
+    setBookView(target);
+    setActiveKey('0');
+  };
+
   if (!dbReady) return <Block display="flex" justifyContent="center" alignItems="center" height="100vh"><Spinner size={48} /></Block>;
 
   const selectedBookMeta = BOOKS.find(b=> b.id===selectedBook);
@@ -1708,7 +1824,7 @@ export default function App() {
         >
           <Tab title="📚 Bücher">
             <Block paddingTop="16px">
-              <BuecherTab selectedBook={selectedBook} setSelectedBook={setSelectedBook} selectedLektions={selectedLektions} setSelectedLektions={setSelectedLektions} bookView={bookView} setBookView={setBookView} allWords={allWords} progressMap={progressMap} scopeWords={scopeWords} setActiveKey={setActiveKey} setQuizBook={setQuizBook} setQuizLektions={setQuizLektions} selectedBookMeta={selectedBookMeta} />
+              <BuecherTab selectedBook={selectedBook} setSelectedBook={setSelectedBook} selectedLektions={selectedLektions} setSelectedLektions={setSelectedLektions} bookView={bookView} setBookView={setBookView} allWords={allWords} progressMap={progressMap} scopeWords={scopeWords} setActiveKey={setActiveKey} setQuizBook={setQuizBook} setQuizLektions={setQuizLektions} selectedBookMeta={selectedBookMeta} quizHistory={quizHistory} historyLoading={historyLoading} historyError={historyError} onReloadHistory={reloadHistory} />
             </Block>
           </Tab>
           <Tab title="Lernen">
@@ -1718,7 +1834,7 @@ export default function App() {
           </Tab>
           <Tab title="Quiz">
             <Block paddingTop="16px">
-              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} />
+              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} lastQuizReport={lastQuizReport} showQuizReport={showQuizReport} setShowQuizReport={setShowQuizReport} onRetakeQuiz={retakeQuiz} onPracticeLektion={practiceReportLektion} onPracticeWeak={goWeakFromReport} onGoToBook={goBookFromQuiz} />
             </Block>
           </Tab>
           <Tab title="Suche">

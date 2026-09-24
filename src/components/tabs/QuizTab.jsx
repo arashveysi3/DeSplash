@@ -10,6 +10,7 @@ import { QUIZ_XP, GAME_XP } from '../../srs.js';
 import { genderColor } from '../../theme';
 import { speakGerman } from '../../utils/speak';
 import UberCard from '../cards/UberCard.jsx';
+import QuizReport from '../analytics/QuizReport.jsx';
 
 export default function QuizTab(props) {
   const {
@@ -32,7 +33,26 @@ export default function QuizTab(props) {
     // rain
     rainQueue, rainIdx, rainOptions, rainTime, rainLives, rainScore, rainFeedback, rainActive, setRainActive, handleRainPick, startRainGame,
     setQuizFeedback,
+    // completion report (Issue #2)
+    lastQuizReport, showQuizReport, setShowQuizReport, onRetakeQuiz, onPracticeLektion, onPracticeWeak, onGoToBook,
   } = props;
+
+  // Quiz completion report replaces the start screen after a finished quiz.
+  if (!quizStarted && showQuizReport && lastQuizReport) {
+    return (
+      <>
+        <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
+          <LabelSmall color="#6b6b6b">Quiz report • {lastQuizReport.meta?.scopeLabel || ''}</LabelSmall>
+          <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => setShowQuizReport(false)}>New quiz</Button>
+        </Block>
+        <QuizReport
+          report={lastQuizReport.report}
+          meta={lastQuizReport.meta}
+          actions={{ onRetake: onRetakeQuiz, onNewQuiz: () => setShowQuizReport(false), onGoToBook: () => onGoToBook && onGoToBook(), onPracticeWeak, onPracticeLektion }}
+        />
+      </>
+    );
+  }
 
   if (!quizStarted) {
     return (
@@ -70,6 +90,13 @@ export default function QuizTab(props) {
             <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 20)}>Start 20</Button>
           </Block>
           <ParagraphSmall color="#9a9a9a" marginTop="8px">{quizScopeWords.length} words in {quizBookMeta?.label} {quizLektions.length? quizLektions.join(', ') : 'whole book'} • {quizScopeWords.filter(w=> weakIds.has(w.id)).length} weak • {quizScopeWords.filter(w=> w.article).length} nouns</ParagraphSmall>
+          {lastQuizReport && !showQuizReport && (
+            <Block marginTop="10px">
+              <Button size={SIZE.compact} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => setShowQuizReport(true)}>
+                📊 View last report • {lastQuizReport.report.correct}/{lastQuizReport.report.total} ({lastQuizReport.report.accuracy !== null ? `${lastQuizReport.report.accuracy}%` : '—'})
+              </Button>
+            </Block>
+          )}
         </UberCard>
         <Block display="flex" flexDirection="column" gridGap="10px" marginTop="12px">
           <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px', borderLeftWidth:'3px', borderLeftColor:'#4f46e5'}}>
