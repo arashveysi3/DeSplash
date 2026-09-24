@@ -1,18 +1,63 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Block } from 'baseui/block';
 import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
 import { BOOKS } from '../../data/menschen.js';
 import { isSoundEnabled, setSoundEnabled, primeAudio, playTap } from '../../utils/sounds.js';
 
-export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setShowAuth, setAuthMode }) {
+// Navbar hierarchy: logo | avatar/profile menu, settings menu, streak + XP.
+// Profile menu: Profile, Add card, Logout/Login. Settings menu: Sounds, Check for update.
+export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setShowAuth, setAuthMode, setActiveKey }) {
   const totalWords = BOOKS[0].total + BOOKS[1].total;
   const [soundOn, setSoundOn] = useState(() => isSoundEnabled());
+  const [openMenu, setOpenMenu] = useState(null); // 'profile' | 'settings' | null
+  const [menuPos, setMenuPos] = useState({ top: 64, right: 12 });
+  const profileBtnRef = useRef(null);
+  const settingsBtnRef = useRef(null);
   useEffect(() => {
     const h = () => setSoundOn(isSoundEnabled());
     window.addEventListener('gs:sound-toggle', h);
     return () => window.removeEventListener('gs:sound-toggle', h);
   }, []);
+  useEffect(() => {
+    if (!openMenu) return;
+    const close = (e) => {
+      if (e.target?.closest?.('.gs-menu-panel') || e.target?.closest?.('.gs-menu-btn')) return;
+      setOpenMenu(null);
+    };
+    const esc = (e) => { if (e.key === 'Escape') setOpenMenu(null); };
+    document.addEventListener('pointerdown', close);
+    document.addEventListener('keydown', esc);
+    return () => { document.removeEventListener('pointerdown', close); document.removeEventListener('keydown', esc); };
+  }, [openMenu]);
+
+  const toggleMenu = (which, ref) => {
+    if (openMenu === which) { setOpenMenu(null); return; }
+    try {
+      const r = ref.current?.getBoundingClientRect();
+      if (r) setMenuPos({ top: r.bottom + 8, right: Math.max(8, window.innerWidth - r.right) });
+    } catch {}
+    primeAudio();
+    playTap();
+    setOpenMenu(which);
+  };
+  const toggleSound = () => {
+    const next = !isSoundEnabled();
+    setSoundEnabled(next);
+    setSoundOn(next);
+    primeAudio();
+    if (next) playTap();
+    window.dispatchEvent(new CustomEvent('gs:sound-toggle'));
+  };
+  const itemStyle = {
+    display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+    minHeight: 44, padding: '10px 12px', borderRadius: 12,
+    background: 'transparent', border: 'none', cursor: 'pointer',
+    fontWeight: 700, fontSize: 13, color: '#0f0f12', textAlign: 'left',
+    fontFamily: 'inherit',
+  };
+
   return (
+    <>
     <Block
       overrides={{
         Block: {
@@ -87,59 +132,36 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
           },
         }}
       >
-        <Button
-          size={SIZE.mini}
-          kind={KIND.secondary}
-          shape={SHAPE.pill}
-          overrides={{ BaseButton: { style: { fontWeight: 700, flexShrink: 0 }, props: { className: 'gs-header-btn' } } }}
-          onClick={() => {
-            const next = !isSoundEnabled();
-            setSoundEnabled(next);
-            setSoundOn(next);
-            primeAudio();
-            if (next) playTap();
-            window.dispatchEvent(new CustomEvent('gs:sound-toggle'));
-          }}
-          title={soundOn ? 'Sound on — tap to mute' : 'Sound off — tap to enable'}
-        >
-          {soundOn ? '🔊' : '🔇'}
-        </Button>
-        <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{ BaseButton: { style: { fontWeight: 700, flexShrink: 0 }, props: { className: 'gs-header-btn' } } }} onClick={() => window.dispatchEvent(new CustomEvent('gs:check-update'))} title="Check for update">↻</Button>
-        <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{ BaseButton: { style: { flexShrink: 0 }, props: { className: 'gs-header-btn' } } }} onClick={onAdd}>
-          <span className="gs-header-add-text">＋ Add</span>
-          <span className="gs-header-add-icon" style={{ display: 'none' }}>＋</span>
-        </Button>
         {authUser ? (
-          <>
-            <Block
-              backgroundColor="#000"
-              color="#fff"
-              padding="6px 10px"
-              overrides={{
-                Block: {
-                  style: {
-                    borderRadius: '999px',
-                    fontWeight: 700,
-                    fontSize: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    flexShrink: 0,
-                    maxWidth: '120px',
-                    overflow: 'hidden',
-                  },
-                  props: { className: 'gs-header-user' },
-                },
-              }}
-            >
-              <span style={{ width: 20, height: 20, borderRadius: '999px', background: '#fff', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 10, flexShrink: 0 }}>{authUser.username.slice(0, 2).toUpperCase()}</span>
-              <span className="gs-header-username" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{authUser.username}{authUser.isAdmin ? ' ★' : ''}</span>
-            </Block>
-            <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{ BaseButton: { style: { flexShrink: 0 }, props: { className: 'gs-header-btn' } } }} onClick={onLogout}>Logout</Button>
-          </>
+          <Button
+            size={SIZE.mini}
+            kind={KIND.secondary}
+            shape={SHAPE.pill}
+            overrides={{ BaseButton: { style: { flexShrink: 0, backgroundColor: openMenu === 'profile' ? '#0f0f12' : '#000', color: '#fff', fontWeight: 700 }, props: { className: 'gs-header-btn gs-menu-btn', ref: profileBtnRef } } }}
+            onClick={() => toggleMenu('profile', profileBtnRef)}
+            title="Profile menu"
+            aria-expanded={openMenu === 'profile'}
+            aria-haspopup="menu"
+          >
+            <span style={{ width: 20, height: 20, borderRadius: '999px', background: '#fff', color: '#000', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 10, marginRight: 6, flexShrink: 0 }}>{authUser.username.slice(0, 2).toUpperCase()}</span>
+            <span className="gs-header-username" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 72 }}>{authUser.username}</span>
+            <span style={{ marginLeft: 4, fontSize: 9, opacity: 0.7 }}>▾</span>
+          </Button>
         ) : (
           <Button size={SIZE.mini} kind={KIND.primary} shape={SHAPE.pill} overrides={{ BaseButton: { style: { flexShrink: 0 }, props: { className: 'gs-header-btn' } } }} onClick={() => { setAuthMode('login'); setShowAuth(true); }}>Login</Button>
         )}
+        <Button
+          size={SIZE.mini}
+          kind={KIND.secondary}
+          shape={SHAPE.circle}
+          overrides={{ BaseButton: { style: { flexShrink: 0, fontWeight: 700 }, props: { className: 'gs-header-btn gs-menu-btn', ref: settingsBtnRef } } }}
+          onClick={() => toggleMenu('settings', settingsBtnRef)}
+          title="Settings"
+          aria-expanded={openMenu === 'settings'}
+          aria-haspopup="menu"
+        >
+          ⚙
+        </Button>
         <Block
           backgroundColor="#fff7ed"
           padding="6px 8px"
@@ -165,5 +187,52 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
         <Block backgroundColor="#000" color="#fff" padding="6px 10px" overrides={{ Block: { style: { borderRadius: '999px', fontWeight: 700, fontSize: '12px', flexShrink: 0 }, props: { className: 'gs-header-stat gs-header-xp' } } }}>{stats.xp} XP</Block>
       </Block>
     </Block>
+
+    {openMenu && (
+      <div
+        className="gs-menu-panel"
+        role="menu"
+        style={{ position: 'fixed', top: menuPos.top, right: menuPos.right, zIndex: 30 }}
+      >
+        {openMenu === 'profile' && (
+          <>
+            <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid #e9e8f0', marginBottom: 4 }}>
+              <div style={{ fontWeight: 800, fontSize: 14 }}>{authUser?.username}{authUser?.isAdmin ? ' ★' : ''}</div>
+              <div style={{ fontSize: 11, color: '#6b6b7a' }}>{authUser?.email || 'GermanSplash PRO'}</div>
+            </div>
+            <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); setActiveKey?.('6'); }}>
+              <span>👤</span> Profile
+            </button>
+            <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); onAdd?.(); }}>
+              <span>＋</span> Add card
+            </button>
+            {authUser ? (
+              <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); onLogout?.(); }}>
+                <span>🚪</span> Logout
+              </button>
+            ) : (
+              <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); if (onLogin) onLogin(); else { setAuthMode('login'); setShowAuth(true); } }}>
+                <span>🔑</span> Login
+              </button>
+            )}
+          </>
+        )}
+        {openMenu === 'settings' && (
+          <>
+            <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid #e9e8f0', marginBottom: 4 }}>
+              <div style={{ fontWeight: 800, fontSize: 14 }}>Settings</div>
+              <div style={{ fontSize: 11, color: '#6b6b7a' }}>App preferences</div>
+            </div>
+            <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={toggleSound} title={soundOn ? 'Sound on — tap to mute' : 'Sound off — tap to enable'}>
+              <span>{soundOn ? '🔊' : '🔇'}</span> Sounds {soundOn ? 'on' : 'off'}
+            </button>
+            <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); window.dispatchEvent(new CustomEvent('gs:check-update')); }} title="Check for update">
+              <span>↻</span> Check for update
+            </button>
+          </>
+        )}
+      </div>
+    )}
+    </>
   );
 }
