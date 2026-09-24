@@ -246,6 +246,27 @@ input::placeholder, textarea::placeholder {
   .gs-choice-correct { animation: none !important; }
 }
 
+/* === Navbar menus (profile + settings hierarchy) === */
+.gs-menu-panel {
+  background: #fff;
+  border: 1px solid #e9e8f0;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(15, 15, 18, 0.14), 0 2px 8px rgba(15, 15, 18, 0.06);
+  padding: 6px;
+  min-width: 220px;
+  max-width: calc(100vw - 16px);
+  animation: gs-menu-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes gs-menu-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.gs-menu-item:hover { background: #f7f7fb !important; }
+.gs-menu-item:active { background: #efeff6 !important; }
+@media (prefers-reduced-motion: reduce) {
+  .gs-menu-panel { animation: none !important; }
+}
+
 /* === Quiz reports & book analytics (Issue #2) === */
 /* stat tiles: 4 across on desktop, 2 across on phones — no horizontal overflow */
 .gs-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }

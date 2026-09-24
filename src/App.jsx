@@ -8,6 +8,7 @@ import { db, initDB, getStats, updateStreak, addXP, COMPETITORS, getAllWords, ad
 import { signup, login, fetchMe, logout, fetchUsers, deleteUser, fetchProgress, saveProgress, saveProgressOne, fetchStatsOnline, saveStatsOnline } from './auth';
 import { sm2, qualityFromLabel, XP_MAP, QUIZ_XP, GAME_XP } from './srs';
 import { calcQuizReport } from './utils/analytics.js';
+import { todayKey, dayStartOf, buildExposureIndex, partitionPool, orderFallback, takeUpTo, selectGameSet } from './utils/selection.js';
 import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
 import PWAUpdater from './components/PWAUpdater.jsx';
 import Header from './components/layout/Header.jsx';
@@ -80,38 +81,6 @@ function getVocabDisplayGerman(word) {
   return g;
 }
 
-// --- daily word exposure tracking (max 2 per day) ---
-const DAILY_LIMIT = 2;
-const DAILY_STORAGE_KEY = 'gs_daily_seen';
-function getTodayKey() { return new Date().toISOString().slice(0,10); }
-function getDailyCountsMap() {
-  try {
-    if (typeof localStorage === 'undefined') return {};
-    const raw = localStorage.getItem(DAILY_STORAGE_KEY);
-    if (!raw) return {};
-    const obj = JSON.parse(raw);
-    if (obj.date !== getTodayKey()) return {};
-    return obj.counts || {};
-  } catch { return {}; }
-}
-function incDailyWordCounts(wordIds) {
-  try {
-    if (typeof localStorage === 'undefined') return;
-    const today = getTodayKey();
-    const raw = localStorage.getItem(DAILY_STORAGE_KEY);
-    let obj = raw ? JSON.parse(raw) : null;
-    if (!obj || obj.date !== today) obj = { date: today, counts: {} };
-    for (const id of wordIds) {
-      const k = String(id);
-      obj.counts[k] = (obj.counts[k] || 0) + 1;
-    }
-    localStorage.setItem(DAILY_STORAGE_KEY, JSON.stringify(obj));
-  } catch {}
-}
-function isWordUnderDailyLimit(id, countsMap) {
-  const c = countsMap[String(id)] || 0;
-  return c < DAILY_LIMIT;
-}
 // --- distractor scoring (semantic relevance) ---
 function scoreDistractor(target, candidate) {
   let score = 0;
@@ -453,6 +422,25 @@ export default function App() {
     recordQuizAttempts(entries).catch(() => {});
   }, []);
 
+  // === Shared repetition selector (Quiz Frequency fix) ===
+  // Single exposure index over ALL recorded appearances (quiz, games, packs),
+  // aggregated once per render — no N+1, no per-candidate history scans.
+  // Day key follows the app's UTC-day convention; recomputed every render so
+  // midnight rollover is picked up without reloads.
+  const exposureDay = todayKey();
+  const exposureIndex = useMemo(
+    () => buildExposureIndex(quizHistory, dayStartOf(exposureDay)),
+    [quizHistory, exposureDay],
+  );
+  const selectionCtx = useMemo(
+    () => ({ progressMap, weakIds, exposure: exposureIndex }),
+    [progressMap, weakIds, exposureIndex],
+  );
+  // Ref mirror for timer effects: reading selectionCtx directly in the rain
+  // interval would restart the countdown on every recorded answer.
+  const selectionCtxRef = useRef(selectionCtx);
+  useEffect(() => { selectionCtxRef.current = selectionCtx; });
+
   // scope words helper — multi-lektion (canonical: word belongs only to its first lesson)
   const scopeWords = useMemo(()=>{
     const book = selectedBook;
@@ -485,11 +473,14 @@ export default function App() {
   const studyQueue = useMemo(() => {
     if (!scopeWords.length) return [];
     const today = Date.now();
+    // Shared eligibility first: strong words at their daily cap are excluded
+    // (weak/new/learning are never capped). Capped words return only as fallback.
+    const { eligible, capped } = partitionPool(scopeWords, selectionCtx);
     let newCount = 0;
-    const withScore = scopeWords.map((w) => {
+    const withScore = eligible.map(({ w, status }) => {
       const p = progressMap[w.id];
       const due = p?.due || 0;
-      const isNew = !p || p.repetition === 0;
+      const isNew = status === 'new';
       const lapses = p?.lapses || 0;
       const ease = p?.ease ?? 2.5;
       const interval = p?.interval || 0;
@@ -507,30 +498,31 @@ export default function App() {
       if (interval > 0 && interval < 7) score += (7 - interval) * 50;
       if (daysSinceReview > 14) score += 100;
       if (weakIds.has(w.id)) score += 300;
-      return { w, score, isNew, due };
+      return { w, score, isNew, status, due };
     });
     withScore.sort((a, b) => {
-      if (a.isNew && !b.isNew) return 1;
-      if (!a.isNew && b.isNew) return -1;
+      // Reinforcement order preserved (due/weak/learning by SRS score),
+      // but new/unseen now outrank familiar-strong instead of trailing last.
+      const tier = (x) => (x.isNew ? 1 : x.status === 'strong' ? 2 : 0);
+      if (tier(a) !== tier(b)) return tier(a) - tier(b);
       return b.score - a.score;
     });
     let res = withScore.map((x) => x.w);
     // Multi-Lektion: shuffle new words segment so lesson order doesn't dominate (due words keep SRS order)
     if (selectedLektions.length > 1) {
-      const isNewCheck = (w) => {
-        const p = progressMap[w.id];
-        return !p || p.repetition === 0;
-      };
-      const duePart = res.filter(w => !isNewCheck(w));
-      const newPart = res.filter(w => isNewCheck(w));
+      const newIds = new Set(withScore.filter((x) => x.isNew).map((x) => x.w.id));
+      const duePart = res.filter((w) => !newIds.has(w.id));
+      const newPart = res.filter((w) => newIds.has(w.id));
       const shuffledNew = shuffleArray(newPart);
       // also shuffle duePart lightly if it still resembles lesson order — but keep SRS priority, so only shuffle within same score bands?
       // For true cross-lesson randomness, shuffle duePart when it contains many lessons and no strong score differences
       // We keep duePart as is to respect SRS, shuffle only newPart for now
       res = [...duePart, ...shuffledNew];
     }
+    // Graceful fallback so small/capped pools never yield empty packs.
+    if (capped.length > 0) res = [...res, ...orderFallback(capped).map((e) => e.w)];
     return res;
-  }, [scopeWords, progressMap, weakIds, selectedLektions]);
+  }, [scopeWords, progressMap, weakIds, selectedLektions, selectionCtx]);
 
   // pack logic
   const sessionReviewedIds = useRef(new Set());
@@ -620,6 +612,17 @@ export default function App() {
     setIsSavingPack(true);
     const entries = Object.values(pendingProgress);
     const totalXp = packAnswers.reduce((a,b)=> a + b.xp, 0);
+    // Record flashcard exposures for the shared repetition selector (mode 'pack';
+    // excluded from quiz-accuracy aggregates, counted for daily appearances).
+    if (packAnswers.length > 0) {
+      const sessionId = `pack-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+      const ts = Date.now();
+      persistAttempts(packAnswers.filter((a) => a.word).map((a) => ({
+        sessionId, timestamp: ts, wordId: a.word.id,
+        book: a.word.book || null, lektion: a.word.lektion || null,
+        correct: a.label !== 'Again', xp: a.xp || 0, mode: 'pack',
+      })));
+    }
     try {
       if (authToken && authUser) {
         const bulk = {};
@@ -647,7 +650,7 @@ export default function App() {
       setShowPackSummary(false);
       setTimeout(()=> startNewPack(), 300);
     }
-  }, [pendingProgress, packAnswers, authToken, authUser, stats, startNewPack]);
+  }, [pendingProgress, packAnswers, authToken, authUser, stats, startNewPack, persistAttempts]);
 
   const handlePackSwipe = useCallback((dir) => {
     if (dir === 'right') handlePackRate('Good');
@@ -675,79 +678,45 @@ export default function App() {
     return { all: sorted, rank, me };
   }, [stats.xp, username, useOnline, onlineBoard]);
 
-  // quiz building scoped
+  // quiz building scoped — shared repetition selector (Quiz Frequency fix)
   const buildQuizQueue = useCallback((count = 10, mode = quizMode) => {
     let pool = quizScopeWords;
     if (!pool.length) return [];
     // For vocab games, filter out long educational sentences — keep them for SatzBau instead
     // For general quiz modes (dictation, artikel, choice, fa), we keep vocab-like only
     const vocabPool = (mode === 'satz' ? pool : filterVocabForGames(pool));
-    let effectivePool = vocabPool.length >= 4 ? vocabPool : pool;
-    // enforce daily repetition limit (max 2 per day) — prioritize words under limit
-    const dailyMap = getDailyCountsMap();
-    const underLimitPool = effectivePool.filter(w=> isWordUnderDailyLimit(w.id, dailyMap));
-    // if enough under-limit words, prefer them; otherwise keep full pool but will prioritize later
-    if (underLimitPool.length >= count) effectivePool = underLimitPool;
-    const weakInScope = effectivePool.filter(w=> weakIds.has(w.id));
-    let candidates = [...weakInScope];
-    candidates.sort((a,b)=>{
+    const basePool = vocabPool.length >= 4 ? vocabPool : pool;
+    // Shared eligibility: strong words at their daily cap drop out here
+    // (weak/new/learning are never capped). Fallback tops up small pools.
+    const { eligible, capped } = partitionPool(basePool, selectionCtx);
+    const byStatus = (s) => eligible.filter((e) => e.status === s).map((e) => e.w);
+    // Weak first — existing severity order (lapses desc, ease asc, due asc).
+    const weak = eligible.filter((e) => e.status === 'weak').map((e) => e.w);
+    weak.sort((a,b)=>{
       const pa = progressMap[a.id] || { lapses:0, ease:2.5, due:0 };
       const pb = progressMap[b.id] || { lapses:0, ease:2.5, due:0 };
       if (pb.lapses !== pa.lapses) return pb.lapses - pa.lapses;
       if (pa.ease !== pb.ease) return pa.ease - pb.ease;
       return (pa.due||Infinity) - (pb.due||Infinity);
     });
-    // stable prioritize under-limit within weak
-    candidates.sort((a,b)=> {
-      const aUnder = isWordUnderDailyLimit(a.id, dailyMap) ? 0 : 1;
-      const bUnder = isWordUnderDailyLimit(b.id, dailyMap) ? 0 : 1;
-      return aUnder - bUnder;
-    });
-    let out = [...candidates];
-    if (out.length < count) {
-      const remaining = effectivePool.filter(w => !weakIds.has(w.id));
-      // sort by difficulty then shuffle to avoid lesson/id order
-      remaining.sort((a,b)=>{
-        const pa = progressMap[a.id]; const pb = progressMap[b.id];
-        const ea = pa ? pa.ease : 2.5; const eb = pb ? pb.ease : 2.5;
-        if (ea !== eb) return ea - eb;
-        return 0;
-      });
-      // prioritize under-limit for variety before shuffle
-      const under = remaining.filter(w=> isWordUnderDailyLimit(w.id, dailyMap));
-      const over = remaining.filter(w=> !isWordUnderDailyLimit(w.id, dailyMap));
-      const shuffledUnder = shuffleArray(under);
-      const shuffledOver = shuffleArray(over);
-      const combined = [...shuffledUnder, ...shuffledOver];
-      out.push(...combined.slice(0, count - out.length));
-    }
+    // New/unseen outrank familiar; learning/strong shuffled for variety.
+    const fresh = shuffleArray(byStatus('new'));
+    const learning = shuffleArray(byStatus('learning'));
+    const strong = shuffleArray(byStatus('strong'));
+    let out = [...weak, ...fresh, ...learning, ...strong];
     if (mode === 'artikel') {
       out = out.filter(w => w.article);
       if (out.length < count) {
-        const nouns = effectivePool.filter(w => w.article && !out.includes(w));
-        // prioritize under-limit nouns
-        const nounsUnder = nouns.filter(w=> isWordUnderDailyLimit(w.id, dailyMap));
-        const nounsOver = nouns.filter(w=> !isWordUnderDailyLimit(w.id, dailyMap));
-        const shuffledNouns = [...shuffleArray(nounsUnder), ...shuffleArray(nounsOver)];
-        out.push(...shuffledNouns.slice(0, count - out.length));
+        const have = new Set(out.map((w) => w.id));
+        const rest = partitionPool(basePool.filter(w => w.article && !have.has(w.id)), selectionCtx);
+        const restWeak = rest.eligible.filter((e) => e.status === 'weak').map((e) => e.w);
+        const restOther = shuffleArray(rest.eligible.filter((e) => e.status !== 'weak').map((e) => e.w));
+        out = [...out, ...restWeak, ...restOther, ...orderFallback(rest.capped).map((e) => e.w)];
       }
     }
-    // final variety: prefer under-limit but keep some randomness
-    // sort by daily count weight then shuffle within bands
-    const outUnder = out.filter(w=> isWordUnderDailyLimit(w.id, dailyMap));
-    const outOver = out.filter(w=> !isWordUnderDailyLimit(w.id, dailyMap));
-    const shuffledOut = [...shuffleArray(outUnder), ...shuffleArray(outOver)];
-    // if we have more under-limit than needed, just take under; else mix
-    let final = shuffledOut.slice(0, count);
-    // if still not enough under-limit and we filtered initially, allow fallback to original pool's over-limit randomly to fill
-    if (final.length < count && underLimitPool.length < count) {
-      const fallbackPool = vocabPool.length >=4 ? vocabPool : pool;
-      const extra = shuffleArray(fallbackPool.filter(w=> !final.includes(w))).slice(0, count - final.length);
-      final = [...final, ...extra];
-    }
-    // Ensure cross-lesson randomness: already shuffled
-    return final.slice(0, count);
-  }, [quizScopeWords, weakIds, progressMap, quizMode]);
+    // Eligible tiers first, capped-strong fallback only when the pool is short.
+    return takeUpTo(out, orderFallback(capped), count);
+  }, [quizScopeWords, progressMap, quizMode, selectionCtx]);
 
   const buildChoiceOptions = useCallback((word, pool) => {
     const correct = { en: word.meaning_en || word.english, fa: word.meaning_fa || '', id: word.id };
@@ -765,8 +734,6 @@ export default function App() {
     if (mode === 'rain') { startRainGame(count); return; }
     const q = buildQuizQueue(count, mode);
     if (q.length===0) { setToast('No words for this scope/mode'); setTimeout(()=> setToast(null),1500); return; }
-    // track daily exposure for variety (increment counts for selected words)
-    incDailyWordCounts(q.map(w=> w.id));
     setQuizMode(mode);
     setQuizQueue(q);
     setQuizIdx(0);
@@ -1116,17 +1083,15 @@ export default function App() {
 
   // ---- Games ----
   const startMatchGame = useCallback(() => {
+    quizSessionRef.current = `${Date.now()}-match-${Math.random().toString(36).slice(2, 6)}`;
     const basePool = quizScopeWords.length >= 6 ? quizScopeWords : allWords;
     // Filter out long educational sentences for vocab Match Dash — keep vocab-like only, fallback to basePool if not enough
     const vocabFiltered = filterVocabForGames(basePool);
-    let pool = vocabFiltered.length >= 6 ? vocabFiltered : basePool;
-    const dailyMapM = getDailyCountsMap();
-    const underM = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMapM));
-    if (underM.length >=6) pool = underM;
-    // Proper shuffle (Fisher-Yates) respecting multi-lesson — picks already randomized across lessons
-    const shuffledPool = shuffleArray(pool);
-    const picks = shuffledPool.slice(0,6);
-    incDailyWordCounts(picks.map(w=> w.id));
+    const pool = vocabFiltered.length >= 6 ? vocabFiltered : basePool;
+    // Shared selector: eligible first (weak/new prioritized), capped-strong fallback.
+    const { eligible, capped } = partitionPool(pool, selectionCtx);
+    const balanced = selectGameSet(eligible, 6, shuffleArray);
+    const picks = takeUpTo(balanced, orderFallback(capped), 6);
     // Create left (DE) and right (EN+FA) tiles and shuffle each column independently
     const leftTiles = [];
     const rightTiles = [];
@@ -1151,7 +1116,7 @@ export default function App() {
     setMatchHiddenIds(new Set());
     setQuizMode('match');
     setQuizStarted(true);
-  }, [quizScopeWords, allWords]);
+  }, [quizScopeWords, allWords, selectionCtx]);
 
   const handleMatchPick = (uid) => {
     primeAudio();
@@ -1172,6 +1137,10 @@ export default function App() {
       if (isMatch) {
         // Correct: briefly show green, then fade out, then slide remaining up
         playMatchPair();
+        // Record the exposure (xp 0 — game XP is awarded once at completion).
+        if (a.word) {
+          persistAttempts([{ sessionId: quizSessionRef.current || `${Date.now()}-match`, timestamp: Date.now(), wordId: a.word.id, book: a.word.book || null, lektion: a.word.lektion || null, correct: true, xp: 0, mode: 'match' }]);
+        }
         // Mark as matched to show green border (but not yet fading)
         const withMatched = nextBoard.map(t=> (t.uid===a.uid || t.uid===b.uid) ? {...t, matched:true} : t);
         // Keep board with green for brief moment
@@ -1244,13 +1213,11 @@ export default function App() {
     quizSessionRef.current = `${Date.now()}-sprint-${Math.random().toString(36).slice(2, 6)}`;
     const basePool = quizScopeWords.length >= count ? quizScopeWords : allWords;
     const vocabFiltered = filterVocabForGames(basePool);
-    let pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
-    // apply daily limit to sprint picks for variety
-    const dailyMapS = getDailyCountsMap();
-    const underS = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMapS));
-    if (underS.length >= count) pool = underS;
-    const picks = shuffleArray(pool).slice(0, count);
-    incDailyWordCounts(picks.map(w=> w.id));
+    const pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
+    // Shared selector: eligible first (weak/new prioritized), capped-strong fallback.
+    const { eligible, capped } = partitionPool(pool, selectionCtx);
+    const balanced = selectGameSet(eligible, count, shuffleArray);
+    const picks = takeUpTo(balanced, orderFallback(capped), count);
     const queue = picks.map(w=> {
       const correct = { en: w.meaning_en || w.english, fa: w.meaning_fa || '' };
       const distractors = selectPlausibleDistractors(w, pool, 3);
@@ -1267,7 +1234,7 @@ export default function App() {
     setSprintFeedback(null);
     setQuizMode('sprint');
     setQuizStarted(true);
-  }, [quizScopeWords, allWords, quizLektions]);
+  }, [quizScopeWords, allWords, quizLektions, selectionCtx]);
 
   const sprintTimerRef = useRef(null);
   const sprintScoreRef = useRef(sprintScore);
@@ -1313,12 +1280,9 @@ export default function App() {
       if (sprintIdx +1 >= sprintQueue.length) {
         const basePool = quizScopeWords.length >=8 ? quizScopeWords : allWords;
         const vocabFilteredRefill = filterVocabForGames(basePool);
-        let pool = vocabFilteredRefill.length >= 8 ? vocabFilteredRefill : basePool;
-        const dailyMapR = getDailyCountsMap();
-        const underR = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMapR));
-        if (underR.length >= 8) pool = underR;
-        const picks = shuffleArray(pool).slice(0,8);
-        incDailyWordCounts(picks.map(w=> w.id));
+        const pool = vocabFilteredRefill.length >= 8 ? vocabFilteredRefill : basePool;
+        const { eligible: e2, capped: c2 } = partitionPool(pool, selectionCtx);
+        const picks = takeUpTo(selectGameSet(e2, 8, shuffleArray), orderFallback(c2), 8);
         const more = shuffleArray(picks).map(w=> {
           const c={ en: w.meaning_en||w.english, fa: w.meaning_fa||''};
           const distractors = selectPlausibleDistractors(w, pool, 3);
@@ -1338,6 +1302,7 @@ export default function App() {
 
   // ===== NEW GAME: SatzBau — Sentence Forge =====
   const startSatzGame = useCallback((count=8) => {
+    quizSessionRef.current = `${Date.now()}-satz-${Math.random().toString(36).slice(2, 6)}`;
     const pool = quizScopeWords.length >= 8 ? quizScopeWords : allWords;
     // Use german field for sentences — example is empty in new dataset; preserve educational sentences intact
     const withSentences = pool.filter(w=> {
@@ -1350,7 +1315,11 @@ export default function App() {
       const tokens = g.replace(/[.!?،؟]/g,'').split(' ').filter(Boolean);
       return tokens.length >= 4 && tokens.length <= 12;
     });
-    const picks = shuffleArray(effectiveWithSentences).slice(0, count);
+    // Shared selector over sentence items (word-associated; items without a
+    // word id stay eligible and are never counted as exposures).
+    const { eligible, capped } = partitionPool(effectiveWithSentences, selectionCtx);
+    const balanced = selectGameSet(eligible, count, shuffleArray);
+    const picks = takeUpTo(balanced, orderFallback(capped), count);
     if (picks.length < 4) {
       setToast('Not enough sentences in this scope — try whole book');
       setTimeout(()=> setToast(null),1800); return;
@@ -1370,7 +1339,7 @@ export default function App() {
     setSatzActive(true);
     setQuizMode('satz');
     setQuizStarted(true);
-  }, [quizScopeWords, allWords]);
+  }, [quizScopeWords, allWords, selectionCtx]);
 
   const handleSatzPick = (token, idx) => {
     primeAudio();
@@ -1395,6 +1364,10 @@ export default function App() {
     const builtStr = satzBuilt.join(' ');
     const correctStr = cur.tokens.join(' ');
     const correct = builtStr.trim() === correctStr.trim();
+    // Record every check as an appearance (xp only on solve; game XP is awarded via awardGameXP).
+    if (cur?.word) {
+      persistAttempts([{ sessionId: quizSessionRef.current || `${Date.now()}-satz`, timestamp: Date.now(), wordId: cur.word.id, book: cur.word.book || null, lektion: cur.word.lektion || null, correct, xp: 0, mode: 'satz' }]);
+    }
     if (correct) {
       const xpAdd = GAME_XP.scramblePerWord + Math.max(0, 8 - satzBuilt.length);
       const perPos = cur.tokens.map((_,i)=> true);
@@ -1430,12 +1403,11 @@ export default function App() {
     quizSessionRef.current = `${Date.now()}-rain-${Math.random().toString(36).slice(2, 6)}`;
     const basePool = quizScopeWords.length >= count ? quizScopeWords : allWords;
     const vocabFiltered = filterVocabForGames(basePool);
-    let pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
-    const dailyMapRain = getDailyCountsMap();
-    const underRain = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMapRain));
-    if (underRain.length >= count) pool = underRain;
-    const picks = shuffleArray(pool).slice(0,count);
-    incDailyWordCounts(picks.map(w=> w.id));
+    const pool = vocabFiltered.length >= count ? vocabFiltered : basePool;
+    // Shared selector: eligible first (weak/new prioritized), capped-strong fallback.
+    const { eligible, capped } = partitionPool(pool, selectionCtx);
+    const balanced = selectGameSet(eligible, count, shuffleArray);
+    const picks = takeUpTo(balanced, orderFallback(capped), count);
     const queue = shuffleArray(picks).map(w=> {
       const correct = { en: w.meaning_en || w.english, fa: w.meaning_fa || '' };
       const distractors = selectPlausibleDistractors(w, pool, 2);
@@ -1452,7 +1424,7 @@ export default function App() {
     setRainActive(true);
     setQuizMode('rain');
     setQuizStarted(true);
-  }, [quizScopeWords, allWords]);
+  }, [quizScopeWords, allWords, selectionCtx]);
 
   const rainTimerRef = useRef(null);
   const rainScoreRef = useRef(rainScore);
@@ -1495,12 +1467,9 @@ export default function App() {
               // if lives remain but queue exhausted, refill
               const basePool2 = quizScopeWords.length>=8 ? quizScopeWords : allWords;
               const vocabFiltered2 = filterVocabForGames(basePool2);
-              let pool = vocabFiltered2.length>=8 ? vocabFiltered2 : basePool2;
-              const dailyMap2 = getDailyCountsMap();
-              const under2 = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMap2));
-              if (under2.length >=6) pool = under2;
-              const picks=shuffleArray(pool).slice(0,6);
-              incDailyWordCounts(picks.map(w=> w.id));
+              const pool = vocabFiltered2.length>=8 ? vocabFiltered2 : basePool2;
+              const { eligible: e3, capped: c3 } = partitionPool(pool, selectionCtxRef.current);
+              const picks = takeUpTo(selectGameSet(e3, 6, shuffleArray), orderFallback(c3), 6);
               const more=shuffleArray(picks).map(w=> {
                 const c={en:w.meaning_en||w.english, fa:w.meaning_fa||''};
                 const distractors = selectPlausibleDistractors(w, pool, 2);
@@ -1553,12 +1522,9 @@ export default function App() {
       if (rainIdx+1 >= rainQueue.length) {
         const basePool3 = quizScopeWords.length>=8 ? quizScopeWords : allWords;
         const vocabFiltered3 = filterVocabForGames(basePool3);
-        let pool = vocabFiltered3.length>=8 ? vocabFiltered3 : basePool3;
-        const dailyMap3 = getDailyCountsMap();
-        const under3 = pool.filter(w=> isWordUnderDailyLimit(w.id, dailyMap3));
-        if (under3.length >=6) pool = under3;
-        const picks=shuffleArray(pool).slice(0,6);
-        incDailyWordCounts(picks.map(w=> w.id));
+        const pool = vocabFiltered3.length>=8 ? vocabFiltered3 : basePool3;
+        const { eligible: e4, capped: c4 } = partitionPool(pool, selectionCtx);
+        const picks = takeUpTo(selectGameSet(e4, 6, shuffleArray), orderFallback(c4), 6);
         const more=shuffleArray(picks).map(w=> {
           const c={en:w.meaning_en||w.english, fa:w.meaning_fa||''};
           const distractors = selectPlausibleDistractors(w, pool, 2);
@@ -1730,7 +1696,7 @@ export default function App() {
 
   return (
     <HeadingLevel>
-      <Header stats={stats} authUser={authUser} onAdd={()=> setShowAdd(true)} onLogout={handleLogout} setShowAuth={setShowAuth} setAuthMode={setAuthMode} />
+      <Header stats={stats} authUser={authUser} onAdd={()=> setShowAdd(true)} onLogout={handleLogout} setShowAuth={setShowAuth} setAuthMode={setAuthMode} setActiveKey={setActiveKey} />
       <PWAUpdater />
       {toast && (
         <Block overrides={{ Block: { style: { position: 'fixed', top: '70px', left: '50%', transform: 'translateX(-50%)', zIndex: 20 } } }}>

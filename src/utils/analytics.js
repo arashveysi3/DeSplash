@@ -24,6 +24,14 @@ export const UNASSIGNED_KEY = '__unassigned__';
 export const UNASSIGNED_LABEL = 'Ohne Lektion';
 
 /**
+ * Modes that feed quiz accuracy/XP aggregates. Exposure-only modes
+ * ('pack' flashcards, 'match' pairs, 'satz' puzzles) are tracked in the same
+ * history table for the shared repetition selector, but excluded here so the
+ * book report keeps its quiz-accuracy meaning.
+ */
+export const ACCURACY_MODES = new Set(['dictation', 'artikel', 'mixed', 'choice', 'fa', 'quiz', 'sprint', 'rain']);
+
+/**
  * @param {number} correct
  * @param {number} total
  * @returns {number|null} rounded 0-100 accuracy, or null when total is 0
@@ -307,7 +315,7 @@ export function calcBookAnalytics({ bookId, allWords, progressMap, attempts, isM
 
   // Newest-first cap keeps payloads small for long histories.
   const sorted = [...(attempts || [])]
-    .filter((t) => !t.book || t.book === bookId)
+    .filter((t) => (!t.book || t.book === bookId) && (!t.mode || ACCURACY_MODES.has(t.mode)))
     .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
   const capped = sorted.slice(0, Math.max(0, historyLimit));
   // book strictly matching (entries without book count only if word belongs? keep: no-book entries excluded when bookId set)
