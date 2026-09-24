@@ -4,8 +4,9 @@ import { Block } from 'baseui/block';
 import { HeadingLevel } from 'baseui/heading';
 import { Notification } from 'baseui/notification';
 import { Spinner } from 'baseui/spinner';
-import { db, initDB, getStats, updateStreak, addXP, COMPETITORS, getAllWords, addCustomWord, deleteCustomWord, fetchOnlineLeaderboard, submitOnlineScore, deleteOnlineScore, resetOnlineBoard, recordQuizAttempts, getQuizAttempts } from './db';
-import { signup, login, fetchMe, logout, fetchUsers, deleteUser, fetchProgress, saveProgress, saveProgressOne, fetchStatsOnline, saveStatsOnline } from './auth';
+import { db, initDB, getStats, COMPETITORS, getAllWords, addCustomWord, deleteCustomWord, fetchOnlineLeaderboard, submitOnlineScore, deleteOnlineScore, resetOnlineBoard, recordQuizAttempts, getQuizAttempts, recordLearningActivity, applyLearningXp, mergeServerStreak } from './db';
+import { signup, login, fetchMe, logout, fetchUsers, deleteUser, fetchProgress, saveProgress, saveProgressOne, fetchStatsOnline, saveStatsOnline, submitStreakActivity, fetchStreakState } from './auth';
+import { getMilestoneForStreak } from './utils/streak.js';
 import { sm2, qualityFromLabel, XP_MAP, QUIZ_XP, GAME_XP } from './srs';
 import { calcQuizReport } from './utils/analytics.js';
 import { todayKey, dayStartOf, buildExposureIndex, partitionPool, orderFallback, takeUpTo, selectGameSet } from './utils/selection.js';
@@ -17,6 +18,7 @@ import AuthModal from './components/modals/AuthModal.jsx';
 import BuecherTab from './components/tabs/BuecherTab.jsx';
 import LernenTab from './components/tabs/LernenTab.jsx';
 import QuizTab from './components/tabs/QuizTab.jsx';
+import StreakTab from './components/tabs/StreakTab.jsx';
 import SucheTab from './components/tabs/SucheTab.jsx';
 import WeakTab from './components/tabs/WeakTab.jsx';
 import BoardTab from './components/tabs/BoardTab.jsx';
@@ -156,6 +158,8 @@ export default function App() {
   const [transcript, setTranscript] = useState('');
   const [dbReady, setDbReady] = useState(false);
   const [toast, setToast] = useState(null);
+  const [streakRefreshKey, setStreakRefreshKey] = useState(0);
+  const [pendingCelebration, setPendingCelebration] = useState(null);
   const [allWords, setAllWords] = useState(ALL_MENSCHEN_WORDS);
   const [showAdd, setShowAdd] = useState(false);
   const [newCard, setNewCard] = useState({ german: '', english: '', englishFa: '', article: '', plural: '', level: 'Custom', book: '', lektion: '', example: '', exampleEn: '' });
@@ -329,6 +333,15 @@ export default function App() {
         const serverStats = await fetchStatsOnline();
         if (serverStats && typeof serverStats.xp === 'number') {
           setStats(serverStats);
+          // Union-merge the server-authoritative streak so cross-device and
+          // cross-session history stays consistent.
+          try {
+            const serverStreak = await fetchStreakState();
+            if (serverStreak?.ok) {
+              const merged = await mergeServerStreak(serverStreak);
+              if (merged?.stats) { setStats(merged.stats); return merged.stats; }
+            }
+          } catch {}
           return serverStats;
         } else {
           const s = await getStats();
@@ -416,11 +429,48 @@ export default function App() {
   }, [dbReady, reloadHistory]);
 
   // Persist attempts (fire-and-forget safe) and optimistically extend in-memory history.
+  // This is the single funnel for streak credit: packs, quizzes and games all
+  // converge here, and streak days are derived from these persisted attempts —
+  // opening/viewing/refreshing never reaches this layer.
+  const handleStreakEvents = useCallback((events) => {
+    if (!events) return;
+    if (events.protectedDates?.length) {
+      setToast('❄️ Freeze used — streak protected');
+      setTimeout(()=> setToast(null), 2200);
+    }
+    const latest = events.awardedMilestones?.[events.awardedMilestones.length - 1];
+    if (latest) setPendingCelebration({ ...latest, ...getMilestoneForStreak(latest.milestone) });
+  }, []);
   const persistAttempts = useCallback((entries) => {
     if (!entries || entries.length === 0) return;
     setQuizHistory((prev) => [...entries.map((e) => ({ ...e, correct: !!e.correct })), ...prev].slice(0, 3000));
-    recordQuizAttempts(entries).catch(() => {});
-  }, []);
+    recordLearningActivity(entries).then(async (result) => {
+      if (!result?.ok || !result?.stats) return;
+      if (authToken) {
+        // Server is authoritative when logged in: confirm, union-merge, render that.
+        try {
+          const server = await submitStreakActivity(entries);
+          if (server?.ok) {
+            const merged = await mergeServerStreak(server);
+            if (merged?.stats) {
+              setStats(merged.stats);
+              const mergedEvents = (merged.events?.awardedMilestones?.length || merged.events?.protectedDates?.length)
+                ? merged.events
+                : result.events;
+              handleStreakEvents(mergedEvents);
+              setStreakRefreshKey((k) => k + 1);
+              return;
+            }
+          }
+        } catch {}
+      }
+      setStats(result.stats);
+      handleStreakEvents(result.events);
+      setStreakRefreshKey((k) => k + 1);
+    }).catch(() => {
+      recordQuizAttempts(entries).catch(() => {});
+    });
+  }, [authToken, handleStreakEvents]);
 
   // === Shared repetition selector (Quiz Frequency fix) ===
   // Single exposure index over ALL recorded appearances (quiz, games, packs),
@@ -576,22 +626,9 @@ export default function App() {
     setPackAnswers(prev => [...prev, { word, label, xp, correct: label !== 'Again' }]);
     setProgressMap(m => ({ ...m, [word.id]: nextEntry }));
     if (label === 'Again') setWeakIds(s => { const n = new Set(s); n.add(word.id); return n; });
-    setStats(s => {
-      const today = new Date().toISOString().slice(0,10);
-      const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-      let newStreak = s.streak || 0;
-      let newLast = s.lastStudyDate;
-      if (s.lastStudyDate !== today) {
-        if (!s.lastStudyDate) newStreak = 1;
-        else if (s.lastStudyDate === yesterday) newStreak = (s.streak||0)+1;
-        else {
-          const diff = (new Date(today) - new Date(s.lastStudyDate))/86400000;
-          newStreak = diff===1 ? (s.streak||0)+1 : 1;
-        }
-        newLast = today;
-      }
-      return { ...s, xp: (s.xp||0)+xp, totalReviews: (s.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
-    });
+    // XP only — streak credit lands when the pack is saved (savePack persists
+    // the attempts through the shared streak funnel).
+    setStats(s => ({ ...s, xp: (s.xp||0)+xp, totalReviews: (s.totalReviews||0)+1 }));
     if (packIdx + 1 >= packWords.length) {
       setTimeout(() => playPackComplete(), 180);
       setShowPackSummary(true);
@@ -630,12 +667,18 @@ export default function App() {
         const server = await fetchProgress() || {};
         const merged = { ...server, ...bulk };
         await saveProgress(merged);
-        await saveStatsOnline(stats);
-        await submitOnlineScore(authUser.username, stats.xp);
+        // Persist pack XP against the latest row (never clobber streak fields
+        // with stale React state); streak credit came via persistAttempts above.
+        const latest = await applyLearningXp(totalXp, packAnswers.length);
+        setStats(latest);
+        await saveStatsOnline(latest);
+        await submitOnlineScore(authUser.username, latest.xp);
         const b = await fetchOnlineLeaderboard(); if (b) setOnlineBoard(b);
       } else {
         await db.progress.bulkPut(entries);
-        await db.stats.put({ id: 'main', ...stats });
+        const latest = await applyLearningXp(totalXp, packAnswers.length);
+        setStats(latest);
+        await db.stats.put({ id: 'main', ...latest });
       }
       setToast(`Pack saved +${totalXp} XP ✓`);
       if (totalXp > 0) playQuizComplete(); else playTap();
@@ -650,7 +693,7 @@ export default function App() {
       setShowPackSummary(false);
       setTimeout(()=> startNewPack(), 300);
     }
-  }, [pendingProgress, packAnswers, authToken, authUser, stats, startNewPack, persistAttempts]);
+  }, [pendingProgress, packAnswers, authToken, authUser, startNewPack, persistAttempts]);
 
   const handlePackSwipe = useCallback((dir) => {
     if (dir === 'right') handlePackRate('Good');
@@ -827,44 +870,23 @@ export default function App() {
     }
     if (!correct) setWeakIds(s=> { const n=new Set(s); n.add(currentQuizWord.id); return n; });
     if (xpAdd>0) {
+      // XP only — streak credit lands when the quiz completion report persists
+      // (finishQuizReport funnels through the shared streak layer).
+      const latest = await applyLearningXp(xpAdd, 1);
+      setStats(latest);
       if (authToken && authUser) {
-        const today = new Date().toISOString().slice(0,10);
-        const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-        let newStreak = stats.streak || 0;
-        let newLast = stats.lastStudyDate;
-        if (stats.lastStudyDate !== today) {
-          if (!stats.lastStudyDate) newStreak = 1;
-          else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
-          else {
-            const diff = (new Date(today) - new Date(stats.lastStudyDate))/86400000;
-            newStreak = diff===1 ? (stats.streak||0)+1 : 1;
-          }
-          newLast = today;
-        }
-        const newStats = { ...stats, xp: (stats.xp||0)+xpAdd, totalReviews: (stats.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
-        setStats(newStats);
-        try { await saveStatsOnline(newStats); } catch {}
-        if (useOnline) submitOnlineScore(authUser.username, newStats.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
+        try { await saveStatsOnline(latest); } catch {}
+        if (useOnline) submitOnlineScore(authUser.username, latest.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
       } else {
-        await addXP(xpAdd); await updateStreak();
-        const s=await getStats(); setStats(s);
-        if (useOnline && username) submitOnlineScore(username, s.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
+        if (useOnline && username) submitOnlineScore(username, latest.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
       }
     } else {
-      // still count as review for streak even if wrong
+      // Wrong answers still count as a review; the streak day is credited when
+      // the quiz completion report persists (finishQuizReport).
+      const latest = await applyLearningXp(0, 1);
+      setStats(latest);
       if (authToken && authUser) {
-        const today = new Date().toISOString().slice(0,10);
-        if (stats.lastStudyDate !== today) {
-          const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-          let newStreak = stats.streak || 0;
-          let newLast = stats.lastStudyDate;
-          if (!stats.lastStudyDate) newStreak = 1;
-          else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
-          else { const diff=(new Date(today)-new Date(stats.lastStudyDate))/86400000; newStreak = diff===1 ? (stats.streak||0)+1 : 1; }
-          newLast = today;
-          const newStats = { ...stats, totalReviews:(stats.totalReviews||0)+1, streak:newStreak, lastStudyDate:newLast };
-          setStats(newStats); try{ await saveStatsOnline(newStats);}catch{}
-        }
+        try { await saveStatsOnline(latest); } catch {}
       }
     }
     setQuizScore(sc=> ({ correct: sc.correct + (correct?1:0), total: sc.total+1, xp: sc.xp + xpAdd }));
@@ -993,25 +1015,14 @@ export default function App() {
       setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, ...next }}));
     }
     if (xpAdd > 0) {
+      // XP only — streak credit lands with the quiz completion report.
+      const latest = await applyLearningXp(xpAdd, 1);
+      setStats(latest);
       if (authToken && authUser) {
-        const today = new Date().toISOString().slice(0,10);
-        const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-        let newStreak = stats.streak || 0;
-        let newLast = stats.lastStudyDate;
-        if (stats.lastStudyDate !== today) {
-          if (!stats.lastStudyDate) newStreak = 1;
-          else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
-          else { const diff=(new Date(today)-new Date(stats.lastStudyDate))/86400000; newStreak = diff===1 ? (stats.streak||0)+1 : 1; }
-          newLast = today;
-        }
-        const newStats = { ...stats, xp: (stats.xp||0)+xpAdd, totalReviews: (stats.totalReviews||0)+1, streak: newStreak, lastStudyDate: newLast };
-        setStats(newStats);
-        try { await saveStatsOnline(newStats); } catch {}
-        if (useOnline) submitOnlineScore(authUser.username, newStats.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
+        try { await saveStatsOnline(latest); } catch {}
+        if (useOnline) submitOnlineScore(authUser.username, latest.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
       } else {
-        await addXP(xpAdd); await updateStreak();
-        const s=await getStats(); setStats(s);
-        if (useOnline && username) submitOnlineScore(username, s.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
+        if (useOnline && username) submitOnlineScore(username, latest.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
       }
     }
     setQuizScore(sc=> ({ correct: sc.correct+1, total: sc.total+1, xp: sc.xp + xpAdd }));
@@ -1186,24 +1197,16 @@ export default function App() {
 
   const awardGameXP = async (xpAdd, reviews=1) => {
     if (xpAdd<=0) return;
+    // XP only — game streak credit already landed via the per-action attempt
+    // persists (match/sprint/satz/rain all funnel through persistAttempts).
+    // This also fixes the old anon path, which never advanced the streak.
+    const latest = await applyLearningXp(xpAdd, reviews);
+    setStats(latest);
     if (authToken && authUser) {
-      const today = new Date().toISOString().slice(0,10);
-      const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-      let newStreak = stats.streak || 0;
-      let newLast = stats.lastStudyDate;
-      if (stats.lastStudyDate !== today) {
-        if (!stats.lastStudyDate) newStreak = 1;
-        else if (stats.lastStudyDate === yesterday) newStreak = (stats.streak||0)+1;
-        else { const diff=(new Date(today)-new Date(stats.lastStudyDate))/86400000; newStreak = diff===1 ? (stats.streak||0)+1 : 1; }
-        newLast = today;
-      }
-      const newStats = {...stats, xp:(stats.xp||0)+xpAdd, totalReviews:(stats.totalReviews||0)+reviews, streak:newStreak, lastStudyDate:newLast};
-      setStats(newStats); try{ await saveStatsOnline(newStats);}catch{};
-      if (useOnline) submitOnlineScore(authUser.username, newStats.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
+      try { await saveStatsOnline(latest); } catch {};
+      if (useOnline) submitOnlineScore(authUser.username, latest.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
     } else {
-      await db.stats.put({id:'main', xp:(stats.xp||0)+xpAdd, streak: stats.streak, lastStudyDate: stats.lastStudyDate, totalReviews:(stats.totalReviews||0)+reviews});
-      const s=await getStats(); setStats(s);
-      if (useOnline && username) submitOnlineScore(username, s.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
+      if (useOnline && username) submitOnlineScore(username, latest.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
     }
     setToast(`+${xpAdd} XP 🎮`);
     setTimeout(()=> setToast(null),1800);
@@ -1619,6 +1622,13 @@ export default function App() {
           await saveStatsOnline(stats);
           await submitOnlineScore(res.user.username, stats.xp);
         }
+        try {
+          const serverStreak = await fetchStreakState();
+          if (serverStreak?.ok) {
+            const merged = await mergeServerStreak(serverStreak);
+            if (merged?.stats) setStats(merged.stats);
+          }
+        } catch {}
         const serverProg = await fetchProgress();
         if (!serverProg || Object.keys(serverProg).length===0) {
           if (Object.keys(progressMap).length>0) await saveProgress(progressMap);
@@ -1802,6 +1812,9 @@ export default function App() {
             <Block paddingTop="16px">
               <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} lastQuizReport={lastQuizReport} showQuizReport={showQuizReport} setShowQuizReport={setShowQuizReport} onRetakeQuiz={retakeQuiz} onPracticeLektion={practiceReportLektion} onPracticeWeak={goWeakFromReport} onGoToBook={goBookFromQuiz} />
             </Block>
+          </Tab>
+          <Tab title="🔥 Streak">
+            <StreakTab authToken={authToken} refreshKey={streakRefreshKey} pendingCelebration={pendingCelebration} onCelebrationSeen={() => setPendingCelebration(null)} />
           </Tab>
           <Tab title="Suche">
             <SucheTab search={search} setSearch={setSearch} setSelectedBook={setSelectedBook} selectedBook={selectedBook} filteredWordsForSearch={filteredWordsForSearch} handleDeleteCustom={handleDeleteCustom} />

@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken'
 import fs from 'fs'
 import path from 'path'
 import { execSync } from 'child_process'
+import { applyStreakActivities, isStreakDayKey, normalizeStreakAttempts, summarizeStreak, utcDayKey } from './src/utils/streak.js'
 
 // Auto-generate changelog.json from git commits for PWA updater
 function changelogPlugin() {
@@ -361,6 +362,84 @@ function devApiPlugin() {
               res.setHeader('Content-Type','application/json'); res.statusCode=200; return res.end(JSON.stringify({ok:true}));
             }
           } catch (e) { res.statusCode=401; return res.end(JSON.stringify({error:'invalid token'})); }
+          res.statusCode=405; return res.end(JSON.stringify({error:'Method not allowed'}));
+        }
+
+        // /api/streak (authoritative streak, mirrors api/streak.js)
+        if (path === '/api/streak') {
+          if (!redis) { res.statusCode=500; return res.end(JSON.stringify({error:'Redis not configured'})); }
+          const sAuth = req.headers.authorization || '';
+          const sToken = sAuth.startsWith('Bearer ') ? sAuth.slice(7) : urlObj.searchParams.get('token');
+          if (!sToken) { res.statusCode=401; return res.end(JSON.stringify({error:'no token'})); }
+          let sPayload;
+          try { sPayload = jwt.verify(sToken, JWT_SECRET); } catch { res.statusCode=401; return res.end(JSON.stringify({error:'invalid token'})); }
+          const sUser = sPayload.username.toLowerCase();
+          const sNow = Date.now();
+          const sToday = utcDayKey(sNow);
+          const dKey = `streak:${sUser}:days`, rKey = `streak:${sUser}:rewards`, sessKey = `streak:${sUser}:sessions`;
+          const parseStreakJson = (v) => { if (v == null) return null; if (typeof v === 'object') return v; try { return JSON.parse(v); } catch { return null; } };
+          const loadDays = async () => {
+            const raw = await redis.hgetall(dKey); const days = [];
+            if (raw && typeof raw === 'object') for (const [date, value] of Object.entries(raw)) {
+              if (!isStreakDayKey(date)) continue;
+              const d = parseStreakJson(value);
+              if (!d || (d.status !== 'completed' && d.status !== 'protected')) continue;
+              days.push({ date, status: d.status, sessions: {}, sources: (d.sources && typeof d.sources === 'object') ? d.sources : {}, attempts: Number(d.attempts) || 0, xp: Number(d.xp) || 0, firstAt: d.firstAt ?? null, lastAt: d.lastAt ?? null, updatedAt: d.updatedAt ?? null });
+            }
+            return days;
+          };
+          const loadRewards = async () => {
+            const raw = await redis.hgetall(rKey); const out = [];
+            if (raw && typeof raw === 'object') for (const [id, value] of Object.entries(raw)) {
+              if (!/^milestone-\d+$/.test(id)) continue;
+              const r = parseStreakJson(value);
+              if (!r) continue;
+              out.push({ id, milestone: Number(r.milestone) || Number(id.split('-')[1]), freezes: Number(r.freezes) || 0, createdAt: r.createdAt || 0 });
+            }
+            return out;
+          };
+          if (req.method === 'GET') {
+            const start = urlObj.searchParams.get('start'), end = urlObj.searchParams.get('end');
+            const days = await loadDays(); const rewards = await loadRewards();
+            const earned = rewards.reduce((a,r)=> a + (Number(r.freezes)||0), 0);
+            const consumed = days.filter((d)=> d.status==='protected').length;
+            const summary = summarizeStreak({ days, earnedFreezes: earned, consumedFreezes: consumed, today: sToday });
+            const visible = (start && end ? days.filter((d)=> d.date>=start && d.date<=end) : days).sort((a,b)=> (a.date<b.date?-1:1));
+            res.setHeader('Content-Type','application/json'); res.statusCode=200;
+            return res.end(JSON.stringify({ ok:true, summary, days:visible, rewards:rewards.sort((a,b)=> a.milestone-b.milestone) }));
+          }
+          if (req.method === 'POST') {
+            const body = await readBody();
+            const activities = Array.isArray(body.activities) ? body.activities.slice(0, 200) : [];
+            if (!activities.length) { res.statusCode=400; return res.end(JSON.stringify({error:'activities required'})); }
+            let valid = [];
+            try { valid = normalizeStreakAttempts(activities, sNow); } catch { res.statusCode=400; return res.end(JSON.stringify({error:'invalid activities'})); }
+            if (!valid.length) { res.statusCode=400; return res.end(JSON.stringify({error:'no qualifying activity'})); }
+            const days = await loadDays(); const rewards = await loadRewards();
+            let seen = await redis.smembers(sessKey); if (!Array.isArray(seen)) seen = [];
+            const seenSet = new Set(seen);
+            const fresh = valid.filter((a)=> !seenSet.has(a.sessionId));
+            const earned = rewards.reduce((a,r)=> a + (Number(r.freezes)||0), 0);
+            const consumed = days.filter((d)=> d.status==='protected').length;
+            const applied = applyStreakActivities({ days, claimedMilestones: rewards.map((r)=> r.id), earnedFreezes: earned, consumedFreezes: consumed, activities: fresh, today: sToday, now: sNow });
+            for (const d of applied.days) await redis.hset(dKey, { [d.date]: JSON.stringify({ status: d.status, sources: d.sources || {}, attempts: d.attempts || 0, xp: d.xp || 0, firstAt: d.firstAt ?? null, lastAt: d.lastAt ?? null, updatedAt: d.updatedAt ?? null }) });
+            for (const m of applied.events.awardedMilestones) { try { await redis.hsetnx(rKey, m.id, JSON.stringify({ milestone: m.milestone, freezes: m.freezes, createdAt: sNow })); } catch {} }
+            const newSess = [...new Set(fresh.map((a)=> a.sessionId))];
+            if (newSess.length) await redis.sadd(sessKey, newSess[0], ...newSess.slice(1));
+            try {
+              const skey = `stats:${sUser}`;
+              const rawStats = await redis.get(skey);
+              const stats = parseStreakJson(rawStats) || { xp:0, streak:0, lastStudyDate:null, totalReviews:0 };
+              const completed = applied.days.filter((d)=> d.status==='completed').map((d)=> d.date).sort();
+              const latest = completed.length ? completed[completed.length-1] : null;
+              if (latest && (!stats.lastStudyDate || latest > stats.lastStudyDate)) stats.lastStudyDate = latest;
+              stats.streak = applied.summary.current;
+              stats.longestStreak = Math.max(stats.longestStreak || 0, applied.summary.longest);
+              await redis.set(skey, JSON.stringify(stats));
+            } catch {}
+            res.setHeader('Content-Type','application/json'); res.statusCode=200;
+            return res.end(JSON.stringify({ ok:true, summary: applied.summary, days: applied.days, rewards: applied.claimedMilestones.map((id)=> { const known = rewards.find((r)=> r.id===id); const found = applied.events.awardedMilestones.find((m)=> m.id===id); return { id, milestone: known ? known.milestone : Number(id.split('-')[1]), freezes: known ? known.freezes : (found ? found.freezes : 0), createdAt: known ? known.createdAt : sNow }; }), events: applied.events }));
+          }
           res.statusCode=405; return res.end(JSON.stringify({error:'Method not allowed'}));
         }
 
