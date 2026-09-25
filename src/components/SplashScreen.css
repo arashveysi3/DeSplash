@@ -1,0 +1,223 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,700&display=swap");
+
+.loading-screen {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #171612;
+  font-family: "DM Sans", sans-serif;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 208, 80, 0.28), transparent 18rem),
+    #f5f1e8;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 650ms ease,
+    transform 750ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.loading-screen::before,
+.loading-screen::after {
+  position: absolute;
+  width: 30rem;
+  height: 30rem;
+  border: 1px solid rgba(227, 62, 51, 0.1);
+  border-radius: 50%;
+  content: "";
+}
+
+.loading-screen::before {
+  top: -20rem;
+  right: -15rem;
+}
+
+.loading-screen::after {
+  bottom: -22rem;
+  left: -14rem;
+  border-color: rgba(51, 126, 123, 0.12);
+}
+
+.loading-screen.is-leaving {
+  opacity: 0;
+  transform: translateY(-1.5rem);
+  pointer-events: none;
+}
+
+.loading-brand {
+  display: flex;
+  width: min(19rem, calc(100% - 3rem));
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.loading-symbol {
+  position: relative;
+  width: 7.5rem;
+  height: 7rem;
+  margin-bottom: 1.35rem;
+  animation: loading-symbol-in 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.loading-card {
+  position: absolute;
+  top: 0.7rem;
+  display: grid;
+  width: 3.55rem;
+  height: 4.8rem;
+  place-items: center;
+  border-radius: 0.8rem;
+  box-shadow: 0 14px 30px rgba(45, 38, 25, 0.14);
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.loading-card-back {
+  left: 1rem;
+  color: #f8f2e7;
+  background: #337e7b;
+  transform: rotate(-14deg);
+  animation: loading-card-back 2.4s ease-in-out infinite;
+}
+
+.loading-card-front {
+  right: 1rem;
+  color: #171612;
+  background: #ffd050;
+  transform: rotate(10deg);
+  animation: loading-card-front 2.4s 100ms ease-in-out infinite;
+}
+
+.loading-ripple {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: 6rem;
+  height: 6rem;
+  border: 1px solid rgba(227, 62, 51, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: loading-ripple 2.4s ease-out infinite;
+}
+
+.loading-ripple-two {
+  animation-delay: 1.2s;
+}
+
+.loading-drop {
+  position: absolute;
+  right: 0;
+  top: 0.4rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 55% 45% 60% 40%;
+  background: #e33e33;
+  animation: dot-drift 2.4s ease-in-out infinite;
+}
+
+.loading-wordmark {
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.07em;
+  animation: content-rise 600ms 180ms ease both;
+}
+
+.loading-wordmark span {
+  color: #e33e33;
+}
+
+.loading-brand p {
+  margin: 0.45rem 0 1.5rem;
+  color: #746f65;
+  font-size: 0.72rem;
+  animation: content-rise 600ms 260ms ease both;
+}
+
+.loading-track {
+  width: 8.5rem;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(23, 22, 18, 0.09);
+  animation: content-rise 600ms 320ms ease both;
+}
+
+.loading-track span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: #e33e33;
+  transform: translateX(-100%);
+  animation: loading-progress 2.25s 250ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.loading-caption {
+  position: absolute;
+  bottom: 2rem;
+  color: #908a80;
+  font-family: "Playfair Display", serif;
+  font-size: 0.74rem;
+  font-style: italic;
+  animation: content-rise 600ms 450ms ease both;
+}
+
+@keyframes loading-symbol-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.8rem) scale(0.75) rotate(-5deg);
+  }
+}
+
+@keyframes loading-card-front {
+  0%, 100% { transform: rotate(10deg) translateY(0); }
+  50% { transform: rotate(7deg) translateY(-0.4rem); }
+}
+
+@keyframes loading-card-back {
+  0%, 100% { transform: rotate(-14deg) translateY(0); }
+  50% { transform: rotate(-11deg) translateY(0.3rem); }
+}
+
+@keyframes loading-ripple {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.55); }
+  20% { opacity: 0.6; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
+}
+
+@keyframes loading-progress {
+  to { transform: translateX(0); }
+}
+
+@keyframes content-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.85rem);
+  }
+}
+
+@keyframes dot-drift {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  50% { transform: translate(0.35rem, -0.55rem) rotate(80deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-symbol,
+  .loading-card,
+  .loading-ripple,
+  .loading-drop,
+  .loading-wordmark,
+  .loading-brand p,
+  .loading-track,
+  .loading-track span,
+  .loading-caption {
+    animation: none !important;
+  }
+
+  .loading-screen {
+    transition: none;
+  }
+}

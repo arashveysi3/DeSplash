@@ -12,6 +12,7 @@ import { calcQuizReport } from './utils/analytics.js';
 import { todayKey, dayStartOf, buildExposureIndex, partitionPool, orderFallback, takeUpTo, selectGameSet } from './utils/selection.js';
 import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
 import PWAUpdater from './components/PWAUpdater.jsx';
+import SplashScreen from './components/SplashScreen.jsx';
 import Header from './components/layout/Header.jsx';
 import AddCardModal from './components/modals/AddCardModal.jsx';
 import AuthModal from './components/modals/AuthModal.jsx';
@@ -150,6 +151,7 @@ function selectPlausibleDistractors(targetWord, pool, need = 3) {
 
 export default function App() {
   const [activeKey, setActiveKey] = useState('0');
+  const [splashPhase, setSplashPhase] = useState('visible');
   const [stats, setStats] = useState({ xp: 0, streak: 0, lastStudyDate: null, totalReviews: 0 });
   const [search, setSearch] = useState('');
   const [progressMap, setProgressMap] = useState({});
@@ -175,6 +177,16 @@ export default function App() {
   const [authMode, setAuthMode] = useState('login');
   const [authForm, setAuthForm] = useState({ username: '', email: '', password: '' });
   const [usersList, setUsersList] = useState([]);
+
+  // Animated splash screen (from design zip): visible → leaving → hidden
+  useEffect(() => {
+    const leaveTimer = window.setTimeout(() => setSplashPhase('leaving'), 2400);
+    const hideTimer = window.setTimeout(() => setSplashPhase('hidden'), 3100);
+    return () => {
+      window.clearTimeout(leaveTimer);
+      window.clearTimeout(hideTimer);
+    };
+  }, []);
 
   // Book / Lektion scope — multi-select support
   const [selectedBook, setSelectedBook] = useState(() => localStorage.getItem('gs_book') || 'a1.1');
@@ -1706,6 +1718,7 @@ export default function App() {
 
   return (
     <HeadingLevel>
+      {splashPhase !== 'hidden' && <SplashScreen phase={splashPhase} />}
       <Header stats={stats} authUser={authUser} onAdd={()=> setShowAdd(true)} onLogout={handleLogout} setShowAuth={setShowAuth} setAuthMode={setAuthMode} setActiveKey={setActiveKey} />
       <PWAUpdater />
       {toast && (
