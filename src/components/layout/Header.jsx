@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Block } from 'baseui/block';
 import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
 import { BOOKS } from '../../data/menschen.js';
+import BrandMark from '../BrandMark.jsx';
 import { isSoundEnabled, setSoundEnabled, primeAudio, playTap } from '../../utils/sounds.js';
 
 // Navbar hierarchy: logo | avatar/profile menu, settings menu, streak + XP.
@@ -103,10 +104,10 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
           },
         }}
       >
-        <div className="gs-header-logo" style={{ width: 36, height: 36, background: 'linear-gradient(135deg,#0f0f12 0%,#4f46e5 55%,#06b6d4 100%)', color: '#fff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 14, boxShadow: '0 4px 12px rgba(79,70,229,0.24)', letterSpacing: '-0.5px', flexShrink: 0 }}>GS</div>
+        <div className="gs-header-logo" style={{ width: 36, height: 36, background: '#111', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(17,17,17,0.24)', padding: 5, flexShrink: 0 }}><BrandMark size={26} /></div>
         <Block overrides={{ Block: { style: { minWidth: 0, overflow: 'hidden' }, props: { className: 'gs-header-text' } } }}>
           <div className="gs-header-title" style={{ fontWeight: 900, fontSize: 16, letterSpacing: '-0.6px', lineHeight: 1, display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>📖 GermanSplash</span>
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>GermanSplash</span>
             <span className="gs-header-badge" style={{ fontSize: 10, background: 'linear-gradient(135deg,#4f46e5,#06b6d4)', color: '#fff', padding: '2px 6px', borderRadius: 999, fontWeight: 800, flexShrink: 0 }}>PRO</span>
           </div>
           <div className="gs-header-subtitle" style={{ fontSize: 11, color: '#6b6b7a', letterSpacing: '0.2px', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>MENSCHEN A1.1 + A1.2 • {totalWords} • DE ↔ EN+FA</div>

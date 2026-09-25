@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Button, KIND, SIZE, SHAPE } from 'baseui/button'
+import BrandMark from './BrandMark.jsx'
 
 export default function PWAUpdater() {
   const [needRefresh, setNeedRefresh] = useState(false)
@@ -153,10 +154,10 @@ export default function PWAUpdater() {
             }}/>
           </div>
           <div style={{
-            width:72, height:72, margin:'8px auto 14px', borderRadius:20, background:'#000', color:'#fff',
-            display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:22,
-            boxShadow:'0 10px 24px rgba(0,0,0,0.2)', animation:'gs-pulse 1.4s infinite'
-          }}>GS</div>
+            width:72, height:72, margin:'8px auto 14px', borderRadius:20, background:'#000',
+            display:'flex', alignItems:'center', justifyContent:'center',
+            boxShadow:'0 10px 24px rgba(0,0,0,0.2)', animation:'gs-pulse 1.4s infinite', padding:10
+          }}><BrandMark size={52} /></div>
           <div style={{fontWeight:800, fontSize:18, letterSpacing:'-0.5px'}}>Updating GermanSplash…</div>
           <div style={{fontSize:13, color:'#6b6b6b', marginTop:6}}>Pulling the latest words, fixes & features.<br/>Your progress stays safe — just a quick refresh.</div>
           <div style={{marginTop:18, height:8, background:'#f3f3f3', borderRadius:999, overflow:'hidden'}}>

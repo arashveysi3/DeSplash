@@ -456,7 +456,7 @@ export default defineConfig({
     devApiPlugin(),
     VitePWA({
       registerType: 'prompt',
-      includeAssets: ['favicon.svg', 'icons.svg'],
+      includeAssets: ['favicon.svg', 'icons.svg', 'desplash-app-icon.svg', 'desplash-navbar-mark.svg', 'desplash-micro-mark.svg'],
       manifest: {
         name: 'GermanSplash - Menschen Flashcards',
         short_name: 'GermanSplash',
