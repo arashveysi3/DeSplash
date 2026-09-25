@@ -3,6 +3,21 @@ import { Block } from 'baseui/block';
 import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
 import { BOOKS } from '../../data/menschen.js';
 import BrandMark from '../BrandMark.jsx';
+import {
+  Flame,
+  Zap,
+  Settings,
+  User,
+  LogIn,
+  LogOut,
+  Plus,
+  Volume2,
+  VolumeX,
+  RotateCcw,
+  ChevronDown,
+  ShieldCheck,
+  ICON_SIZES,
+} from '../icons.jsx';
 import { isSoundEnabled, setSoundEnabled, primeAudio, playTap } from '../../utils/sounds.js';
 
 // Navbar hierarchy: logo | avatar/profile menu, settings menu, streak + XP.
@@ -146,7 +161,7 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
           >
             <span style={{ width: 20, height: 20, borderRadius: '999px', background: '#fff', color: '#000', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 10, marginRight: 6, flexShrink: 0 }}>{authUser.username.slice(0, 2).toUpperCase()}</span>
             <span className="gs-header-username" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 72 }}>{authUser.username}</span>
-            <span style={{ marginLeft: 4, fontSize: 9, opacity: 0.7 }}>▾</span>
+            <ChevronDown size={12} aria-hidden="true" style={{ marginLeft: 4, opacity: 0.7 }} />
           </Button>
         ) : (
           <Button size={SIZE.mini} kind={KIND.primary} shape={SHAPE.pill} overrides={{ BaseButton: { style: { flexShrink: 0 }, props: { className: 'gs-header-btn' } } }} onClick={() => { setAuthMode('login'); setShowAuth(true); }}>Login</Button>
@@ -161,7 +176,7 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
           aria-expanded={openMenu === 'settings'}
           aria-haspopup="menu"
         >
-          ⚙
+          <Settings size={ICON_SIZES.button} aria-hidden="true" />
         </Button>
         <Block
           backgroundColor="#fff7ed"
@@ -182,10 +197,10 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
             },
           }}
         >
-          <span style={{ fontSize: 14, lineHeight: 1 }}>🔥</span>
+          <span style={{ display: 'inline-flex', lineHeight: 1 }}><Flame size={16} aria-hidden="true" style={{ color: '#f97316' }} /></span>
           <span style={{ fontWeight: 800, fontSize: 13 }}>{stats.streak}</span>
         </Block>
-        <Block backgroundColor="#000" color="#fff" padding="6px 10px" overrides={{ Block: { style: { borderRadius: '999px', fontWeight: 700, fontSize: '12px', flexShrink: 0 }, props: { className: 'gs-header-stat gs-header-xp' } } }}>{stats.xp} XP</Block>
+        <Block backgroundColor="#000" color="#fff" padding="6px 10px" overrides={{ Block: { style: { borderRadius: '999px', fontWeight: 700, fontSize: '12px', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }, props: { className: 'gs-header-stat gs-header-xp' } } }}><Zap size={14} aria-hidden="true" />{stats.xp} XP</Block>
       </Block>
     </Block>
 
@@ -198,22 +213,22 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
         {openMenu === 'profile' && (
           <>
             <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid #e9e8f0', marginBottom: 4 }}>
-              <div style={{ fontWeight: 800, fontSize: 14 }}>{authUser?.username}{authUser?.isAdmin ? ' ★' : ''}</div>
+              <div style={{ fontWeight: 800, fontSize: 14, display: 'flex', alignItems: 'center', gap: 6 }}>{authUser?.username}{authUser?.isAdmin ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 10, background: '#fef3c7', color: '#b45309', padding: '2px 6px', borderRadius: 999 }}><ShieldCheck size={12} aria-hidden="true" />ADMIN</span> : ''}</div>
               <div style={{ fontSize: 11, color: '#6b6b7a' }}>{authUser?.email || 'GermanSplash PRO'}</div>
             </div>
             <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); setActiveKey?.('6'); }}>
-              <span>👤</span> Profile
+              <User size={16} aria-hidden="true" /> Profile
             </button>
             <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); onAdd?.(); }}>
-              <span>＋</span> Add card
+              <Plus size={16} aria-hidden="true" /> Add card
             </button>
             {authUser ? (
               <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); onLogout?.(); }}>
-                <span>🚪</span> Logout
+                <LogOut size={16} aria-hidden="true" /> Logout
               </button>
             ) : (
               <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); if (onLogin) onLogin(); else { setAuthMode('login'); setShowAuth(true); } }}>
-                <span>🔑</span> Login
+                <LogIn size={16} aria-hidden="true" /> Login
               </button>
             )}
           </>
@@ -225,10 +240,10 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
               <div style={{ fontSize: 11, color: '#6b6b7a' }}>App preferences</div>
             </div>
             <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={toggleSound} title={soundOn ? 'Sound on — tap to mute' : 'Sound off — tap to enable'}>
-              <span>{soundOn ? '🔊' : '🔇'}</span> Sounds {soundOn ? 'on' : 'off'}
+              {soundOn ? <Volume2 size={16} aria-hidden="true" /> : <VolumeX size={16} aria-hidden="true" />} Sounds {soundOn ? 'on' : 'off'}
             </button>
             <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); window.dispatchEvent(new CustomEvent('gs:check-update')); }} title="Check for update">
-              <span>↻</span> Check for update
+              <RotateCcw size={16} aria-hidden="true" /> Check for update
             </button>
           </>
         )}

@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Button, KIND, SIZE, SHAPE } from 'baseui/button'
 import BrandMark from './BrandMark.jsx'
+import { Zap, CheckCircle2, BookOpen, Sparkles, RotateCcw, LoaderCircle } from './icons.jsx'
 
 export default function PWAUpdater() {
   const [needRefresh, setNeedRefresh] = useState(false)
@@ -172,7 +173,7 @@ export default function PWAUpdater() {
             <span style={{fontSize:11, color:'#9a9a9a', fontWeight:600}}>{progress < 100 ? 'Downloading…' : 'Installing…'}</span>
             <span style={{fontSize:12, fontWeight:800}}>{progress}%</span>
           </div>
-          <div style={{fontSize:11, color:'#9a9a9a', marginTop:12}}>☁️ Syncing your streak & XP to cloud before reload…</div>
+          <div style={{fontSize:11, color:'#9a9a9a', marginTop:12, display:'flex', alignItems:'center', justifyContent:'center', gap:6}}><LoaderCircle size={12} aria-hidden="true" className="gs-spin" /> Syncing your streak & XP to cloud before reload…</div>
         </div>
         <style>{`@keyframes gs-pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}} @keyframes gs-shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}`}</style>
       </div>
@@ -210,17 +211,17 @@ export default function PWAUpdater() {
                   width:56, height:56, borderRadius:16, background:'linear-gradient(135deg,#000 0%,#1a1a1a 100%)',
                   display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontWeight:800, fontSize:18, flexShrink:0,
                   boxShadow:'0 8px 18px rgba(0,0,0,0.2)'
-                }}>↻</div>
+                }}><RotateCcw size={24} aria-hidden="true" /></div>
                 <div style={{flex:1}}>
-                  <div style={{fontWeight:800, fontSize:18, letterSpacing:'-0.5px', lineHeight:1.1}}>New version available ✨</div>
+                  <div style={{fontWeight:800, fontSize:18, letterSpacing:'-0.5px', lineHeight:1.1, display:'flex', alignItems:'center', gap:8}}>New version available <Sparkles size={18} aria-hidden="true" style={{ color: '#4f46e5' }} /></div>
                   <div style={{fontSize:13, color:'#6b6b6b', marginTop:6, lineHeight:1.45}}>
                     GermanSplash just got better — fresh words, smoother cards & bug fixes.
                     Update now (takes ~3 seconds). Your XP, streak and weak words are safe.
                   </div>
                   <div style={{display:'flex', gap:6, flexWrap:'wrap', marginTop:10}}>
-                    <span style={{fontSize:11, fontWeight:700, background:'#f7f7f7', border:'1px solid #eee', padding:'4px 8px', borderRadius:999}}>⚡ Instant reload</span>
-                    <span style={{fontSize:11, fontWeight:700, background:'#f0fdf4', border:'1px solid #dcfce7', color:'#16a34a', padding:'4px 8px', borderRadius:999}}>✓ Progress kept</span>
-                    <span style={{fontSize:11, fontWeight:700, background:'#eff6ff', border:'1px solid #dbeafe', color:'#2563eb', padding:'4px 8px', borderRadius:999}}>📚 Latest Menschen data</span>
+                    <span style={{fontSize:11, fontWeight:700, background:'#f7f7f7', border:'1px solid #eee', padding:'4px 8px', borderRadius:999, display:'inline-flex', alignItems:'center', gap:4}}><Zap size={12} aria-hidden="true" /> Instant reload</span>
+                    <span style={{fontSize:11, fontWeight:700, background:'#f0fdf4', border:'1px solid #dcfce7', color:'#16a34a', padding:'4px 8px', borderRadius:999, display:'inline-flex', alignItems:'center', gap:4}}><CheckCircle2 size={12} aria-hidden="true" /> Progress kept</span>
+                    <span style={{fontSize:11, fontWeight:700, background:'#eff6ff', border:'1px solid #dbeafe', color:'#2563eb', padding:'4px 8px', borderRadius:999, display:'inline-flex', alignItems:'center', gap:4}}><BookOpen size={12} aria-hidden="true" /> Latest Menschen data</span>
                   </div>
                   {/* Changelog — English, from git commits */}
                   <div style={{marginTop:14, background:'#f9fafb', border:'1px solid #e5e7eb', borderRadius:12, overflow:'hidden'}}>

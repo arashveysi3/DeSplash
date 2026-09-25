@@ -26,6 +26,28 @@ import ProfileTab from './components/tabs/ProfileTab.jsx';
 import AdminTab from './components/tabs/AdminTab.jsx';
 import { speakGerman } from './utils/speak.js';
 import { playCorrect, playIncorrect, playPackComplete, playQuizComplete, playGameWin, playGameOver, playMatchPair, playXp, playStreak, playTap, primeAudio } from './utils/sounds.js';
+import {
+  BookOpen,
+  GraduationCap,
+  Brain,
+  Flame,
+  Search,
+  Target,
+  Trophy,
+  User,
+  ShieldCheck,
+  CheckCircle2,
+  ICON_SIZES,
+} from './components/icons.jsx';
+
+function NavLabel({ icon: Icon, label }) {
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+      <Icon size={ICON_SIZES.nav} aria-hidden="true" style={{ flexShrink: 0 }} />
+      <span>{label}</span>
+    </span>
+  );
+}
 
 // --- helpers: shuffle & vocab presentation ---
 function shuffleArray(arr) {
@@ -465,7 +487,7 @@ export default function App() {
   const handleStreakEvents = useCallback((events) => {
     if (!events) return;
     if (events.protectedDates?.length) {
-      setToast('❄️ Freeze used — streak protected');
+      setToast('Freeze used — streak protected');
       setTimeout(()=> setToast(null), 2200);
     }
     const latest = events.awardedMilestones?.[events.awardedMilestones.length - 1];
@@ -710,7 +732,7 @@ export default function App() {
         setStats(latest);
         await db.stats.put({ id: 'main', ...latest });
       }
-      setToast(`Pack saved +${totalXp} XP ✓`);
+      setToast(`Pack saved +${totalXp} XP`);
       if (totalXp > 0) playQuizComplete(); else playTap();
     } catch (e) {
       setToast('Save failed — will retry');
@@ -922,7 +944,7 @@ export default function App() {
     setQuizScore(sc=> ({ correct: sc.correct + (correct?1:0), total: sc.total+1, xp: sc.xp + xpAdd }));
     setQuizFeedback({ correct, expected: currentQuizWord.article ? `${currentQuizWord.article} ${currentQuizWord.german}` : currentQuizWord.german, expectedFa: currentQuizWord.meaning_fa, expectedEn: currentQuizWord.meaning_en || currentQuizWord.english, xp: xpAdd });
     if (correct) { playCorrect(); if (xpAdd >= 10) setTimeout(() => playXp(), 160); } else playIncorrect();
-    setToast(correct ? `+${xpAdd} XP ✓` : `was "${currentQuizWord.article ? currentQuizWord.article+' '+currentQuizWord.german : currentQuizWord.german}"`);
+    setToast(correct ? `+${xpAdd} XP` : `was "${currentQuizWord.article ? currentQuizWord.article+' '+currentQuizWord.german : currentQuizWord.german}"`);
     setTimeout(()=> setToast(null),1400);
   };
 
@@ -1058,7 +1080,7 @@ export default function App() {
     setQuizScore(sc=> ({ correct: sc.correct+1, total: sc.total+1, xp: sc.xp + xpAdd }));
     // keep quizFeedback null for choice — we use choiceCorrectLocked UI instead, but set a minimal feedback for scoring on finish
     setQuizFeedback({ correct: true, expected: currentQuizWord.german, expectedEn: correctEn, expectedFa: currentQuizWord.meaning_fa, xp: xpAdd });
-    setToast(`+${xpAdd} XP ✓`);
+    setToast(`+${xpAdd} XP`);
     setTimeout(()=> setToast(null), 1200);
     // transition to next question after visible green period
     setTimeout(()=> {
@@ -1238,7 +1260,7 @@ export default function App() {
     } else {
       if (useOnline && username) submitOnlineScore(username, latest.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
     }
-    setToast(`+${xpAdd} XP 🎮`);
+    setToast(`+${xpAdd} XP`);
     setTimeout(()=> setToast(null),1800);
   };
 
@@ -1592,7 +1614,7 @@ export default function App() {
       setAllWords(updated);
       setShowAdd(false);
       setNewCard({ german: '', english: '', englishFa: '', article: '', plural: '', level: 'Custom', book: '', lektion: '', example: '', exampleEn: '' });
-      setToast(`Added "${w.german}" ✓`);
+      setToast(`Added "${w.german}"`);
       setTimeout(()=> setToast(null),1500);
     } catch (e) {
       setToast('Failed to add');
@@ -1620,7 +1642,7 @@ export default function App() {
       localStorage.setItem('gs_token', res.token);
       setShowAuth(false);
       setAuthForm({ username: '', email: '', password: '' });
-      setToast(`Welcome ${res.user.username} ✓`);
+      setToast(`Welcome ${res.user.username}`);
       setTimeout(()=> setToast(null),1500);
       try {
         if (Object.keys(progressMap).length > 0) await saveProgress(progressMap);
@@ -1641,7 +1663,7 @@ export default function App() {
       localStorage.setItem('gs_username', res.user.username);
       setShowAuth(false);
       setAuthForm({ username: '', email: '', password: '' });
-      setToast(`Logged in as ${res.user.username} ✓`);
+      setToast(`Logged in as ${res.user.username}`);
       setTimeout(()=> setToast(null),1500);
       try {
         const serverStats = await fetchStatsOnline();
@@ -1746,7 +1768,10 @@ export default function App() {
       <PWAUpdater />
       {toast && (
         <Block overrides={{ Block: { style: { position: 'fixed', top: '70px', left: '50%', transform: 'translateX(-50%)', zIndex: 20 } } }}>
-          <Notification overrides={{ Body: { style: { backgroundColor: '#000', color: '#fff', borderRadius: '999px', paddingTop: '8px', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px', fontWeight: 700, fontSize: '13px' } } }}>{toast}</Notification>
+          <Notification overrides={{ Body: { style: { backgroundColor: '#000', color: '#fff', borderRadius: '999px', paddingTop: '8px', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px', fontWeight: 700, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' } } }}>
+            <span style={{ display: 'inline-flex', flexShrink: 0 }}><CheckCircle2 size={16} aria-hidden="true" /></span>
+            <span>{toast}</span>
+          </Notification>
         </Block>
       )}
 
@@ -1834,38 +1859,38 @@ export default function App() {
             TabBorder: { style: { display: 'none', backgroundColor: 'transparent', height: '1px' } },
           }}
         >
-          <Tab title="📚 Bücher">
+          <Tab title={<NavLabel icon={BookOpen} label="Bücher" />}>
             <Block paddingTop="16px">
               <BuecherTab selectedBook={selectedBook} setSelectedBook={setSelectedBook} selectedLektions={selectedLektions} setSelectedLektions={setSelectedLektions} bookView={bookView} setBookView={setBookView} allWords={allWords} progressMap={progressMap} scopeWords={scopeWords} setActiveKey={setActiveKey} setQuizBook={setQuizBook} setQuizLektions={setQuizLektions} selectedBookMeta={selectedBookMeta} quizHistory={quizHistory} historyLoading={historyLoading} historyError={historyError} onReloadHistory={reloadHistory} />
             </Block>
           </Tab>
-          <Tab title="Lernen">
+          <Tab title={<NavLabel icon={GraduationCap} label="Lernen" />}>
             <Block paddingTop="16px">
               <LernenTab selectedBook={selectedBook} setSelectedBook={setSelectedBook} selectedLektions={selectedLektions} setSelectedLektions={setSelectedLektions} selectedBookMeta={selectedBookMeta} scopeWords={scopeWords} weakForScope={weakForScope} studyQueue={studyQueue} packSize={packSize} setPackSize={setPackSize} packWords={packWords} packIdx={packIdx} packAnswers={packAnswers} showPackSummary={showPackSummary} flipped={flipped} setFlipped={setFlipped} listening={listening} setListening={setListening} transcript={transcript} setTranscript={setTranscript} handlePackSwipe={handlePackSwipe} handlePackRate={handlePackRate} startNewPack={startNewPack} savePack={savePack} isSavingPack={isSavingPack} progressMap={progressMap} setActiveKey={setActiveKey} onDiscard={handleDiscardPack} />
             </Block>
           </Tab>
-          <Tab title="Quiz">
+          <Tab title={<NavLabel icon={Brain} label="Quiz" />}>
             <Block paddingTop="16px">
               <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} lastQuizReport={lastQuizReport} showQuizReport={showQuizReport} setShowQuizReport={setShowQuizReport} onRetakeQuiz={retakeQuiz} onPracticeLektion={practiceReportLektion} onPracticeWeak={goWeakFromReport} onGoToBook={goBookFromQuiz} />
             </Block>
           </Tab>
-          <Tab title="🔥 Streak">
+          <Tab title={<NavLabel icon={Flame} label="Streak" />}>
             <StreakTab authToken={authToken} refreshKey={streakRefreshKey} pendingCelebration={pendingCelebration} onCelebrationSeen={() => setPendingCelebration(null)} />
           </Tab>
-          <Tab title="Suche">
+          <Tab title={<NavLabel icon={Search} label="Suche" />}>
             <SucheTab search={search} setSearch={setSearch} setSelectedBook={setSelectedBook} selectedBook={selectedBook} filteredWordsForSearch={filteredWordsForSearch} handleDeleteCustom={handleDeleteCustom} />
           </Tab>
-          <Tab title={`Weak (${weakWords.length})`}>
+          <Tab title={<NavLabel icon={Target} label={`Weak (${weakWords.length})`} />}>
             <WeakTab weakWords={weakWords} weakForScope={weakForScope} weakIds={weakIds} scopeWords={scopeWords} packSize={packSize} selectedBook={selectedBook} selectedLektions={selectedLektions} selectedBookMeta={selectedBookMeta} setPackWords={setPackWords} setPackIdx={setPackIdx} setPackAnswers={setPackAnswers} setPendingProgress={setPendingProgress} setShowPackSummary={setShowPackSummary} setFlipped={setFlipped} setActiveKey={setActiveKey} setQuizBook={setQuizBook} setQuizLektions={setQuizLektions} startQuiz={startQuiz} setToast={setToast} />
           </Tab>
-          <Tab title="Board">
+          <Tab title={<NavLabel icon={Trophy} label="Board" />}>
             <BoardTab leaderboard={leaderboard} stats={stats} username={username} setUsername={setUsername} onlineBoard={onlineBoard} onlineError={onlineError} setOnlineError={setOnlineError} useOnline={useOnline} setUseOnline={setUseOnline} adminMode={adminMode} setAdminMode={setAdminMode} adminToken={adminToken} setAdminToken={setAdminToken} setOnlineBoard={setOnlineBoard} setToast={setToast} selectedBookMeta={selectedBookMeta} />
           </Tab>
-          <Tab title="Profile">
+          <Tab title={<NavLabel icon={User} label="Profile" />}>
             <ProfileTab authUser={authUser} stats={stats} selectedBookMeta={selectedBookMeta} selectedLektions={selectedLektions} scopeWords={scopeWords} progressMap={progressMap} allWords={allWords} weakForScope={weakForScope} weakWords={weakWords} setAuthMode={setAuthMode} setShowAuth={setShowAuth} handleLogout={handleLogout} setToast={setToast} setOnlineBoard={setOnlineBoard} setUseOnline={setUseOnline} />
           </Tab>
           {authUser?.isAdmin && (
-            <Tab title="Admin">
+            <Tab title={<NavLabel icon={ShieldCheck} label="Admin" />}>
               <AdminTab authUser={authUser} usersList={usersList} loadUsersList={loadUsersList} setToast={setToast} setOnlineBoard={setOnlineBoard} setUseOnline={setUseOnline} adminToken={adminToken} />
             </Tab>
           )}

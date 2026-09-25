@@ -7,6 +7,7 @@ import { genderColor, genderBg } from '../../theme';
 import { XP_MAP } from '../../srs';
 import { speakGerman } from '../../utils/speak';
 import { playFlip } from '../../utils/sounds.js';
+import { Volume2, MessageCircle, Mic, CheckCircle2, ICON_SIZES } from '../icons.jsx';
 
 export default function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, listening, setListening, transcript, setTranscript }) {
   const [dragX, setDragX] = useState(0);
@@ -154,8 +155,8 @@ export default function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, 
             {word.plural && <div style={{ fontSize: 13, color: '#6b6b6b', marginTop: 6 }}>Plural: {word.plural}</div>}
             <ParagraphSmall color="#9a9a9a" marginTop="14px">Tap to reveal • Swipe → Known • Swipe ← Again</ParagraphSmall>
             <Block marginTop="16px" display="flex" justifyContent="center" gridGap="8px">
-              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(frontGerman); }}>🔊 Listen</Button>
-              {word.example && <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(word.example); }}>💬 Example</Button>}
+              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(frontGerman); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={ICON_SIZES.small} aria-hidden="true" /> Listen</span></Button>
+              {word.example && <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(word.example); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><MessageCircle size={ICON_SIZES.small} aria-hidden="true" /> Example</span></Button>}
             </Block>
           </Block>
         ) : (
@@ -184,12 +185,12 @@ export default function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, 
             </div>
 
             <Block display="flex" justifyContent="center" gridGap="8px" marginTop="12px">
-              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(word.example || rawGerman); }}>🔊 Sentence</Button>
-              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); startListening(); }} isLoading={listening}>🎙️ {listening ? 'Listening...' : 'Pronunciation'}</Button>
+              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(word.example || rawGerman); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={ICON_SIZES.small} aria-hidden="true" /> Sentence</span></Button>
+              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); startListening(); }} isLoading={listening}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Mic size={ICON_SIZES.small} aria-hidden="true" /> {listening ? 'Listening...' : 'Pronunciation'}</span></Button>
             </Block>
             {transcript && (
               <Block marginTop="8px" padding="8px" backgroundColor={transcript.toLowerCase().trim() === word.german.toLowerCase().trim() ? '#dcfce7' : '#fef2f2'} overrides={{ Block: { style: { borderRadius: '8px' } } }}>
-                <LabelSmall>You said: “{transcript}” — {transcript.toLowerCase().trim() === word.german.toLowerCase().trim() ? '✅ Perfect!' : `Compare: “${word.german}”`}</LabelSmall>
+                <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>You said: “{transcript}” — {transcript.toLowerCase().trim() === word.german.toLowerCase().trim() ? (<><CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> Perfect!</>) : `Compare: “${word.german}”`}</span></LabelSmall>
               </Block>
             )}
 

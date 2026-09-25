@@ -4,6 +4,9 @@ import { Input } from 'baseui/input';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { fetchOnlineLeaderboard, submitOnlineScore, deleteOnlineScore, resetOnlineBoard } from '../../db.js';
 import UberCard from '../cards/UberCard.jsx';
+import { Flame, Zap, Trophy, Medal, Check, ICON_SIZES } from '../icons.jsx';
+
+const RANK_ICON_COLORS = ['#eab308', '#9aa0b2', '#b45309'];
 
 export default function BoardTab({ leaderboard, stats, username, setUsername, onlineBoard, onlineError, setOnlineError, useOnline, setUseOnline, adminMode, setAdminMode, adminToken, setAdminToken, setOnlineBoard, setToast, selectedBookMeta }) {
   // fallback direct import if not in global
@@ -15,10 +18,13 @@ export default function BoardTab({ leaderboard, stats, username, setUsername, on
           <Block>
             <LabelSmall color="#a3a3a3" overrides={{ Block: { style: { letterSpacing: '1px', textTransform: 'uppercase' } } }}>Your rank</LabelSmall>
             <div style={{ fontSize: 28, fontWeight: 800, lineHeight: 1, color: '#fff' }}>#{leaderboard.rank} <span style={{ fontSize: 14, fontWeight: 600, opacity: 0.7 }}>/ {leaderboard.all.length}</span></div>
-            <div style={{ fontSize: 13, color: '#d4d4d4' }}>{selectedBookMeta?.label} • {stats.xp} XP • {stats.totalReviews} reviews • 🔥 {stats.streak} streak</div>
+            <div style={{ fontSize: 13, color: '#d4d4d4', display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+              <span>{selectedBookMeta?.label} • {stats.xp} XP • {stats.totalReviews} reviews •</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}><Flame size={14} aria-hidden="true" style={{ color: '#fb923c' }} /> {stats.streak} streak</span>
+            </div>
           </Block>
           <Block backgroundColor="white" color="black" padding="12px 16px" overrides={{ Block: { style: { borderRadius: '16px', textAlign: 'center' } } }}>
-            <div style={{ fontSize: 22, fontWeight: 800 }}>{stats.xp}</div>
+            <div style={{ fontSize: 22, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}><Zap size={18} aria-hidden="true" />{stats.xp}</div>
             <div style={{ fontSize: 10, letterSpacing: '1px', fontWeight: 700 }}>TOTAL XP</div>
           </Block>
         </Block>
@@ -31,14 +37,14 @@ export default function BoardTab({ leaderboard, stats, username, setUsername, on
           <Button size={SIZE.compact} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> {
             if(!username.trim()) { setOnlineError('Enter a name first'); setTimeout(()=> setOnlineError(null),1500); return; }
             const b = await submitOnlineScore(username.trim(), stats.xp);
-            if (b) { setOnlineBoard(b); setUseOnline(true); setToast('Score synced online ✓'); } else { setOnlineError('Online not configured'); }
+            if (b) { setOnlineBoard(b); setUseOnline(true); setToast('Score synced online'); } else { setOnlineError('Online not configured'); }
             setTimeout(()=> setToast(null),1500); setTimeout(()=> setOnlineError(null),2500);
           }}>Sync</Button>
         </Block>
         {onlineError && <ParagraphSmall color="#fca5a5" marginTop="8px">{onlineError}</ParagraphSmall>}
         <Block display="flex" gridGap="8px" marginTop="8px">
           <Button size={SIZE.mini} kind={useOnline?KIND.primary:KIND.secondary} shape={SHAPE.pill} onClick={()=> setUseOnline(false)}>Local</Button>
-          <Button size={SIZE.mini} kind={useOnline?KIND.secondary:KIND.primary} shape={SHAPE.pill} onClick={async()=> { const b=await fetchOnlineLeaderboard(); if(b){ setOnlineBoard(b); setUseOnline(true);} else setOnlineError('Online not available'); setTimeout(()=> setOnlineError(null),3000); }}>{onlineBoard ? 'Online ✓' : 'Online'}</Button>
+          <Button size={SIZE.mini} kind={useOnline?KIND.secondary:KIND.primary} shape={SHAPE.pill} onClick={async()=> { const b=await fetchOnlineLeaderboard(); if(b){ setOnlineBoard(b); setUseOnline(true);} else setOnlineError('Online not available'); setTimeout(()=> setOnlineError(null),3000); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>Online {onlineBoard && <Check size={12} aria-hidden="true" />}</span></Button>
           <LabelSmall color="#6b6b6b" overrides={{Block:{style:{alignSelf:'center'}}}}>{useOnline ? 'Synced board' : 'Local mock board'}</LabelSmall>
         </Block>
       </UberCard>
@@ -56,7 +62,11 @@ export default function BoardTab({ leaderboard, stats, username, setUsername, on
                 </Block>
               </Block>
               <Block display="flex" alignItems="center" gridGap="8px">
-                {i < 3 && <span style={{ fontSize: 18 }}>{['🥇', '🥈', '🥉'][i]}</span>}
+                {i < 3 && (
+                  <span style={{ display: 'inline-flex', padding: 6, borderRadius: 999, background: '#fefce8' }}>
+                    {i === 0 ? <Trophy size={ICON_SIZES.button} aria-hidden="true" style={{ color: RANK_ICON_COLORS[0] }} /> : <Medal size={ICON_SIZES.button} aria-hidden="true" style={{ color: RANK_ICON_COLORS[i] }} />}
+                  </span>
+                )}
                 {adminMode && <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={async()=> { const b = await deleteOnlineScore(p.name, adminToken); if(b){ setOnlineBoard(b); setToast(`Deleted ${p.name}`); } else setOnlineError('Delete failed'); setTimeout(()=> setToast(null),1500); setTimeout(()=> setOnlineError(null),2000); }}>×</Button>}
               </Block>
             </Block>

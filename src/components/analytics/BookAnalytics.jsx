@@ -6,6 +6,13 @@ import UberCard from '../cards/UberCard.jsx';
 import { calcBookAnalytics } from '../../utils/analytics.js';
 import { isWordMastered } from '../../utils/progress.js';
 import { StatTile, AccuracyBar, LektionPerfRow, StrengthCallout, RecommendationBox, SectionLabel, AnalyticsEmpty, AnalyticsError, fmtPct } from './shared.jsx';
+import {
+  BookOpen,
+  CheckCircle2,
+  Target,
+  Medal,
+  LoaderCircle,
+} from '../icons.jsx';
 
 /**
  * Full-book learning analytics (Issue #2 §2).
@@ -22,7 +29,9 @@ export default function BookAnalytics({ book, allWords, progressMap, attempts, l
   if (loading) {
     return (
       <UberCard styleOverride={{ textAlign: 'center', paddingTop: 24, paddingBottom: 24 }}>
-        <div className="gs-report-item" style={{ fontSize: 28 }}>📊</div>
+        <div className="gs-report-item" style={{ display: 'flex', justifyContent: 'center' }}>
+          <LoaderCircle size={28} aria-hidden="true" className="gs-spin" style={{ color: '#4f46e5' }} />
+        </div>
         <ParagraphSmall color="#6b6b6b" margin="8px 0 0">Loading your learning report…</ParagraphSmall>
       </UberCard>
     );
@@ -38,7 +47,7 @@ export default function BookAnalytics({ book, allWords, progressMap, attempts, l
     return (
       <>
         <AnalyticsEmpty
-          emoji="📖"
+          icon={BookOpen}
           title={`How well do you know ${book.label}?`}
           hint="Study flashcards or complete a quiz in this book — your accuracy, mastery and per-Lektion breakdown will appear here."
         />
@@ -80,10 +89,10 @@ export default function BookAnalytics({ book, allWords, progressMap, attempts, l
           <AccuracyBar value={analytics.accuracy} height={8} delay={120} />
         </Block>
         <div className="gs-report-item gs-stats-grid" style={{ marginTop: 12, animationDelay: '100ms' }}>
-          <StatTile value={analytics.totalQuestions} label="Answered" sub="quiz questions" delay={100} />
-          <StatTile value={analytics.wordsPracticed} label="Practiced" sub={`of ${analytics.totalWords} words`} delay={140} />
-          <StatTile value={analytics.mastered} label="Mastered ★" sub={`${analytics.masteredPct}% of book`} color="#16a34a" delay={180} />
-          <StatTile value={`${analytics.seen}/${analytics.totalWords}`} label="Seen" sub={`${analytics.seenPct}% coverage`} delay={220} />
+          <StatTile icon={Target} value={analytics.totalQuestions} label="Answered" sub="quiz questions" delay={100} />
+          <StatTile icon={BookOpen} value={analytics.wordsPracticed} label="Practiced" sub={`of ${analytics.totalWords} words`} delay={140} />
+          <StatTile icon={Medal} value={analytics.mastered} label="Mastered" sub={`${analytics.masteredPct}% of book`} color="#16a34a" delay={180} />
+          <StatTile icon={CheckCircle2} value={`${analytics.seen}/${analytics.totalWords}`} label="Seen" sub={`${analytics.seenPct}% coverage`} delay={220} />
         </div>
         {!analytics.hasHistory && (
           <ParagraphSmall color="#9aa0b2" margin="8px 0 0">

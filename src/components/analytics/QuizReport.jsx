@@ -3,6 +3,17 @@ import { Button, KIND, SHAPE } from 'baseui/button';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import UberCard from '../cards/UberCard.jsx';
 import { StatTile, AccuracyBar, LektionPerfRow, StrengthCallout, RecommendationBox, SectionLabel, fmtPct, accuracyColor } from './shared.jsx';
+import {
+  BarChart3,
+  PartyPopper,
+  Target,
+  Zap,
+  CheckCircle2,
+  CircleX,
+  BookOpen,
+  Medal,
+  ICON_SIZES,
+} from '../icons.jsx';
 
 const MODE_LABELS = { dictation: 'Dictation', artikel: 'Artikel', mixed: 'Mixed', choice: '4-Choice', fa: 'DE → فارسی' };
 
@@ -14,7 +25,9 @@ export default function QuizReport({ report, meta = {}, actions = {} }) {
   if (!report || report.total === 0) {
     return (
       <UberCard styleOverride={{ textAlign: 'center', paddingTop: 24, paddingBottom: 24 }}>
-        <div style={{ fontSize: 32 }}>📊</div>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <BarChart3 size={ICON_SIZES.empty} aria-hidden="true" style={{ color: '#9aa0b2' }} />
+        </div>
         <div style={{ fontWeight: 800, fontSize: 15, marginTop: 8 }}>No questions answered</div>
         <ParagraphSmall color="#6b6b6b" margin="6px 0 0">Start a quiz to get your performance report.</ParagraphSmall>
         <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
@@ -34,23 +47,34 @@ export default function QuizReport({ report, meta = {}, actions = {} }) {
     <Block display="flex" flexDirection="column" gridGap="12px">
       {/* Result overview */}
       <UberCard styleOverride={{ textAlign: 'center', paddingTop: 20, paddingBottom: 18 }}>
-        <div className="gs-report-item" style={{ fontSize: 40 }}>{passed ? '🎉' : report.accuracy !== null && report.accuracy < 40 ? '💪' : '📊'}</div>
+        <div className="gs-report-item" style={{ display: 'flex', justifyContent: 'center' }}>
+          {passed ? (
+            <PartyPopper size={40} aria-hidden="true" style={{ color: '#16a34a' }} />
+          ) : report.accuracy !== null && report.accuracy < 40 ? (
+            <Target size={40} aria-hidden="true" style={{ color: '#ea580c' }} />
+          ) : (
+            <BarChart3 size={40} aria-hidden="true" style={{ color: '#6b6b7a' }} />
+          )}
+        </div>
         <LabelSmall color="#6b6b6b">{modeLabel} complete{scopeLabel ? ` • ${scopeLabel}` : ''}</LabelSmall>
         <div className="gs-report-item" style={{ fontWeight: 800, fontSize: 34, marginTop: 4, color: accuracyColor(report.accuracy), animationDelay: '60ms' }}>
           {fmtPct(report.accuracy)}
         </div>
-        <div className="gs-report-item" style={{ fontSize: 13, color: '#6b6b7a', marginTop: 2, animationDelay: '100ms' }}>
+        <div className="gs-report-item" style={{ fontSize: 13, color: '#6b6b7a', marginTop: 2, animationDelay: '100ms', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
           {report.correct}/{report.total} correct • +{report.xp} XP
         </div>
         <Block marginTop="12px">
           <AccuracyBar value={report.accuracy} height={8} delay={150} />
         </Block>
         <div className="gs-report-item gs-stats-grid" style={{ marginTop: 12, paddingBottom: 6, animationDelay: '140ms' }}>
-          <StatTile value={report.total} label="Questions" delay={140} />
-          <StatTile value={report.correct} label="Correct" color="#16a34a" delay={180} />
-          <StatTile value={report.incorrect} label="Missed" color={report.incorrect > 0 ? '#dc2626' : '#0f0f12'} delay={220} />
-          <StatTile value={`+${report.xp}`} label="XP earned" delay={260} />
+          <StatTile icon={BookOpen} value={report.total} label="Questions" delay={140} />
+          <StatTile icon={CheckCircle2} value={report.correct} label="Correct" color="#16a34a" delay={180} />
+          <StatTile icon={CircleX} value={report.incorrect} label="Missed" color={report.incorrect > 0 ? '#dc2626' : '#0f0f12'} delay={220} />
+          <StatTile icon={Zap} value={`+${report.xp}`} label="XP earned" color="#eab308" delay={260} />
         </div>
+        <Block marginTop="8px" display="flex" justifyContent="center" gridGap="12px">
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#6b6b7a' }}><Medal size={14} aria-hidden="true" /> Score counts toward mastery</span>
+        </Block>
       </UberCard>
 
       {/* Lektion performance */}

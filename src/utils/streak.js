@@ -34,14 +34,41 @@ export const STREAK_QUALIFYING_MODES = new Set([
 /**
  * Data-driven milestone tiers. Add future tiers by appending entries —
  * no UI/core-logic rewrite required.
+ *
+ * `icon` is a Lucide icon identifier (see src/components/icons.jsx
+ * getIconByName). Never an emoji — UI renders SVG via StreakTierIcon.
+ *
+ * Golden rule: a completed day preserves the tier earned when it was
+ * completed (see streakLength/tierLevel stamped on day records). History
+ * is a timeline — never recolored to the current tier.
  */
 export const STREAK_MILESTONES = [
-  { level: 1, minDays: 1, maxDays: 9, name: 'Streak', icon: '🔥', rewardFreezes: 0 },
-  { level: 2, minDays: 10, maxDays: 19, name: 'Fire Streak', icon: '🔥', rewardFreezes: 1 },
-  { level: 3, minDays: 20, maxDays: 29, name: 'Tsunami Streak', icon: '🌊', rewardFreezes: 1 },
-  { level: 4, minDays: 30, maxDays: 39, name: 'Ultra Tsunami Streak', icon: '🌊', rewardFreezes: 1 },
-  { level: 5, minDays: 40, maxDays: 49, name: 'Earthquake Streak', icon: '🌍', rewardFreezes: 1 },
+  { level: 1, minDays: 1, maxDays: 9, name: 'Ember', icon: 'flame', rewardFreezes: 0 },
+  { level: 2, minDays: 10, maxDays: 29, name: 'Inferno', icon: 'flame', rewardFreezes: 1 },
+  { level: 3, minDays: 30, maxDays: 59, name: 'Thunderstorm', icon: 'zap', rewardFreezes: 1 },
+  { level: 4, minDays: 60, maxDays: 89, name: 'Tsunami', icon: 'waves', rewardFreezes: 1 },
+  { level: 5, minDays: 90, maxDays: 149, name: 'Hurricane', icon: 'wind', rewardFreezes: 1 },
+  { level: 6, minDays: 150, maxDays: 249, name: 'Volcano', icon: 'mountain', rewardFreezes: 1 },
+  { level: 7, minDays: 250, maxDays: 364, name: 'Solar Storm', icon: 'sun', rewardFreezes: 1 },
+  { level: 8, minDays: 365, maxDays: 729, name: 'Cosmic', icon: 'orbit', rewardFreezes: 2 },
+  { level: 9, minDays: 730, maxDays: null, name: 'Legendary', icon: 'crown', rewardFreezes: 2 },
 ];
+
+/**
+ * Visual identity per tier level (gradients, glow, accents).
+ * Pure data — UI/CSS layers interpret it. Keys match milestone levels.
+ */
+export const STREAK_TIER_VISUALS = {
+  1: { gradient: 'linear-gradient(135deg,#fdba74 0%,#f97316 60%,#ea580c 100%)', glow: 'rgba(249,115,22,0.35)', accent: '#f97316', deep: '#9a3412' },
+  2: { gradient: 'linear-gradient(135deg,#fb923c 0%,#ef4444 60%,#b91c1c 100%)', glow: 'rgba(239,68,68,0.5)', accent: '#ef4444', deep: '#7f1d1d' },
+  3: { gradient: 'linear-gradient(135deg,#fdba74 0%,#f59e0b 40%,#38bdf8 100%)', glow: 'rgba(56,189,248,0.45)', accent: '#eab308', deep: '#0c4a6e' },
+  4: { gradient: 'linear-gradient(135deg,#67e8f9 0%,#0ea5e9 55%,#1e40af 100%)', glow: 'rgba(14,165,233,0.45)', accent: '#0ea5e9', deep: '#0c4a6e' },
+  5: { gradient: 'linear-gradient(135deg,#e0f2fe 0%,#67e8f9 45%,#0e7490 100%)', glow: 'rgba(103,232,249,0.5)', accent: '#22d3ee', deep: '#164e63' },
+  6: { gradient: 'linear-gradient(135deg,#1c1917 0%,#44403c 45%,#f97316 100%)', glow: 'rgba(249,115,22,0.55)', accent: '#fb923c', deep: '#000000' },
+  7: { gradient: 'linear-gradient(135deg,#fef3c7 0%,#f59e0b 50%,#f97316 100%)', glow: 'rgba(245,158,11,0.55)', accent: '#f59e0b', deep: '#78350f' },
+  8: { gradient: 'linear-gradient(135deg,#8b5cf6 0%,#4f46e5 50%,#0ea5e9 100%)', glow: 'rgba(139,92,246,0.55)', accent: '#8b5cf6', deep: '#1e1b4b' },
+  9: { gradient: 'linear-gradient(135deg,#f0abfc 0%,#8b5cf6 40%,#22d3ee 75%,#fef08a 100%)', glow: 'rgba(240,171,252,0.6)', accent: '#e9d5ff', deep: '#3b0764' },
+};
 
 /** Milestone rewards, also data-driven. Every 10-day milestone earns a freeze. */
 export const STREAK_MILESTONE_REWARDS = [
@@ -49,6 +76,19 @@ export const STREAK_MILESTONE_REWARDS = [
   { milestone: 20, freezes: 1 },
   { milestone: 30, freezes: 1 },
   { milestone: 40, freezes: 1 },
+  { milestone: 50, freezes: 1 },
+  { milestone: 60, freezes: 1 },
+  { milestone: 70, freezes: 1 },
+  { milestone: 80, freezes: 1 },
+  { milestone: 90, freezes: 1 },
+  { milestone: 100, freezes: 1 },
+  { milestone: 120, freezes: 1 },
+  { milestone: 150, freezes: 1 },
+  { milestone: 180, freezes: 1 },
+  { milestone: 210, freezes: 1 },
+  { milestone: 250, freezes: 1 },
+  { milestone: 300, freezes: 1 },
+  { milestone: 365, freezes: 2 },
 ];
 
 export const JALALI_MONTHS = [
@@ -59,6 +99,10 @@ export const JALALI_MONTHS = [
 export const GREGORIAN_MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+export const GREGORIAN_WEEKDAYS = [
+  'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
 ];
 
 /** Persian week starting Saturday (شنبه), matching RTL/Shamsi UX. */
@@ -182,6 +226,13 @@ function cloneDayRecord(record) {
     firstAt: record.firstAt ?? null,
     lastAt: record.lastAt ?? null,
     updatedAt: record.updatedAt ?? null,
+    // Persistent evolution history: the streak length + tier earned when this
+    // day was completed. Tiles always render their saved tier — never the
+    // current tier (golden rule: do not recolor history).
+    streakLength: Number.isFinite(Number(record.streakLength)) ? Number(record.streakLength) : null,
+    tierLevel: Number.isFinite(Number(record.tierLevel)) ? Number(record.tierLevel) : null,
+    tierName: typeof record.tierName === 'string' ? record.tierName : null,
+    tierIcon: typeof record.tierIcon === 'string' ? record.tierIcon : null,
   };
 }
 
@@ -266,13 +317,18 @@ export function buildStreakRuns(days) {
 export function getMilestoneForStreak(days) {
   const n = Math.max(0, Math.floor(Number(days) || 0));
   for (const tier of STREAK_MILESTONES) {
-    if (n >= tier.minDays && n <= tier.maxDays) return { ...tier };
+    if (n >= tier.minDays && (tier.maxDays == null || n <= tier.maxDays)) return { ...tier };
   }
-  if (n > STREAK_MILESTONES[STREAK_MILESTONES.length - 1].maxDays) {
-    const last = STREAK_MILESTONES[STREAK_MILESTONES.length - 1];
-    return { ...last, maxDays: null, extended: true };
+  if (n < STREAK_MILESTONES[0].minDays) {
+    return { ...STREAK_MILESTONES[0], minDays: 0, maxDays: 0, name: 'No streak', icon: 'flame' };
   }
-  return { ...STREAK_MILESTONES[0], minDays: 0, maxDays: 0, name: 'No streak', icon: '🔥' };
+  const last = STREAK_MILESTONES[STREAK_MILESTONES.length - 1];
+  return { ...last, maxDays: null, extended: true };
+}
+
+/** Tier level for a 1-based streak length (used when stamping day records). */
+export function getTierLevelForStreak(days) {
+  return getMilestoneForStreak(days).level;
 }
 
 export function getNextMilestone(days) {
@@ -414,6 +470,15 @@ export function applyStreakActivities({
       events.freezesRefunded += 1;
       events.upgradedDates.push(day);
       mergeSessions(existing, acts, latestTs);
+      // Stamp the tier earned for this day within its run.
+      try {
+        const upgradedLen = runLengthEndingAt(map, day);
+        const upgradedTier = getMilestoneForStreak(upgradedLen);
+        existing.streakLength = upgradedLen;
+        existing.tierLevel = upgradedTier.level;
+        existing.tierName = upgradedTier.name;
+        existing.tierIcon = upgradedTier.icon;
+      } catch {}
       continue;
     }
     const predecessor = latestBefore(map, day);
@@ -464,6 +529,12 @@ export function applyStreakActivities({
       firstAt: null,
       lastAt: null,
       updatedAt: latestTs,
+      // Persistent evolution history: this day forever renders the tier
+      // earned at completion (newLen is the run length ending on this day).
+      streakLength: newLen,
+      tierLevel: getMilestoneForStreak(newLen).level,
+      tierName: getMilestoneForStreak(newLen).name,
+      tierIcon: getMilestoneForStreak(newLen).icon,
     };
     mergeSessions(record, acts, latestTs);
     map.set(day, record);
@@ -486,6 +557,11 @@ export function applyStreakActivities({
 /**
  * Bounded month calendar with synchronized Gregorian + Shamsi info.
  * Navigation is by Gregorian month; every cell carries both calendars.
+ *
+ * Evolution history: each completed cell carries the tier earned when that
+ * day was completed (stored streakLength/tierLevel preferred; legacy days
+ * without stamps are backfilled from run positions so old months still show
+ * the evolution timeline). Cells never inherit the *current* tier.
  */
 export function buildStreakMonth({ days = [], today = utcDayKey(Date.now()), year, month } = {}) {
   if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
@@ -504,6 +580,20 @@ export function buildStreakMonth({ days = [], today = utcDayKey(Date.now()), yea
       cursor = addUtcDays(cursor, 1);
     }
   }
+  // Backfill map: date -> streak length (position within its run) so legacy
+  // days without stamped tier data still render their earned tier.
+  const runLengthByDate = new Map();
+  for (const run of summary.runs) {
+    let cursor = run.start;
+    for (let i = 1; i <= run.length; i += 1) {
+      runLengthByDate.set(cursor, i);
+      if (cursor === run.end) break;
+      cursor = addUtcDays(cursor, 1);
+    }
+  }
+  const chainTier = summary.currentRun
+    ? getMilestoneForStreak(runLengthEndingAt(map, summary.currentRun.end))
+    : null;
 
   const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
   const cells = [];
@@ -512,18 +602,49 @@ export function buildStreakMonth({ days = [], today = utcDayKey(Date.now()), yea
     const record = map.get(key);
     const jalali = jalaliParts(new Date(Date.parse(`${key}T00:00:00Z`)));
     const status = record ? record.status : (key > today ? 'future' : key === today ? 'today' : 'missed');
+    const isToday = key === today;
+    const inCurrentChain = runSet.has(key) && !!record;
+    // Historical tier: stored stamp wins; otherwise backfill from run position.
+    let streakLength = null;
+    let tier = null;
+    if (record && record.status === 'completed') {
+      streakLength = Number.isFinite(Number(record.streakLength))
+        ? Number(record.streakLength)
+        : (runLengthByDate.get(key) ?? null);
+      if (Number.isFinite(Number(record.tierLevel))) {
+        const known = STREAK_MILESTONES.find((t) => t.level === Number(record.tierLevel));
+        tier = known ? { ...known } : getMilestoneForStreak(streakLength ?? 0);
+      } else {
+        tier = getMilestoneForStreak(streakLength ?? 0);
+      }
+    }
+    // Heatmap intensity: tier weight + today/chain recency + XP.
+    const tierWeight = tier ? tier.level / STREAK_MILESTONES.length : 0;
+    const xpBoost = record && record.xp > 0 ? Math.min(0.25, (record.xp || 0) / 200) : 0;
+    const intensity = record && record.status === 'completed'
+      ? Math.min(1, 0.35 + tierWeight * 0.45 + (inCurrentChain ? 0.15 : 0) + (isToday ? 0.1 : 0) + xpBoost)
+      : 0;
     cells.push({
       key,
       gregorianDay: d,
       jalali,
       jalaliLabel: `${toPersianDigits(jalali.jd)} ${JALALI_MONTHS[jalali.jm - 1]}`,
       status,
-      isToday: key === today,
+      isToday,
       isCurrentRun: runSet.has(key),
+      inCurrentChain,
+      chainTierLevel: chainTier ? chainTier.level : null,
       isMilestoneDay: !!record && record.status === 'completed'
         && rewardThresholds.has(runLengthEndingAt(map, key)),
       attempts: record?.attempts || 0,
       xp: record?.xp || 0,
+      sessions: record?.sessions || {},
+      sources: record?.sources || {},
+      streakLength,
+      tierLevel: tier ? tier.level : null,
+      tierName: tier ? tier.name : (record?.tierName || null),
+      tierIcon: tier ? tier.icon : (record?.tierIcon || null),
+      intensity,
     });
   }
   const firstWeekday = persianWeekdayIndex(new Date(Date.UTC(year, month - 1, 1)));

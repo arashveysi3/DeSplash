@@ -7,11 +7,20 @@ import { BOOKS } from '../../data/menschen.js';
 import { genderColor, genderBg } from '../../theme';
 import { speakGerman } from '../../utils/speak';
 import UberCard from '../cards/UberCard.jsx';
+import { Search, ICON_SIZES } from '../icons.jsx';
 
 export default function SucheTab({ search, setSearch, setSelectedBook, selectedBook, filteredWordsForSearch, handleDeleteCustom }) {
   return (
     <Block paddingTop="16px">
-      <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Suche German, English, فارسی oder Lektion..." clearable size="compact" overrides={{ Root: { style: { backgroundColor: '#f7f7f7', borderColor: '#e5e5e5', borderRadius: '999px', paddingTop: '4px', paddingBottom: '4px' } }, Input: { style: { fontSize: '14px' } } }} startEnhancer="🔍" />
+      <Input
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Suche German, English, فارسی oder Lektion..."
+        clearable
+        size="compact"
+        overrides={{ Root: { style: { backgroundColor: '#f7f7f7', borderColor: '#e5e5e5', borderRadius: '999px', paddingTop: '4px', paddingBottom: '4px' } }, Input: { style: { fontSize: '14px' } } }}
+        startEnhancer={<Search size={ICON_SIZES.button} aria-hidden="true" style={{ color: '#9aa0b2' }} />}
+      />
       <Block display="flex" gridGap="6px" marginTop="12px" overrides={{ Block: { style: { flexWrap: 'wrap' } } }}>
         {BOOKS.map(b=> <Tag key={b.id} closeable={false} variant={selectedBook===b.id ? 'solid' : 'outlined'} onClick={() => setSelectedBook(b.id)}>{b.label}</Tag>)}
         <Tag closeable={false} variant="outlined" onClick={() => setSearch('')}>Clear</Tag>

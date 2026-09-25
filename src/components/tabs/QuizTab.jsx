@@ -11,6 +11,27 @@ import { genderColor } from '../../theme';
 import { speakGerman } from '../../utils/speak';
 import UberCard from '../cards/UberCard.jsx';
 import QuizReport from '../analytics/QuizReport.jsx';
+import {
+  Sparkles,
+  BarChart3,
+  Gamepad2,
+  Puzzle,
+  Zap,
+  Hammer,
+  CloudRainWind,
+  PartyPopper,
+  Timer,
+  CheckCircle2,
+  CircleX,
+  Volume2,
+  RotateCcw,
+  Eye,
+  Skull,
+  Heart,
+  Play,
+  Check,
+  ICON_SIZES,
+} from '../icons.jsx';
 
 export default function QuizTab(props) {
   const {
@@ -70,7 +91,7 @@ export default function QuizTab(props) {
                 <Button key={l.lektion} size={SIZE.mini} kind={active?KIND.primary:KIND.secondary} shape={SHAPE.pill}
                   overrides={{BaseButton:{style:{fontWeight:700, fontSize:11, backgroundColor: active? '#0f0f12':'#fff', color: active?'#fff':'#0f0f12'}}}}
                   onClick={()=> setQuizLektions(prev=> prev.includes(l.lektion) ? prev.filter(x=>x!==l.lektion) : [...prev,l.lektion])}>
-                  {active?'✓ ':''}{l.lektion}
+                  {active && <Check size={12} aria-hidden="true" style={{ marginRight: 2 }} />}{l.lektion}
                 </Button>
               );
             })}
@@ -81,7 +102,7 @@ export default function QuizTab(props) {
             <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='dictation'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('dictation')}>Dictation DE</Button>
             <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='artikel'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('artikel')}>Artikel</Button>
             <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='mixed'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('mixed')}>Mixed</Button>
-            <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='choice'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('choice')}>4-Choice ✨</Button>
+            <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='choice'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('choice')}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Sparkles size={14} aria-hidden="true" /> 4-Choice</span></Button>
             <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='fa'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('fa')}>DE → فارسی</Button>
           </Block>
           <Block display="flex" gridGap="8px" marginTop="12px">
@@ -93,14 +114,14 @@ export default function QuizTab(props) {
           {lastQuizReport && !showQuizReport && (
             <Block marginTop="10px">
               <Button size={SIZE.compact} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => setShowQuizReport(true)}>
-                📊 View last report • {lastQuizReport.report.correct}/{lastQuizReport.report.total} ({lastQuizReport.report.accuracy !== null ? `${lastQuizReport.report.accuracy}%` : '—'})
+                <BarChart3 size={14} aria-hidden="true" style={{ verticalAlign: -2, marginRight: 4 }} /> View last report • {lastQuizReport.report.correct}/{lastQuizReport.report.total} ({lastQuizReport.report.accuracy !== null ? `${lastQuizReport.report.accuracy}%` : '—'})
               </Button>
             </Block>
           )}
         </UberCard>
         <Block display="flex" flexDirection="column" gridGap="10px" marginTop="12px">
           <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px', borderLeftWidth:'3px', borderLeftColor:'#4f46e5'}}>
-            <ParagraphSmall margin={0}><b>4-Choice ✨ NEW:</b> German word → pick 1 of 4 English meanings. Distractors from same Lektion so you really have to know it. <b>+{QUIZ_XP.choice} XP</b> per correct. Most efficient way to earn!</ParagraphSmall>
+            <ParagraphSmall margin={0}><b>4-Choice NEW:</b> German word → pick 1 of 4 English meanings. Distractors from same Lektion so you really have to know it. <b>+{QUIZ_XP.choice} XP</b> per correct. Most efficient way to earn!</ParagraphSmall>
           </UberCard>
           <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
             <ParagraphSmall margin={0}><b>Dictation:</b> Hear German → type exact word (<b>ä ö ü Ä Ö Ü ß</b> strict). <b>+{QUIZ_XP.dictation} XP</b>.</ParagraphSmall>
@@ -112,13 +133,13 @@ export default function QuizTab(props) {
             <ParagraphSmall margin={0}><b>فارسی:</b> See German → type Persian meaning exactly. <b>+{QUIZ_XP.fa} XP</b>.</ParagraphSmall>
           </UberCard>
         </Block>
-        <Heading $style={{fontSize:16, margin:'16px 0 8px'}}>🎮 Games — DE ↔ EN + فارسی</Heading>
+        <Heading $style={{fontSize:16, margin:'16px 0 8px'}}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}><Gamepad2 size={ICON_SIZES.card} aria-hidden="true" /> Games — DE ↔ EN + فارسی</span></Heading>
         <ParagraphSmall color="#6b6b6b" margin="0 0 8px">Left side German • Right side English + فارسی. Every game uses your multi-Lektion scope.</ParagraphSmall>
         <Block display="flex" flexDirection="column" gridGap="12px">
           <UberCard styleOverride={{background:'linear-gradient(135deg,#4f46e5 0%,#7c3aed 50%,#a78bfa 100%)', color:'#fff', borderWidth:0, paddingTop:'16px', paddingBottom:'16px', boxShadow:'0 12px 28px rgba(79,70,229,0.28)'}} >
             <Block display="flex" justifyContent="space-between" alignItems="center">
               <Block>
-                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.18)', padding:'4px 8px', borderRadius:999, fontSize:12}}>🧩</span> Match Dash</div>
+                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.18)', padding:'4px 8px', borderRadius:999, fontSize:12, display:'inline-flex'}}><Puzzle size={14} aria-hidden="true" /></span> Match Dash</div>
                 <div style={{fontSize:12, opacity:0.92, marginTop:4}}>DE ↔ EN+FA • 6 pairs • no spoilers</div>
                 <div style={{fontSize:11, opacity:0.78, marginTop:2}}>+{GAME_XP.matchPair}/pair + {GAME_XP.matchPerfectBonus} perfect = ~40 XP</div>
               </Block>
@@ -128,7 +149,7 @@ export default function QuizTab(props) {
           <UberCard styleOverride={{background:'linear-gradient(135deg,#ea580c 0%,#f97316 55%,#f59e0b 100%)', color:'#fff', borderWidth:0, paddingTop:'16px', paddingBottom:'16px', boxShadow:'0 12px 28px rgba(234,88,12,0.22)'}}>
             <Block display="flex" justifyContent="space-between" alignItems="center">
               <Block>
-                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.18)', padding:'4px 8px', borderRadius:999, fontSize:12}}>⚡</span> Lightning Sprint</div>
+                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.18)', padding:'4px 8px', borderRadius:999, fontSize:12, display:'inline-flex'}}><Zap size={14} aria-hidden="true" /></span> Lightning Sprint</div>
                 <div style={{fontSize:12, opacity:0.92, marginTop:4}}>45s • DE → EN+FA • 2× streak</div>
                 <div style={{fontSize:11, opacity:0.78, marginTop:2}}>+{GAME_XP.sprintBase} base / correct</div>
               </Block>
@@ -138,7 +159,7 @@ export default function QuizTab(props) {
           <UberCard styleOverride={{background:'linear-gradient(135deg,#0f0f12 0%,#2a2a3a 55%,#4f46e5 100%)', color:'#fff', borderWidth:0, paddingTop:'16px', paddingBottom:'16px', boxShadow:'0 12px 28px rgba(15,15,18,0.22)'}}>
             <Block display="flex" justifyContent="space-between" alignItems="center">
               <Block>
-                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.14)', padding:'4px 8px', borderRadius:999, fontSize:12}}>🔨</span> SatzBau — Sentence Forge</div>
+                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.14)', padding:'4px 8px', borderRadius:999, fontSize:12, display:'inline-flex'}}><Hammer size={14} aria-hidden="true" /></span> SatzBau — Sentence Forge</div>
                 <div style={{fontSize:12, opacity:0.92, marginTop:4}}>Rebuild the German sentence • scrambled words</div>
                 <div style={{fontSize:11, opacity:0.78, marginTop:2}}>+{GAME_XP.scramblePerWord} XP / puzzle • word order mastery</div>
               </Block>
@@ -148,7 +169,7 @@ export default function QuizTab(props) {
           <UberCard styleOverride={{background:'linear-gradient(135deg,#059669 0%,#0ea5e9 60%,#06b6d4 100%)', color:'#fff', borderWidth:0, paddingTop:'16px', paddingBottom:'16px', boxShadow:'0 12px 28px rgba(5,150,105,0.22)'}}>
             <Block display="flex" justifyContent="space-between" alignItems="center">
               <Block>
-                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.18)', padding:'4px 8px', borderRadius:999, fontSize:12}}>🌧️</span> WortSturm — Word Rain</div>
+                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.18)', padding:'4px 8px', borderRadius:999, fontSize:12, display:'inline-flex'}}><CloudRainWind size={14} aria-hidden="true" /></span> WortSturm — Word Rain</div>
                 <div style={{fontSize:12, opacity:0.92, marginTop:4}}>6s per word • 3 lives • EN+FA choices</div>
                 <div style={{fontSize:11, opacity:0.78, marginTop:2}}>Streak multiplier • arcade panic fun</div>
               </Block>
@@ -223,7 +244,7 @@ export default function QuizTab(props) {
           </div>
           {matchDone && (
             <UberCard styleOverride={{marginTop:'12px', textAlign:'center', backgroundColor:'#f0fdf4', borderColor:'#bbf7d0'}}>
-              <div style={{fontSize:24}}>🎉</div>
+              <div style={{ display: 'flex', justifyContent: 'center' }}><PartyPopper size={28} aria-hidden="true" style={{ color: '#16a34a' }} /></div>
               <div style={{fontWeight:800, marginTop:4}}>Match complete! {matchMatched}/6 in {matchMoves} moves</div>
               <div style={{fontSize:13, color:'#16a34a', marginTop:4}}>+{matchXp} XP earned</div>
               <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
@@ -237,7 +258,7 @@ export default function QuizTab(props) {
       ) : quizMode==='sprint' ? (
         <>
           <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-            <LabelSmall color="#6b6b6b">⚡ Sprint • {sprintScore.correct}/{sprintScore.total} • streak {sprintScore.streak} (best {sprintScore.best})</LabelSmall>
+            <LabelSmall color="#6b6b6b"><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Zap size={12} aria-hidden="true" /> Sprint • {sprintScore.correct}/{sprintScore.total} • streak {sprintScore.streak} (best {sprintScore.best})</span></LabelSmall>
             <Block display="flex" gridGap="8px" alignItems="center">
               <span style={{background: sprintTime<=10 ? '#fef2f2' : '#fff7ed', color: sprintTime<=10 ? '#dc2626' : '#ea580c', padding:'4px 8px', borderRadius:999, fontWeight:800, fontSize:12, border:'1px solid #ffedd5'}}>{sprintTime}s</span>
               <span style={{background:'#000', color:'#fff', padding:'4px 8px', borderRadius:999, fontWeight:800, fontSize:12}}>{sprintScore.xp} XP</span>
@@ -246,7 +267,7 @@ export default function QuizTab(props) {
           <div style={{height:6, background:'#eee', borderRadius:999, overflow:'hidden'}}><div style={{height:'100%', width:`${(sprintTime/45)*100}%`, background: sprintTime<=10 ? '#dc2626' : '#ea580c', transition:'width 1s linear'}}/></div>
           {!sprintActive && sprintTime===0 ? (
             <UberCard styleOverride={{marginTop:'12px', textAlign:'center'}}>
-              <div style={{fontSize:28}}>⏱️</div>
+              <div style={{ display: 'flex', justifyContent: 'center' }}><Timer size={28} aria-hidden="true" style={{ color: '#ea580c' }} /></div>
               <div style={{fontWeight:800, marginTop:6}}>Time&apos;s up!</div>
               <div style={{fontSize:13, color:'#6b6b6b', marginTop:4}}>{sprintScore.correct}/{sprintScore.total} correct • best streak {sprintScore.best} • +{sprintScore.xp} XP</div>
               <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
@@ -262,7 +283,7 @@ export default function QuizTab(props) {
                 <div style={{fontSize:11, color:'#9a9a9a'}}>{sprintQueue[sprintIdx].word.lektion} • {sprintQueue[sprintIdx].word.plural ? `Pl: ${sprintQueue[sprintIdx].word.plural}`: ''}</div>
                 {sprintFeedback ? (
                   <Block marginTop="12px" padding="10px" backgroundColor={sprintFeedback.correct? '#dcfce7':'#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
-                    <LabelSmall>{sprintFeedback.correct ? `✅ +${sprintFeedback.xp} XP (×${(1+ sprintScore.streak*0.15).toFixed(2)})` : `❌ was "${typeof sprintFeedback.expected==='object'? sprintFeedback.expected.en : sprintFeedback.expected}" • ${typeof sprintFeedback.expected==='object'? sprintFeedback.expected.fa : ''}`}</LabelSmall>
+                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{sprintFeedback.correct ? <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> : <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} />}{sprintFeedback.correct ? `+${sprintFeedback.xp} XP (×${(1+ sprintScore.streak*0.15).toFixed(2)})` : `was "${typeof sprintFeedback.expected==='object'? sprintFeedback.expected.en : sprintFeedback.expected}" • ${typeof sprintFeedback.expected==='object'? sprintFeedback.expected.fa : ''}`}</span></LabelSmall>
                   </Block>
                 ) : (
                   <Block display="grid" gridGap="8px" marginTop="14px" overrides={{Block:{style:{gridTemplateColumns:'1fr 1fr'}}}}>
@@ -286,7 +307,7 @@ export default function QuizTab(props) {
       ) : quizMode==='satz' ? (
         <>
           <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-            <LabelSmall color="#6b6b6b">🔨 Forge {satzIdx+1}/{satzQueue.length} • {satzScore.correct}/{satzScore.total} • {satzScore.xp} XP</LabelSmall>
+            <LabelSmall color="#6b6b6b">Forge {satzIdx+1}/{satzQueue.length} • {satzScore.correct}/{satzScore.total} • {satzScore.xp} XP</LabelSmall>
             <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setSatzActive(false); setQuizStarted(false); }}>Exit</Button>
           </Block>
           {satzQueue[satzIdx] && (
@@ -295,8 +316,8 @@ export default function QuizTab(props) {
                 <LabelSmall color="#6b6b6b">Rebuild the sentence — tap words in order</LabelSmall>
                 <div style={{fontSize:13, color:'#6b6b6b', marginTop:6, fontStyle:'italic'}}>Hint: {satzQueue[satzIdx].hintEn} <span style={{fontFamily:'IRANSans', direction:'rtl'}}>— {satzQueue[satzIdx].hintFa}</span> • {satzQueue[satzIdx].word.lektion}</div>
                 <Block marginTop="8px" display="flex" justifyContent="center" gridGap="6px">
-                  <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(satzQueue[satzIdx].source || satzQueue[satzIdx].word.example || satzQueue[satzIdx].tokens.join(' '))}>🔊 Play sentence</Button>
-                  <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); setSatzFeedback(null); }}>↺ Reset</Button>
+                  <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(satzQueue[satzIdx].source || satzQueue[satzIdx].word.example || satzQueue[satzIdx].tokens.join(' '))}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={14} aria-hidden="true" /> Play sentence</span></Button>
+                  <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); setSatzFeedback(null); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><RotateCcw size={14} aria-hidden="true" /> Reset</span></Button>
                 </Block>
                 <div style={{minHeight:56, background:'#f7f7fb', border:'1.5px dashed #e9e8f0', borderRadius:14, padding:10, marginTop:12, display:'flex', flexWrap:'wrap', gap:6, justifyContent:'center', alignItems:'center'}}>
                   {satzBuilt.length===0 ? <span style={{color:'#9a9a9a', fontSize:12}}>Tap words below…</span> : satzBuilt.map((t,i)=> {
@@ -315,11 +336,11 @@ export default function QuizTab(props) {
                 </Block>
                 {satzFeedback?.correct ? (
                   <Block marginTop="12px" padding="10px" backgroundColor={'#dcfce7'} overrides={{Block:{style:{borderRadius:12}}}}>
-                    <LabelSmall>✅ Perfect! +{satzFeedback.xp} XP — “{satzFeedback.expected}”</LabelSmall>
+                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> Perfect! +{satzFeedback.xp} XP — “{satzFeedback.expected}”</span></LabelSmall>
                   </Block>
                 ) : satzFeedback && !satzFeedback.correct ? (
                   <Block marginTop="12px" padding="10px" backgroundColor={'#fef2f2'} overrides={{Block:{style:{borderRadius:12}}}}>
-                    <LabelSmall>❌ Not quite — correct positions in <span style={{color:'#16a34a', fontWeight:800}}>green</span>, wrong in <span style={{color:'#dc2626', fontWeight:800}}>red</span>. Fix the red ones and try again.</LabelSmall>
+                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} /> Not quite — correct positions in <span style={{color:'#16a34a', fontWeight:800}}>green</span>, wrong in <span style={{color:'#dc2626', fontWeight:800}}>red</span>. Fix the red ones and try again.</span></LabelSmall>
                     <div style={{marginTop:6, fontSize:12, color:'#6b6b6b'}}>You: “{satzFeedback.built?.join(' ') || satzBuilt.join(' ')}”</div>
                     <div style={{marginTop:4, fontSize:13, fontWeight:700, color:'#0f0f12'}}>Correct: “{satzFeedback.expected}”</div>
                     <div style={{marginTop:6, fontSize:11, color:'#9aa0b2'}}>Tap red word to remove it, then pick correct word.</div>
@@ -330,8 +351,8 @@ export default function QuizTab(props) {
                 )}
                 {satzFeedback && !satzFeedback.correct && (
                   <Block display="flex" gridGap="6px" marginTop="8px">
-                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); setSatzFeedback(null); }}>↺ Reset</Button>
-                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzBuilt([...satzQueue[satzIdx].tokens]); setSatzPool([]); setSatzFeedback(null); }}>👁 Show answer</Button>
+                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); setSatzFeedback(null); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><RotateCcw size={14} aria-hidden="true" /> Reset</span></Button>
+                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzBuilt([...satzQueue[satzIdx].tokens]); setSatzPool([]); setSatzFeedback(null); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Eye size={14} aria-hidden="true" /> Show answer</span></Button>
                     <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzFeedback(null); if (satzIdx+1>=satzQueue.length){ setSatzActive(false); setQuizStarted(false);} else { const ni=satzIdx+1; setSatzIdx(ni); setSatzBuilt([]); setSatzPool(satzQueue[ni].shuffled); } }}>Skip →</Button>
                   </Block>
                 )}
@@ -340,7 +361,7 @@ export default function QuizTab(props) {
           )}
           {!satzActive && satzScore.total===satzQueue.length && (
             <UberCard styleOverride={{marginTop:'12px', textAlign:'center', background:'#f0fdf4', borderColor:'#bbf7d0'}}>
-              <div style={{fontSize:26}}>🎉</div>
+              <div style={{ display: 'flex', justifyContent: 'center' }}><PartyPopper size={28} aria-hidden="true" style={{ color: '#16a34a' }} /></div>
               <div style={{fontWeight:800, marginTop:6}}>Forge complete! {satzScore.correct}/{satzScore.total} • +{satzScore.xp} XP</div>
               <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
                 <Button shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setSatzActive(false); }}>Done</Button>
@@ -352,17 +373,17 @@ export default function QuizTab(props) {
       ) : quizMode==='rain' ? (
         <>
           <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-            <LabelSmall color="#6b6b6b">🌧️ Sturm {rainIdx+1}/{rainQueue.length} • {rainScore.correct}/{rainScore.total} • streak {rainScore.streak}</LabelSmall>
+            <LabelSmall color="#6b6b6b">Sturm {rainIdx+1}/{rainQueue.length} • {rainScore.correct}/{rainScore.total} • streak {rainScore.streak}</LabelSmall>
             <Block display="flex" gridGap="6px" alignItems="center">
               <span style={{background: rainTime<=2 ? '#fef2f2':'#f0fdf4', color: rainTime<=2?'#dc2626':'#059669', padding:'4px 8px', borderRadius:999, fontWeight:800, fontSize:12}}>{rainTime}s</span>
-              <span style={{fontSize:14}}>{'❤️'.repeat(rainLives)}{'🖤'.repeat(3-rainLives)}</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>{[0,1,2].map((i) => (<Heart key={i} size={14} aria-hidden="true" style={{ color: i < rainLives ? '#dc2626' : '#d4d4d8' }} fill={i < rainLives ? '#dc2626' : 'none'} />))}</span>
               <span style={{background:'#0f0f12', color:'#fff', padding:'4px 8px', borderRadius:999, fontWeight:800, fontSize:12}}>{rainScore.xp} XP</span>
             </Block>
           </Block>
           <div style={{height:6, background:'#e9e8f0', borderRadius:999, overflow:'hidden'}}><div style={{height:'100%', width:`${(rainTime/6)*100}%`, background: rainTime<=2? '#dc2626':'#0ea5e9', transition:'width 1s linear'}}/></div>
           {!rainActive && rainLives<=0 ? (
             <UberCard styleOverride={{marginTop:'12px', textAlign:'center'}}>
-              <div style={{fontSize:28}}>💀</div>
+              <div style={{ display: 'flex', justifyContent: 'center' }}><Skull size={28} aria-hidden="true" style={{ color: '#6b6b7a' }} /></div>
               <div style={{fontWeight:800, marginTop:6}}>Storm over!</div>
               <div style={{fontSize:13, color:'#6b6b6b', marginTop:4}}>{rainScore.correct}/{rainScore.total} correct • best streak {rainScore.best} • +{rainScore.xp} XP</div>
               <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
@@ -378,7 +399,7 @@ export default function QuizTab(props) {
                 <div style={{fontSize:11, color:'#9aa0b2', marginTop:6}}>{rainQueue[rainIdx].word.lektion} • {rainQueue[rainIdx].word.plural? `Pl: ${rainQueue[rainIdx].word.plural}`: ''}</div>
                 {rainFeedback ? (
                   <Block marginTop="12px" padding="10px" backgroundColor={rainFeedback.correct? '#dcfce7':'#fef2f2'} overrides={{Block:{style:{borderRadius:12}}}}>
-                    <LabelSmall>{rainFeedback.correct? `✅ +${rainFeedback.xp} XP` : rainFeedback.timeout? `⏰ Time! was "${typeof rainFeedback.expected==='object'? rainFeedback.expected.en : rainFeedback.expected}"` : `❌ was "${typeof rainFeedback.expected==='object'? rainFeedback.expected.en : rainFeedback.expected}" • ${typeof rainFeedback.expected==='object'? rainFeedback.expected.fa : ''}`}</LabelSmall>
+                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{rainFeedback.correct ? <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> : rainFeedback.timeout ? <Timer size={14} aria-hidden="true" style={{ color: '#ea580c' }} /> : <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} />}{rainFeedback.correct? `+${rainFeedback.xp} XP` : rainFeedback.timeout? `Time! was "${typeof rainFeedback.expected==='object'? rainFeedback.expected.en : rainFeedback.expected}"` : `was "${typeof rainFeedback.expected==='object'? rainFeedback.expected.en : rainFeedback.expected}" • ${typeof rainFeedback.expected==='object'? rainFeedback.expected.fa : ''}`}</span></LabelSmall>
                   </Block>
                 ) : (
                   <Block display="grid" gridGap="8px" marginTop="14px" overrides={{Block:{style:{gridTemplateColumns:'1fr'}}}}>
@@ -417,7 +438,7 @@ export default function QuizTab(props) {
                 </Block>
               ) : (
                 <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
-                  <LabelSmall>{quizFeedback.correct ? '✅ Correct!' : `Was "${quizFeedback.expected}"`} {quizFeedback.correct ? `+${quizFeedback.xp} XP` : ''}</LabelSmall>
+                  <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{quizFeedback.correct ? <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> : <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} />}{quizFeedback.correct ? 'Correct!' : `Was "${quizFeedback.expected}"`} {quizFeedback.correct ? `+${quizFeedback.xp} XP` : ''}</span></LabelSmall>
                   {quizFeedback.expectedFa && <div style={{fontFamily:'IRANSans', direction:'rtl', fontSize:12, color:'#6b6b6b'}}>{quizFeedback.expectedFa}</div>}
                 </Block>
               )}
@@ -434,7 +455,7 @@ export default function QuizTab(props) {
                 <div style={{fontSize:26, fontWeight:800, marginTop:8, color: currentQuizWord.article ? genderColor(currentQuizWord.article) : '#000'}}>{currentQuizWord.article ? `${currentQuizWord.article} ` : ''}{currentQuizWord.german}</div>
                 <div style={{fontSize:11, color:'#9a9a9a', marginTop:2}}>{currentQuizWord.lektion} • {currentQuizWord.plural ? `Pl: ${currentQuizWord.plural}` : currentQuizWord.example?.slice(0,48) || currentQuizWord.type}</div>
               </div>
-              <Block marginTop="10px"><Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>🔊 Listen</Button></Block>
+              <Block marginTop="10px"><Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={14} aria-hidden="true" /> Listen</span></Button></Block>
               <div key={choiceAnimKey} className={`gs-choice-grid ${choiceTransition==='entering' ? 'gs-choice-entering' : ''} ${choiceTransition==='exiting' ? 'gs-choice-exiting' : ''} ${choiceTransition==='returning' ? 'gs-choice-returning' : ''}`} style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px', marginTop:'14px'}}>
                 {choiceOptions.map((opt,i)=> {
                   const en = typeof opt==='object'? opt.en : opt;
@@ -522,7 +543,7 @@ export default function QuizTab(props) {
               <div style={{fontSize:22, fontWeight:800, marginTop:8}}>{currentQuizWord.german} <span style={{color: genderColor(currentQuizWord.article), fontSize:14, fontWeight:600}}>{currentQuizWord.article || ''}</span></div>
               <div style={{fontSize:12, color:'#6b6b6b'}}>{currentQuizWord.meaning_en} • {currentQuizWord.lektion}</div>
               <Block marginTop="10px">
-                <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>🔊 German</Button>
+                <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={14} aria-hidden="true" /> German</span></Button>
               </Block>
               {!quizFeedback ? (
                 <>
@@ -532,7 +553,7 @@ export default function QuizTab(props) {
               ) : (
                 <>
                   <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
-                    <LabelSmall>{quizFeedback.correct ? `Correct! "${quizFeedback.expectedFa}" +${quizFeedback.xp} XP` : `"${quizAnswer.trim()}" is wrong → "${quizFeedback.expectedFa}"`}</LabelSmall>
+                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{quizFeedback.correct ? <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> : <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} />}{quizFeedback.correct ? `Correct! "${quizFeedback.expectedFa}" +${quizFeedback.xp} XP` : `"${quizAnswer.trim()}" is wrong → "${quizFeedback.expectedFa}"`}</span></LabelSmall>
                   </Block>
                   <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
                 </>
@@ -544,7 +565,7 @@ export default function QuizTab(props) {
               <DisplaySmall $style={{fontSize:16, color:'#6b6b6b', marginTop:'8px'}}>{currentQuizWord.meaning_en} — {currentQuizWord.lektion}</DisplaySmall>
               <div style={{fontFamily:'IRANSans', direction:'rtl', fontSize:13, color:'#9a9a9a'}}>{currentQuizWord.meaning_fa}</div>
               <Block marginTop="12px">
-                <Button size={SIZE.compact} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}>▶ Play German</Button>
+                <Button size={SIZE.compact} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Play size={14} aria-hidden="true" /> Play German</span></Button>
                 <Button size={SIZE.compact} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.example)} overrides={{BaseButton:{style:{marginLeft:'8px'}}}}>Sentence</Button>
               </Block>
               {!quizFeedback ? (
@@ -561,7 +582,7 @@ export default function QuizTab(props) {
               ) : (
                 <>
                   <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
-                    <LabelSmall>{quizFeedback.correct ? `Correct! "${quizFeedback.expected}" +${quizFeedback.xp} XP` : `"${quizAnswer.trim()}" → "${quizFeedback.expected}"`}</LabelSmall>
+                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{quizFeedback.correct ? <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> : <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} />}{quizFeedback.correct ? `Correct! "${quizFeedback.expected}" +${quizFeedback.xp} XP` : `"${quizAnswer.trim()}" → "${quizFeedback.expected}"`}</span></LabelSmall>
                     {!quizFeedback.correct && <ParagraphSmall margin="4px 0 0">Umlaute: ä ≠ a, ö ≠ o, ü ≠ u, ß ≠ ss</ParagraphSmall>}
                   </Block>
                   <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>

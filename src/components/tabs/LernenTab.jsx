@@ -9,6 +9,7 @@ import { BOOKS, lektionenForBook } from '../../data/menschen.js';
 import { getLektionMastery } from '../../utils/progress.js';
 import UberCard from '../cards/UberCard.jsx';
 import FlashCard from '../cards/FlashCard.jsx';
+import { PartyPopper, Package, Check, ICON_SIZES } from '../icons.jsx';
 
 export default function LernenTab({
   selectedBook, setSelectedBook, selectedLektions, setSelectedLektions, selectedBookMeta, scopeWords, weakForScope, studyQueue, packSize, setPackSize, packWords, packIdx, packAnswers, showPackSummary, flipped, setFlipped, listening, setListening, transcript, setTranscript, handlePackSwipe, handlePackRate, startNewPack, savePack, isSavingPack, progressMap, setActiveKey, onDiscard
@@ -35,7 +36,7 @@ export default function LernenTab({
               <Button key={l.key} size={SIZE.mini} kind={active?KIND.primary:KIND.secondary} shape={SHAPE.pill}
                 overrides={{BaseButton:{style:{fontWeight:700, fontSize:11, backgroundColor: active? '#0f0f12' : '#fff', color: active? '#fff':'#0f0f12', borderColor:'#e9e8f0'}}}}
                 onClick={()=> setSelectedLektions(prev=> prev.includes(l.lektion) ? prev.filter(x=>x!==l.lektion) : [...prev, l.lektion])}>
-                {active? '✓ ':''}{l.lektion}
+                {active && <Check size={12} aria-hidden="true" style={{ marginRight: 2, verticalAlign: -2 }} />}{l.lektion}
               </Button>
             );
           })}
@@ -64,7 +65,11 @@ export default function LernenTab({
         </>
       ) : showPackSummary ? (
         <UberCard styleOverride={{textAlign:'center', paddingTop:'24px', paddingBottom:'24px', backgroundColor:'#f7f7f7', borderColor:'#e5e5e5', marginTop:'12px'}}>
-          <div style={{fontSize:36}}>🎉</div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <span style={{ display: 'inline-flex', padding: 12, borderRadius: 999, background: '#fef3c7' }}>
+              <PartyPopper size={ICON_SIZES.empty} aria-hidden="true" style={{ color: '#b45309' }} />
+            </span>
+          </div>
           <Heading $style={{fontSize:18, margin:'8px 0 0'}}>Pack complete!</Heading>
           <ParagraphSmall margin="8px 0 0">{packAnswers.filter(a=>a.correct).length}/{packAnswers.length} correct • +{packAnswers.reduce((a,b)=>a+b.xp,0)} XP • {selectedBookMeta?.label} {selectedLektions.length? selectedLektions.join(', ') : 'Whole book'}</ParagraphSmall>
           <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
@@ -80,7 +85,11 @@ export default function LernenTab({
         </UberCard>
       ) : (
         <UberCard styleOverride={{ backgroundColor: '#f7f7f7', borderColor: '#e5e5e5', textAlign: 'center', paddingTop: '30px', paddingBottom: '30px', marginTop:'12px' }}>
-          <div style={{ fontSize: 32 }}>📦</div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <span style={{ display: 'inline-flex', padding: 12, borderRadius: 999, background: '#fff', border: '1px solid #e9e8f0' }}>
+              <Package size={ICON_SIZES.empty} aria-hidden="true" style={{ color: '#6b6b7a' }} />
+            </span>
+          </div>
           <Heading $style={{fontSize:16}}>Ready for a pack?</Heading>
           <ParagraphSmall color="#6b6b6b">Scoped to <b>{selectedBookMeta?.label} {selectedLektions.length? selectedLektions.join(', ') : 'whole book'}</b> • {scopeWords.length} words. Tap Start to begin.</ParagraphSmall>
           <Block marginTop="12px" display="flex" justifyContent="center"><Button shape={SHAPE.pill} onClick={startNewPack}>Start {packSize}-word pack</Button></Block>

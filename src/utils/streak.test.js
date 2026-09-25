@@ -168,15 +168,53 @@ describe('freeze system', () => {
 
 describe('milestones', () => {
   it('tiers resolve per spec and stay data-driven', () => {
-    assert.equal(getMilestoneForStreak(1).name, 'Streak');
-    assert.equal(getMilestoneForStreak(9).name, 'Streak');
-    assert.equal(getMilestoneForStreak(10).name, 'Fire Streak');
-    assert.equal(getMilestoneForStreak(19).icon, '🔥');
-    assert.equal(getMilestoneForStreak(20).name, 'Tsunami Streak');
-    assert.equal(getMilestoneForStreak(30).name, 'Ultra Tsunami Streak');
-    assert.equal(getMilestoneForStreak(40).name, 'Earthquake Streak');
-    assert.equal(getMilestoneForStreak(49).name, 'Earthquake Streak');
-    assert.equal(STREAK_MILESTONES.length, 5);
+    assert.equal(getMilestoneForStreak(1).name, 'Ember');
+    assert.equal(getMilestoneForStreak(9).name, 'Ember');
+    assert.equal(getMilestoneForStreak(10).name, 'Inferno');
+    assert.equal(getMilestoneForStreak(29).name, 'Inferno');
+    assert.equal(getMilestoneForStreak(19).icon, 'flame');
+    assert.equal(getMilestoneForStreak(30).name, 'Thunderstorm');
+    assert.equal(getMilestoneForStreak(30).icon, 'zap');
+    assert.equal(getMilestoneForStreak(59).name, 'Thunderstorm');
+    assert.equal(getMilestoneForStreak(60).name, 'Tsunami');
+    assert.equal(getMilestoneForStreak(60).icon, 'waves');
+    assert.equal(getMilestoneForStreak(89).name, 'Tsunami');
+    assert.equal(getMilestoneForStreak(90).name, 'Hurricane');
+    assert.equal(getMilestoneForStreak(90).icon, 'wind');
+    assert.equal(getMilestoneForStreak(149).name, 'Hurricane');
+    assert.equal(getMilestoneForStreak(150).name, 'Volcano');
+    assert.equal(getMilestoneForStreak(150).icon, 'mountain');
+    assert.equal(getMilestoneForStreak(249).name, 'Volcano');
+    assert.equal(getMilestoneForStreak(250).name, 'Solar Storm');
+    assert.equal(getMilestoneForStreak(250).icon, 'sun');
+    assert.equal(getMilestoneForStreak(364).name, 'Solar Storm');
+    assert.equal(getMilestoneForStreak(365).name, 'Cosmic');
+    assert.equal(getMilestoneForStreak(365).icon, 'orbit');
+    assert.equal(getMilestoneForStreak(729).name, 'Cosmic');
+    assert.equal(getMilestoneForStreak(730).name, 'Legendary');
+    assert.equal(getMilestoneForStreak(730).icon, 'crown');
+    assert.equal(getMilestoneForStreak(1500).name, 'Legendary');
+    assert.equal(getMilestoneForStreak(0).name, 'No streak');
+    assert.equal(STREAK_MILESTONES.length, 9);
+  });
+  it('completed days stamp their earned tier (no recoloring of history)', () => {
+    const r = applyStreakActivities({ activities: consecutive('2026-08-01', 35), today: '2026-09-04' });
+    const byDate = Object.fromEntries(r.days.map((d) => [d.date, d]));
+    assert.equal(byDate['2026-08-01'].streakLength, 1);
+    assert.equal(byDate['2026-08-01'].tierLevel, 1);
+    assert.equal(byDate['2026-08-10'].streakLength, 10);
+    assert.equal(byDate['2026-08-10'].tierLevel, 2);
+    assert.equal(byDate['2026-08-30'].streakLength, 30);
+    assert.equal(byDate['2026-08-30'].tierLevel, 3);
+    const cal = buildStreakMonth({ days: r.days, today: '2026-09-04', year: 2026, month: 8 });
+    const cell1 = cal.cells.find((c) => c.key === '2026-08-01');
+    const cell30 = cal.cells.find((c) => c.key === '2026-08-30');
+    assert.equal(cell1.tierLevel, 1);
+    assert.equal(cell1.tierName, 'Ember');
+    assert.equal(cell1.streakLength, 1);
+    assert.equal(cell30.tierLevel, 3);
+    assert.equal(cell30.tierName, 'Thunderstorm');
+    assert.equal(cell30.streakLength, 30);
   });
   it('day 10 awards exactly one freeze, idempotently', () => {
     const r = applyStreakActivities({ activities: consecutive('2026-09-01', 10), today: '2026-09-10' });
@@ -201,14 +239,14 @@ describe('milestones', () => {
   it('next-milestone progress exposes days remaining', () => {
     const days = Array.from({ length: 27 }, (_, i) => ({ date: addUtcDays('2026-09-01', i), status: 'completed' }));
     const s = summarizeStreak({ days, today: '2026-09-27' });
-    assert.equal(s.milestone.name, 'Tsunami Streak');
+    assert.equal(s.milestone.name, 'Inferno');
     assert.equal(s.daysToNextTier, 3);
-    assert.equal(s.nextTier.name, 'Ultra Tsunami Streak');
+    assert.equal(s.nextTier.name, 'Thunderstorm');
     assert.ok(s.progress > 0 && s.progress <= 1);
   });
   it('getNextMilestone reports the next reward threshold', () => {
     assert.equal(getNextMilestone(27).nextReward.milestone, 30);
-    assert.equal(getNextMilestone(40).nextReward, null);
+    assert.equal(getNextMilestone(40).nextReward.milestone, 50);
   });
 });
 

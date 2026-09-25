@@ -609,6 +609,11 @@ function serializeStreakDay(d) {
     firstAt: d.firstAt ?? null,
     lastAt: d.lastAt ?? null,
     updatedAt: d.updatedAt ?? null,
+    // Persistent evolution history — tiles render their saved tier forever.
+    streakLength: Number.isFinite(Number(d.streakLength)) ? Number(d.streakLength) : null,
+    tierLevel: Number.isFinite(Number(d.tierLevel)) ? Number(d.tierLevel) : null,
+    tierName: typeof d.tierName === 'string' ? d.tierName : null,
+    tierIcon: typeof d.tierIcon === 'string' ? d.tierIcon : null,
   };
 }
 
@@ -643,12 +648,27 @@ export async function ensureStreakBaseline(now = Date.now()) {
     const length = Math.min(streak, STREAK_LEGACY_SEED_CAP);
     const start = addUtcDays(last, -(length - 1));
     const rows = [];
+    // Stamp evolution tiers so the seeded trailing run renders its timeline
+    // (dynamic import would cycle — tiers mirror src/utils/streak.js ranges).
+    const tierForLength = (n) => {
+      if (n >= 730) return { tierLevel: 9, tierName: 'Legendary', tierIcon: 'crown' };
+      if (n >= 365) return { tierLevel: 8, tierName: 'Cosmic', tierIcon: 'orbit' };
+      if (n >= 250) return { tierLevel: 7, tierName: 'Solar Storm', tierIcon: 'sun' };
+      if (n >= 150) return { tierLevel: 6, tierName: 'Volcano', tierIcon: 'mountain' };
+      if (n >= 90) return { tierLevel: 5, tierName: 'Hurricane', tierIcon: 'wind' };
+      if (n >= 60) return { tierLevel: 4, tierName: 'Tsunami', tierIcon: 'waves' };
+      if (n >= 30) return { tierLevel: 3, tierName: 'Thunderstorm', tierIcon: 'zap' };
+      if (n >= 10) return { tierLevel: 2, tierName: 'Inferno', tierIcon: 'flame' };
+      return { tierLevel: 1, tierName: 'Ember', tierIcon: 'flame' };
+    };
     for (let i = 0; i < length; i += 1) {
       const date = addUtcDays(start, i);
       const at = Date.parse(`${date}T12:00:00Z`);
+      const streakLength = i + 1;
       rows.push({
         date, status: 'completed', sessions: {}, sources: { legacy: 1 },
         attempts: 0, xp: 0, firstAt: at, lastAt: at, updatedAt: now,
+        streakLength, ...tierForLength(streakLength),
       });
     }
     await db.streakDays.bulkPut(rows);
@@ -830,6 +850,10 @@ export async function mergeServerStreak(server, opts = {}) {
           date: d.date, status: d.status, sessions: {}, sources: { sync: 1 },
           attempts: Number(d.attempts) || 0, xp: Number(d.xp) || 0,
           firstAt: d.firstAt ?? null, lastAt: d.lastAt ?? null, updatedAt: now,
+          streakLength: Number.isFinite(Number(d.streakLength)) ? Number(d.streakLength) : null,
+          tierLevel: Number.isFinite(Number(d.tierLevel)) ? Number(d.tierLevel) : null,
+          tierName: typeof d.tierName === 'string' ? d.tierName : null,
+          tierIcon: typeof d.tierIcon === 'string' ? d.tierIcon : null,
         });
       } else if (local.status === 'protected' && d.status === 'completed') {
         await db.streakDays.put({
@@ -837,6 +861,10 @@ export async function mergeServerStreak(server, opts = {}) {
           status: 'completed',
           attempts: Math.max(local.attempts || 0, Number(d.attempts) || 0),
           xp: Math.max(local.xp || 0, Number(d.xp) || 0),
+          streakLength: Number.isFinite(Number(d.streakLength)) ? Number(d.streakLength) : (local.streakLength ?? null),
+          tierLevel: Number.isFinite(Number(d.tierLevel)) ? Number(d.tierLevel) : (local.tierLevel ?? null),
+          tierName: typeof d.tierName === 'string' ? d.tierName : (local.tierName ?? null),
+          tierIcon: typeof d.tierIcon === 'string' ? d.tierIcon : (local.tierIcon ?? null),
           updatedAt: now,
         });
         await db.streakFreezeLedger.where('ref').equals(`protect-${d.date}`).delete();
