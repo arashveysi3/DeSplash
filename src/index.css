@@ -349,3 +349,28 @@ input::placeholder, textarea::placeholder {
   .gs-streak-pop { animation: none !important; opacity: 1 !important; transform: none !important; }
   .gs-celebrate-overlay, .gs-celebrate-card { animation: none !important; }
 }
+
+/* === Button animations === */
+/* Base: all animated buttons get smooth transitions */
+.gs-btn {
+  transition: background-color 160ms ease,
+              border-color 160ms ease,
+              color 160ms ease,
+              box-shadow 160ms ease,
+              transform 100ms ease;
+  will-change: transform;
+}
+
+/* Default press: subtle scale-down */
+.gs-btn:active {
+  transform: scale(0.97);
+  transition-duration: 50ms;
+}
+
+/* Disabled buttons: no animation */
+.gs-btn[aria-disabled="true"],
+.gs-btn[disabled] {
+  transition: none !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}

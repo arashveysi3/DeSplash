@@ -1,6 +1,6 @@
 import './SplashScreen.css';
 
-export default function SplashScreen({ phase = 'visible' }) {
+export default function SplashScreen({ phase = 'visible', action = null }) {
   return (
     <div
       className={`loading-screen${phase === 'leaving' ? ' is-leaving' : ''}`}
@@ -22,6 +22,14 @@ export default function SplashScreen({ phase = 'visible' }) {
         <div className="loading-track" aria-label="App wird geladen">
           <span />
         </div>
+        {action && (
+          <button className="loading-continue" type="button" onClick={action.onClick}>
+            <span>{action.label}</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h13m-5-5 5 5-5 5" />
+            </svg>
+          </button>
+        )}
       </div>
       <span className="loading-caption">Wörter, die bleiben.</span>
     </div>

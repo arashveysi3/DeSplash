@@ -3,7 +3,6 @@ import { Tabs, Tab } from 'baseui/tabs-motion';
 import { Block } from 'baseui/block';
 import { HeadingLevel } from 'baseui/heading';
 import { Notification } from 'baseui/notification';
-import { Spinner } from 'baseui/spinner';
 import { db, initDB, getStats, COMPETITORS, getAllWords, addCustomWord, deleteCustomWord, fetchOnlineLeaderboard, submitOnlineScore, deleteOnlineScore, resetOnlineBoard, recordQuizAttempts, getQuizAttempts, recordLearningActivity, applyLearningXp, mergeServerStreak } from './db';
 import { signup, login, fetchMe, logout, fetchUsers, deleteUser, fetchProgress, saveProgress, saveProgressOne, fetchStatsOnline, saveStatsOnline, submitStreakActivity, fetchStreakState } from './auth';
 import { getMilestoneForStreak } from './utils/streak.js';
@@ -152,6 +151,10 @@ function selectPlausibleDistractors(targetWord, pool, need = 3) {
 export default function App() {
   const [activeKey, setActiveKey] = useState('0');
   const [splashPhase, setSplashPhase] = useState('visible');
+  const [splashCanContinue, setSplashCanContinue] = useState(false);
+  const [isFirstLaunch] = useState(() => {
+    try { return !localStorage.getItem('gs_splash_seen'); } catch { return false; }
+  });
   const [stats, setStats] = useState({ xp: 0, streak: 0, lastStudyDate: null, totalReviews: 0 });
   const [search, setSearch] = useState('');
   const [progressMap, setProgressMap] = useState({});
@@ -178,15 +181,30 @@ export default function App() {
   const [authForm, setAuthForm] = useState({ username: '', email: '', password: '' });
   const [usersList, setUsersList] = useState([]);
 
-  // Animated splash screen (from design zip): visible → leaving → hidden
+  // Animated splash screen: doubles as the loading screen while the DB initializes.
+  // First launch: waits for the user to tap "Los geht's" (no auto-skip).
+  // Returning launches: auto-dismisses once the loading bar has filled.
   useEffect(() => {
-    const leaveTimer = window.setTimeout(() => setSplashPhase('leaving'), 2400);
-    const hideTimer = window.setTimeout(() => setSplashPhase('hidden'), 3100);
-    return () => {
-      window.clearTimeout(leaveTimer);
-      window.clearTimeout(hideTimer);
-    };
-  }, []);
+    if (splashPhase === 'hidden') return;
+    if (!isFirstLaunch) {
+      const leaveTimer = window.setTimeout(() => setSplashPhase('leaving'), 2600);
+      const hideTimer = window.setTimeout(() => setSplashPhase('hidden'), 3300);
+      return () => {
+        window.clearTimeout(leaveTimer);
+        window.clearTimeout(hideTimer);
+      };
+    }
+    if (dbReady) {
+      const readyTimer = window.setTimeout(() => setSplashCanContinue(true), 2600);
+      return () => window.clearTimeout(readyTimer);
+    }
+  }, [isFirstLaunch, dbReady, splashPhase]);
+
+  const handleSplashContinue = () => {
+    try { localStorage.setItem('gs_splash_seen', '1'); } catch {}
+    setSplashPhase('leaving');
+    window.setTimeout(() => setSplashPhase('hidden'), 700);
+  };
 
   // Book / Lektion scope — multi-select support
   const [selectedBook, setSelectedBook] = useState(() => localStorage.getItem('gs_book') || 'a1.1');
@@ -1704,7 +1722,7 @@ export default function App() {
     setActiveKey('0');
   };
 
-  if (!dbReady) return <Block display="flex" justifyContent="center" alignItems="center" height="100vh"><Spinner size={48} /></Block>;
+  if (!dbReady) return <SplashScreen phase="visible" />;
 
   const selectedBookMeta = BOOKS.find(b=> b.id===selectedBook);
   const quizBookMeta = BOOKS.find(b=> b.id===quizBook);
@@ -1718,7 +1736,12 @@ export default function App() {
 
   return (
     <HeadingLevel>
-      {splashPhase !== 'hidden' && <SplashScreen phase={splashPhase} />}
+      {splashPhase !== 'hidden' && (
+        <SplashScreen
+          phase={splashPhase}
+          action={isFirstLaunch && splashCanContinue ? { label: "Los geht's", onClick: handleSplashContinue } : null}
+        />
+      )}
       <Header stats={stats} authUser={authUser} onAdd={()=> setShowAdd(true)} onLogout={handleLogout} setShowAuth={setShowAuth} setAuthMode={setAuthMode} setActiveKey={setActiveKey} />
       <PWAUpdater />
       {toast && (
