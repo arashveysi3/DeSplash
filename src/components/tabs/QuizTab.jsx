@@ -54,6 +54,8 @@ export default function QuizTab(props) {
     // rain
     rainQueue, rainIdx, rainOptions, rainTime, rainLives, rainScore, rainFeedback, rainActive, setRainActive, handleRainPick, startRainGame,
     setQuizFeedback,
+    // Diktat-Check: German spelling 4-choice (single word, article ignored)
+    diktatOptions, diktatKind, diktatCorrect, diktatHint, handleDiktatSelect,
     // completion report (Issue #2)
     lastQuizReport, showQuizReport, setShowQuizReport, onRetakeQuiz, onPracticeLektion, onPracticeWeak, onGoToBook,
   } = props;
@@ -104,11 +106,21 @@ export default function QuizTab(props) {
             <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='mixed'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('mixed')}>Mixed</Button>
             <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='choice'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('choice')}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Sparkles size={14} aria-hidden="true" /> 4-Choice</span></Button>
             <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='fa'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('fa')}>DE → فارسی</Button>
+            <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='diktat'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('diktat')}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><CheckCircle2 size={14} aria-hidden="true" /> Diktat-Check</span></Button>
           </Block>
           <Block display="flex" gridGap="8px" marginTop="12px">
-            <Button shape={SHAPE.pill} onClick={()=> startQuiz(quizMode, 5)}>Start 5</Button>
-            <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 10)}>Start 10</Button>
-            <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 20)}>Start 20</Button>
+            {quizMode === 'diktat' ? (
+              <>
+                <Button shape={SHAPE.pill} onClick={()=> startQuiz('diktat', 20)}>Start 20-Pack</Button>
+                <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz('diktat', 10)}>Start 10</Button>
+              </>
+            ) : (
+              <>
+                <Button shape={SHAPE.pill} onClick={()=> startQuiz(quizMode, 5)}>Start 5</Button>
+                <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 10)}>Start 10</Button>
+                <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 20)}>Start 20</Button>
+              </>
+            )}
           </Block>
           <ParagraphSmall color="#9a9a9a" marginTop="8px">{quizScopeWords.length} words in {quizBookMeta?.label} {quizLektions.length? quizLektions.join(', ') : 'whole book'} • {quizScopeWords.filter(w=> weakIds.has(w.id)).length} weak • {quizScopeWords.filter(w=> w.article).length} nouns</ParagraphSmall>
           {lastQuizReport && !showQuizReport && (
@@ -120,6 +132,9 @@ export default function QuizTab(props) {
           )}
         </UberCard>
         <Block display="flex" flexDirection="column" gridGap="10px" marginTop="12px">
+          <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px', borderLeftWidth:'3px', borderLeftColor:'#059669'}}>
+            <ParagraphSmall margin={0}><b>Diktat-Check NEW — 20-Pack:</b> German spelling 4-choice, single words only (no article). Half the cards ask <b>“Which is CORRECT?”</b> (1 right + 3 misspelled), half ask <b>“Which is WRONG?”</b> (3 right + 1 misspelled). <b>+{QUIZ_XP.diktat} XP</b> per correct.</ParagraphSmall>
+          </UberCard>
           <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px', borderLeftWidth:'3px', borderLeftColor:'#4f46e5'}}>
             <ParagraphSmall margin={0}><b>4-Choice NEW:</b> German word → pick 1 of 4 English meanings. Distractors from same Lektion so you really have to know it. <b>+{QUIZ_XP.choice} XP</b> per correct. Most efficient way to earn!</ParagraphSmall>
           </UberCard>
@@ -419,6 +434,114 @@ export default function QuizTab(props) {
           ) : null}
           {rainActive && <Block marginTop="12px" display="flex" justifyContent="center"><Button kind={KIND.secondary} size={SIZE.mini} shape={SHAPE.pill} onClick={()=> { setRainActive(false); setQuizStarted(false); }}>Exit storm</Button></Block>}
         </>
+      ) : quizMode==='diktat' ? (
+      <>
+      <ProgressBar value={quizQueue.length ? (quizIdx/quizQueue.length)*100 : 0} overrides={{ BarProgress:{style:{backgroundColor:'#059669'}}, BarContainer:{style:{backgroundColor:'#eee', height:'4px', borderRadius:'999px'}}, Bar:{style:{height:'4px'}} }} />
+      {currentQuizWord && (
+        <UberCard styleOverride={{marginTop:'12px', minHeight:'280px'}}>
+          <Block textAlign="center">
+            <LabelSmall color="#059669">{diktatKind === 'find-error' ? 'DIKTAT-CHECK — Welches ist FALSCH geschrieben?' : 'DIKTAT-CHECK — Welches ist RICHTIG geschrieben?'}</LabelSmall>
+            <div style={{fontSize:11, color:'#9a9a9a', marginTop:2}}>Frage {quizIdx + 1}/{quizQueue.length} • Einzelwort • ohne Artikel • {currentQuizWord.lektion}</div>
+            <div className={`gs-question ${questionFade ? 'gs-question-fading' : ''}`} style={{transition:'opacity 320ms ease'}}>
+              {diktatKind === 'find-correct' ? (
+                <>
+                  <div style={{fontSize:15, fontWeight:700, marginTop:8, color:'#0f0f12'}}>{diktatHint?.en || currentQuizWord.meaning_en || currentQuizWord.english}</div>
+                  {diktatHint?.fa && <div style={{fontFamily:'IRANSans', direction:'rtl', fontSize:12, color:'#6b6b7a'}}>{diktatHint.fa}</div>}
+                  <Block marginTop="8px"><Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(diktatCorrect || currentQuizWord.german)}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={14} aria-hidden="true" /> Anhören</span></Button></Block>
+                </>
+              ) : (
+                <div style={{fontSize:13, color:'#6b6b6b', marginTop:8}}>3 sind richtig geschrieben — 1 hat einen Fehler. Finde den Fehler!</div>
+              )}
+            </div>
+            <div key={choiceAnimKey} className={`gs-choice-grid ${choiceTransition==='entering' ? 'gs-choice-entering' : ''} ${choiceTransition==='exiting' ? 'gs-choice-exiting' : ''} ${choiceTransition==='returning' ? 'gs-choice-returning' : ''}`} style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px', marginTop:'14px'}}>
+              {(diktatOptions || []).map((opt,i)=> {
+                const de = typeof opt === 'object' ? (opt.de || opt.text || opt.en) : opt;
+                const isCorrect = choiceCorrectLocked && diktatCorrect ? de === diktatCorrect : false;
+                const isEliminated = choiceEliminated ? choiceEliminated.has(de) : false;
+                const isLocked = !!choiceCorrectLocked;
+                const isLeft = i % 2 === 0;
+                let bg = '#fff';
+                let borderColor = '#e9e8f0';
+                let color = '#0f0f12';
+                let opacity = 1;
+                let pointerEvents = 'auto';
+                let transform = undefined;
+                let boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
+                if (isLocked) {
+                  if (isCorrect) {
+                    bg = '#dcfce7';
+                    borderColor = '#16a34a';
+                    boxShadow = '0 4px 12px rgba(22,163,74,0.18)';
+                  } else {
+                    bg = '#f3f3f3';
+                    borderColor = '#e5e5e5';
+                    color = '#9aa0b2';
+                    opacity = 0.52;
+                    pointerEvents = 'none';
+                  }
+                } else if (isEliminated) {
+                  bg = '#f1f1f3';
+                  borderColor = '#e0e0e6';
+                  color = '#9aa0b2';
+                  opacity = 0.48;
+                  pointerEvents = 'none';
+                }
+                if (choiceTransition==='exiting') {
+                  transform = isLeft ? 'translateX(-130%)' : 'translateX(130%)';
+                  opacity = 0;
+                }
+                const isReturning = choiceTransition==='returning';
+                const isEntering = choiceTransition==='entering';
+                const animDelay = (isEntering || isReturning || choiceTransition==='idle') ? `${i*65}ms` : '0ms';
+                return (
+                  <button
+                    key={de+'-'+i+'-'+choiceAnimKey}
+                    onClick={()=> handleDiktatSelect && handleDiktatSelect(de)}
+                    disabled={isLocked || isEliminated || choiceTransition==='exiting' || isReturning}
+                    className={`gs-choice-tile ${isCorrect && isLocked ? 'gs-choice-correct' : ''} ${isEliminated ? 'gs-choice-eliminated' : ''} ${isEntering ? 'gs-choice-enter' : ''} ${isReturning ? (isLeft ? 'gs-choice-return-left' : 'gs-choice-return-right') : ''}`}
+                    style={{
+                      backgroundColor: bg,
+                      color,
+                      border: `1.8px solid ${borderColor}`,
+                      borderRadius:'16px',
+                      minHeight:'64px',
+                      padding:'10px',
+                      fontWeight:800,
+                      fontSize:17,
+                      display:'flex',
+                      alignItems:'center',
+                      justifyContent:'center',
+                      cursor: (isLocked || isEliminated || choiceTransition==='exiting' || isReturning) ? 'default' : 'pointer',
+                      opacity: isReturning ? undefined : opacity,
+                      transform: isReturning ? undefined : transform,
+                      transition: choiceTransition==='exiting' ? 'transform 380ms cubic-bezier(0.4,0,0.2,1), opacity 280ms ease, background-color 200ms, border-color 200ms' : 'background-color 200ms, border-color 200ms, opacity 200ms, transform 200ms',
+                      boxShadow,
+                      animationDelay: animDelay,
+                      pointerEvents,
+                      lineHeight:1.2,
+                      width:'100%',
+                    }}
+                  >
+                    {de}
+                  </button>
+                );
+              })}
+            </div>
+            {choiceCorrectLocked && (
+              <Block marginTop="12px" padding="10px" backgroundColor="#dcfce7" overrides={{Block:{style:{borderRadius:'12px'}}}}>
+                <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} />{diktatKind === 'find-error' ? `Fehler gefunden! Richtig: "${currentQuizWord.german}"` : `Richtig: "${diktatCorrect}"`} +{QUIZ_XP.diktat} XP</span></LabelSmall>
+                {diktatKind === 'find-error'
+                  ? <div style={{fontSize:12, color:'#6b6b6b', marginTop:2}}>{currentQuizWord.meaning_en || currentQuizWord.english || ''}</div>
+                  : <div style={{fontSize:12, color:'#6b6b6b', marginTop:2}}>{currentQuizWord.lektion} • {currentQuizWord.meaning_en || currentQuizWord.english || ''}</div>}
+              </Block>
+            )}
+          </Block>
+        </UberCard>
+      )}
+      <Block marginTop="12px" display="flex" justifyContent="center">
+        <Button kind={KIND.secondary} size={SIZE.mini} shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setQuizFeedback && setQuizFeedback(null); }}>Exit quiz</Button>
+      </Block>
+      </>
       ) : (
       <>
       <ProgressBar value={quizQueue.length ? (quizIdx/quizQueue.length)*100 : 0} overrides={{ BarProgress:{style:{backgroundColor:'#000'}}, BarContainer:{style:{backgroundColor:'#eee', height:'4px', borderRadius:'999px'}}, Bar:{style:{height:'4px'}} }} />

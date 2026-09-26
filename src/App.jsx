@@ -9,6 +9,7 @@ import { getMilestoneForStreak } from './utils/streak.js';
 import { sm2, qualityFromLabel, XP_MAP, QUIZ_XP, GAME_XP } from './srs';
 import { calcQuizReport } from './utils/analytics.js';
 import { todayKey, dayStartOf, buildExposureIndex, partitionPool, orderFallback, takeUpTo, selectGameSet } from './utils/selection.js';
+import { baseGerman, filterSingleWordPool, buildDiktatQuestion } from './utils/diktat.js';
 import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
 import PWAUpdater from './components/PWAUpdater.jsx';
 import SplashScreen from './components/SplashScreen.jsx';
@@ -264,6 +265,13 @@ export default function App() {
   // 4-answer choice quiz
   const [choiceOptions, setChoiceOptions] = useState([]);
   const [choicePick, setChoicePick] = useState('');
+  // Diktat-Check: 20-pack spelling quiz (single word only, article ignored).
+  // kind per question: 'find-correct' (1 correct + 3 misspelled, pick correct)
+  // or 'find-error' (3 correct app words + 1 misspelled, pick wrong).
+  const [diktatOptions, setDiktatOptions] = useState([]);
+  const [diktatKind, setDiktatKind] = useState('find-correct');
+  const [diktatCorrect, setDiktatCorrect] = useState('');
+  const [diktatHint, setDiktatHint] = useState(null); // { en, fa } for find-correct
   // choice interaction states (correct/wrong behavior + animations)
   const [choiceEliminated, setChoiceEliminated] = useState(new Set());
   const [choiceCorrectLocked, setChoiceCorrectLocked] = useState(false);
@@ -780,7 +788,13 @@ export default function App() {
     // For vocab games, filter out long educational sentences — keep them for SatzBau instead
     // For general quiz modes (dictation, artikel, choice, fa), we keep vocab-like only
     const vocabPool = (mode === 'satz' ? pool : filterVocabForGames(pool));
-    const basePool = vocabPool.length >= 4 ? vocabPool : pool;
+    let basePool = vocabPool.length >= 4 ? vocabPool : pool;
+    // Diktat-Check: strictly single-word items only (no multi-word, article ignored)
+    if (mode === 'diktat') {
+      const single = filterSingleWordPool(basePool);
+      basePool = single.length >= 4 ? single : filterSingleWordPool(pool);
+      if (basePool.length < 4) return [];
+    }
     // Shared eligibility: strong words at their daily cap drop out here
     // (weak/new/learning are never capped). Fallback tops up small pools.
     const { eligible, capped } = partitionPool(basePool, selectionCtx);
@@ -819,6 +833,14 @@ export default function App() {
     const opts = shuffleArray([...distractors, correct]);
     return { correct, opts }
   }, []);
+
+  const buildDiktatOptions = useCallback((word, pool) => {
+    // App-source only: target + fillers come from the scoped word pool,
+    // misspellings are local orthographic variants (see utils/diktat.js).
+    const singlePool = filterSingleWordPool(pool && pool.length ? pool : quizScopeWords);
+    const q = buildDiktatQuestion(word, singlePool.length >= 4 ? singlePool : filterSingleWordPool(pool || []));
+    return q;
+  }, [quizScopeWords]);
 
   const startQuiz = (mode, count=10) => {
     primeAudio();
@@ -859,6 +881,13 @@ export default function App() {
       const { opts } = buildChoiceOptions(q[0], quizScopeWords);
       setChoiceOptions(opts);
     }
+    if (mode === 'diktat' && q[0]) {
+      const dq = buildDiktatOptions(q[0], quizScopeWords);
+      setDiktatOptions(dq.options);
+      setDiktatKind(dq.kind);
+      setDiktatCorrect(dq.correct);
+      setDiktatHint(dq.kind === 'find-correct' ? { en: q[0].meaning_en || q[0].english || '', fa: q[0].meaning_fa || '' } : null);
+    }
     setTimeout(()=> setChoiceTransition('idle'), 560);
     setTimeout(()=> { if ((mode==='dictation' || mode==='mixed') && q[0]) { const w=q[0]; if (mode==='dictation' || (mode==='mixed' && !w.article)) speakGerman(w.german); } }, 300);
   };
@@ -868,6 +897,8 @@ export default function App() {
   const submitQuiz = async () => {
     primeAudio();
     if (!currentQuizWord) return;
+    // Diktat-Check + 4-Choice use direct tile taps (no Check button).
+    if (quizMode === 'diktat' || quizMode === 'choice') return;
     // idempotency guard: prevent double processing of same quiz index
     if (quizSubmitLockRef.current) return;
     if (quizProcessedIdxRef.current === quizIdx && quizFeedback) return;
@@ -1016,8 +1047,15 @@ export default function App() {
       const { opts } = buildChoiceOptions(w, quizScopeWords);
       setChoiceOptions(opts);
     }
+    if (quizMode === 'diktat' && w) {
+      const dq = buildDiktatOptions(w, quizScopeWords);
+      setDiktatOptions(dq.options);
+      setDiktatKind(dq.kind);
+      setDiktatCorrect(dq.correct);
+      setDiktatHint(dq.kind === 'find-correct' ? { en: w.meaning_en || w.english || '', fa: w.meaning_fa || '' } : null);
+    }
     const isArtikelNext = quizMode==='artikel' || (quizMode==='mixed' && w.article && nextIdx %2===0);
-    if (!isArtikelNext && quizMode !== 'fa' && quizMode !== 'choice') setTimeout(()=> speakGerman(w.german), 250);
+    if (!isArtikelNext && quizMode !== 'fa' && quizMode !== 'choice' && quizMode !== 'diktat') setTimeout(()=> speakGerman(w.german), 250);
   };
 
   // Direct choice selection handler (new 4-choice behavior: correct => green + transition, wrong => gray eliminated)
@@ -1138,6 +1176,121 @@ export default function App() {
           setChoiceTransition('idle');
         }
         // do not call speak for choice
+      }, 400);
+    }, 900);
+  };
+
+  // Direct diktat selection handler (Diktat-Check: DE spelling 4-choice).
+  // Same interaction pattern as 4-Choice: wrong => gray eliminated (retry),
+  // correct => green lock + auto-advance. First-try determines correctness.
+  const handleDiktatSelect = async (picked) => {
+    if (!currentQuizWord || quizMode !== 'diktat') return;
+    if (choiceTransition === 'exiting' || choiceCorrectLocked) return;
+    const pickedDe = typeof picked === 'object' ? (picked.de || picked.text || picked.en) : picked;
+    if (!pickedDe || choiceEliminated.has(pickedDe)) return;
+    if (choiceProcessedRef.current) return;
+    const isCorrect = pickedDe === diktatCorrect;
+    const xpAdd = isCorrect ? QUIZ_XP.diktat : 0;
+    if (!isCorrect) {
+      primeAudio();
+      playIncorrect();
+      choiceWrongRef.current += 1;
+      setChoiceEliminated(prev => { const s = new Set(prev); s.add(pickedDe); return s; });
+      setToast(diktatKind === 'find-error' ? `"${pickedDe}" ist richtig geschrieben — weiter suchen` : `"${pickedDe}" ist falsch — try another`);
+      setTimeout(()=> setToast(null), 1100);
+      return;
+    }
+    if (choiceProcessedRef.current) return;
+    choiceProcessedRef.current = true;
+    quizSubmitLockRef.current = true;
+    setQuizSubmitting(true);
+    quizProcessedIdxRef.current = quizIdx;
+    setChoiceCorrectLocked(true);
+    setChoiceCorrectEn(pickedDe);
+    const firstTry = choiceWrongRef.current === 0;
+    const cAttempt = { wordId: currentQuizWord.id, book: currentQuizWord.book || null, lektion: currentQuizWord.lektion || null, correct: firstTry, xp: xpAdd, mode: 'diktat' };
+    quizDetailRef.current = [...quizDetailRef.current, cAttempt];
+    primeAudio();
+    playCorrect();
+    if (xpAdd >= 8) setTimeout(()=> playXp(), 160);
+    const q = qualityFromLabel(firstTry ? 'Good' : 'Again');
+    const prev = progressMap[currentQuizWord.id] || { interval:0, repetition:0, ease:2.5, due:0, lapses:0 };
+    const next = sm2(prev, q);
+    if (!firstTry) setWeakIds(s=> { const n=new Set(s); n.add(currentQuizWord.id); return n; });
+    if (authToken && authUser) {
+      setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, level: currentQuizWord.level, book: currentQuizWord.book, lektion: currentQuizWord.lektion, ...next }}));
+      try { await saveProgressOne({ id: currentQuizWord.id, level: currentQuizWord.level, book: currentQuizWord.book, lektion: currentQuizWord.lektion, ...next }); } catch {}
+    } else {
+      await db.progress.put({ id: currentQuizWord.id, level: currentQuizWord.level, book: currentQuizWord.book, lektion: currentQuizWord.lektion, ...next });
+      setProgressMap(m=> ({...m, [currentQuizWord.id]: {id: currentQuizWord.id, ...next }}));
+    }
+    if (xpAdd > 0) {
+      const latest = await applyLearningXp(xpAdd, 1);
+      setStats(latest);
+      if (authToken && authUser) {
+        try { await saveStatsOnline(latest); } catch {}
+        if (useOnline) submitOnlineScore(authUser.username, latest.xp).then(b=>{ if(b) setOnlineBoard(b); }).catch(()=>{});
+      } else {
+        if (useOnline && username) submitOnlineScore(username, latest.xp).then(b=>{ if(b) setOnlineBoard(b);}).catch(()=>{});
+      }
+    }
+    // Diktat counts every solved item (elimination retries don't inflate totals).
+    setQuizScore(sc=> ({ correct: sc.correct+1, total: sc.total+1, xp: sc.xp + xpAdd }));
+    const bare = baseGerman(currentQuizWord);
+    setQuizFeedback({ correct: true, expected: bare, expectedEn: currentQuizWord.meaning_en || currentQuizWord.english, expectedFa: currentQuizWord.meaning_fa, xp: xpAdd });
+    setToast(`+${xpAdd} XP`);
+    setTimeout(()=> setToast(null), 1200);
+    setTimeout(()=> {
+      setQuestionFade(true);
+      setChoiceTransition('exiting');
+      setTimeout(async ()=> {
+        if (quizIdx +1 >= quizQueue.length) {
+          setQuizFeedback(null);
+          setQuizStarted(false);
+          setChoiceEliminated(new Set());
+          setChoiceCorrectLocked(false);
+          setChoiceCorrectEn(null);
+          setChoiceTransition('idle');
+          setQuestionFade(false);
+          quizSubmitLockRef.current = false;
+          setQuizSubmitting(false);
+          choiceProcessedRef.current = false;
+          quizProcessedIdxRef.current = -1;
+          const finalCorrect = quizScore.correct + 1;
+          const finalXp = quizScore.xp + xpAdd;
+          const doneOk = finalCorrect > quizQueue.length / 2;
+          if (doneOk) playQuizComplete(); else playGameOver();
+          setToast(`Quiz done: ${finalCorrect}/${quizQueue.length} • +${finalXp} XP`);
+          setTimeout(()=> setToast(null), 2200);
+          finishQuizReport();
+          return;
+        }
+        const nextIdx = quizIdx + 1;
+        setQuizIdx(nextIdx);
+        setChoiceEliminated(new Set());
+        setChoiceCorrectLocked(false);
+        setChoiceCorrectEn(null);
+        setChoicePick('');
+        quizSubmitLockRef.current = false;
+        setQuizSubmitting(false);
+        choiceProcessedRef.current = false;
+        choiceWrongRef.current = 0;
+        quizProcessedIdxRef.current = -1;
+        const w = quizQueue[nextIdx];
+        if (w) {
+          const dq = buildDiktatOptions(w, quizScopeWords);
+          setDiktatOptions(dq.options);
+          setDiktatKind(dq.kind);
+          setDiktatCorrect(dq.correct);
+          setDiktatHint(dq.kind === 'find-correct' ? { en: w.meaning_en || w.english || '', fa: w.meaning_fa || '' } : null);
+          setChoiceAnimKey(k=>k+1);
+          setQuestionFade(false);
+          setChoiceTransition('returning');
+          setTimeout(()=> setChoiceTransition('idle'), 520);
+        } else {
+          setQuestionFade(false);
+          setChoiceTransition('idle');
+        }
       }, 400);
     }, 900);
   };
@@ -1871,7 +2024,7 @@ export default function App() {
           </Tab>
           <Tab title={<NavLabel icon={Brain} label="Quiz" />}>
             <Block paddingTop="16px">
-              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} lastQuizReport={lastQuizReport} showQuizReport={showQuizReport} setShowQuizReport={setShowQuizReport} onRetakeQuiz={retakeQuiz} onPracticeLektion={practiceReportLektion} onPracticeWeak={goWeakFromReport} onGoToBook={goBookFromQuiz} />
+              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} lastQuizReport={lastQuizReport} showQuizReport={showQuizReport} setShowQuizReport={setShowQuizReport} onRetakeQuiz={retakeQuiz} onPracticeLektion={practiceReportLektion} onPracticeWeak={goWeakFromReport} onGoToBook={goBookFromQuiz} diktatOptions={diktatOptions} diktatKind={diktatKind} diktatCorrect={diktatCorrect} diktatHint={diktatHint} handleDiktatSelect={handleDiktatSelect} />
             </Block>
           </Tab>
           <Tab title={<NavLabel icon={Flame} label="Streak" />}>

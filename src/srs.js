@@ -41,6 +41,7 @@ export const QUIZ_XP = {
   dictation: 12,
   fa: 12,
   choice: 10,
+  diktat: 10,
   // games
   matchPair: 4,        // per pair in Match Dash (6 pairs = 24 max + bonus)
   matchBonus: 12,      // perfect match bonus
