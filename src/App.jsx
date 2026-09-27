@@ -11,8 +11,8 @@ import { calcQuizReport } from './utils/analytics.js';
 import { todayKey, dayStartOf, buildExposureIndex, partitionPool, orderFallback, takeUpTo, selectGameSet } from './utils/selection.js';
 import { baseGerman, filterSingleWordPool, buildDiktatQuestion } from './utils/diktat.js';
 import { getVocabStatus } from './utils/vocabStatus.js';
-import { getStaticExamQuestions, bookForLektion, EXAM_DIKTATION_COUNT } from './data/exam.js';
-import { prepareExamQuestions, scoreExam, analyzeExam, getExamBonusGrant, toExamAttemptEntries } from './utils/exam.js';
+import { bookForLektion, EXAM_DIKTATION_COUNT, GRAMMAR_BANK, VOCAB_BANK, READING_THREE_Q, READING_TWO_Q } from './data/exam.js';
+import { prepareExamQuestions, selectStaticQuestions, scoreExam, analyzeExam, getExamBonusGrant, toExamAttemptEntries, readExamBest, writeExamBest, EXAM_MODE_COUNTS } from './utils/exam.js';
 import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
 import PWAUpdater from './components/PWAUpdater.jsx';
 import SplashScreen from './components/SplashScreen.jsx';
@@ -295,23 +295,23 @@ export default function App() {
   const quizDetailRef = useRef([]);
   const quizSessionRef = useRef(null);
   const choiceWrongRef = useRef(0);
-  // === A1 Final Mock Exam: standardized assessment (55 Qs), separate from XP farming ===
-  // Runtime state mirrors the quiz pattern (questions survive tab switches).
-  // Answers are picks-only until a single guarded finish; each submission is
-  // processed exactly once via examSubmittedRef.
+  // === A1 Mock Exam: standardized assessment, separate from XP farming ===
+  // No fixed sets: every run samples a fresh mix from the banks
+  // (110 Grammatik + 105 Wortschatz + 100 Lesen + generated Diktation),
+  // full mock or single-section training. Runtime state mirrors the quiz
+  // pattern (questions survive tab switches). Answers are picks-only until
+  // a single guarded finish; each submission is processed exactly once via
+  // examSubmittedRef.
   const [examStarted, setExamStarted] = useState(false);
   const [examQuestions, setExamQuestions] = useState([]);
   const [examIdx, setExamIdx] = useState(0);
   const [examPicks, setExamPicks] = useState({});
-  const [examResult, setExamResult] = useState(null); // { score, analysis, bonus, isNewBest, timestamp }
+  const [examResult, setExamResult] = useState(null); // { score, analysis, bonus, isNewBest, timestamp, mode }
   const [examFinishing, setExamFinishing] = useState(false);
-  const [examBest, setExamBest] = useState(() => {
-    try {
-      const raw = localStorage.getItem('gs_exam_best');
-      if (raw) { const p = JSON.parse(raw); if (p && typeof p.correct === 'number') return p; }
-    } catch {}
-    return null;
-  });
+  const [examMode, setExamMode] = useState('full');
+  const examModeRef = useRef('full');
+  useEffect(() => { examModeRef.current = examMode; }, [examMode]);
+  const [examBest, setExamBest] = useState(() => readExamBest('full'));
   const examSessionRef = useRef(null);
   const examSubmittedRef = useRef(false);
   const [lastQuizReport, setLastQuizReport] = useState(null); // { report, meta }
@@ -1094,7 +1094,7 @@ export default function App() {
   // Diktation: stratified sampling across the full A1 pool (A1.1 + A1.2),
   // round-robin over Lektionen so the section samples the whole curriculum.
   // Questions are built with the existing Diktat-Check engine — no duplicate engine.
-  const buildExamDiktat = useCallback(() => {
+  const buildExamDiktat = useCallback((count = EXAM_DIKTATION_COUNT) => {
     const pool = filterSingleWordPool(allWords);
     if (pool.length < 4) return [];
     const spread = (list, n) => {
@@ -1116,10 +1116,11 @@ export default function App() {
       }
       return out;
     };
+    const half = Math.ceil(count / 2);
     const targets = [
-      ...spread(pool.filter((w) => w.book === 'a1.1'), 7),
-      ...spread(pool.filter((w) => w.book === 'a1.2'), 8),
-    ].slice(0, EXAM_DIKTATION_COUNT);
+      ...spread(pool.filter((w) => w.book === 'a1.1'), count - half),
+      ...spread(pool.filter((w) => w.book === 'a1.2'), half),
+    ].slice(0, count);
     return targets.map((w, i) => {
       const dq = buildDiktatQuestion(w, pool);
       return {
@@ -1137,16 +1138,37 @@ export default function App() {
     });
   }, [allWords]);
 
-  const startExam = useCallback(() => {
+  const startExam = useCallback((mode = 'full') => {
+    const m = EXAM_MODE_COUNTS[mode] ? mode : 'full';
+    const counts = EXAM_MODE_COUNTS[m];
     primeAudio();
     playTap();
-    const diktat = buildExamDiktat();
-    if (diktat.length < EXAM_DIKTATION_COUNT) {
+    const diktat = counts.diktation > 0 ? buildExamDiktat(counts.diktation) : [];
+    if (diktat.length < counts.diktation) {
       setToast('Not enough words for the exam — study first');
       setTimeout(() => setToast(null), 1600);
       return;
     }
-    const staticQs = getStaticExamQuestions().map((q) => ({ ...q, book: bookForLektion(q.lektion) }));
+    // Fresh shuffle every run: sample from the banks (no fixed sets).
+    const staticQs = selectStaticQuestions(
+      { grammarBank: GRAMMAR_BANK, vocabBank: VOCAB_BANK, readingThree: READING_THREE_Q, readingTwo: READING_TWO_Q },
+      Math.random,
+      {
+        grammar: counts.grammatik,
+        vocab: counts.wortschatz,
+        threeQ: counts.lesen > 0 ? 2 : 0,
+        twoQ: counts.lesen > 0 ? 2 : 0,
+      },
+    ).map((q) => ({ ...q, book: bookForLektion(q.lektion) }));
+    const expectedStatic = counts.grammatik + counts.wortschatz + counts.lesen;
+    if (staticQs.length < expectedStatic) {
+      setToast('Question bank unavailable — try again');
+      setTimeout(() => setToast(null), 1600);
+      return;
+    }
+    setExamMode(m);
+    examModeRef.current = m;
+    setExamBest(readExamBest(m));
     setExamQuestions(prepareExamQuestions(staticQs, diktat));
     setExamIdx(0);
     setExamPicks({});
@@ -1156,6 +1178,11 @@ export default function App() {
     examSessionRef.current = `exam-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     setExamStarted(true);
   }, [buildExamDiktat]);
+
+  // Retake repeats the same mode with a freshly shuffled mix.
+  const retakeExam = useCallback(() => {
+    startExam(examModeRef.current);
+  }, [startExam]);
 
   const handleExamPick = useCallback((opt) => {
     if (!examStarted || examResult || examFinishing) return;
@@ -1207,18 +1234,19 @@ export default function App() {
         localStorage.setItem('gs_exam_bonus', String(awardedSoFar + bonus));
       } catch {}
     }
-    // Best score (by correct answers, then percentage). Computed from the
-    // current examBest value (never inside a state updater — no double-fire).
+    // Best score per mode (by correct answers, then percentage). Computed
+    // from the current examBest value (never inside a state updater).
     const prevBest = examBest;
     const better = !prevBest || score.correct > prevBest.correct
       || (score.correct === prevBest.correct && score.pct > prevBest.pct);
     const nextBest = better
       ? { correct: score.correct, total: score.total, pct: score.pct, timestamp: ts }
       : prevBest;
-    try { if (nextBest) localStorage.setItem('gs_exam_best', JSON.stringify(nextBest)); } catch {}
+    const mode = examModeRef.current;
+    writeExamBest(mode, nextBest);
     if (better) playQuizComplete(); else playGameOver();
     setExamBest(nextBest);
-    setExamResult({ score, analysis, bonus, isNewBest: !!prevBest && better, timestamp: ts });
+    setExamResult({ score, analysis, bonus, isNewBest: !!prevBest && better, timestamp: ts, mode });
     setExamStarted(false);
     setExamFinishing(false);
     setToast(`Prüfung: ${score.correct}/${score.total} • ${score.pct}%${bonus > 0 ? ` • +${bonus} XP` : ''}`);
@@ -2210,7 +2238,7 @@ export default function App() {
           </Tab>
           <Tab title={<NavLabel icon={Award} label="Prüfung" />}>
             <Block paddingTop="16px">
-              <ExamTab examStarted={examStarted} examQuestions={examQuestions} examIdx={examIdx} examPicks={examPicks} examResult={examResult} examBest={examBest} examFinishing={examFinishing} onStartExam={startExam} onExamPick={handleExamPick} onExamNav={handleExamNav} onRetakeExam={startExam} onExitExam={exitExam} onPracticeWeak={() => setActiveKey('5')} onGoToBooks={() => setActiveKey('0')} />
+              <ExamTab examStarted={examStarted} examQuestions={examQuestions} examIdx={examIdx} examPicks={examPicks} examResult={examResult} examBest={examBest} examMode={examMode} examFinishing={examFinishing} onStartExam={startExam} onExamPick={handleExamPick} onExamNav={handleExamNav} onRetakeExam={retakeExam} onExitExam={exitExam} onPracticeWeak={() => setActiveKey('5')} onGoToBooks={() => setActiveKey('0')} />
             </Block>
           </Tab>
           <Tab title={<NavLabel icon={Flame} label="Streak" />}>

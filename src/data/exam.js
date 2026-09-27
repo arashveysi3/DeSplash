@@ -23,7 +23,23 @@
  *    (src/utils/diktat.js), stratified across A1.1 + A1.2.
  *
  * Counts: Grammatik 15, Wortschatz 15, Lesen 10, Diktation 15 → total 55.
+ *
+ * BANKS (no fixed sets — every run samples a fresh mix, better for learning):
+ *  - Grammatik bank: 110 questions (below + examG2.js + examG3.js)
+ *  - Wortschatz bank: 105 questions (below + examV2.js + examV3.js)
+ *  - Lesen bank: 100 questions across 40 texts (below + examR2/R3/R4.js),
+ *    split into 20 x 3-question texts + 20 x 2-question texts so every run
+ *    can sample exactly 10 (2 x 3Q + 2 x 2Q) with texts kept together.
+ *  - Diktation: generated at runtime from the full A1 word pool (infinite).
  */
+
+import { GRAMMAR_BANK_2 } from './examG2.js';
+import { GRAMMAR_BANK_3 } from './examG3.js';
+import { VOCAB_BANK_2 } from './examV2.js';
+import { VOCAB_BANK_3 } from './examV3.js';
+import { READING_BANK_2 } from './examR2.js';
+import { READING_BANK_3 } from './examR3.js';
+import { READING_BANK_4 } from './examR4.js';
 
 export const EXAM_META = {
   id: 'a1-final-mock-1',
@@ -503,3 +519,53 @@ export function getStaticExamQuestions() {
 /** Total number of stored (non-Diktation) questions. Must be 40. */
 export const EXAM_STATIC_COUNT =
   GRAMMAR_QUESTIONS.length + VOCAB_QUESTIONS.length + READING_TEXTS.reduce((a, t) => a + t.questions.length, 0);
+
+// ---------------------------------------------------------------------------
+// Question banks — every run samples a fresh mix (no fixed sets).
+// ---------------------------------------------------------------------------
+
+/** All 110 Grammatik questions (Set-1 plus bank parts 1-2). */
+export const GRAMMAR_BANK = [...GRAMMAR_QUESTIONS, ...GRAMMAR_BANK_2, ...GRAMMAR_BANK_3];
+
+/** All 105 Wortschatz questions (Set-1 plus bank parts 1-2). */
+export const VOCAB_BANK = [...VOCAB_QUESTIONS, ...VOCAB_BANK_2, ...VOCAB_BANK_3];
+
+/** All 40 Lesen texts (100 questions): the 4 originals plus bank parts 1-3. */
+export const READING_BANK_ALL = [...READING_TEXTS, ...READING_BANK_2, ...READING_BANK_3, ...READING_BANK_4];
+
+/** Texts with exactly 3 questions (20). Sample 2 of these per run. */
+export const READING_THREE_Q = READING_BANK_ALL.filter((t) => t.questions.length === 3);
+
+/** Texts with exactly 2 questions (20). Sample 2 of these per run. */
+export const READING_TWO_Q = READING_BANK_ALL.filter((t) => t.questions.length === 2);
+
+/** Bank sizes for UI display (Diktation is generated, effectively infinite). */
+export const BANK_META = {
+  grammatik: GRAMMAR_BANK.length,
+  wortschatz: VOCAB_BANK.length,
+  lesen: READING_BANK_ALL.reduce((a, t) => a + t.questions.length, 0),
+  lesenTexts: READING_BANK_ALL.length,
+};
+
+/** Find a reading text by id across the whole bank (all 40 texts). */
+export function findReadingText(textId) {
+  return READING_BANK_ALL.find((t) => t.id === textId) || null;
+}
+
+/** Flat list of ALL bank questions (Grammatik + Wortschatz + Lesen). */
+export function getFullBankQuestions() {
+  const reading = READING_BANK_ALL.flatMap((t) =>
+    t.questions.map((q) => ({
+      ...q,
+      section: 'lesen',
+      topic: t.kind,
+      lektion: t.lektion,
+      textId: t.id,
+    })),
+  );
+  return [
+    ...GRAMMAR_BANK.map((q) => ({ ...q })),
+    ...VOCAB_BANK.map((q) => ({ ...q })),
+    ...reading,
+  ];
+}

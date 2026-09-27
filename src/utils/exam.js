@@ -25,6 +25,116 @@ export const EXAM_SECTION_LABELS = {
 /** Lifetime cap for exam bonus XP (anti-farming: retakes earn only improvement). */
 export const EXAM_MAX_BONUS_XP = 40;
 
+/** Exam modes: full mock or a single section. No fixed sets — every run
+ *  samples a fresh mix from the banks (better for learning). */
+export const EXAM_MODES = ['full', 'diktation', 'grammatik', 'wortschatz', 'lesen'];
+
+/** Question counts per mode (static + generated diktation). */
+export const EXAM_MODE_COUNTS = {
+  full: { diktation: 15, grammatik: 15, wortschatz: 15, lesen: 10 },
+  diktation: { diktation: 15, grammatik: 0, wortschatz: 0, lesen: 0 },
+  grammatik: { diktation: 0, grammatik: 15, wortschatz: 0, lesen: 0 },
+  wortschatz: { diktation: 0, grammatik: 0, wortschatz: 15, lesen: 0 },
+  lesen: { diktation: 0, grammatik: 0, wortschatz: 0, lesen: 10 },
+};
+
+export function examModeTotal(mode) {
+  const c = EXAM_MODE_COUNTS[mode] || EXAM_MODE_COUNTS.full;
+  return c.diktation + c.grammatik + c.wortschatz + c.lesen;
+}
+
+export function examModeLabel(mode) {
+  if (mode === 'full') return 'A1 Mock Exam';
+  return `${EXAM_SECTION_LABELS[mode] || mode}-Training`;
+}
+
+/**
+ * Fisher-Yates sample of n unique items (copy; source untouched).
+ * `rnd` is injectable for deterministic tests.
+ */
+export function sampleArray(arr, n, rnd = Math.random) {
+  const a = [...(arr || [])];
+  for (let i = a.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(rnd() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a.slice(0, Math.max(0, Math.min(n, a.length)));
+}
+
+/**
+ * Sample a fresh static question mix from the banks for one run.
+ * Grammar/vocab are sampled at question level; Lesen is sampled at TEXT
+ * level (threeQ x3-question texts + twoQ x2-question texts) so questions
+ * from the same text always stay together. Order: grammatik → wortschatz
+ * → lesen (texts shuffled). Diktation is prepended later by
+ * prepareExamQuestions like before.
+ */
+export function selectStaticQuestions(
+  { grammarBank, vocabBank, readingThree, readingTwo },
+  rnd = Math.random,
+  { grammar = 15, vocab = 15, threeQ = 2, twoQ = 2 } = {},
+) {
+  const picked = [
+    ...sampleArray(grammarBank, grammar, rnd),
+    ...sampleArray(vocabBank, vocab, rnd),
+  ];
+  const texts = [
+    ...sampleArray(readingThree, threeQ, rnd),
+    ...sampleArray(readingTwo, twoQ, rnd),
+  ];
+  // shuffle text order, keep each text's questions together
+  for (let i = texts.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(rnd() * (i + 1));
+    [texts[i], texts[j]] = [texts[j], texts[i]];
+  }
+  for (const t of texts) {
+    for (const q of t.questions || []) {
+      picked.push({
+        ...q,
+        section: 'lesen',
+        topic: t.kind,
+        lektion: t.lektion,
+        textId: t.id,
+      });
+    }
+  }
+  return picked;
+}
+
+// --- per-mode best scores (localStorage; legacy single key migrates) ---
+
+export function examBestKey(mode) {
+  return `gs_exam_best_${mode || 'full'}`;
+}
+
+/** Read the best score for a mode; legacy `gs_exam_best` counts as full. */
+export function readExamBest(mode) {
+  try {
+    const raw = localStorage.getItem(examBestKey(mode));
+    if (raw) {
+      const p = JSON.parse(raw);
+      if (p && typeof p.correct === 'number') return p;
+    }
+    if ((mode || 'full') === 'full') {
+      const legacy = localStorage.getItem('gs_exam_best');
+      if (legacy) {
+        const p = JSON.parse(legacy);
+        if (p && typeof p.correct === 'number') return p;
+      }
+    }
+  } catch {}
+  return null;
+}
+
+export function writeExamBest(mode, best) {
+  try {
+    if (best) {
+      localStorage.setItem(examBestKey(mode), JSON.stringify(best));
+      if ((mode || 'full') === 'full') localStorage.setItem('gs_exam_best', JSON.stringify(best));
+    }
+  } catch {}
+}
+
 /**
  * Fisher-Yates shuffle of a question's options (copy; source untouched).
  * Returns { options, answerIndex } with the correct answer tracked.
