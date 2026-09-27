@@ -10,6 +10,9 @@ import { sm2, qualityFromLabel, XP_MAP, QUIZ_XP, GAME_XP } from './srs';
 import { calcQuizReport } from './utils/analytics.js';
 import { todayKey, dayStartOf, buildExposureIndex, partitionPool, orderFallback, takeUpTo, selectGameSet } from './utils/selection.js';
 import { baseGerman, filterSingleWordPool, buildDiktatQuestion } from './utils/diktat.js';
+import { getVocabStatus } from './utils/vocabStatus.js';
+import { getStaticExamQuestions, bookForLektion, EXAM_DIKTATION_COUNT } from './data/exam.js';
+import { prepareExamQuestions, scoreExam, analyzeExam, getExamBonusGrant, toExamAttemptEntries } from './utils/exam.js';
 import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
 import PWAUpdater from './components/PWAUpdater.jsx';
 import SplashScreen from './components/SplashScreen.jsx';
@@ -19,6 +22,7 @@ import AuthModal from './components/modals/AuthModal.jsx';
 import BuecherTab from './components/tabs/BuecherTab.jsx';
 import LernenTab from './components/tabs/LernenTab.jsx';
 import QuizTab from './components/tabs/QuizTab.jsx';
+import ExamTab from './components/tabs/ExamTab.jsx';
 import StreakTab from './components/tabs/StreakTab.jsx';
 import SucheTab from './components/tabs/SucheTab.jsx';
 import WeakTab from './components/tabs/WeakTab.jsx';
@@ -31,6 +35,7 @@ import {
   BookOpen,
   GraduationCap,
   Brain,
+  Award,
   Flame,
   Search,
   Target,
@@ -290,6 +295,25 @@ export default function App() {
   const quizDetailRef = useRef([]);
   const quizSessionRef = useRef(null);
   const choiceWrongRef = useRef(0);
+  // === A1 Final Mock Exam: standardized assessment (55 Qs), separate from XP farming ===
+  // Runtime state mirrors the quiz pattern (questions survive tab switches).
+  // Answers are picks-only until a single guarded finish; each submission is
+  // processed exactly once via examSubmittedRef.
+  const [examStarted, setExamStarted] = useState(false);
+  const [examQuestions, setExamQuestions] = useState([]);
+  const [examIdx, setExamIdx] = useState(0);
+  const [examPicks, setExamPicks] = useState({});
+  const [examResult, setExamResult] = useState(null); // { score, analysis, bonus, isNewBest, timestamp }
+  const [examFinishing, setExamFinishing] = useState(false);
+  const [examBest, setExamBest] = useState(() => {
+    try {
+      const raw = localStorage.getItem('gs_exam_best');
+      if (raw) { const p = JSON.parse(raw); if (p && typeof p.correct === 'number') return p; }
+    } catch {}
+    return null;
+  });
+  const examSessionRef = useRef(null);
+  const examSubmittedRef = useRef(false);
   const [lastQuizReport, setLastQuizReport] = useState(null); // { report, meta }
   const [showQuizReport, setShowQuizReport] = useState(false);
   const [quizHistory, setQuizHistory] = useState([]);
@@ -570,6 +594,14 @@ export default function App() {
     if (quizLektions && quizLektions.length > 0) w = w.filter(x=> quizLektions.includes(x.lektion));
     return w;
   }, [allWords, quizBook, quizLektions]);
+
+  // Lesson-level learning overview for quiz start screens (e.g. Diktat-Check):
+  // computed from the real DB state (progressMap + quizAttempts-derived
+  // exposure + existing weak set). Recomputes automatically after answers.
+  const quizScopeStatus = useMemo(
+    () => getVocabStatus(quizScopeWords, selectionCtx),
+    [quizScopeWords, selectionCtx],
+  );
 
   const filteredWordsForSearch = useMemo(() => {
     let w = allWords;
@@ -1057,6 +1089,155 @@ export default function App() {
     const isArtikelNext = quizMode==='artikel' || (quizMode==='mixed' && w.article && nextIdx %2===0);
     if (!isArtikelNext && quizMode !== 'fa' && quizMode !== 'choice' && quizMode !== 'diktat') setTimeout(()=> speakGerman(w.german), 250);
   };
+
+  // === A1 Final Mock Exam ===
+  // Diktation: stratified sampling across the full A1 pool (A1.1 + A1.2),
+  // round-robin over Lektionen so the section samples the whole curriculum.
+  // Questions are built with the existing Diktat-Check engine — no duplicate engine.
+  const buildExamDiktat = useCallback(() => {
+    const pool = filterSingleWordPool(allWords);
+    if (pool.length < 4) return [];
+    const spread = (list, n) => {
+      const byLek = new Map();
+      for (const wrd of list) {
+        const k = wrd.lektion || '?';
+        if (!byLek.has(k)) byLek.set(k, []);
+        byLek.get(k).push(wrd);
+      }
+      const groups = shuffleArray([...byLek.values()]);
+      const out = [];
+      let emptyRounds = 0;
+      let i = 0;
+      while (out.length < n && groups.length > 0 && emptyRounds < groups.length) {
+        const g = groups[i % groups.length];
+        if (g.length > 0) { out.push(g.shift()); emptyRounds = 0; }
+        else emptyRounds += 1;
+        i += 1;
+      }
+      return out;
+    };
+    const targets = [
+      ...spread(pool.filter((w) => w.book === 'a1.1'), 7),
+      ...spread(pool.filter((w) => w.book === 'a1.2'), 8),
+    ].slice(0, EXAM_DIKTATION_COUNT);
+    return targets.map((w, i) => {
+      const dq = buildDiktatQuestion(w, pool);
+      return {
+        id: `d${i + 1}`,
+        section: 'diktation',
+        topic: 'Diktation',
+        lektion: w.lektion,
+        book: w.book,
+        wordId: w.id,
+        kind: dq.kind,
+        hint: dq.kind === 'find-correct' ? { en: w.meaning_en || w.english || '', fa: w.meaning_fa || '' } : null,
+        options: dq.options,
+        answer: dq.correct,
+      };
+    });
+  }, [allWords]);
+
+  const startExam = useCallback(() => {
+    primeAudio();
+    playTap();
+    const diktat = buildExamDiktat();
+    if (diktat.length < EXAM_DIKTATION_COUNT) {
+      setToast('Not enough words for the exam — study first');
+      setTimeout(() => setToast(null), 1600);
+      return;
+    }
+    const staticQs = getStaticExamQuestions().map((q) => ({ ...q, book: bookForLektion(q.lektion) }));
+    setExamQuestions(prepareExamQuestions(staticQs, diktat));
+    setExamIdx(0);
+    setExamPicks({});
+    setExamResult(null);
+    setExamFinishing(false);
+    examSubmittedRef.current = false;
+    examSessionRef.current = `exam-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    setExamStarted(true);
+  }, [buildExamDiktat]);
+
+  const handleExamPick = useCallback((opt) => {
+    if (!examStarted || examResult || examFinishing) return;
+    const q = examQuestions[examIdx];
+    if (!q) return;
+    const val = typeof opt === 'object' ? (opt.de || opt.text || opt.en) : opt;
+    setExamPicks((p) => ({ ...p, [q.id]: val }));
+  }, [examStarted, examResult, examFinishing, examQuestions, examIdx]);
+
+  const handleExamNav = useCallback((dir) => {
+    if (!examStarted || examResult || examFinishing) return;
+    primeAudio();
+    playTap();
+    if (dir === 'prev') setExamIdx((i) => Math.max(0, i - 1));
+    else if (dir === 'next') setExamIdx((i) => Math.min(examQuestions.length - 1, i + 1));
+    else if (dir === 'finish') finishExamRef.current();
+  }, [examStarted, examResult, examFinishing, examQuestions.length]);
+
+  // Single guarded submission: processed exactly once (no double XP, no
+  // duplicate streak entries). Answers lock the moment the result exists.
+  const finishExam = useCallback(async () => {
+    if (examSubmittedRef.current || examFinishing || examResult) return;
+    if (!examQuestions.length) return;
+    examSubmittedRef.current = true;
+    setExamFinishing(true);
+    const score = scoreExam(examQuestions, examPicks);
+    const analysis = analyzeExam(examQuestions, examPicks);
+    const ts = Date.now();
+    // Streak credit without XP: entries persist through the shared funnel
+    // (mode 'exam', xp 0), so the exam day counts but cannot be farmed.
+    persistAttempts(toExamAttemptEntries({
+      examId: examSessionRef.current || `exam-${ts}`,
+      timestamp: ts,
+      questions: examQuestions,
+      picks: examPicks,
+    }));
+    // One-time completion bonus: lifetime-capped improvement-only grant.
+    let awardedSoFar = 0;
+    try { awardedSoFar = Number(localStorage.getItem('gs_exam_bonus') || 0) || 0; } catch {}
+    const bonus = getExamBonusGrant(score.pct, awardedSoFar);
+    if (bonus > 0) {
+      try {
+        const latest = await applyLearningXp(bonus, 0);
+        setStats(latest);
+        if (authToken && authUser) {
+          try { await saveStatsOnline(latest); } catch {}
+          submitOnlineScore(authUser.username, latest.xp).then((b) => { if (b) setOnlineBoard(b); }).catch(() => {});
+        }
+        localStorage.setItem('gs_exam_bonus', String(awardedSoFar + bonus));
+      } catch {}
+    }
+    // Best score (by correct answers, then percentage). Computed from the
+    // current examBest value (never inside a state updater — no double-fire).
+    const prevBest = examBest;
+    const better = !prevBest || score.correct > prevBest.correct
+      || (score.correct === prevBest.correct && score.pct > prevBest.pct);
+    const nextBest = better
+      ? { correct: score.correct, total: score.total, pct: score.pct, timestamp: ts }
+      : prevBest;
+    try { if (nextBest) localStorage.setItem('gs_exam_best', JSON.stringify(nextBest)); } catch {}
+    if (better) playQuizComplete(); else playGameOver();
+    setExamBest(nextBest);
+    setExamResult({ score, analysis, bonus, isNewBest: !!prevBest && better, timestamp: ts });
+    setExamStarted(false);
+    setExamFinishing(false);
+    setToast(`Prüfung: ${score.correct}/${score.total} • ${score.pct}%${bonus > 0 ? ` • +${bonus} XP` : ''}`);
+    setTimeout(() => setToast(null), 2400);
+  }, [examFinishing, examResult, examQuestions, examPicks, examBest, persistAttempts, authToken, authUser]);
+  // Ref mirror so the nav callback never captures a stale finish closure.
+  const finishExamRef = useRef(finishExam);
+  useEffect(() => { finishExamRef.current = finishExam; });
+
+  const exitExam = useCallback(() => {
+    primeAudio();
+    playTap();
+    examSubmittedRef.current = false;
+    setExamStarted(false);
+    setExamFinishing(false);
+    setExamQuestions([]);
+    setExamIdx(0);
+    setExamPicks({});
+  }, []);
 
   // Direct choice selection handler (new 4-choice behavior: correct => green + transition, wrong => gray eliminated)
   const handleChoiceSelect = async (opt) => {
@@ -1888,7 +2069,7 @@ export default function App() {
   };
   const goWeakFromReport = () => {
     setShowQuizReport(false);
-    setActiveKey('4');
+    setActiveKey('5');
   };
   const goBookFromQuiz = (bookId) => {
     const target = bookId || quizBook;
@@ -2024,7 +2205,12 @@ export default function App() {
           </Tab>
           <Tab title={<NavLabel icon={Brain} label="Quiz" />}>
             <Block paddingTop="16px">
-              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} lastQuizReport={lastQuizReport} showQuizReport={showQuizReport} setShowQuizReport={setShowQuizReport} onRetakeQuiz={retakeQuiz} onPracticeLektion={practiceReportLektion} onPracticeWeak={goWeakFromReport} onGoToBook={goBookFromQuiz} diktatOptions={diktatOptions} diktatKind={diktatKind} diktatCorrect={diktatCorrect} diktatHint={diktatHint} handleDiktatSelect={handleDiktatSelect} />
+              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} quizScopeStatus={quizScopeStatus} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} lastQuizReport={lastQuizReport} showQuizReport={showQuizReport} setShowQuizReport={setShowQuizReport} onRetakeQuiz={retakeQuiz} onPracticeLektion={practiceReportLektion} onPracticeWeak={goWeakFromReport} onGoToBook={goBookFromQuiz} diktatOptions={diktatOptions} diktatKind={diktatKind} diktatCorrect={diktatCorrect} diktatHint={diktatHint} handleDiktatSelect={handleDiktatSelect} />
+            </Block>
+          </Tab>
+          <Tab title={<NavLabel icon={Award} label="Prüfung" />}>
+            <Block paddingTop="16px">
+              <ExamTab examStarted={examStarted} examQuestions={examQuestions} examIdx={examIdx} examPicks={examPicks} examResult={examResult} examBest={examBest} examFinishing={examFinishing} onStartExam={startExam} onExamPick={handleExamPick} onExamNav={handleExamNav} onRetakeExam={startExam} onExitExam={exitExam} onPracticeWeak={() => setActiveKey('5')} onGoToBooks={() => setActiveKey('0')} />
             </Block>
           </Tab>
           <Tab title={<NavLabel icon={Flame} label="Streak" />}>

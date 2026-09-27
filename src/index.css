@@ -246,6 +246,21 @@ input::placeholder, textarea::placeholder {
   .gs-choice-correct { animation: none !important; }
 }
 
+/* === A1 Final Mock Exam (serious, subtle — no gamification) === */
+.gs-exam-card { animation: gs-exam-in 300ms cubic-bezier(0.2,0.8,0.2,1) both; }
+@keyframes gs-exam-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.gs-exam-option { transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease; }
+.gs-exam-option:hover { transform: translateY(-1px); }
+.gs-exam-option:focus-visible { outline: 2px solid #0f0f12; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .gs-exam-card { animation: none !important; }
+  .gs-exam-option { transition: none !important; }
+  .gs-exam-option:hover { transform: none !important; }
+}
+
 /* === Navbar menus (profile + settings hierarchy) === */
 .gs-menu-panel {
   background: #fff;
