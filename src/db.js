@@ -100,11 +100,34 @@ export const COMPETITORS = [
   { name: 'Lena M.', xp: 4820, avatar: 'LM' },
   { name: 'Jonas K.', xp: 4210, avatar: 'JK' },
   { name: 'Sophie R.', xp: 3890, avatar: 'SR' },
+  // --- Persian practice rivals (14 girls / 6 boys) ---
+  // XP ladder is shaped so a new user (0 XP) can pass the bottom bots
+  // within the first sessions and always has a next rival to chase.
+  { name: 'Sara M.', xp: 3800, avatar: 'SM' },
   { name: 'Maxim B.', xp: 3450, avatar: 'MB' },
   { name: 'Anna T.', xp: 3100, avatar: 'AT' },
+  { name: 'Amir R.', xp: 3000, avatar: 'AR' },
   { name: 'Felix H.', xp: 2750, avatar: 'FH' },
+  { name: 'Negar K.', xp: 2400, avatar: 'NK' },
   { name: 'Mia S.', xp: 2100, avatar: 'MS' },
+  { name: 'Mohammad T.', xp: 1900, avatar: 'MT' },
   { name: 'Paul W.', xp: 1800, avatar: 'PW' },
+  { name: 'Maryam A.', xp: 1500, avatar: 'MA' },
+  { name: 'Zahra H.', xp: 1200, avatar: 'ZH' },
+  { name: 'Ali N.', xp: 1000, avatar: 'AN' },
+  { name: 'Fatemeh S.', xp: 830, avatar: 'FS' },
+  { name: 'Nazanin G.', xp: 680, avatar: 'NG' },
+  { name: 'Reza J.', xp: 540, avatar: 'RJ' },
+  { name: 'Shima D.', xp: 420, avatar: 'SD' },
+  { name: 'Elaheh S.', xp: 320, avatar: 'ES' },
+  { name: 'Sahar B.', xp: 260, avatar: 'SB' },
+  { name: 'Hossein F.', xp: 210, avatar: 'HF' },
+  { name: 'Leila G.', xp: 170, avatar: 'LG' },
+  { name: 'Mona P.', xp: 130, avatar: 'MP' },
+  { name: 'Paria C.', xp: 95, avatar: 'PC' },
+  { name: 'Taraneh Z.', xp: 70, avatar: 'TZ' },
+  { name: 'Yasamin V.', xp: 45, avatar: 'YV' },
+  { name: 'Sam H.', xp: 25, avatar: 'SH' },
 ];
 
 function stripTrailingParen(s) {
