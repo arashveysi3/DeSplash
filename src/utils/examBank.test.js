@@ -10,11 +10,21 @@ import {
   READING_THREE_Q,
   READING_TWO_Q,
   BANK_META,
+  GRAMMAR_TOPICS_A11,
+  GRAMMAR_TOPICS_A12,
+  BOOK_EXAM_COUNTS,
+  bookExamTotal,
+  grammarBankForBook,
+  vocabBankForBook,
+  readingThreeForBook,
+  readingTwoForBook,
   findReadingText,
   getFullBankQuestions,
 } from '../data/exam.js';
 import {
   selectStaticQuestions,
+  selectBookQuestions,
+  sampleGrammarCoveringTopics,
   sampleArray,
   EXAM_MODE_COUNTS,
   examModeTotal,
@@ -38,14 +48,14 @@ function assertValidQuestion(q, where) {
 }
 
 test('bank sizes meet the 100-per-part requirement', () => {
-  assert.equal(GRAMMAR_BANK.length, 110);
+  assert.equal(GRAMMAR_BANK.length, 150);
   assert.equal(VOCAB_BANK.length, 105);
   assert.equal(READING_BANK_ALL.length, 40);
   assert.equal(READING_THREE_Q.length, 20);
   assert.equal(READING_TWO_Q.length, 20);
   const lesenQs = READING_BANK_ALL.reduce((a, t) => a + t.questions.length, 0);
   assert.equal(lesenQs, 100);
-  assert.equal(BANK_META.grammatik, 110);
+  assert.equal(BANK_META.grammatik, 150);
   assert.equal(BANK_META.wortschatz, 105);
   assert.equal(BANK_META.lesen, 100);
   // Set-1 content is preserved at the head of each bank
@@ -132,7 +142,7 @@ test('sampling varies between runs (fresh shuffle)', () => {
   assert.notDeepEqual(a, b);
   // full bank flat list has all questions exactly once
   const flat = getFullBankQuestions();
-  assert.equal(flat.length, 110 + 105 + 100);
+  assert.equal(flat.length, 150 + 105 + 100);
 });
 
 test('sampleArray never mutates source and caps at length', () => {
@@ -140,4 +150,80 @@ test('sampleArray never mutates source and caps at length', () => {
   const out = sampleArray(src, 5, () => 0);
   assert.deepEqual([...out].sort(), [1, 2, 3]);
   assert.deepEqual(src, [1, 2, 3]);
+});
+
+test('every grammar topic of each book has at least one question (no grammar left out)', () => {
+  for (const [book, syllabus] of [['a1.1', GRAMMAR_TOPICS_A11], ['a1.2', GRAMMAR_TOPICS_A12]]) {
+    const bank = grammarBankForBook(book);
+    assert.ok(bank.length > 0, `${book}: empty grammar bank`);
+    const topics = new Set(bank.map((q) => q.topic));
+    for (const topic of syllabus) {
+      assert.ok(topics.has(topic), `${book}: syllabus topic without question: ${topic}`);
+    }
+    // every Lektion of the book has at least one grammar question
+    const lektions = new Set(bank.map((q) => q.lektion));
+    const [from, to] = book === 'a1.1' ? [1, 12] : [13, 24];
+    for (let n = from; n <= to; n += 1) {
+      assert.ok(lektions.has(`Lektion ${n}`), `${book}: Lektion ${n} without grammar question`);
+    }
+    // every bank question stays inside its book
+    for (const q of bank) {
+      const num = Number(/(\d+)/.exec(q.lektion || '')?.[1] || 0);
+      assert.ok(book === 'a1.1' ? num >= 1 && num <= 12 : num >= 13 && num <= 24, `${q.id}: wrong book`);
+    }
+  }
+});
+
+test('book mock grammar counts equal the syllabus topic counts', () => {
+  assert.equal(BOOK_EXAM_COUNTS['a1.1'].grammatik, GRAMMAR_TOPICS_A11.length);
+  assert.equal(BOOK_EXAM_COUNTS['a1.2'].grammatik, GRAMMAR_TOPICS_A12.length);
+  assert.equal(BOOK_EXAM_COUNTS['a1.1'].wortschatz, 15);
+  assert.equal(BOOK_EXAM_COUNTS['a1.2'].wortschatz, 15);
+  assert.equal(bookExamTotal('a1.1'), 15 + GRAMMAR_TOPICS_A11.length + 15 + 10);
+  assert.equal(bookExamTotal('a1.2'), 15 + GRAMMAR_TOPICS_A12.length + 15 + 10);
+  // vocab + reading banks suffice for a full book mock
+  assert.ok(vocabBankForBook('a1.1').length >= 15);
+  assert.ok(vocabBankForBook('a1.2').length >= 15);
+  assert.ok(readingThreeForBook('a1.1').length >= 2 && readingTwoForBook('a1.1').length >= 2);
+  assert.ok(readingThreeForBook('a1.2').length >= 2 && readingTwoForBook('a1.2').length >= 2);
+});
+
+test('selectBookQuestions covers every grammar topic exactly once per book mock', () => {
+  const zeroRnd = () => 0;
+  for (const book of ['a1.1', 'a1.2']) {
+    const counts = BOOK_EXAM_COUNTS[book];
+    const out = selectBookQuestions(
+      {
+        grammarBank: grammarBankForBook(book),
+        vocabBank: vocabBankForBook(book),
+        readingThree: readingThreeForBook(book),
+        readingTwo: readingTwoForBook(book),
+      },
+      zeroRnd,
+      { grammar: counts.grammatik, vocab: counts.wortschatz, threeQ: 2, twoQ: 2 },
+    );
+    const grammar = out.filter((q) => q.section === 'grammatik');
+    assert.equal(grammar.length, counts.grammatik, `${book}: grammar count`);
+    // one question per topic, no topic missing, none duplicated
+    const topics = grammar.map((q) => q.topic);
+    assert.equal(new Set(topics).size, topics.length, `${book}: duplicate grammar topic sampled`);
+    const syllabus = book === 'a1.1' ? GRAMMAR_TOPICS_A11 : GRAMMAR_TOPICS_A12;
+    assert.deepEqual([...topics].sort(), [...syllabus].sort(), `${book}: every topic exactly once`);
+    // all questions carry the right book lektion
+    for (const q of out) {
+      const num = Number(/(\d+)/.exec(q.lektion || '')?.[1] || 0);
+      assert.ok(book === 'a1.1' ? num <= 12 : num >= 13, `${book}: out-of-book question ${q.id}`);
+    }
+    const lesen = out.filter((q) => q.section === 'lesen');
+    assert.equal(lesen.length, 10);
+    assert.equal(out.filter((q) => q.section === 'wortschatz').length, 15);
+  }
+});
+
+test('sampleGrammarCoveringTopics maximizes spread when count is below topic count', () => {
+  const bank = grammarBankForBook('a1.2');
+  const out = sampleGrammarCoveringTopics(bank, 15, () => 0);
+  assert.equal(out.length, 15);
+  // all different topics even though fewer than the 26 available
+  assert.equal(new Set(out.map((q) => q.topic)).size, 15);
 });

@@ -22,10 +22,13 @@
  *    start from the full A1 word pool with the existing Diktat-Check engine
  *    (src/utils/diktat.js), stratified across A1.1 + A1.2.
  *
- * Counts: Grammatik 15, Wortschatz 15, Lesen 10, Diktation 15 → total 55.
+ * Per-book Final Mocks: A1.1 → Grammatik 20, Wortschatz 15, Lesen 10,
+ * Diktation 15 (total 60); A1.2 → Grammatik 26, Wortschatz 15, Lesen 10,
+ * Diktation 15 (total 66). Grammatik counts equal the syllabus topic counts
+ * so every grammar topic of the book appears at least once per mock.
  *
  * BANKS (no fixed sets — every run samples a fresh mix, better for learning):
- *  - Grammatik bank: 110 questions (below + examG2.js + examG3.js)
+ *  - Grammatik bank: 150 questions (below + examG2.js + examG3.js + examG4.js + examG5.js)
  *  - Wortschatz bank: 105 questions (below + examV2.js + examV3.js)
  *  - Lesen bank: 100 questions across 40 texts (below + examR2/R3/R4.js),
  *    split into 20 x 3-question texts + 20 x 2-question texts so every run
@@ -35,6 +38,8 @@
 
 import { GRAMMAR_BANK_2 } from './examG2.js';
 import { GRAMMAR_BANK_3 } from './examG3.js';
+import { GRAMMAR_BANK_4 } from './examG4.js';
+import { GRAMMAR_BANK_5 } from './examG5.js';
 import { VOCAB_BANK_2 } from './examV2.js';
 import { VOCAB_BANK_3 } from './examV3.js';
 import { READING_BANK_2 } from './examR2.js';
@@ -524,8 +529,8 @@ export const EXAM_STATIC_COUNT =
 // Question banks — every run samples a fresh mix (no fixed sets).
 // ---------------------------------------------------------------------------
 
-/** All 110 Grammatik questions (Set-1 plus bank parts 1-2). */
-export const GRAMMAR_BANK = [...GRAMMAR_QUESTIONS, ...GRAMMAR_BANK_2, ...GRAMMAR_BANK_3];
+/** All 150 Grammatik questions (Set-1 plus bank parts 1-4). */
+export const GRAMMAR_BANK = [...GRAMMAR_QUESTIONS, ...GRAMMAR_BANK_2, ...GRAMMAR_BANK_3, ...GRAMMAR_BANK_4, ...GRAMMAR_BANK_5];
 
 /** All 105 Wortschatz questions (Set-1 plus bank parts 1-2). */
 export const VOCAB_BANK = [...VOCAB_QUESTIONS, ...VOCAB_BANK_2, ...VOCAB_BANK_3];
@@ -546,6 +551,140 @@ export const BANK_META = {
   lesen: READING_BANK_ALL.reduce((a, t) => a + t.questions.length, 0),
   lesenTexts: READING_BANK_ALL.length,
 };
+
+// ---------------------------------------------------------------------------
+// Per-book exam scope — the Prüfung tab is divided by book: one Final Mock
+// per book (Menschen A1.1 = Lektion 1-12, Menschen A1.2 = Lektion 13-24).
+// Every Final Mock covers EVERY grammar topic of its book at least once:
+// the Grammatik question count of a book mock equals the number of syllabus
+// topics of that book (see GRAMMAR_TOPICS_A11 / GRAMMAR_TOPICS_A12), and the
+// engine samples exactly one question per topic (src/utils/exam.js).
+// ---------------------------------------------------------------------------
+
+/** Numeric Lektion from a "Lektion N" tag (0 when unparseable). */
+export function lektionNumber(lektion) {
+  const m = /(\d+)/.exec(lektion || '');
+  return m ? Number(m[1]) : 0;
+}
+
+/** Every grammar topic taught in Menschen A1.1 (Lektion 1-12).
+ *  Contract: each topic MUST have at least one bank question tagged
+ *  Lektion 1-12 (enforced by src/utils/examBank.test.js). */
+export const GRAMMAR_TOPICS_A11 = [
+  'Verbkonjugation',
+  'haben / sein',
+  'W-Fragen',
+  'Satzstellung',
+  'Artikel',
+  'Negation',
+  'Plural',
+  'Possessivartikel',
+  'Akkusativ',
+  'Imperativ',
+  'Modalverben',
+  'Trennbare Verben',
+  'Zeitangaben',
+  'Dativ',
+  'Präpositionen mit Dativ',
+  'Wechselpräpositionen',
+  'Perfekt mit haben',
+  'Nebensatz mit weil',
+  'Nebensatz mit dass',
+  'Nebensatz mit denn',
+];
+
+/** Every grammar topic taught in Menschen A1.2 (Lektion 13-24).
+ *  Contract: each topic MUST have at least one bank question tagged
+ *  Lektion 13-24 (enforced by src/utils/examBank.test.js). */
+export const GRAMMAR_TOPICS_A12 = [
+  'Perfekt mit sein',
+  'Modalverben',
+  'Partizip II',
+  'Präteritum',
+  'Imperativ',
+  'Possessivartikel',
+  'Wechselpräpositionen',
+  'Artikel',
+  'Verbkonjugation',
+  'haben / sein',
+  'Präpositionen mit Dativ',
+  'Dativ',
+  'Trennbare Verben',
+  'Zeitangaben',
+  'Präpositionen mit Akkusativ',
+  'Komparativ',
+  'Indefinitpronomen',
+  'Reflexive Verben',
+  'Genitiv bei Eigennamen',
+  'Temporale Präpositionen',
+  'Futur mit werden',
+  'Demonstrativartikel',
+  'Personalpronomen Dativ/Akkusativ',
+  'Superlativ',
+  'würde-Form',
+  'Perfekt trennbar/untrennbar',
+];
+
+/** Book ids with a Final Mock exam. */
+export const EXAM_BOOKS = ['a1.1', 'a1.2'];
+
+export const EXAM_BOOK_LABELS = {
+  'a1.1': 'A1.1',
+  'a1.2': 'A1.2',
+};
+
+export const EXAM_BOOK_TITLES = {
+  'a1.1': 'Menschen A1.1 (Lektion 1–12)',
+  'a1.2': 'Menschen A1.2 (Lektion 13–24)',
+};
+
+/** Question counts per book mock. Grammatik always equals the number of
+ *  syllabus topics of that book, so every grammar topic appears >= once. */
+export const BOOK_EXAM_COUNTS = {
+  'a1.1': {
+    diktation: 15,
+    grammatik: GRAMMAR_TOPICS_A11.length,
+    wortschatz: 15,
+    lesen: 10,
+  },
+  'a1.2': {
+    diktation: 15,
+    grammatik: GRAMMAR_TOPICS_A12.length,
+    wortschatz: 15,
+    lesen: 10,
+  },
+};
+
+export function bookExamTotal(book) {
+  const c = BOOK_EXAM_COUNTS[book] || BOOK_EXAM_COUNTS['a1.2'];
+  return c.diktation + c.grammatik + c.wortschatz + c.lesen;
+}
+
+/** Grammar bank slice for one book (by Lektion tag). */
+export function grammarBankForBook(book) {
+  const isA11 = book === 'a1.1';
+  return GRAMMAR_BANK.filter((q) => (lektionNumber(q.lektion) <= 12) === isA11);
+}
+
+/** Vocab bank slice for one book (by Lektion tag). */
+export function vocabBankForBook(book) {
+  const isA11 = book === 'a1.1';
+  return VOCAB_BANK.filter((q) => (lektionNumber(q.lektion) <= 12) === isA11);
+}
+
+/** Reading texts slice for one book (by Lektion tag). */
+export function readingBankForBook(book) {
+  const isA11 = book === 'a1.1';
+  return READING_BANK_ALL.filter((t) => (lektionNumber(t.lektion) <= 12) === isA11);
+}
+
+export function readingThreeForBook(book) {
+  return readingBankForBook(book).filter((t) => t.questions.length === 3);
+}
+
+export function readingTwoForBook(book) {
+  return readingBankForBook(book).filter((t) => t.questions.length === 2);
+}
 
 /** Find a reading text by id across the whole bank (all 40 texts). */
 export function findReadingText(textId) {

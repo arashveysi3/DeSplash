@@ -43,9 +43,18 @@ export function examModeTotal(mode) {
   return c.diktation + c.grammatik + c.wortschatz + c.lesen;
 }
 
-export function examModeLabel(mode) {
-  if (mode === 'full') return 'A1 Mock Exam';
-  return `${EXAM_SECTION_LABELS[mode] || mode}-Training`;
+/** Short book tag for titles, e.g. 'a1.2' → 'A1.2'. */
+export function examBookTag(book) {
+  if (book === 'a1.1') return 'A1.1';
+  if (book === 'a1.2') return 'A1.2';
+  return '';
+}
+
+export function examModeLabel(mode, book) {
+  const tag = examBookTag(book);
+  const suffix = tag ? ` ${tag}` : '';
+  if (mode === 'full') return tag ? `${tag} Final Mock` : 'A1 Mock Exam';
+  return `${EXAM_SECTION_LABELS[mode] || mode}-Training${suffix}`;
 }
 
 /**
@@ -102,20 +111,25 @@ export function selectStaticQuestions(
 }
 
 // --- per-mode best scores (localStorage; legacy single key migrates) ---
+// Since the Prüfung tab is divided by book, bests are stored per
+// (mode, book) pair, e.g. `gs_exam_best_full_a1.2`. Calls without a book
+// keep the legacy behavior so old callers/tests still work.
 
-export function examBestKey(mode) {
-  return `gs_exam_best_${mode || 'full'}`;
+export function examBestKey(mode, book) {
+  const m = mode || 'full';
+  if (book === 'a1.1' || book === 'a1.2') return `gs_exam_best_${m}_${book}`;
+  return `gs_exam_best_${m}`;
 }
 
-/** Read the best score for a mode; legacy `gs_exam_best` counts as full. */
-export function readExamBest(mode) {
+/** Read the best score for a (mode, book) pair; legacy `gs_exam_best` counts as full. */
+export function readExamBest(mode, book) {
   try {
-    const raw = localStorage.getItem(examBestKey(mode));
+    const raw = localStorage.getItem(examBestKey(mode, book));
     if (raw) {
       const p = JSON.parse(raw);
       if (p && typeof p.correct === 'number') return p;
     }
-    if ((mode || 'full') === 'full') {
+    if (!book && (mode || 'full') === 'full') {
       const legacy = localStorage.getItem('gs_exam_best');
       if (legacy) {
         const p = JSON.parse(legacy);
@@ -126,13 +140,107 @@ export function readExamBest(mode) {
   return null;
 }
 
-export function writeExamBest(mode, best) {
+export function writeExamBest(mode, bookOrBest, maybeBest) {
+  // Back-compat: writeExamBest(mode, best) still works (no book).
+  let book = null;
+  let best = null;
+  if (typeof bookOrBest === 'string' && (bookOrBest === 'a1.1' || bookOrBest === 'a1.2')) {
+    book = bookOrBest;
+    best = maybeBest;
+  } else {
+    best = bookOrBest;
+  }
   try {
     if (best) {
-      localStorage.setItem(examBestKey(mode), JSON.stringify(best));
-      if ((mode || 'full') === 'full') localStorage.setItem('gs_exam_best', JSON.stringify(best));
+      localStorage.setItem(examBestKey(mode, book), JSON.stringify(best));
+      if (!book && (mode || 'full') === 'full') localStorage.setItem('gs_exam_best', JSON.stringify(best));
     }
   } catch {}
+}
+
+/**
+ * Coverage-guaranteed grammar sampling: pick exactly ONE random question per
+ * grammar topic (topics visited in shuffled order), then — when `count`
+ * exceeds the topic count — fill the rest with a random sample of the
+ * remaining questions. When `count` equals the topic count (the book Final
+ * Mocks: A1.1 → 20, A1.2 → 26), EVERY grammar topic of the book appears
+ * exactly once. No grammar topic is ever left without a question.
+ * `rnd` is injectable for deterministic tests.
+ */
+export function sampleGrammarCoveringTopics(grammarBank, count, rnd = Math.random) {
+  const bank = [...(grammarBank || [])];
+  // group by topic, preserving first-seen order
+  const byTopic = new Map();
+  for (const q of bank) {
+    const t = q.topic || 'Sonstiges';
+    if (!byTopic.has(t)) byTopic.set(t, []);
+    byTopic.get(t).push(q);
+  }
+  const topics = [...byTopic.keys()];
+  // shuffle topic order
+  for (let i = topics.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(rnd() * (i + 1));
+    [topics[i], topics[j]] = [topics[j], topics[i]];
+  }
+  const picked = [];
+  const pickedIds = new Set();
+  for (const t of topics) {
+    if (picked.length >= count) break;
+    const group = byTopic.get(t);
+    const q = group[Math.floor(rnd() * group.length)];
+    picked.push(q);
+    pickedIds.add(q.id);
+  }
+  if (picked.length < count) {
+    const rest = bank.filter((q) => !pickedIds.has(q.id));
+    for (let i = rest.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(rnd() * (i + 1));
+      [rest[i], rest[j]] = [rest[j], rest[i]];
+    }
+    for (const q of rest) {
+      if (picked.length >= count) break;
+      picked.push(q);
+    }
+  }
+  return picked;
+}
+
+/**
+ * Book-scoped variant of selectStaticQuestions: all banks are already
+ * filtered to one book (Lektion 1-12 or 13-24) by the caller.
+ * Grammar uses coverage-guaranteed sampling so no topic is missed;
+ * vocab is a fresh random mix; Lesen stays grouped by text.
+ */
+export function selectBookQuestions(
+  { grammarBank, vocabBank, readingThree, readingTwo },
+  rnd = Math.random,
+  { grammar = 20, vocab = 15, threeQ = 2, twoQ = 2 } = {},
+) {
+  const picked = [
+    ...sampleGrammarCoveringTopics(grammarBank, grammar, rnd),
+    ...sampleArray(vocabBank, vocab, rnd),
+  ];
+  const texts = [
+    ...sampleArray(readingThree, threeQ, rnd),
+    ...sampleArray(readingTwo, twoQ, rnd),
+  ];
+  // shuffle text order, keep each text's questions together
+  for (let i = texts.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(rnd() * (i + 1));
+    [texts[i], texts[j]] = [texts[j], texts[i]];
+  }
+  for (const t of texts) {
+    for (const q of t.questions || []) {
+      picked.push({
+        ...q,
+        section: 'lesen',
+        topic: t.kind,
+        lektion: t.lektion,
+        textId: t.id,
+      });
+    }
+  }
+  return picked;
 }
 
 /**
