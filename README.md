@@ -1,137 +1,132 @@
-# GermanSplash 🇩🇪✨
+# GermanSplash 🇩🇪
 
-> **Learn German the splashy way — 885+ Menschen words, SRS-powered, offline-first & genuinely fun.**
+Learn German vocab from the *Menschen A1* course books, with spaced repetition and a handful of quiz modes that actually make you retrieve the word instead of just recognizing it.
 
-Hey there! I'm **Arash Veisi** — I built GermanSplash because I wanted a beautiful, fast way to master German vocabulary from the *Menschen A1* books (A1.1 + A1.2). No boring spreadsheets, no paywalls — just cards that stick, quizzes that challenge, and a little splash of joy every time you answer correctly.
+I'm Arash Veisi, and I built this because I was working through Menschen A1.1/A1.2 myself and got tired of copying words into spreadsheets. So now there's an app that already has all 885 words in it, quizzes you the way flashcards should, and tells you when you're about to forget something before you actually forget it.
 
-It works fully offline as a PWA (install it to your iPhone/Android like a native app) and syncs your progress to the cloud when you're logged in. Add to home screen, open it on the train, and keep your streak alive 🔥
-
----
-
-### ✨ What makes it special
-
-- 📚 **Menschen-faithful** — 885 words from *Menschen A1.1 (Lektion 1–12) & A1.2 (Lektion 13–24)*, with German + English + فارسی (Persian), article, plural, example sentence, book & Lektion filters.
-- 🧠 **SM-2 spaced repetition** — cards reappear exactly when you're about to forget them. Weak words go to the Mistake Bank automatically.
-- 📦 **Pack Study** — study in focused packs (10/20/50) — we batch-save at the end so there's no lag mid-session. Swipe → Known / ← Again, or use Again/Hard/Good/Easy (now thoughtfully rebalanced!).
-- 🎮 **Quizzes & Games that actually matter**
-  - **Dictation** — hear German, type it exactly (ä ö ü ß matters!) — `+12 XP`
-  - **Artikel** — der/die/das — `+8 XP`
-  - **DE → فارسی** — type the Persian meaning — `+12 XP`
-  - **4-Choice** ✨ *NEW* — pick the right English from 4 distractors from the *same* Lektion — `+10 XP` (hard to cheese!)
-  - **🧩 Match Dash** — flip 12 tiles, match DE ↔ EN pairs — `+4` per pair + up to `+16` perfect bonus
-  - **⚡ Lightning Sprint** — 45 seconds, rapid 4-choice, streak multiplier up to `2×` — `+6` base per correct
-- 📈 **Progress you can feel** — per-Lektion & per-book mastery (seen vs mastered ★), streaks, total reviews, and a beautiful rank board.
-- 🔐 **Accounts & Cloud Sync** — sign up / login, progress & stats sync via `/api/*` + Upstash Redis. Works offline via Dexie (IndexedDB) and merges on login.
-- 🔍 **Suche, Weak Board & Leaderboard** — search in DE/EN/FA, practice weak words, and see where you stand (local or online).
-- ➕ **Add your own cards** — custom words land in your selected book/Lektion and stay yours.
-- 📲 **Stunning Update Experience** — installed PWAs don't auto-refresh: GermanSplash now detects a new live version, shows a shimmering update dialog with progress bar, and reloads in ~3s while keeping all your XP & streak safe. It also checks on app open, when you return to the tab, and every hour. You can tap ↻ in the header to check manually at any time.
-
-> **XP Economy (rebalanced in this release):** Swiping a card now gives only `+1` (Again) / `+2` (Hard) / `+3` (Good) / `+5` (Easy). Real learning — quizzes & games — pays **3–4× more**. No more farming XP by blindly swiping!
+It's a PWA, so it installs on your phone and works offline. If you're logged in it'll sync your progress to the cloud too, but you don't need an account to use it.
 
 ---
 
-### 🚀 Quick start
+### What's in it
+
+- **All the Menschen A1 vocab** — 885 words across A1.1 (Lektion 1–12) and A1.2 (Lektion 13–24), each with German, English, and Persian translations, plus article, plural form, and an example sentence. You can filter by book or Lektion.
+- **Spaced repetition (SM-2)** — cards come back right around when you're likely to forget them. Anything you keep missing gets pulled into a Mistake Bank automatically.
+- **Pack-based study** — pick a pack of 10, 20, or 50 cards and go. Progress saves once at the end of the pack rather than after every card, so it doesn't lag. Swipe left/right for Again/Known, or use the four-button Again/Hard/Good/Easy rating if you want finer control.
+- **Quizzes and a couple of games:**
+  - Dictation — you hear the word, type it back, umlauts and ß included (+12 XP)
+  - Artikel — der/die/das practice (+8 XP)
+  - German → Persian typing (+12 XP)
+  - 4-Choice — pick the right English translation out of four options pulled from the same Lektion, so you can't just pattern-match (+10 XP)
+  - Match Dash — a 12-tile memory-match game, DE↔EN pairs (+4/pair, up to +16 for a clean run)
+  - Lightning Sprint — 45 seconds of rapid-fire 4-choice questions with a streak multiplier up to 2× (+6 base per correct answer)
+- **Progress tracking** — mastery per Lektion and per book, streaks, total review count, and a leaderboard if you're into that.
+- **Accounts and sync** — optional login, backed by Upstash Redis on the server side. Everything's stored locally first (Dexie/IndexedDB) and merges with your account once you log in, so it works fine offline.
+- **Search + weak-word review** — search across all three languages, and there's a dedicated view for words you keep getting wrong.
+- **Add your own words** — drop custom cards into whatever book/Lektion you want.
+- **Update handling for the installed app** — PWAs are annoying about updates since they don't auto-refresh. This one checks for a new version on open, when you switch back to the tab, and every hour, and shows a small dialog when one's ready so you can update without losing your streak or XP. There's also a manual refresh button in the header if you don't want to wait.
+
+One thing worth calling out: the XP economy got rebalanced in this release. Swiping cards now only gives +1 to +5 XP depending on rating, and quizzes/games pay 3–4x more than that. Earlier versions let you rack up XP just by swiping through cards without really engaging, which defeated the point.
+
+---
+
+### Running it locally
 
 ```bash
 git clone https://github.com/<your-username>/GermanSplash.git
 cd GermanSplash
 npm install
-npm run dev      # opens at http://localhost:5173
+npm run dev      # http://localhost:5173
 npm run build    # production build to dist/
 npm run preview  # preview the build
 ```
 
-**Env vars** (for cloud sync / auth / leaderboard — optional for local dev, falls back to in-memory):
+Cloud sync, auth, and the leaderboard need a few env vars, but none of this is required for local dev — without them it just falls back to local storage and an in-memory leaderboard.
 
 ```
 UPSTASH_REDIS_REST_URL=
 UPSTASH_REDIS_REST_TOKEN=
-JWT_SECRET=           # or ADMIN_TOKEN for fallback
+JWT_SECRET=           # or ADMIN_TOKEN as a fallback
 ADMIN_USERNAME=admin
-ADMIN_TOKEN=          # for leaderboard admin actions
+ADMIN_TOKEN=          # needed for leaderboard admin actions
 ```
 
-Without Redis, everything still works locally (Dexie + in-memory board) — perfect for hacking or offline study.
+---
+
+### Installing it on your phone
+
+1. Open the deployed site (it's on Vercel) in your phone's browser.
+2. **iOS Safari:** Share → Add to Home Screen. It'll run full-screen like a native app after that.
+3. **Android Chrome:** you should get an install prompt, or you can find it under the menu as "Install app."
+
+When there's a new version, you'll see a small "update available" prompt — tap it and you're on the latest version in a few seconds, no data lost.
 
 ---
 
-### 📲 Install as an app (PWA / IPA)
-
-1. Open the deployed URL (Vercel) on your iPhone/Android.
-2. **iOS Safari:** Share → *Add to Home Screen* → Open — it runs standalone, full-screen, offline-ready.
-3. **Android Chrome:** Install banner or Menu → *Install app*.
-
-When I ship a new version, you'll see a **✨ New version available** sheet with a shining progress bar — tap **Update now →** and you're on the latest in seconds. No data loss.
-
----
-
-### 🗂️ Project structure
+### Project layout
 
 ```
 src/
   App.jsx            # all screens: Bücher, Lernen, Quiz/Games, Suche, Weak, Board, Profile
   components/
-    PWAUpdater.jsx   # stunning update dialog + progress + hourly/visibility checks
-  db.js              # Dexie (IndexedDB) + initialization & Menschen seeding
-  srs.js             # SM-2 + XP_MAP / QUIZ_XP / GAME_XP (balanced economy)
+    PWAUpdater.jsx   # handles the update dialog + hourly/visibility checks
+  db.js              # Dexie (IndexedDB) setup + Menschen data seeding
+  srs.js             # SM-2 logic + XP values for swipes/quizzes/games
   auth.js            # signup/login/progress/stats helpers
-  data/menschen.js   # BOOKS, LEKTION_LIST, ALL_MENSCHEN_WORDS (885)
-  theme.js           # BaseWeb theme + gender colors
+  data/menschen.js   # BOOKS, LEKTION_LIST, ALL_MENSCHEN_WORDS (885 total)
+  theme.js           # BaseWeb theme + colors for der/die/das
   main.jsx
 public/
   icon-192.png / icon-512.png / favicon.svg
-api/                 # Vercel serverless (leaderboard, auth, progress, stats)
+api/                 # Vercel serverless functions (leaderboard, auth, progress, stats)
 menschen_a1_1_vocabulary.json / menschen_a1_2_vocabulary.json
-vite.config.js       # vite-plugin-pwa (registerType: 'prompt') + dev API fallback
+vite.config.js       # vite-plugin-pwa config + dev API fallback
 ```
 
 ---
 
-### 🎨 Tech stack
+### Stack
 
-React 19 · Vite 8 · BaseWeb + Styletron · Dexie · vite-plugin-pwa (Workbox) · Upstash Redis · Vercel
-
----
-
-### 🤝 Contributing — you're so welcome!
-
-This is a public repo by **Arash Veisi** and I'd *love* your help to make it even better — whether it's fixing a typo in the Menschen JSON, polishing the UI, adding audio, or dreaming up the next game.
-
-**Ways to contribute:**
-
-- ⭐ Star the repo — it means a lot!
-- 🐛 Open an issue — bug, idea, or even “I wish it had ___”
-- 🔀 Open a PR — small is beautiful; no PR is too tiny
-  1. Fork → `git checkout -b feat/your-idea`
-  2. `npm install && npm run dev` — make sure it runs
-  3. `npm run build` — must pass
-  4. Commit with a clear message, push, and open a PR
-
-**Ground rules (warm & simple):** Be kind, be curious, keep it accessible. I review every PR personally and try to respond within a day or two. New contributors are celebrated here — first PR? I'll shout you out in the changelog!
-
-**Good first issues:** Add TTS voices, improve Persian typography, add Lektion audio, write a better onboarding, or help split the big bundle!
+React 19, Vite 8, BaseWeb + Styletron, Dexie, vite-plugin-pwa (Workbox), Upstash Redis, deployed on Vercel.
 
 ---
 
-### 🛣️ Roadmap
+### Contributing
 
-- [ ] Lektion audio packs (real Menschen CD audio mapping)
-- [ ] Sentence scramble game (word order)
+It's a small solo project so far, but I'd genuinely like help with it. Typo fixes in the vocab JSON, UI tweaks, new games, whatever — small PRs are welcome and I try to look at them within a day or two.
+
+If you want to open one:
+
+1. Fork the repo, branch off as `feat/your-idea`
+2. `npm install && npm run dev` and confirm it runs
+3. `npm run build` should pass before you push
+4. Open the PR with a description of what changed and why
+
+If you're not sure whether something's worth a PR, open an issue first and we can talk it through. First-time contributors are welcome — you don't need to know the codebase inside out to fix a typo or suggest something.
+
+Some things I know need work if you're looking for ideas: TTS audio for the words, better Persian font rendering, splitting up the JS bundle (it's gotten a bit big), and the onboarding flow could use some love.
+
+---
+
+### Roadmap
+
+- [ ] Audio for each Lektion (mapped to the actual Menschen CD audio)
+- [ ] A sentence-scramble game for word order
 - [ ] Shareable streak cards
-- [ ] Export / import progress
+- [ ] Export/import for your progress
 - [ ] Dark mode
 
-Got an idea? Open an issue — let's splash it together 💦
+If there's something you want that's not here, open an issue.
 
 ---
 
-### 📄 License
+### License
 
-MIT — free to use, remix, and learn from. If you build something cool with it, let me know!
+MIT. Use it, fork it, learn from it — if you build something with it I'd like to hear about it.
 
 ---
 
 <p align="center">
-  Made with ❤️ by <b>Arash Veisi</b> — happy learning! <br/>
-  <i>GermanSplash • Menschen Flashcards • A1.1 + A1.2</i>
+  Built by <b>Arash Veisi</b><br/>
+  GermanSplash — Menschen Flashcards, A1.1 + A1.2
 </p>
