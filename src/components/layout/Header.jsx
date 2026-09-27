@@ -216,7 +216,7 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
               <div style={{ fontWeight: 800, fontSize: 14, display: 'flex', alignItems: 'center', gap: 6 }}>{authUser?.username}{authUser?.isAdmin ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 10, background: '#fef3c7', color: '#b45309', padding: '2px 6px', borderRadius: 999 }}><ShieldCheck size={12} aria-hidden="true" />ADMIN</span> : ''}</div>
               <div style={{ fontSize: 11, color: '#6b6b7a' }}>{authUser?.email || 'GermanSplash PRO'}</div>
             </div>
-            <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); setActiveKey?.('6'); }}>
+            <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); setActiveKey?.('8'); }}>
               <User size={16} aria-hidden="true" /> Profile
             </button>
             <button className="gs-menu-item" style={itemStyle} role="menuitem" onClick={() => { setOpenMenu(null); onAdd?.(); }}>

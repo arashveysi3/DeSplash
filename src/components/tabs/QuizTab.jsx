@@ -14,8 +14,11 @@ import QuizReport from '../analytics/QuizReport.jsx';
 import {
   Sparkles,
   BarChart3,
+  BookOpen,
   Gamepad2,
   Puzzle,
+  Star,
+  Target,
   Zap,
   Hammer,
   CloudRainWind,
@@ -37,7 +40,7 @@ export default function QuizTab(props) {
   const {
     quizBook, setQuizBook, quizLektions, setQuizLektions, quizBookMeta,
     quizMode, setQuizMode, quizStarted, setQuizStarted,
-    quizScopeWords, weakIds, allWords,
+    quizScopeWords, quizScopeStatus, weakIds, allWords,
     startQuiz, quizQueue, quizIdx, currentQuizWord,
     choiceOptions, choicePick, setChoicePick,
     quizAnswer, setQuizAnswer, quizArtikelChoice, setQuizArtikelChoice,
@@ -108,6 +111,35 @@ export default function QuizTab(props) {
             <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='fa'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('fa')}>DE → فارسی</Button>
             <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='diktat'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('diktat')}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><CheckCircle2 size={14} aria-hidden="true" /> Diktat-Check</span></Button>
           </Block>
+          {quizMode === 'diktat' && quizScopeStatus && (
+            <UberCard styleOverride={{ marginTop: '12px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: '#f7f7fb', borderColor: '#e9e8f0' }}>
+              <Block display="flex" justifyContent="space-between" alignItems="center">
+                <LabelSmall color="#6b6b6b">Lernstand • {quizBookMeta?.label} {quizLektions.length ? quizLektions.join(', ') : 'whole book'}</LabelSmall>
+                <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{quizScopeStatus.total} Wörter</LabelSmall>
+              </Block>
+              <Block display="flex" gridGap="8px" marginTop="10px">
+                <Block overrides={{Block:{style:{flex:1, background:'#fff', border:'1px solid #e9e8f0', borderRadius:'14px', padding:'10px 8px', textAlign:'center'}}}}>
+                  <span style={{ display: 'inline-flex', padding: 6, borderRadius: 999, background: '#f1f1f3' }}><Eye size={16} aria-hidden="true" style={{ color: '#6b6b7a' }} /></span>
+                  <div style={{fontWeight:800, fontSize:18, marginTop:4}}>{quizScopeStatus.unseen}</div>
+                  <div style={{fontSize:11, color:'#6b6b7a', fontWeight:600}}>Unseen</div>
+                </Block>
+                <Block overrides={{Block:{style:{flex:1, background:'#fff', border:'1px solid #e9e8f0', borderRadius:'14px', padding:'10px 8px', textAlign:'center'}}}}>
+                  <span style={{ display: 'inline-flex', padding: 6, borderRadius: 999, background: '#eef2ff' }}><BookOpen size={16} aria-hidden="true" style={{ color: '#4f46e5' }} /></span>
+                  <div style={{fontWeight:800, fontSize:18, marginTop:4}}>{quizScopeStatus.practiced}</div>
+                  <div style={{fontSize:11, color:'#6b6b7a', fontWeight:600}}>Practiced</div>
+                </Block>
+                <Block overrides={{Block:{style:{flex:1, background:'#fff', border: quizScopeStatus.weak > 0 ? '1px solid #fecaca' : '1px solid #e9e8f0', borderRadius:'14px', padding:'10px 8px', textAlign:'center'}}}}>
+                  <span style={{ display: 'inline-flex', padding: 6, borderRadius: 999, background: '#fef2f2' }}><Target size={16} aria-hidden="true" style={{ color: '#dc2626' }} /></span>
+                  <div style={{fontWeight:800, fontSize:18, marginTop:4, color: quizScopeStatus.weak > 0 ? '#dc2626' : '#0f0f12'}}>{quizScopeStatus.weak}</div>
+                  <div style={{fontSize:11, color:'#6b6b7a', fontWeight:600}}>Weak</div>
+                </Block>
+              </Block>
+              <Block display="flex" justifyContent="space-between" alignItems="center" marginTop="8px">
+                <LabelSmall color="#6b6b6b"><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Star size={12} aria-hidden="true" style={{ color: '#eab308' }} /> {quizScopeStatus.mastered} mastered</span></LabelSmall>
+                <LabelSmall color="#6b6b6b">{quizScopeStatus.weak > 0 ? 'Weak words appear first' : quizScopeStatus.unseen === quizScopeStatus.total ? 'Fresh scope — good luck' : 'Solid base — keep going'}</LabelSmall>
+              </Block>
+            </UberCard>
+          )}
           <Block display="flex" gridGap="8px" marginTop="12px">
             {quizMode === 'diktat' ? (
               <>

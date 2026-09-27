@@ -111,7 +111,7 @@ export default function BuecherTab({ selectedBook, setSelectedBook, selectedLekt
             onStudy: () => { setSelectedBook(book.id); setSelectedLektions([]); setActiveKey('1'); },
             onQuizBook: () => { setQuizBook(book.id); setQuizLektions([]); setActiveKey('2'); },
             onQuizLektion: (lektion) => { setQuizBook(book.id); setQuizLektions([lektion]); setActiveKey('2'); },
-            onPracticeWeak: () => setActiveKey('4'),
+            onPracticeWeak: () => setActiveKey('5'),
           }}
         />
       </Block>
