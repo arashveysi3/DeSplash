@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   DAILY_LIMIT,
+  CORRECT_DAILY_LIMIT,
   todayKey,
   dayStartOf,
   accuracyOf,
@@ -9,6 +10,7 @@ import {
   emptyExposure,
   classifyWord,
   isCapped,
+  isCorrectCapped,
   partitionPool,
   orderFallback,
   takeUpTo,
@@ -41,8 +43,10 @@ describe('buildExposureIndex', () => {
     assert.equal(idx.get(1).total, 3);
     assert.equal(idx.get(1).correct, 2);
     assert.equal(idx.get(1).today, 2);
+    assert.equal(idx.get(1).todayCorrect, 1);
     assert.equal(idx.get(1).lastCorrect, false);
     assert.equal(idx.get(2).today, 1);
+    assert.equal(idx.get(2).todayCorrect, 1);
   });
   it('skips rows without vocabulary association', () => {
     const idx = buildExposureIndex([{ correct: true, timestamp: T(9) }, att(5, true)], START);
@@ -78,24 +82,43 @@ describe('classifyWord', () => {
 });
 
 describe('daily cap rules', () => {
-  it('strong word seen once today can appear once more', () => {
-    assert.equal(isCapped('strong', 1), false);
+  it('once correctly answered today, any word is done for today', () => {
+    assert.equal(CORRECT_DAILY_LIMIT, 1);
+    assert.equal(isCorrectCapped({ todayCorrect: 1 }), true);
+    assert.equal(isCorrectCapped({ todayCorrect: 0 }), false);
+    assert.equal(isCorrectCapped(emptyExposure()), false);
   });
-  it('strong word seen twice today is capped', () => {
+  it('strong word seen once today is capped (variety)', () => {
+    assert.equal(isCapped('strong', 1), true);
     assert.equal(isCapped('strong', DAILY_LIMIT), true);
-    assert.equal(DAILY_LIMIT, 2);
+    assert.equal(DAILY_LIMIT, 1);
   });
-  it('weak word is never capped, even with many appearances', () => {
+  it('weak word capped only when answered correctly today (wrong stays eligible)', () => {
     assert.equal(isCapped('weak', 9), false);
     assert.equal(isCapped('new', 9), false);
     assert.equal(isCapped('learning', 9), false);
+    // appearance alone never caps weak — correctness does (via partitionPool)
+    const { eligible, capped } = partitionPool([word(99)], {
+      progressMap: {},
+      weakIds: new Set([99]),
+      exposure: buildExposureIndex([att(99, false, 8), att(99, false, 9)], START),
+    });
+    assert.equal(eligible.length, 1);
+    assert.equal(capped.length, 0);
+    const afterCorrect = partitionPool([word(99)], {
+      progressMap: {},
+      weakIds: new Set([99]),
+      exposure: buildExposureIndex([att(99, true, 8)], START),
+    });
+    assert.equal(afterCorrect.eligible.length, 0);
+    assert.equal(afterCorrect.capped.length, 1);
   });
 });
 
 describe('partitionPool + takeUpTo', () => {
   const mastered = { repetition: 5, ease: 2.5, lapses: 0, interval: 30 };
   function ctxFor() {
-    const attempts = [att(10, true, 8), att(10, true, 9)]; // strong-capped word 10
+    const attempts = [att(10, true, 8)]; // correctly-answered once today => capped
     return {
       progressMap: { 10: mastered },
       weakIds: new Set(),
@@ -114,7 +137,7 @@ describe('partitionPool + takeUpTo', () => {
     assert.deepEqual(out.map((w) => w.id), [10]);
   });
   it('fallback prefers least-exposed capped words', () => {
-    const attempts = [att(20, true, 8), att(20, true, 9), att(21, true, 8), att(21, true, 9), att(21, true, 10)];
+    const attempts = [att(20, true, 8), att(21, true, 8), att(21, true, 9)];
     const ctx = { progressMap: { 20: mastered, 21: mastered }, weakIds: new Set(), exposure: buildExposureIndex(attempts, START) };
     const { capped } = partitionPool([word(20), word(21)], ctx);
     assert.deepEqual(orderFallback(capped).map((e) => e.w.id), [20, 21]);
@@ -127,12 +150,24 @@ describe('cross-activity sharing', () => {
       att(30, true, 8, 'choice'), att(30, false, 9, 'sprint'), att(30, true, 10, 'pack'),
     ], START);
     assert.equal(idx.get(30).today, 3);
+    assert.equal(idx.get(30).todayCorrect, 2);
     assert.equal(idx.get(30).total, 3);
   });
   it('counts reset on the next day', () => {
     const idx = buildExposureIndex([att(31, true, 8)], dayStartOf('2026-09-25'));
     assert.equal(idx.get(31).today, 0);
+    assert.equal(idx.get(31).todayCorrect, 0);
     assert.equal(idx.get(31).total, 1);
+  });
+  it('correctly-answered word is capped across activities (no same-day repeat)', () => {
+    const idx = buildExposureIndex([att(40, true, 8, 'choice')], START);
+    const { eligible, capped } = partitionPool([word(40), word(41)], {
+      progressMap: {},
+      weakIds: new Set(),
+      exposure: idx,
+    });
+    assert.deepEqual(capped.map((e) => e.w.id), [40]);
+    assert.deepEqual(eligible.map((e) => e.w.id), [41]);
   });
 });
 

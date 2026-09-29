@@ -9,21 +9,26 @@
  * - Tracking is WORD-level: every question/game item in the app is generated
  *   from one vocabulary word (prompted word), so appearances, accuracy and
  *   the daily cap are keyed by wordId. Distractor options are not exposures.
- * - "Strong" words are capped at DAILY_LIMIT appearances per calendar day.
- *   Weak / new / learning words are never capped.
+ * - A word answered correctly once per calendar day is done for the day
+ *   (CORRECT_DAILY_LIMIT = 1, all statuses). Wrong answers stay eligible
+ *   for same-day reinforcement. Strong words are additionally capped by
+ *   appearance (DAILY_LIMIT) to guarantee variety.
  * - Exposure history comes from the Dexie `quizAttempts` table (all modes),
  *   aggregated once per selection via buildExposureIndex(). No localStorage.
  * - Day boundaries use the app's existing UTC-day convention (YYYY-MM-DD).
- * - Ordering per activity is preserved (SRS-due first for flashcards,
- *   weak-first for quizzes, shuffled variety for games); the shared layer
- *   provides eligibility (partitionPool), classification (classifyWord) and
- *   graceful fallback (takeUpTo) so small pools never produce empty sets.
+ * - Selection picks the set (weak-first priority), then callers MUST shuffle
+ *   presentation order so repeated quizzes never start with the same words
+ *   (e.g. Spielen / Sortieren). The shared layer provides eligibility
+ *   (partitionPool), classification (classifyWord) and graceful fallback
+ *   (takeUpTo) so small pools never produce empty sets.
  */
 
 import { isWordMastered } from './progress.js';
 
 /** Max appearances per calendar day for strong/familiar words. */
-export const DAILY_LIMIT = 2;
+export const DAILY_LIMIT = 1;
+/** Max correct answers per calendar day for ANY word — once correct, done for today. */
+export const CORRECT_DAILY_LIMIT = 1;
 /** Below this historical accuracy (with >=2 attempts) a word counts as weak. */
 export const WEAK_ACCURACY = 60;
 /** At/above this accuracy (with >=3 attempts and last correct) a word counts as strong. */
@@ -50,7 +55,7 @@ export function accuracyOf(correct, total) {
 }
 
 export function emptyExposure() {
-  return { today: 0, total: 0, correct: 0, lastCorrect: null, lastTs: 0 };
+  return { today: 0, todayCorrect: 0, total: 0, correct: 0, lastCorrect: null, lastTs: 0 };
 }
 
 /**
@@ -58,7 +63,7 @@ export function emptyExposure() {
  * One row per answered/rated/matched item — never N+1, never full-vocab scan.
  * @param {Array} attempts rows with { wordId, correct, timestamp }
  * @param {number} dayStart timestamps >= dayStart count as "today"
- * @returns {Map} wordId -> { today, total, correct, lastCorrect, lastTs }
+ * @returns {Map} wordId -> { today, todayCorrect, total, correct, lastCorrect, lastTs }
  */
 export function buildExposureIndex(attempts, dayStart) {
   const map = new Map();
@@ -72,7 +77,10 @@ export function buildExposureIndex(attempts, dayStart) {
     e.total += 1;
     if (t.correct) e.correct += 1;
     const ts = Number(t.timestamp) || 0;
-    if (ts >= dayStart) e.today += 1;
+    if (ts >= dayStart) {
+      e.today += 1;
+      if (t.correct) e.todayCorrect += 1;
+    }
     if (ts >= e.lastTs) {
       e.lastTs = ts;
       e.lastCorrect = !!t.correct;
@@ -102,25 +110,38 @@ export function classifyWord(wordId, { progress, weakIds, exposure } = {}) {
   return 'learning';
 }
 
-/** Only strong words are ever capped — weak/new/learning always stay eligible. */
+/**
+ * A word is done for today if answered correctly >= CORRECT_DAILY_LIMIT,
+ * regardless of status. Strong words are additionally capped by appearance
+ * to guarantee variety even when never answered correctly.
+ */
 export function isCapped(status, todayCount, limit = DAILY_LIMIT) {
   return status === 'strong' && todayCount >= limit;
 }
 
+export function isCorrectCapped(exp, limit = CORRECT_DAILY_LIMIT) {
+  const tc = exp?.todayCorrect ?? 0;
+  return tc >= limit;
+}
+
 /**
  * Split candidates into normally-eligible vs daily-capped.
+ * - Any word with todayCorrect >= correctLimit is capped (once correct, done today).
+ * - Strong words with today >= appearLimit are also capped (variety).
  * @returns {{ eligible: Array<{w,status,exp}>, capped: Array<{w,status,exp}> }}
  */
 export function partitionPool(words, ctx = {}) {
   const eligible = [];
   const capped = [];
-  const limit = ctx.dailyLimit ?? DAILY_LIMIT;
+  const appearLimit = ctx.dailyLimit ?? DAILY_LIMIT;
+  const correctLimit = ctx.dailyCorrectLimit ?? CORRECT_DAILY_LIMIT;
   for (const w of words || []) {
     const p = ctx.progressMap ? ctx.progressMap[w.id] : undefined;
     const exp = (ctx.exposure && ctx.exposure.get(w.id)) || emptyExposure();
     const status = classifyWord(w.id, { progress: p, weakIds: ctx.weakIds, exposure: exp });
     const entry = { w, status, exp };
-    if (isCapped(status, exp.today, limit)) capped.push(entry);
+    if (isCorrectCapped(exp, correctLimit)) capped.push(entry);
+    else if (isCapped(status, exp.today, appearLimit)) capped.push(entry);
     else eligible.push(entry);
   }
   return { eligible, capped };
@@ -131,6 +152,9 @@ export function orderFallback(capped) {
   const rank = (s) => (s === 'weak' ? 0 : s === 'learning' ? 1 : s === 'new' ? 2 : 3);
   return [...(capped || [])].sort((a, b) => {
     if (rank(a.status) !== rank(b.status)) return rank(a.status) - rank(b.status);
+    const aTC = a.exp.todayCorrect ?? 0;
+    const bTC = b.exp.todayCorrect ?? 0;
+    if (aTC !== bTC) return aTC - bTC;
     if (a.exp.today !== b.exp.today) return a.exp.today - b.exp.today;
     return b.exp.total - a.exp.total;
   });

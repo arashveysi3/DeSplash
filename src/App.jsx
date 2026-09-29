@@ -65,8 +65,11 @@ function shuffleArray(arr) {
   return a;
 }
 function shuffleIfMulti(lektions, arr) {
-  if (lektions && lektions.length > 1) return shuffleArray(arr);
-  return arr;
+  // Quiz/game presentation must always shuffle: empty = whole book (all lektions),
+  // multi = explicit all, single = still shuffle to avoid fixed lesson order repeats.
+  // Kept as wrapper so existing call sites stay correct.
+  if (!arr || arr.length <= 1) return arr ? [...arr] : [];
+  return shuffleArray(arr);
 }
 // Decide if a word's german string is a full sentence vs vocab item
 // Vocabulary items are short (<=3-4 tokens) or nouns/verbs with article; educational sentences are longer and contain sentence punctuation
@@ -837,11 +840,11 @@ export default function App() {
       basePool = single.length >= 4 ? single : filterSingleWordPool(pool);
       if (basePool.length < 4) return [];
     }
-    // Shared eligibility: strong words at their daily cap drop out here
-    // (weak/new/learning are never capped). Fallback tops up small pools.
+    // Shared eligibility: words answered correctly today are capped (done for today),
+    // strong words capped by appearance. Fallback tops up small pools.
     const { eligible, capped } = partitionPool(basePool, selectionCtx);
     const byStatus = (s) => eligible.filter((e) => e.status === s).map((e) => e.w);
-    // Weak first — existing severity order (lapses desc, ease asc, due asc).
+    // Weak first for SET selection — severity order (lapses desc, ease asc, due asc).
     const weak = eligible.filter((e) => e.status === 'weak').map((e) => e.w);
     weak.sort((a,b)=>{
       const pa = progressMap[a.id] || { lapses:0, ease:2.5, due:0 };
@@ -865,8 +868,11 @@ export default function App() {
         out = [...out, ...restWeak, ...restOther, ...orderFallback(rest.capped).map((e) => e.w)];
       }
     }
-    // Eligible tiers first, capped-strong fallback only when the pool is short.
-    return takeUpTo(out, orderFallback(capped), count);
+    // 1) pick the SET upfront (eligible tiers first, capped fallback only when short),
+    // 2) then SHUFFLE presentation order so every start is fresh — same weak words
+    //    never lead every quiz (Spielen/Sortieren repeat bug).
+    const picked = takeUpTo(out, orderFallback(capped), count);
+    return shuffleArray(picked);
   }, [quizScopeWords, progressMap, quizMode, selectionCtx]);
 
   const buildChoiceOptions = useCallback((word, pool) => {
