@@ -23,7 +23,7 @@ export default function BuecherTab({ selectedBook, setSelectedBook, selectedLekt
       <>
         <Block marginBottom="12px">
           <Heading $style={{fontSize:22, margin:'0 0 4px', letterSpacing:'-0.5px'}}>Wähle dein Buch</Heading>
-          <ParagraphSmall color="#6b6b6b" margin="0">Menschen A1 — 24 Lektionen • {BOOKS.reduce((a,b)=>a+b.total,0)} Wörter • Deutsch + English + فارسی</ParagraphSmall>
+          <ParagraphSmall color="#6b6b6b" margin="0">Menschen — {BOOKS.reduce((a,b)=>a+b.lektionCount,0)} Lektionen • {BOOKS.reduce((a,b)=>a+b.total,0)} Wörter • Deutsch + English + فارسی</ParagraphSmall>
         </Block>
         <Block display="flex" flexDirection="column" gridGap="12px">
           {BOOKS.map(book=>{
@@ -36,7 +36,7 @@ export default function BuecherTab({ selectedBook, setSelectedBook, selectedLekt
                   <Block>
                     <div style={{fontSize:12, letterSpacing:1, opacity:0.9, fontWeight:700}}>{book.levels} • {book.publisher}</div>
                     <div style={{fontSize:22, fontWeight:800, marginTop:4}}>{book.label}</div>
-                    <div style={{fontSize:12, opacity:0.85, marginTop:2}}>{book.title} • {book.isbn}</div>
+                    <div style={{fontSize:12, opacity:0.85, marginTop:2}}>{book.title}{book.isbn ? ` • ${book.isbn}` : ''}</div>
                     <Block display="flex" gridGap="6px" marginTop="12px">
                       <span style={{background:'rgba(255,255,255,0.2)', padding:'4px 10px', borderRadius:999, fontSize:11, fontWeight:700}}>{book.total} Wörter</span>
                       <span style={{background: isSelected ? '#fff' : 'rgba(255,255,255,0.2)', color: isSelected ? '#000' : '#fff', padding:'4px 10px', borderRadius:999, fontSize:11, fontWeight:700, display:'inline-flex', alignItems:'center', gap:4}}>{isSelected && <Check size={12} aria-hidden="true" />}{isSelected ? 'Selected' : 'Tap to open'}</span>

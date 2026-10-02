@@ -23,7 +23,7 @@ import { isSoundEnabled, setSoundEnabled, primeAudio, playTap } from '../../util
 // Navbar hierarchy: logo | avatar/profile menu, settings menu, streak + XP.
 // Profile menu: Profile, Add card, Logout/Login. Settings menu: Sounds, Check for update.
 export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setShowAuth, setAuthMode, setActiveKey }) {
-  const totalWords = BOOKS[0].total + BOOKS[1].total;
+  const totalWords = BOOKS.reduce((a, b) => a + b.total, 0);
   const [soundOn, setSoundOn] = useState(() => isSoundEnabled());
   const [openMenu, setOpenMenu] = useState(null); // 'profile' | 'settings' | null
   const [menuPos, setMenuPos] = useState({ top: 64, right: 12 });
@@ -125,7 +125,7 @@ export default function Header({ stats, authUser, onAdd, onLogin, onLogout, setS
             <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>GermanSplash</span>
             <span className="gs-header-badge" style={{ fontSize: 10, background: 'linear-gradient(135deg,#4f46e5,#06b6d4)', color: '#fff', padding: '2px 6px', borderRadius: 999, fontWeight: 800, flexShrink: 0 }}>PRO</span>
           </div>
-          <div className="gs-header-subtitle" style={{ fontSize: 11, color: '#6b6b7a', letterSpacing: '0.2px', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>MENSCHEN A1.1 + A1.2 • {totalWords} • DE ↔ EN+FA</div>
+          <div className="gs-header-subtitle" style={{ fontSize: 11, color: '#6b6b7a', letterSpacing: '0.2px', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>MENSCHEN {BOOKS.map((b) => b.shortLabel).join(' + ')} • {totalWords} • DE ↔ EN+FA</div>
         </Block>
       </Block>
       <Block

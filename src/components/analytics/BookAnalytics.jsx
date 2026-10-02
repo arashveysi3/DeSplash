@@ -134,7 +134,7 @@ export default function BookAnalytics({ book, allWords, progressMap, attempts, l
         <SectionLabel>PERFORMANCE BY LEKTION</SectionLabel>
         <Block display="flex" flexDirection="column" gridGap="8px" marginTop="10px">
           {analytics.perLektion.map((e, i) => (
-            <LektionPerfRow key={e.key} entry={e} index={i} showWords onPractice={onQuizLektion} />
+            <LektionPerfRow key={e.key} entry={e} index={i} book={book.id} showWords onPractice={onQuizLektion} />
           ))}
         </Block>
       </UberCard>

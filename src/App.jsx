@@ -1036,6 +1036,7 @@ export default function App() {
       report,
       meta: {
         mode: quizMode,
+        book: quizBook,
         bookLabel,
         scopeLabel: `${bookLabel} ${quizLektions.length ? quizLektions.join(', ') : 'whole book'}`,
         timestamp: Date.now(),

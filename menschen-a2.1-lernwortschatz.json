@@ -1,0 +1,4702 @@
+{
+  "lektionen": [
+    {
+      "lektion": 1,
+      "title": null,
+      "source_pages": [
+        7
+      ],
+      "words": [
+        {
+          "text": "Familie",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Familie"
+        },
+        {
+          "text": "Cousin",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-s",
+          "translation": null,
+          "example": null,
+          "source_text": "Cousin der, -s"
+        },
+        {
+          "text": "Cousine",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Cousine die, -n"
+        },
+        {
+          "text": "Neffe",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Neffe der, -n"
+        },
+        {
+          "text": "Nichte",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Nichte die, -n"
+        },
+        {
+          "text": "Onkel",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-",
+          "translation": null,
+          "example": null,
+          "source_text": "Onkel der, -"
+        },
+        {
+          "text": "Tante",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Tante die, -n"
+        },
+        {
+          "text": "Schwieger- (Schwiegervatcr/ ·muuer/·sohn/ ·tochter)",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Schwieger-\n(Schwiegervatcr/\n·muuer/·sohn/\n·tochter)"
+        },
+        {
+          "text": "Kindheit und Jugend",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Kindheit und Jugend"
+        },
+        {
+          "text": "Geschichte",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Geschichte die, -n"
+        },
+        {
+          "text": "Jugendliche",
+          "type": "Nomen",
+          "article": "der/die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Jugendliche\nder/die, ·n"
+        },
+        {
+          "text": "Puppe",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Puppe die, ·n"
+        },
+        {
+          "text": "Sache",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Sache die, ·n"
+        },
+        {
+          "text": "Spiel",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Spiel das, -e"
+        },
+        {
+          "text": "Witz",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "·e",
+          "translation": null,
+          "example": null,
+          "source_text": "Witz der, ·e"
+        },
+        {
+          "text": "kleuern",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "kleuern,\nist geklettert"
+        },
+        {
+          "text": "sammeln",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "sammeln,\nhat gesammelt"
+        },
+        {
+          "text": "streiten",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "streiten,\nhat gestritten"
+        },
+        {
+          "text": "übernachten",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "übernachten,\nhat übernachtet"
+        },
+        {
+          "text": "verkaufen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "verkaufen,\nhat verkauft"
+        },
+        {
+          "text": "zeichnen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "zeichnen,\nhat gezeichnet"
+        },
+        {
+          "text": "verrückt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "verrückt"
+        },
+        {
+          "text": "früht>r",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "früht>r"
+        },
+        {
+          "text": "Weitere wichtige Wörter",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weitere wichtige Wörter"
+        },
+        {
+          "text": "Anfang",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Anfang der, =e"
+        },
+        {
+          "text": "am Anfang",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "am Anfang"
+        },
+        {
+          "text": "l!nde",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "l!nde das. ·n"
+        },
+        {
+          "text": "am l!nde",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "am l!nde"
+        },
+        {
+          "text": "Mannschaft",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Mannschaft die.\n-en"
+        },
+        {
+          "text": "Pfeifer",
+          "type": "Nomen",
+          "article": "der",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Pfeifer der"
+        },
+        {
+          "text": "Punkt",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Punkt der, -e"
+        },
+        {
+          "text": "Satz",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Satz der, =e"
+        },
+        {
+          "text": "Schluss",
+          "type": "Nomen",
+          "article": "der",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Schluss der"
+        },
+        {
+          "text": "Studium",
+          "type": "Nomen",
+          "article": "das",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Studium das"
+        },
+        {
+          "text": "Zigarette",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Zigarette die, ·n ___ _"
+        },
+        {
+          "text": "nuf·machen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "nuf·machen,\nhat aufgemacht"
+        },
+        {
+          "text": "nuf·passen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "nuf·passen,\nhat aufgepasst"
+        },
+        {
+          "text": "kluppcn",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "kluppcn.\nhat geklappt"
+        },
+        {
+          "text": "passieren",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "passieren.\nist passiert"
+        },
+        {
+          "text": "rufen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "rufen,\nhat gerufen"
+        },
+        {
+          "text": "wachsen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "wachsen,\ndu wächst, er wächst,\nist gewachsen"
+        },
+        {
+          "text": "einfach",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "einfach"
+        },
+        {
+          "text": "neißig",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "neißig"
+        },
+        {
+          "text": "geschJossen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "geschJossen"
+        },
+        {
+          "text": "kompliziert",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "kompliziert"
+        },
+        {
+          "text": "zuerst",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "zuerst"
+        },
+        {
+          "text": "zum Schluss",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "zum Schluss"
+        }
+      ]
+    },
+    {
+      "lektion": 2,
+      "title": null,
+      "source_pages": [
+        13
+      ],
+      "words": [
+        {
+          "text": "Einrichtung und Umzug",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Einrichtung und Umzug"
+        },
+        {
+          "text": "Ding",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "·e",
+          "translation": null,
+          "example": null,
+          "source_text": "Ding das, ·e"
+        },
+        {
+          "text": "Ecke",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Ecke die, ·n"
+        },
+        {
+          "text": "in der Ecke",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "in der Ecke"
+        },
+        {
+          "text": "Fcrnschg~rih",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-c",
+          "translation": null,
+          "example": null,
+          "source_text": "Fcrnschg~rih das,\n-c"
+        },
+        {
+          "text": "A/Cll. Ftrn••her der, ·",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A/Cll. Ftrn••her der, ·"
+        },
+        {
+          "text": "Gcgcnswnd",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "~c",
+          "translation": null,
+          "example": null,
+          "source_text": "Gcgcnswnd der, ~c"
+        },
+        {
+          "text": "Herd",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Herd der, -e"
+        },
+        {
+          "text": "Kissen",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "Kissen das,·"
+        },
+        {
+          "text": "A: P~l l tt '\"d~r,",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A: P~l l tt '\"d~r,"
+        },
+        {
+          "text": "Raum",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "c",
+          "translation": null,
+          "example": null,
+          "source_text": "Raum der, c"
+        },
+        {
+          "text": "Regal",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Regal das, -e"
+        },
+        {
+          "text": "Schreibtisch",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Schreibtisch der,\n-e"
+        },
+        {
+          "text": "CU: \"\"' h· <In$ Puh. ·C",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CU: \"\"' h· <In$ Puh. ·C"
+        },
+        {
+          "text": "Spiegel",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "Spiegel der,·"
+        },
+        {
+          "text": "Tür",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·C:n",
+          "translation": null,
+          "example": null,
+          "source_text": "Tür die, ·C:n"
+        },
+        {
+          "text": "Vorhung",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "•e",
+          "translation": null,
+          "example": null,
+          "source_text": "Vorhung der, •e"
+        },
+        {
+          "text": "Wand",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "\"e",
+          "translation": null,
+          "example": null,
+          "source_text": "Wand die, \"e"
+        },
+        {
+          "text": "Werkzeug",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Werkzeug das, -e"
+        },
+        {
+          "text": "einrichten",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "einrichten,\nhat eingerichtet"
+        },
+        {
+          "text": "hängen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "hängen,\nhat gebangt /\nhat gehangen"
+        },
+        {
+          "text": "A: 1<1 ,(«hangen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A: 1<1 ,(«hangen"
+        },
+        {
+          "text": "CH 1 11 h.tn ....",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH 1 11 h.tn ...."
+        },
+        {
+          "text": "legen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "legen, hot gelegt"
+        },
+        {
+          "text": "liegen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "liegen, hat gelegen"
+        },
+        {
+          "text": "A/CH •t gt•lt•gcn",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A/CH •t gt•lt•gcn"
+        },
+        {
+          "text": "renovieren, hat renovien",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "renovieren, hat\nrenovien"
+        },
+        {
+          "text": "scehen, hat gestanden",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "scehen, hat\ngestanden"
+        },
+        {
+          "text": "A/CH: i~ L gcsta11dcn",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A/CH: i~ L gcsta11dcn"
+        },
+        {
+          "text": "stellen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "stellen,\nhat gestellt"
+        },
+        {
+          "text": "dunkel",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "dunkel"
+        },
+        {
+          "text": "hell",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "hell"
+        },
+        {
+          "text": "Weittre wichtige Worter",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weittre wichtige Worter"
+        },
+        {
+          "text": "lieft",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "lieft das, -e"
+        },
+        {
+          "text": "Souvenir",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "•S",
+          "translation": null,
+          "example": null,
+          "source_text": "Souvenir\ndas, •S"
+        },
+        {
+          "text": "diskutieren, hat diskutiert",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "diskutieren, hat\ndiskutiert"
+        },
+        {
+          "text": "verstecken",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "verstecken,\nhat versteckt"
+        },
+        {
+          "text": "schwer",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "schwer"
+        },
+        {
+          "text": "vorsichtig",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "vorsichtig"
+        },
+        {
+          "text": "vorsieht ig sein mit",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "vorsieht ig\nsein mit"
+        },
+        {
+          "text": "sonst",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "sonst"
+        }
+      ]
+    },
+    {
+      "lektion": 3,
+      "title": null,
+      "source_pages": [
+        19
+      ],
+      "words": [
+        {
+          "text": "Natur und Umwelt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Natur und Umwelt"
+        },
+        {
+          "text": "Dorf",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "•er",
+          "translation": null,
+          "example": null,
+          "source_text": "Dorf das. •er"
+        },
+        {
+          "text": "Katze",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Katze die, -n"
+        },
+        {
+          "text": "Pflanze",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Pflanze die, ·n"
+        },
+        {
+          "text": "Landschaft",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Landschaft die,\n-en"
+        },
+        {
+          "text": "Luft",
+          "type": "Nomen",
+          "article": "die",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Luft die"
+        },
+        {
+          "text": "Ruhe",
+          "type": "Nomen",
+          "article": "die",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Ruhe die"
+        },
+        {
+          "text": "Strand",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "•e",
+          "translation": null,
+          "example": null,
+          "source_text": "Strand der, •e"
+        },
+        {
+          "text": "Tier",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-i!",
+          "translation": null,
+          "example": null,
+          "source_text": "Tier das. -i!"
+        },
+        {
+          "text": "Ufer",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "Ufer das, ·"
+        },
+        {
+          "text": "Vogel",
+          "type": "Nomen",
+          "article": "der",
+          "plural": ":",
+          "translation": null,
+          "example": null,
+          "source_text": "Vogel der, :"
+        },
+        {
+          "text": "wandern",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "wandern,\nist gewandert"
+        },
+        {
+          "text": "Tourismus",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Tourismus"
+        },
+        {
+          "text": "Beralung",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·en",
+          "translation": null,
+          "example": null,
+          "source_text": "Beralung die, ·en"
+        },
+        {
+          "text": "l!rfa hrung die, -en",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "l!rfa hrung die, -en ___ _"
+        },
+        {
+          "text": "l'ahrt",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "l'ahrt die, -en"
+        },
+        {
+          "text": "Gruppe",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Gruppe die, ·n"
+        },
+        {
+          "text": "Karte",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Karte die, -n"
+        },
+        {
+          "text": "Service",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-s",
+          "translation": null,
+          "example": null,
+          "source_text": "Service der, -s"
+        },
+        {
+          "text": "TTend",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "·S",
+          "translation": null,
+          "example": null,
+          "source_text": "TTend der, ·S"
+        },
+        {
+          "text": "Unterrichl",
+          "type": "Nomen",
+          "article": "der",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Unterrichl der"
+        },
+        {
+          "text": "un·bieten",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "un·bieten,\nhat angeboten"
+        },
+        {
+          "text": "beraten",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "beraten.\ndu berätst,\ner berät,\nhat beraten"
+        },
+        {
+          "text": "beginnen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "beginnen,\nhat begonnen"
+        },
+        {
+          "text": "buchen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "buchen,\nhat gebucht"
+        },
+        {
+          "text": "enden",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "enden,\nbat geendet"
+        },
+        {
+          "text": "erleben",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "erleben,\nhat erlebl"
+        },
+        {
+          "text": "mit-machen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "mit-machen,\nhat mitgemacht"
+        },
+        {
+          "text": "aktiv",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "aktiv"
+        },
+        {
+          "text": "sportlich",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "sportlich"
+        },
+        {
+          "text": "Weitere wichtige Wörter",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weitere wichtige Wörter"
+        },
+        {
+          "text": "Mode",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Mode die, ·n"
+        },
+        {
+          "text": "liegen in",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "liegen in,\nhat gelegen"
+        },
+        {
+          "text": "A/CH ist grlegen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A/CH ist grlegen"
+        },
+        {
+          "text": "überhaupt nicht",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "überhaupt nicht __"
+        },
+        {
+          "text": "anders",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "anders"
+        },
+        {
+          "text": "außerdem",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "außerdem"
+        },
+        {
+          "text": "direkt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "direkt"
+        }
+      ]
+    },
+    {
+      "lektion": 4,
+      "title": null,
+      "source_pages": [
+        31
+      ],
+      "words": [
+        {
+          "text": "Lebensmittel",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Lebensmittel"
+        },
+        {
+          "text": "Banane",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Banane die, -n"
+        },
+        {
+          "text": "Birne",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "· n",
+          "translation": null,
+          "example": null,
+          "source_text": "Birne die, · n"
+        },
+        {
+          "text": "Bohne",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Bohne die, ·n"
+        },
+        {
+          "text": "A: grunc Bohne Frisole die, ·n",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A: grunc Bohne\nFrisole die, ·n"
+        },
+        {
+          "text": "Bonbon",
+          "type": "Nomen",
+          "article": "der/das",
+          "plural": "·S",
+          "translation": null,
+          "example": null,
+          "source_text": "Bonbon der/das, ·S __"
+        },
+        {
+          "text": "A: Zuck<'rl drui, •",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A: Zuck<'rl drui, •"
+        },
+        {
+          "text": "CH: rafeli dos, • / Za.ltli das,·",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH: rafeli dos, • / Za.ltli das,·"
+        },
+        {
+          "text": "Cola",
+          "type": "Nomen",
+          "article": "die",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Cola die"
+        },
+        {
+          "text": "A: Cola da",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A: Cola da>"
+        },
+        {
+          "text": "CH: Co. a-Col~. das",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH: Co. a-Col~. das"
+        },
+        {
+          "text": "Gemüse",
+          "type": "Nomen",
+          "article": "das",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Gemüse das"
+        },
+        {
+          "text": "Getränk",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Getränk das, -e"
+        },
+        {
+          "text": "Marmelade",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Marmelade die, ·n"
+        },
+        {
+          "text": "CH Konfnure die. n",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH Konfnure die. n"
+        },
+        {
+          "text": "Mehl d11s",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Mehl d11s"
+        },
+        {
+          "text": "Quark",
+          "type": "Nomen",
+          "article": "der",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Quark der"
+        },
+        {
+          "text": "A: Topfen d~r. •",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A: Topfen d~r. •"
+        },
+        {
+          "text": "Saft",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "•e",
+          "translation": null,
+          "example": null,
+          "source_text": "Saft der, •e"
+        },
+        {
+          "text": "fett",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "fett"
+        },
+        {
+          "text": "fettarm",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "fettarm"
+        },
+        {
+          "text": "frisch",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "frisch"
+        },
+        {
+          "text": "hart",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "hart"
+        },
+        {
+          "text": "mager",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "mager"
+        },
+        {
+          "text": "normal",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "normal"
+        },
+        {
+          "text": "roh",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "roh"
+        },
+        {
+          "text": "weich",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "weich"
+        },
+        {
+          "text": "Einkaufen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Einkaufen"
+        },
+        {
+          "text": "Dose d ie, ·n",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Dose d ie, ·n"
+        },
+        {
+          "text": "Gramm d!lll, ·e",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Gramm d!lll, ·e"
+        },
+        {
+          "text": "A: 500 Grumm ~ SODelcagramm(dag)",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A: 500 Grumm ~ SODelcagramm(dag)"
+        },
+        {
+          "text": "Kilo(gramm)",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-(s)",
+          "translation": null,
+          "example": null,
+          "source_text": "Kilo(gramm)\ndas, -(s)"
+        },
+        {
+          "text": "Lher",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "Lher der, ·"
+        },
+        {
+          "text": "Packung",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Packung die,\n-en"
+        },
+        {
+          "text": "Pfund",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Pfund das, -e"
+        },
+        {
+          "text": "A halbe Kilo da",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A halbe Kilo da"
+        },
+        {
+          "text": "Portion",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Portion die, -en __ _"
+        },
+        {
+          "text": "Tüte",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Tüte die, ·n"
+        },
+        {
+          "text": "A Sacl<crl das, •",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A Sacl<crl das, •"
+        },
+        {
+          "text": "CH SJ, k der.",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH SJ, k der.'<'"
+        },
+        {
+          "text": "Zettel",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "Zettel der,·"
+        },
+        {
+          "text": "der Einkaufs· zelte!",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "der Einkaufs·\nzelte!"
+        },
+        {
+          "text": "hungrig",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "hungrig"
+        },
+        {
+          "text": "sau",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "sau"
+        },
+        {
+          "text": "je",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "je"
+        },
+        {
+          "text": "pro",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "pro"
+        },
+        {
+          "text": "Weitere wichtige Wörter",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weitere wichtige Wörter"
+        },
+        {
+          "text": "Gewohnheit",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Gewohnheit die,\n-en"
+        },
+        {
+          "text": "Essgewohnheit",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Essgewohnheit"
+        },
+        {
+          "text": "Fehler",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "•",
+          "translation": null,
+          "example": null,
+          "source_text": "Fehler der, •"
+        },
+        {
+          "text": "bestellen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "bestellen,\nhat bestellt"
+        },
+        {
+          "text": "hoffen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "hoffen,\nhat gehofft"
+        },
+        {
+          "text": "nämlich",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "nämlich"
+        }
+      ]
+    },
+    {
+      "lektion": 5,
+      "title": null,
+      "source_pages": [
+        37
+      ],
+      "words": [
+        {
+          "text": "Tourismus",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Tourismus"
+        },
+        {
+          "text": "Besuch",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Besuch der, -e"
+        },
+        {
+          "text": "Club",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-s",
+          "translation": null,
+          "example": null,
+          "source_text": "Club der, -s"
+        },
+        {
+          "text": "Ferien",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "(PI.)",
+          "translation": null,
+          "example": null,
+          "source_text": "Ferien die (PI.)"
+        },
+        {
+          "text": "Fiihrung",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Fiihrung die, -en"
+        },
+        {
+          "text": "Kamera",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-s",
+          "translation": null,
+          "example": null,
+          "source_text": "Kamera die, -s"
+        },
+        {
+          "text": "Mauer",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n (SUtdtmauer)",
+          "translation": null,
+          "example": null,
+          "source_text": "Mauer die, -n\n(SUtdtmauer)"
+        },
+        {
+          "text": "f>rospekt",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "f>rospekt der, -e"
+        },
+        {
+          "text": "Reisefüluer",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "- (Person und Buch)",
+          "translation": null,
+          "example": null,
+          "source_text": "Reisefüluer der, -\n(Person und Buch)"
+        },
+        {
+          "text": "A/CH· l\\ci>eleicer",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "- (Pcr<on)",
+          "translation": null,
+          "example": null,
+          "source_text": "A/CH· l\\ci>eleicer der, - (Pcr<on)"
+        },
+        {
+          "text": "Rundgang",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Rundgang der, =e"
+        },
+        {
+          "text": "Sehenswürdigkeit",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Sehenswürdigkeit\ndie, -en"
+        },
+        {
+          "text": "Tourist",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Tourist der, -en"
+        },
+        {
+          "text": "Trinkgeld",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-er",
+          "translation": null,
+          "example": null,
+          "source_text": "Trinkgeld das, -er"
+        },
+        {
+          "text": "Unterkunft",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Unterkunft die, =e"
+        },
+        {
+          "text": "besichtigen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "besichtigen,\nhat besichtigt"
+        },
+        {
+          "text": "interessieren (sich), hat sich interessiert",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "interessieren\n(sich),\nhat sich interessiert"
+        },
+        {
+          "text": "wechseln",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "wechseln,\nhat gewechselt"
+        },
+        {
+          "text": "Geld wechseln",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Geld wechseln"
+        },
+        {
+          "text": "zeigen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "zeigen, hat gezeigt"
+        },
+        {
+          "text": "berühmt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "berühmt"
+        },
+        {
+          "text": "geöffnet/offen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "geöffnet/offen"
+        },
+        {
+          "text": "Weitere wichtige Wörter",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weitere wichtige Wörter"
+        },
+        {
+          "text": "Nachricht",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Nachricht\ndie, -en"
+        },
+        {
+          "text": "Postkarte",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Postkarte die,\n·n"
+        },
+        {
+          "text": "Supermarkt",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "'e",
+          "translation": null,
+          "example": null,
+          "source_text": "Supermarkt\nder, 'e"
+        },
+        {
+          "text": "Wunsch",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Wunsch der, =e"
+        },
+        {
+          "text": "ab·gcbcn",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "ab·gcbcn,\nhat abgegeben"
+        },
+        {
+          "text": "ärgern (sich)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "ärgern (sich),\nhat sich geärgert"
+        },
+        {
+          "text": "dafür sein",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "dafür sein,\nwar dafür,\nist dafür gewesen"
+        },
+        {
+          "text": "dagegen sein",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "dagegen sein,\nwar dagegen,\nist dagegen gewesen"
+        },
+        {
+          "text": "freuen (sich)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "freuen (sich),\nhat sich gefreut"
+        },
+        {
+          "text": "bunt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "bunt"
+        },
+        {
+          "text": "CH: aurh: farbig",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH: aurh: farbig"
+        },
+        {
+          "text": "einverstanden",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "einverstanden"
+        },
+        {
+          "text": "schick",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "schick"
+        },
+        {
+          "text": "bestimmt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "bestimmt"
+        },
+        {
+          "text": "A: sicher",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A: sicher"
+        },
+        {
+          "text": "meistens",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "meistens"
+        },
+        {
+          "text": "später",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "später"
+        }
+      ]
+    },
+    {
+      "lektion": 6,
+      "title": null,
+      "source_pages": [
+        43
+      ],
+      "words": [
+        {
+          "text": "Veranstaltungen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Veranstaltungen"
+        },
+        {
+          "text": "Bühne",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "· n",
+          "translation": null,
+          "example": null,
+          "source_text": "Bühne die, · n"
+        },
+        {
+          "text": "Diskussion",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Diskussion die, -en -----"
+        },
+        {
+          "text": "Eintritt",
+          "type": "Nomen",
+          "article": "der",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Eintritt der"
+        },
+        {
+          "text": "Ermäiigung",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Ermäiigung die,\n-en"
+        },
+        {
+          "text": "CH: „„ h: Redi.ktion di~. ~n",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH: „„ h: Redi.ktion di~. ~n"
+        },
+        {
+          "text": "Festival",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "·$",
+          "translation": null,
+          "example": null,
+          "source_text": "Festival das, ·$"
+        },
+        {
+          "text": "Karte",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Karte die, ·n"
+        },
+        {
+          "text": "Ein rrinskarte",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Ein rrinskarte"
+        },
+        {
+          "text": "CH: Billrn da> .",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH: Billrn da> . ~"
+        },
+        {
+          "text": "Kinokarte",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Kinokarte"
+        },
+        {
+          "text": "Kostüm",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Kostüm das, -e"
+        },
+        {
+          "text": "Kunst",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Kunst die, =e"
+        },
+        {
+          "text": "Künstler",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-",
+          "translation": null,
+          "example": null,
+          "source_text": "Künstler der, -"
+        },
+        {
+          "text": "Veranst.alcung",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Veranst.alcung die,\n-en"
+        },
+        {
+          "text": "Vortrag",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Vortrag der, =e"
+        },
+        {
+          "text": "erleben",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "erleben, hat erlebt"
+        },
+        {
+          "text": "statt·finden, hnt st.augefunden",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "statt·finden, hnt\nst.augefunden"
+        },
+        {
+          "text": "zahlen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "zahlen,\nhat gezahlt"
+        },
+        {
+          "text": "spannend",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "spannend"
+        },
+        {
+          "text": "Verabndungen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Verabndungen"
+        },
+        {
+          "text": "Vorschlag",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Vorschlag der, =e"
+        },
+        {
+          "text": "aus· machen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "aus· machen,\nhat ausgemacht"
+        },
+        {
+          "text": "CH: ab-machen hat abgeiruach1 (einrn Termin -•chen)",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH: ab-machen hat abgeiruach1\n(einrn Termin -•chen)"
+        },
+        {
+          "text": "halten von",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "halten von,\ndu hältst von,\ner hält von, hat gehalten"
+        },
+        {
+          "text": "hin",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "hin"
+        },
+        {
+          "text": "hin· fahren",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "hin· fahren.\ndu fährst hin, er fährt hin,\nist hingefahren"
+        },
+        {
+          "text": "lassen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "lassen,\ndu lässt, er lässt,\nhat gelassen"
+        },
+        {
+          "text": "lass uns ...",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "lass uns ..."
+        },
+        {
+          "text": "mit·kommen, ist mitgekommen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "mit·kommen, ist\nmitgekommen - - - -----"
+        },
+        {
+          "text": "verabreden (sich), hat sich verabredet",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "verabreden (sich), hat sich\nverabredet"
+        },
+        {
+          "text": "CH: au•!> 41>-macheJl. luu abgemarht",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH: au•!> 41>-macheJl. luu abgemarht"
+        },
+        {
+          "text": "vor·schlagen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "vor·schlagen,\ndu schlägst vor, er schlägt vor, hat\nvorgeschlagen"
+        },
+        {
+          "text": "prima k super, toll",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "prima\nk super, toll"
+        },
+        {
+          "text": "Zeiträume",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Zeiträume"
+        },
+        {
+          "text": "über",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "über"
+        },
+        {
+          "text": "vom ... bis",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "vom ... bis"
+        },
+        {
+          "text": "zwn .. .",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "zwn .. ."
+        },
+        {
+          "text": "von .„ an",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "von .„ an"
+        },
+        {
+          "text": "Weitere wichtige Wörter",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weitere wichtige Wörter"
+        },
+        {
+          "text": "Feuei·",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-",
+          "translation": null,
+          "example": null,
+          "source_text": "Feuei· das, -"
+        },
+        {
+          "text": "Mal",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Mal das, -e"
+        },
+        {
+          "text": "das erste Mal",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "das erste Mal"
+        },
+        {
+          "text": "da",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "da"
+        },
+        {
+          "text": "dort",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "dort"
+        },
+        {
+          "text": "genau",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "genau"
+        },
+        {
+          "text": "mal",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "mal"
+        },
+        {
+          "text": "ziemlich",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "ziemlich"
+        },
+        {
+          "text": "zusammen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "zusammen"
+        }
+      ]
+    },
+    {
+      "lektion": 7,
+      "title": null,
+      "source_pages": [
+        55
+      ],
+      "words": [
+        {
+          "text": "Gesundheit und Fitne11",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Gesundheit und Fitne11"
+        },
+        {
+          "text": "Arl",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Arl die, -en"
+        },
+        {
+          "text": "Sportart",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Sportart"
+        },
+        {
+          "text": "Diät",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Diät die, -en"
+        },
+        {
+          "text": "Gesundheit",
+          "type": "Nomen",
+          "article": "die",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Gesundheit die"
+        },
+        {
+          "text": "Gewicht",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Gewicht das, -e"
+        },
+        {
+          "text": "Training",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-s",
+          "translation": null,
+          "example": null,
+          "source_text": "Training das, -s"
+        },
+        {
+          "text": "ab· nehmen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "ab· nehmen,\ndu nimmst ab,\nernimmtab,\nhat abgenommen"
+        },
+        {
+          "text": "au.s·ruhen (sich)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "au.s·ruhen (sich),\nhat sich ausgeruht -----"
+        },
+        {
+          "text": "trainieren",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "trainieren,\nhat trainiert"
+        },
+        {
+          "text": "wiegen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "wiegen,\nhat gewogen"
+        },
+        {
+          "text": "fit",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "fit"
+        },
+        {
+          "text": "rrisch",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "rrisch"
+        },
+        {
+          "text": "frische luJt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "frische luJt"
+        },
+        {
+          "text": "regelmäßig",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "regelmäßig"
+        },
+        {
+          "text": "selten",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "selten"
+        },
+        {
+          "text": "mindestens",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "mindestens"
+        },
+        {
+          "text": "Weitere wichtige Wörter",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weitere wichtige Wörter"
+        },
+        {
+          "text": "Golf",
+          "type": "Nomen",
+          "article": "das",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Golf das"
+        },
+        {
+          "text": "Nudel",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Nudel die, -n"
+        },
+        {
+          "text": "Post",
+          "type": "Nomen",
+          "article": "die",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Post die"
+        },
+        {
+          "text": "Stelle",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Stelle die, -n"
+        },
+        {
+          "text": "an deiner/ Ihrer Stelle",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "an deiner/\nIhrer Stelle"
+        },
+        {
+          "text": "Verein",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Verein der, -e"
+        },
+        {
+          "text": "empfehlen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "empfehlen,\ndu empfiehlst,\ner empfiehlt,\nhat empfohlen"
+        },
+        {
+          "text": "leihen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "leihen.\nhat geliehen"
+        },
+        {
+          "text": "öffnen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "öffnen.\nhat geoffnet"
+        },
+        {
+          "text": "teil·nehmen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "teil·nehmen,\ndu nimmst teil,\ner nimml teil,\nhal teilgenommen"
+        },
+        {
+          "text": "circa",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "circa"
+        },
+        {
+          "text": "früh",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "früh"
+        },
+        {
+          "text": "morgens",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "morgens"
+        },
+        {
+          "text": "vormittags",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "vormittags"
+        },
+        {
+          "text": "minags",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "minags"
+        },
+        {
+          "text": "nachmittags",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "nachmittags"
+        },
+        {
+          "text": "abends",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "abends"
+        },
+        {
+          "text": "nachts",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "nachts"
+        },
+        {
+          "text": "montags",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "montags"
+        },
+        {
+          "text": "dienstags",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "dienstags"
+        },
+        {
+          "text": "mittWochs",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "mittWochs"
+        },
+        {
+          "text": "donnerstags",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "donnerstags"
+        },
+        {
+          "text": "rreitags",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "rreitags"
+        },
+        {
+          "text": "samstags",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "samstags"
+        },
+        {
+          "text": "sonntags",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "sonntags"
+        },
+        {
+          "text": "andere",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "andere"
+        },
+        {
+          "text": "zwischen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "zwischen"
+        },
+        {
+          "text": "zwischen sieben und Viertel nach sieben",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "zwischen sieben\nund Viertel nach\nsieben"
+        }
+      ]
+    },
+    {
+      "lektion": 8,
+      "title": null,
+      "source_pages": [
+        61
+      ],
+      "words": [
+        {
+          "text": "Unfall/Notfall",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Unfall/Notfall"
+        },
+        {
+          "text": "Krankenwagen",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "Krankenwagen\nder, ·"
+        },
+        {
+          "text": "R1•ttt.i u 6",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "~n",
+          "translation": null,
+          "example": null,
+          "source_text": "R1•ttt.i u 6 die. ~n"
+        },
+        {
+          "text": "CH: die 1UJ1bllianz die, ...,n",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH: die 1UJ1bllianz die, ...,n"
+        },
+        {
+          "text": "Notarzt",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Notarzt der, =e"
+        },
+        {
+          "text": "Notaufnahme",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Notaufnahme die,\n·n"
+        },
+        {
+          "text": "Notfa II",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "•e",
+          "translation": null,
+          "example": null,
+          "source_text": "Notfa II der, •e"
+        },
+        {
+          "text": "Unfall",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Unfall der, =e"
+        },
+        {
+          "text": "Verletzung",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "en",
+          "translation": null,
+          "example": null,
+          "source_text": "Verletzung die,\nen"
+        },
+        {
+          "text": "verletzen (sich)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "verletzen (sich).\nhat sich verletzt"
+        },
+        {
+          "text": "Geaundheit/ Krank.hdt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Geaundheit/ Krank.hdt"
+        },
+        {
+          "text": "Blut",
+          "type": "Nomen",
+          "article": "das",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Blut das"
+        },
+        {
+          "text": "Grippe",
+          "type": "Nomen",
+          "article": "die",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Grippe die"
+        },
+        {
+          "text": "Herz",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Herz das, -en"
+        },
+        {
+          "text": "Krankheit",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Krankheit die,\n-en"
+        },
+        {
+          "text": "Magen",
+          "type": "Nomen",
+          "article": "der",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Magen der,"
+        },
+        {
+          "text": "Operation",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Operation die, -en"
+        },
+        {
+          "text": "Sprechstunde",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "n",
+          "translation": null,
+          "example": null,
+          "source_text": "Sprechstunde die,\nn"
+        },
+        {
+          "text": "Untersuchung",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Untersuchung die,\n-en"
+        },
+        {
+          "text": "Verband",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "•e",
+          "translation": null,
+          "example": null,
+          "source_text": "Verband der, •e"
+        },
+        {
+          "text": "bluten",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "bluten,\nhat geblutet"
+        },
+        {
+          "text": "operieren",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "operieren,\nhat operi.ert"
+        },
+        {
+          "text": "sterben",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "sterben,\ndu stirbst, er stirbt.\nist gestorben"
+        },
+        {
+          "text": "untenuchen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "untenuchen,\nhat unteraucht _ __ _"
+        },
+        {
+          "text": "verbinden",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "verbinden,\nhat verbunden ____ _"
+        },
+        {
+          "text": "erkältet sein",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "erkältet sein"
+        },
+        {
+          "text": "A: v~ ·• •h l~ n ( ich), hat • i<h vcrkuhlt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A: v~ ·•\n•h l~ n ( ich), hat • i<h vcrkuhlt"
+        },
+        {
+          "text": "Weite~ wichtige Wörte.r",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weite~ wichtige Wörte.r"
+        },
+        {
+          "text": "Satz",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "=e",
+          "translation": null,
+          "example": null,
+          "source_text": "Satz der, =e"
+        },
+        {
+          "text": "Sorge",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Sorge die, ·n"
+        },
+        {
+          "text": "sich Sorgen machen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "sich Sorgen\nmachen"
+        },
+        {
+          "text": "Wahrheit",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·en",
+          "translation": null,
+          "example": null,
+          "source_text": "Wahrheit die,\n·en"
+        },
+        {
+          "text": "hin·fallen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "hin·fallen,\ndu fällst hin,\ner fällt hin,\nist hingefallen"
+        },
+        {
+          "text": "los sein",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "los sein"
+        },
+        {
+          "text": "vertrauen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "vertrauen,\nhot vertrnut"
+        },
+        {
+          "text": "weil",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "weil"
+        },
+        {
+          "text": "deshalb",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "deshalb"
+        }
+      ]
+    },
+    {
+      "lektion": 9,
+      "title": null,
+      "source_pages": [
+        67
+      ],
+      "words": [
+        {
+          "text": "Arbeiulebe.n",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Arbeiulebe.n"
+        },
+        {
+          "text": "Angestellte",
+          "type": "Nomen",
+          "article": "der/ die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Angestellte der/\ndie, ·n"
+        },
+        {
+          "text": "Arbeitrr",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "Arbeitrr der, ·"
+        },
+        {
+          "text": "Bedingung",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Bedingung die, -en"
+        },
+        {
+          "text": "die Arbeits· bedingungen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "die Arbeits·\nbedingungen"
+        },
+        {
+          "text": "Betrieb",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Betrieb der, -e"
+        },
+        {
+          "text": "Erfolg",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Erfolg der, -e"
+        },
+        {
+          "text": "Export",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Export der, -e"
+        },
+        {
+          "text": "Halle",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Halle die, ·n"
+        },
+        {
+          "text": "Import",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Import der, -e"
+        },
+        {
+          "text": "Lager",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "Lager das, ·"
+        },
+        {
+          "text": "Llcw",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-s",
+          "translation": null,
+          "example": null,
+          "source_text": "Llcw der, -s"
+        },
+        {
+          "text": "der .l'tWagen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "der .l'tWagen"
+        },
+        {
+          "text": "Lohn",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "·e",
+          "translation": null,
+          "example": null,
+          "source_text": "Lohn der, ·e"
+        },
+        {
+          "text": "Maschine",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Maschine die, -n"
+        },
+        {
+          "text": "Mitarbeiter",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "Mitarbeiter der,·"
+        },
+        {
+          "text": "Produktion",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Produktion die,\n-en"
+        },
+        {
+          "text": "Prozent",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Prozent das, -e"
+        },
+        {
+          "text": "Team",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-s",
+          "translation": null,
+          "example": null,
+          "source_text": "Team das, -s"
+        },
+        {
+          "text": "Werk",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Werk das, -e"
+        },
+        {
+          "text": "Wi nschaft",
+          "type": "Nomen",
+          "article": "die",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Wi nschaft die"
+        },
+        {
+          "text": "sinken",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "sinken,\nist gesunken"
+        },
+        {
+          "text": "sparen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "sparen,\nhat gespart"
+        },
+        {
+          "text": "steigen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "steigen.\nist gestiegen"
+        },
+        {
+          "text": "selbstständig",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "selbstständig"
+        },
+        {
+          "text": "Weitere wichtige Wörter",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weitere wichtige Wörter"
+        },
+        {
+          "text": "Bericht",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Bericht der, -e"
+        },
+        {
+          "text": "Jahrzehnt",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "·e",
+          "translation": null,
+          "example": null,
+          "source_text": "Jahrzehnt das,\n·e"
+        },
+        {
+          "text": "Kontakt",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Kontakt der, -e"
+        },
+        {
+          "text": "Reparatur",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Reparatur die,\n-en"
+        },
+        {
+          "text": "Wagen",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-",
+          "translation": null,
+          "example": null,
+          "source_text": "Wagen der, -"
+        },
+        {
+          "text": "erklären",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "erklären,\nhat erklärt"
+        },
+        {
+          "text": "international",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "international"
+        },
+        {
+          "text": "dringend",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "dringend"
+        }
+      ]
+    },
+    {
+      "lektion": 10,
+      "title": null,
+      "source_pages": [
+        79
+      ],
+      "words": [
+        {
+          "text": "Im Restaurant",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Im Restaurant"
+        },
+        {
+          "text": "Besteck",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Besteck das, -e"
+        },
+        {
+          "text": "Gabel",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Gabel die, -n"
+        },
+        {
+          "text": "Glas",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "•er",
+          "translation": null,
+          "example": null,
+          "source_text": "Glas das, •er"
+        },
+        {
+          "text": "Kanne",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Kanne die, -n"
+        },
+        {
+          "text": "CH: Krui: der. •e",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH: Krui: der. •e"
+        },
+        {
+          "text": "Löffel",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-",
+          "translation": null,
+          "example": null,
+          "source_text": "Löffel der, -"
+        },
+        {
+          "text": "Lokal",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Lokal das. -e"
+        },
+        {
+          "text": "A; Ga1>1haus das. '<?I' / B~url d~s.·",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A; Ga1>1haus das. '<?I' / B~url d~s.·"
+        },
+        {
+          "text": "Messer",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-",
+          "translation": null,
+          "example": null,
+          "source_text": "Messer das, -"
+        },
+        {
+          "text": "Rechnung",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Rechnung die, -en"
+        },
+        {
+          "text": "Die Rechnung, bine!",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Die Rechnung,\nbine!"
+        },
+        {
+          "text": "Tasse",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Tasse die, ·n"
+        },
+        {
+          "text": "TelJer",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "TelJer der,·"
+        },
+        {
+          "text": "reservieren",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "reservieren,\nhat reserviert"
+        },
+        {
+          "text": "summen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "summen"
+        },
+        {
+          "text": "stimmt so",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "stimmt so"
+        },
+        {
+          "text": "iu.sa m men -·",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "iu.sa m men -·"
+        },
+        {
+          "text": "getrennt zahlen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "getrennt zahlen"
+        },
+        {
+          "text": "Augenblick",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Augenblick"
+        },
+        {
+          "text": "einen Augenblick. bitte",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "einen Augenblick.\nbitte"
+        },
+        {
+          "text": "Momenl",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Momenl"
+        },
+        {
+          "text": "einen Moment, bitte",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "einen Moment,\nbitte"
+        },
+        {
+          "text": "Verzeihen Sie",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Verzeihen Sie"
+        },
+        {
+          "text": "Lebentmittel und Speisen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Lebentmittel und Speisen"
+        },
+        {
+          "text": "Essig",
+          "type": "Nomen",
+          "article": "der",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Essig der"
+        },
+        {
+          "text": "Hähnchen",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "•",
+          "translation": null,
+          "example": null,
+          "source_text": "Hähnchen das, •"
+        },
+        {
+          "text": "A il d Cl'· Poulet du,",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A\nil d\nCl'· Poulet du,\"\""
+        },
+        {
+          "text": "01",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "01 das, -e"
+        },
+        {
+          "text": "Pommes frites",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "(PI.)",
+          "translation": null,
+          "example": null,
+          "source_text": "Pommes frites\ndie (PI.)"
+        },
+        {
+          "text": "Salz",
+          "type": "Nomen",
+          "article": "das",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Salz das"
+        },
+        {
+          "text": "Soße",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Soße die, ·n"
+        },
+        {
+          "text": "Schniucl",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "•",
+          "translation": null,
+          "example": null,
+          "source_text": "Schniucl das. •"
+        },
+        {
+          "text": "Steak",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-s",
+          "translation": null,
+          "example": null,
+          "source_text": "Steak das. -s"
+        },
+        {
+          "text": "Zucker",
+          "type": "Nomen",
+          "article": "der",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Zucker der"
+        },
+        {
+          "text": "Weite..e wichtige Wöntt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weite..e wichtige Wöntt"
+        },
+        {
+          "text": "reagieren",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "reagieren,\nhat reagiert"
+        },
+        {
+          "text": "wenigstens",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "wenigstens"
+        },
+        {
+          "text": "dass",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "dass"
+        },
+        {
+          "text": "sondern",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "sondern"
+        }
+      ]
+    },
+    {
+      "lektion": 11,
+      "title": null,
+      "source_pages": [
+        85
+      ],
+      "words": [
+        {
+          "text": "In",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "Firma",
+          "translation": null,
+          "example": null,
+          "source_text": "In der Firma"
+        },
+        {
+          "text": "Kunde",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Kunde der, -n"
+        },
+        {
+          "text": "Notiz",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Notiz die, -en"
+        },
+        {
+          "text": "Notizblock",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "•e",
+          "translation": null,
+          "example": null,
+          "source_text": "Notizblock der, •e _____ _"
+        },
+        {
+          "text": "Werkstacl",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "\"en",
+          "translation": null,
+          "example": null,
+          "source_text": "Werkstacl die, \"en"
+        },
+        {
+          "text": "her·Slellen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "her·Slellen,\nhat hergestellt"
+        },
+        {
+          "text": "orgnnisieren",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "orgnnisieren,\nhat organisiert"
+        },
+        {
+          "text": "verwenden",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "verwenden,\nhat verwendet"
+        },
+        {
+          "text": "Produkte",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Produkte"
+        },
+        {
+          "text": "Briefumschlag",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "•e",
+          "translation": null,
+          "example": null,
+          "source_text": "Briefumschlag\nder, •e"
+        },
+        {
+          "text": "Ai Kuvert du, -s",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Ai Kuvert du, -s"
+        },
+        {
+          "text": "CH: Couvert das, -s",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH: Couvert das, -s"
+        },
+        {
+          "text": "Handtasehe",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Handtasehe die, -n"
+        },
+        {
+          "text": "weg·werfen, nal weggeworfen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "weg·werfen,\nnal weggeworfen --------"
+        },
+        {
+          "text": "Glückwünsche",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Glückwünsche"
+        },
+        {
+          "text": "viel Erfolg",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "viel Erfolg"
+        },
+        {
+          "text": "viel Glück",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "viel Glück"
+        },
+        {
+          "text": "bedanken (rieb)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "bedanken (rieb),\nhat sich bedankt"
+        },
+        {
+          "text": "wünschen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "wünschen,\nhat gewünscht"
+        },
+        {
+          "text": "Weitere wichtige Wörter",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weitere wichtige Wörter"
+        },
+        {
+          "text": "Artikel",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-",
+          "translation": null,
+          "example": null,
+          "source_text": "Artikel der, -"
+        },
+        {
+          "text": "Erwachsene",
+          "type": "Nomen",
+          "article": "del'/die",
+          "plural": "-n",
+          "translation": null,
+          "example": null,
+          "source_text": "Erwachsene\ndel'/die, -n"
+        },
+        {
+          "text": "Grund",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "\"e",
+          "translation": null,
+          "example": null,
+          "source_text": "Grund der, \"e"
+        },
+        {
+          "text": "Meinung",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "-en",
+          "translation": null,
+          "example": null,
+          "source_text": "Meinung die,\n-en"
+        },
+        {
+          "text": "meiner Meinung nach",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "meiner Meinung\nnach"
+        },
+        {
+          "text": "Schmuck",
+          "type": "Nomen",
+          "article": "der",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Schmuck der"
+        },
+        {
+          "text": "Stoff",
+          "type": "Nomen",
+          "article": "der",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Stoff der, -e"
+        },
+        {
+          "text": "erinnern (sich)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "erinnern (sich),\nhat sich erinnert"
+        },
+        {
+          "text": "fühlen (sich)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "fühlen (sich),\nhat sich gefühlt"
+        },
+        {
+          "text": "streiten (sich)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "streiten (sich).\nhat sich\ngestritten"
+        },
+        {
+          "text": "unterhalten (sich)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "unterhalten (sich),\nhat sich\nunterhalten"
+        },
+        {
+          "text": "verlieren",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "verlieren,\nhatverlo~n"
+        },
+        {
+          "text": "froh",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "froh"
+        },
+        {
+          "text": "jung",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "jung"
+        },
+        {
+          "text": "schrecklich",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "schrecklich"
+        },
+        {
+          "text": "stark",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "stark"
+        },
+        {
+          "text": "willkommen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "willkommen"
+        }
+      ]
+    },
+    {
+      "lektion": 12,
+      "title": null,
+      "source_pages": [
+        91
+      ],
+      "words": [
+        {
+          "text": "Essen und Getränke",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": ".Essen und Getränke"
+        },
+        {
+          "text": "Alkohol",
+          "type": "Nomen",
+          "article": "der",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Alkohol der"
+        },
+        {
+          "text": "Gericht",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-e",
+          "translation": null,
+          "example": null,
+          "source_text": "Gericht das, -e"
+        },
+        {
+          "text": "Sf>' 1 i~. ·n",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Sf>' 1\ni~. ·n"
+        },
+        {
+          "text": "Getreide",
+          "type": "Nomen",
+          "article": "das",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Getreide das"
+        },
+        {
+          "text": "Huhn",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "=er,",
+          "translation": null,
+          "example": null,
+          "source_text": "Huhn das, =er,"
+        },
+        {
+          "text": "c-;, Po",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "c-;, Po"
+        },
+        {
+          "text": "das,„",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "das,„"
+        },
+        {
+          "text": "Hühnerfleisch da.",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Hühnerfleisch da."
+        },
+        {
+          "text": "CH. Poul~tfleisch cLu",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "CH. Poul~tfleisch cLu"
+        },
+        {
+          "text": "Lebensmine!",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "·",
+          "translation": null,
+          "example": null,
+          "source_text": "Lebensmine!\ndas,·"
+        },
+        {
+          "text": "Limonade",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Limonade die, ·n"
+        },
+        {
+          "text": "tH. Sa <~<ra n l d .,",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "tH. Sa <~<ra n l d\n.,"
+        },
+        {
+          "text": "Mineralwasser",
+          "type": "Nomen",
+          "article": "das",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Mineralwasser das"
+        },
+        {
+          "text": "Rind",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "-er",
+          "translation": null,
+          "example": null,
+          "source_text": "Rind das, -er"
+        },
+        {
+          "text": "Rindneisch",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Rindneisch"
+        },
+        {
+          "text": "Schwein",
+          "type": "Nomen",
+          "article": "das",
+          "plural": "·e",
+          "translation": null,
+          "example": null,
+          "source_text": "Schwein das, ·e"
+        },
+        {
+          "text": "Schweinefleisch",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Schweinefleisch"
+        },
+        {
+          "text": "brate11",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "brate11,\nhat gebraten"
+        },
+        {
+          "text": "scharf",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "scharf"
+        },
+        {
+          "text": "vegetarisch",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "vegetarisch"
+        },
+        {
+          "text": "Mengen",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Mengen"
+        },
+        {
+          "text": "Hälfte",
+          "type": "Nomen",
+          "article": "die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Hälfte die, ·n"
+        },
+        {
+          "text": "doppelt",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "doppelt"
+        },
+        {
+          "text": "doppelt so viele",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "doppelt so viele"
+        },
+        {
+          "text": "durchschnittlich",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "durchschnittlich"
+        },
+        {
+          "text": "genug",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "genug"
+        },
+        {
+          "text": "häufig",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "häufig"
+        },
+        {
+          "text": "kaum",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "kaum"
+        },
+        {
+          "text": "rund",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "rund"
+        },
+        {
+          "text": "Weitere wichtige WöTter",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Weitere wichtige WöTter"
+        },
+        {
+          "text": "Deutsche",
+          "type": "Nomen",
+          "article": "der/ die",
+          "plural": "·n",
+          "translation": null,
+          "example": null,
+          "source_text": "Deutsche der/\ndie. ·n"
+        },
+        {
+          "text": "ein Deuucher",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "ein Deuucher __ _"
+        },
+        {
+          "text": "eine Deutsche",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "eine Deutsche _ __ _"
+        },
+        {
+          "text": "Heimat",
+          "type": "Nomen",
+          "article": "die",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Heimat die"
+        },
+        {
+          "text": "Zeitschrift",
+          "type": "Nomen",
+          "article": "die",
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Zeitschrift die,"
+        },
+        {
+          "text": "an·sehen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "an·sehen,\nhat angesehen"
+        },
+        {
+          "text": "aus·suchen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "aus·suchen.\nhat ausgesucht _ __ _"
+        },
+        {
+          "text": "holen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "holen,\nhat geholt"
+        },
+        {
+          "text": "überraschen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "überraschen,\nhat überrascht"
+        },
+        {
+          "text": "verbrauchen",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "verbrauchen,\nhal verbraucht"
+        },
+        {
+          "text": "vorbereiten (sich)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "vorbereiten (sich),\nhat sich vorbereitet"
+        },
+        {
+          "text": "wundern (sich)",
+          "type": "Verb",
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "wundern (sich).\nhat sich\ngewundert"
+        },
+        {
+          "text": "preiswert",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "preiswert"
+        },
+        {
+          "text": "A/CH . nstig",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "A/CH\n. nstig"
+        },
+        {
+          "text": "wahrscheinlich",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "wahrscheinlich ---~"
+        },
+        {
+          "text": "Komisch!",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "Komisch!"
+        },
+        {
+          "text": "wenn-dann",
+          "type": null,
+          "article": null,
+          "plural": null,
+          "translation": null,
+          "example": null,
+          "source_text": "wenn-dann"
+        }
+      ]
+    }
+  ]
+}

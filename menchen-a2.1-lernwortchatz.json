@@ -1,0 +1,6238 @@
+{
+  "metadata": {
+    "book": "Menschen A2.1 Kursbuch",
+    "publisher": "Hueber Verlag",
+    "isbn": "",
+    "levels": "Lektion 1-12",
+    "total_words": 435,
+    "total_raw_occurrences": 510,
+    "duplicates_removed": 10,
+    "dropped_entries": 65,
+    "generated_from": "menschen-a2.1-lernwortschatz.json (Lernwortschatz, OCR) — curated: OCR fixes, section headers and A:/CH: variant notes removed, English + Persian meanings added",
+    "lesson_counts_canonical": {
+      "Lektion 1": 45,
+      "Lektion 2": 32,
+      "Lektion 3": 35,
+      "Lektion 4": 40,
+      "Lektion 5": 35,
+      "Lektion 6": 40,
+      "Lektion 7": 42,
+      "Lektion 8": 32,
+      "Lektion 9": 32,
+      "Lektion 10": 33,
+      "Lektion 11": 30,
+      "Lektion 12": 39
+    },
+    "note": "Menschen A2.1 vocabulary (Lernwortschatz). Lektion titles are word-list topics, not Kursbuch titles. deduplicated by lexical key, appearsInLessons preserved"
+  },
+  "lektionen": {
+    "Lektion 1": {
+      "title": "Familie & Kindheit",
+      "theme": "Familie, Kindheit und Jugend",
+      "source_pages": [
+        7
+      ],
+      "words": [
+        {
+          "german": "die Familie",
+          "article": "die",
+          "plural": "die Familien",
+          "meaning_en": "family",
+          "meaning_fa": "خانواده",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "der Cousin",
+          "article": "der",
+          "plural": "die Cousins",
+          "meaning_en": "cousin",
+          "meaning_fa": "پسرعمو",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "die Cousine",
+          "article": "die",
+          "plural": "die Cousinen",
+          "meaning_en": "female cousin",
+          "meaning_fa": "دخترعمو",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "der Neffe",
+          "article": "der",
+          "plural": "die Neffen",
+          "meaning_en": "nephew",
+          "meaning_fa": "برادرزاده",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "die Nichte",
+          "article": "die",
+          "plural": "die Nichten",
+          "meaning_en": "niece",
+          "meaning_fa": "خواهرزاده",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "der Onkel",
+          "article": "der",
+          "plural": "die Onkel",
+          "meaning_en": "uncle",
+          "meaning_fa": "عمو / دایی",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "die Tante",
+          "article": "die",
+          "plural": "die Tanten",
+          "meaning_en": "aunt",
+          "meaning_fa": "عمه / خاله",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "Schwiegermutter / Schwiegervater",
+          "article": "",
+          "plural": "",
+          "meaning_en": "mother-in-law / father-in-law",
+          "meaning_fa": "مادرشوهر / پدرشوهر",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "die Geschichte",
+          "article": "die",
+          "plural": "die Geschichten",
+          "meaning_en": "history; story",
+          "meaning_fa": "تاریخ؛ داستان",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "der/die Jugendliche",
+          "article": "der/die",
+          "plural": "die Jugendlichen",
+          "meaning_en": "teenager; adolescent",
+          "meaning_fa": "نوجوان",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "die Puppe",
+          "article": "die",
+          "plural": "die Puppen",
+          "meaning_en": "doll",
+          "meaning_fa": "عروسک",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "die Sache",
+          "article": "die",
+          "plural": "die Sachen",
+          "meaning_en": "thing; matter",
+          "meaning_fa": "چیز؛ موضوع",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "das Spiel",
+          "article": "das",
+          "plural": "die Spiele",
+          "meaning_en": "game",
+          "meaning_fa": "بازی",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "der Witz",
+          "article": "der",
+          "plural": "die Witze",
+          "meaning_en": "joke",
+          "meaning_fa": "شوخی",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "klettern",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to climb",
+          "meaning_fa": "بالا رفتن؛ صعود کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "sammeln",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to collect",
+          "meaning_fa": "جمع کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "streiten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to argue",
+          "meaning_fa": "بحث کردن؛ دعوا کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1",
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "übernachten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to stay overnight",
+          "meaning_fa": "اقامت شبانه کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "verkaufen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to sell",
+          "meaning_fa": "فروختن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "zeichnen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to draw",
+          "meaning_fa": "نقاشی کشیدن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "verrückt",
+          "article": "",
+          "plural": "",
+          "meaning_en": "crazy; annoyed",
+          "meaning_fa": "دیوانه؛ عصبانی",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "adjective"
+        },
+        {
+          "german": "früher",
+          "article": "",
+          "plural": "",
+          "meaning_en": "earlier; formerly",
+          "meaning_fa": "زودتر؛ قبلاً",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "adverb"
+        },
+        {
+          "german": "der Anfang",
+          "article": "der",
+          "plural": "die Anfänge",
+          "meaning_en": "beginning",
+          "meaning_fa": "شروع",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "am Anfang",
+          "article": "",
+          "plural": "",
+          "meaning_en": "at the beginning",
+          "meaning_fa": "در ابتدا",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "phrase"
+        },
+        {
+          "german": "das Ende",
+          "article": "das",
+          "plural": "die Enden",
+          "meaning_en": "end",
+          "meaning_fa": "پایان",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "am Ende",
+          "article": "",
+          "plural": "",
+          "meaning_en": "at the end",
+          "meaning_fa": "در پایان",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "phrase"
+        },
+        {
+          "german": "die Mannschaft",
+          "article": "die",
+          "plural": "die Mannschaften",
+          "meaning_en": "team",
+          "meaning_fa": "تیم",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "der Pfeifer",
+          "article": "der",
+          "plural": "die Pfeifer",
+          "meaning_en": "piper",
+          "meaning_fa": "نی‌نواز",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "der Punkt",
+          "article": "der",
+          "plural": "die Punkte",
+          "meaning_en": "point; dot",
+          "meaning_fa": "نقطه؛ امتیاز",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "der Satz",
+          "article": "der",
+          "plural": "die Sätze",
+          "meaning_en": "sentence",
+          "meaning_fa": "جمله",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1",
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "der Schluss",
+          "article": "der",
+          "plural": "die Schlüsse",
+          "meaning_en": "end; conclusion",
+          "meaning_fa": "پایان؛ نتیجه‌گیری",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "das Studium",
+          "article": "das",
+          "plural": "die Studien",
+          "meaning_en": "course of study",
+          "meaning_fa": "تحصیلات دانشگاهی",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "die Zigarette",
+          "article": "die",
+          "plural": "die Zigaretten",
+          "meaning_en": "cigarette",
+          "meaning_fa": "سیگار",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "noun"
+        },
+        {
+          "german": "aufmachen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to open",
+          "meaning_fa": "باز کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "aufpassen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to pay attention; look after",
+          "meaning_fa": "مراقب بودن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "klappen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to work out; fit",
+          "meaning_fa": "جواب دادن؛ جا شدن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "passieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to happen",
+          "meaning_fa": "اتفاق افتادن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "rufen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to call",
+          "meaning_fa": "صدا زدن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "wachsen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to grow",
+          "meaning_fa": "رشد کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "verb"
+        },
+        {
+          "german": "einfach",
+          "article": "",
+          "plural": "",
+          "meaning_en": "easy; simple",
+          "meaning_fa": "ساده؛ آسان",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "adjective"
+        },
+        {
+          "german": "nervig",
+          "article": "",
+          "plural": "",
+          "meaning_en": "annoying",
+          "meaning_fa": "آزاردهنده",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "adjective"
+        },
+        {
+          "german": "geschlossen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "closed",
+          "meaning_fa": "بسته",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "adjective"
+        },
+        {
+          "german": "kompliziert",
+          "article": "",
+          "plural": "",
+          "meaning_en": "complicated",
+          "meaning_fa": "پیچیده",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "adjective"
+        },
+        {
+          "german": "zuerst",
+          "article": "",
+          "plural": "",
+          "meaning_en": "first; at first",
+          "meaning_fa": "اول",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "adverb"
+        },
+        {
+          "german": "zum Schluss",
+          "article": "",
+          "plural": "",
+          "meaning_en": "in the end",
+          "meaning_fa": "در نهایت",
+          "example": "",
+          "canonicalLesson": "Lektion 1",
+          "appearsInLessons": [
+            "Lektion 1"
+          ],
+          "page": "Lernwortschatz p. 7",
+          "type": "phrase"
+        }
+      ]
+    },
+    "Lektion 2": {
+      "title": "Einrichtung & Umzug",
+      "theme": "Wohnen, Möbel und Umzug",
+      "source_pages": [
+        13
+      ],
+      "words": [
+        {
+          "german": "das Ding",
+          "article": "das",
+          "plural": "die Dinge",
+          "meaning_en": "thing",
+          "meaning_fa": "چیز",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "die Ecke",
+          "article": "die",
+          "plural": "die Ecken",
+          "meaning_en": "corner",
+          "meaning_fa": "گوشه",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "in der Ecke",
+          "article": "",
+          "plural": "",
+          "meaning_en": "in the corner",
+          "meaning_fa": "در گوشه",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "phrase"
+        },
+        {
+          "german": "das Fernsehgerät",
+          "article": "das",
+          "plural": "die Fernsehgeräte",
+          "meaning_en": "television set",
+          "meaning_fa": "تلویزیون",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "der Gegenstand",
+          "article": "der",
+          "plural": "die Gegenstände",
+          "meaning_en": "object; item",
+          "meaning_fa": "شیء؛ وسیله",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "der Herd",
+          "article": "der",
+          "plural": "die Herde",
+          "meaning_en": "stove; hob",
+          "meaning_fa": "اجاق گاز",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "das Kissen",
+          "article": "das",
+          "plural": "die Kissen",
+          "meaning_en": "cushion; pillow",
+          "meaning_fa": "بالش",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "der Raum",
+          "article": "der",
+          "plural": "die Räume",
+          "meaning_en": "room; space",
+          "meaning_fa": "اتاق؛ فضا",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "das Regal",
+          "article": "das",
+          "plural": "die Regale",
+          "meaning_en": "shelf",
+          "meaning_fa": "قفسه",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "der Schreibtisch",
+          "article": "der",
+          "plural": "die Schreibtische",
+          "meaning_en": "desk",
+          "meaning_fa": "میزتحریر",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "der Spiegel",
+          "article": "der",
+          "plural": "die Spiegel",
+          "meaning_en": "mirror",
+          "meaning_fa": "آینه",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "die Tür",
+          "article": "die",
+          "plural": "die Türen",
+          "meaning_en": "door",
+          "meaning_fa": "در",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "der Vorhang",
+          "article": "der",
+          "plural": "die Vorhänge",
+          "meaning_en": "curtain",
+          "meaning_fa": "پرده",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "die Wand",
+          "article": "die",
+          "plural": "die Wände",
+          "meaning_en": "wall",
+          "meaning_fa": "دیوار",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "das Werkzeug",
+          "article": "das",
+          "plural": "die Werkzeuge",
+          "meaning_en": "tool",
+          "meaning_fa": "ابزار",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "einrichten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to furnish; set up",
+          "meaning_fa": "مبلمان کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "verb"
+        },
+        {
+          "german": "hängen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to hang",
+          "meaning_fa": "آویزان بودن",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "verb"
+        },
+        {
+          "german": "legen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to put; lay (horizontally)",
+          "meaning_fa": "خواباندن؛ گذاشتن",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "verb"
+        },
+        {
+          "german": "liegen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to lie; be located",
+          "meaning_fa": "قرار داشتن",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "verb"
+        },
+        {
+          "german": "renovieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to renovate",
+          "meaning_fa": "بازسازی کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "verb"
+        },
+        {
+          "german": "stehen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to stand",
+          "meaning_fa": "ایستادن",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "verb"
+        },
+        {
+          "german": "stellen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to put; place (vertically)",
+          "meaning_fa": "قرار دادن",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "verb"
+        },
+        {
+          "german": "dunkel",
+          "article": "",
+          "plural": "",
+          "meaning_en": "dark",
+          "meaning_fa": "تاریک",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "adjective"
+        },
+        {
+          "german": "hell",
+          "article": "",
+          "plural": "",
+          "meaning_en": "light; bright",
+          "meaning_fa": "روشن",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "adjective"
+        },
+        {
+          "german": "das Licht",
+          "article": "das",
+          "plural": "die Lichter",
+          "meaning_en": "light; lamp",
+          "meaning_fa": "نور؛ چراغ",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "das Souvenir",
+          "article": "das",
+          "plural": "die Souvenirs",
+          "meaning_en": "souvenir",
+          "meaning_fa": "سوغاتی",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "noun"
+        },
+        {
+          "german": "diskutieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to discuss",
+          "meaning_fa": "بحث کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "verb"
+        },
+        {
+          "german": "verstecken",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to hide",
+          "meaning_fa": "پنهان کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "verb"
+        },
+        {
+          "german": "schwer",
+          "article": "",
+          "plural": "",
+          "meaning_en": "heavy; difficult",
+          "meaning_fa": "سنگین؛ سخت",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "adjective"
+        },
+        {
+          "german": "vorsichtig",
+          "article": "",
+          "plural": "",
+          "meaning_en": "careful",
+          "meaning_fa": "محتاط",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "adjective"
+        },
+        {
+          "german": "vorsichtig sein mit",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be careful with",
+          "meaning_fa": "با احتیاط بودن با",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "phrase"
+        },
+        {
+          "german": "sonst",
+          "article": "",
+          "plural": "",
+          "meaning_en": "otherwise; else",
+          "meaning_fa": "در غیر این صورت",
+          "example": "",
+          "canonicalLesson": "Lektion 2",
+          "appearsInLessons": [
+            "Lektion 2"
+          ],
+          "page": "Lernwortschatz p. 13",
+          "type": "adverb"
+        }
+      ]
+    },
+    "Lektion 3": {
+      "title": "Natur & Umwelt",
+      "theme": "Natur, Umwelt und Reisen",
+      "source_pages": [
+        19
+      ],
+      "words": [
+        {
+          "german": "das Dorf",
+          "article": "das",
+          "plural": "die Dörfer",
+          "meaning_en": "village",
+          "meaning_fa": "روستا",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "die Katze",
+          "article": "die",
+          "plural": "die Katzen",
+          "meaning_en": "cat",
+          "meaning_fa": "گربه",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "die Pflanze",
+          "article": "die",
+          "plural": "die Pflanzen",
+          "meaning_en": "plant",
+          "meaning_fa": "گیاه",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "die Landschaft",
+          "article": "die",
+          "plural": "die Landschaften",
+          "meaning_en": "landscape; scenery",
+          "meaning_fa": "مناظر طبیعی",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "die Luft",
+          "article": "die",
+          "plural": "die Luft",
+          "meaning_en": "air",
+          "meaning_fa": "هوا",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "die Ruhe",
+          "article": "die",
+          "plural": "die Ruhe",
+          "meaning_en": "rest; quiet",
+          "meaning_fa": "آرامش",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "der Strand",
+          "article": "der",
+          "plural": "die Strände",
+          "meaning_en": "beach",
+          "meaning_fa": "ساحل",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "das Tier",
+          "article": "das",
+          "plural": "die Tiere",
+          "meaning_en": "animal",
+          "meaning_fa": "حیوان",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "das Ufer",
+          "article": "das",
+          "plural": "die Ufer",
+          "meaning_en": "bank; shore",
+          "meaning_fa": "کناره",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "der Vogel",
+          "article": "der",
+          "plural": "die Vögel",
+          "meaning_en": "bird",
+          "meaning_fa": "پرنده",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "wandern",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to go hiking",
+          "meaning_fa": "کوه‌پیمایی کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "verb"
+        },
+        {
+          "german": "der Tourismus",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "tourism",
+          "meaning_fa": "گردشگری",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3",
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "die Beratung",
+          "article": "die",
+          "plural": "die Beratungen",
+          "meaning_en": "advice; consultation",
+          "meaning_fa": "مشاوره",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "die Führung",
+          "article": "die",
+          "plural": "die Führungen",
+          "meaning_en": "guided tour",
+          "meaning_fa": "بازدید با راهنما",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3",
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "die Fahrt",
+          "article": "die",
+          "plural": "die Fahrten",
+          "meaning_en": "trip; journey",
+          "meaning_fa": "سفر",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "die Gruppe",
+          "article": "die",
+          "plural": "die Gruppen",
+          "meaning_en": "group",
+          "meaning_fa": "گروه",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "die Karte",
+          "article": "die",
+          "plural": "die Karten",
+          "meaning_en": "card; map; ticket",
+          "meaning_fa": "کارت؛ نقشه؛ بلیط",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3",
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "der Service",
+          "article": "der",
+          "plural": "die Services",
+          "meaning_en": "service",
+          "meaning_fa": "خدمت",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "der Trend",
+          "article": "der",
+          "plural": "die Trends",
+          "meaning_en": "trend",
+          "meaning_fa": "روند",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "der Unterricht",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "lesson; class",
+          "meaning_fa": "درس؛ کلاس",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "anbieten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to offer",
+          "meaning_fa": "پیشنهاد دادن",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "verb"
+        },
+        {
+          "german": "beraten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to advise",
+          "meaning_fa": "مشاوره دادن",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "verb"
+        },
+        {
+          "german": "beginnen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to begin",
+          "meaning_fa": "شروع کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "verb"
+        },
+        {
+          "german": "buchen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to book",
+          "meaning_fa": "رزرو کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "verb"
+        },
+        {
+          "german": "enden",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to end",
+          "meaning_fa": "پایان یافتن",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "verb"
+        },
+        {
+          "german": "erleben",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to experience",
+          "meaning_fa": "تجربه کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3",
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "verb"
+        },
+        {
+          "german": "mitmachen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to take part",
+          "meaning_fa": "شرکت کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "verb"
+        },
+        {
+          "german": "aktiv",
+          "article": "",
+          "plural": "",
+          "meaning_en": "active",
+          "meaning_fa": "فعال",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "adjective"
+        },
+        {
+          "german": "sportlich",
+          "article": "",
+          "plural": "",
+          "meaning_en": "sporty",
+          "meaning_fa": "ورزشی",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "adjective"
+        },
+        {
+          "german": "die Mode",
+          "article": "die",
+          "plural": "die Moden",
+          "meaning_en": "fashion",
+          "meaning_fa": "مد",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "noun"
+        },
+        {
+          "german": "liegen in",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be located in",
+          "meaning_fa": "در ... قرار داشتن",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "verb"
+        },
+        {
+          "german": "überhaupt nicht",
+          "article": "",
+          "plural": "",
+          "meaning_en": "not at all",
+          "meaning_fa": "اصلاً",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "phrase"
+        },
+        {
+          "german": "anders",
+          "article": "",
+          "plural": "",
+          "meaning_en": "otherwise; different",
+          "meaning_fa": "متفاوت",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "adverb"
+        },
+        {
+          "german": "außerdem",
+          "article": "",
+          "plural": "",
+          "meaning_en": "besides; moreover",
+          "meaning_fa": "علاوه بر این",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "adverb"
+        },
+        {
+          "german": "direkt",
+          "article": "",
+          "plural": "",
+          "meaning_en": "direct; straight",
+          "meaning_fa": "مستقیم",
+          "example": "",
+          "canonicalLesson": "Lektion 3",
+          "appearsInLessons": [
+            "Lektion 3"
+          ],
+          "page": "Lernwortschatz p. 19",
+          "type": "adverb"
+        }
+      ]
+    },
+    "Lektion 4": {
+      "title": "Lebensmittel & Einkaufen",
+      "theme": "Lebensmittel, Mengen und Einkaufen",
+      "source_pages": [
+        31
+      ],
+      "words": [
+        {
+          "german": "das Lebensmittel",
+          "article": "das",
+          "plural": "die Lebensmittel",
+          "meaning_en": "food; groceries",
+          "meaning_fa": "مواد غذایی",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4",
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "die Banane",
+          "article": "die",
+          "plural": "die Bananen",
+          "meaning_en": "banana",
+          "meaning_fa": "موز",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "die Birne",
+          "article": "die",
+          "plural": "die Birnen",
+          "meaning_en": "pear",
+          "meaning_fa": "گلابی",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "die Bohne",
+          "article": "die",
+          "plural": "die Bohnen",
+          "meaning_en": "bean",
+          "meaning_fa": "لوبیا",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "das Bonbon",
+          "article": "das",
+          "plural": "die Bonbons",
+          "meaning_en": "sweet; candy",
+          "meaning_fa": "آبنبات",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "die Cola",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "cola",
+          "meaning_fa": "کولا",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "das Gemüse",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "vegetables",
+          "meaning_fa": "سبزیجات",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "das Getränk",
+          "article": "das",
+          "plural": "die Getränke",
+          "meaning_en": "drink",
+          "meaning_fa": "نوشیدنی",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "die Marmelade",
+          "article": "die",
+          "plural": "die Marmeladen",
+          "meaning_en": "jam",
+          "meaning_fa": "مربا",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "das Mehl",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "flour",
+          "meaning_fa": "آرد",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "der Quark",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "quark; fresh curd",
+          "meaning_fa": "پنیر تازه",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "der Saft",
+          "article": "der",
+          "plural": "die Säfte",
+          "meaning_en": "juice",
+          "meaning_fa": "آبمیوه",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "fett",
+          "article": "",
+          "plural": "",
+          "meaning_en": "fatty; greasy",
+          "meaning_fa": "چرب",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adjective"
+        },
+        {
+          "german": "fettarm",
+          "article": "",
+          "plural": "",
+          "meaning_en": "low-fat",
+          "meaning_fa": "کم‌چرب",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adjective"
+        },
+        {
+          "german": "frisch",
+          "article": "",
+          "plural": "",
+          "meaning_en": "fresh",
+          "meaning_fa": "تازه",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4",
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adjective"
+        },
+        {
+          "german": "hart",
+          "article": "",
+          "plural": "",
+          "meaning_en": "hard; tough",
+          "meaning_fa": "سخت",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adjective"
+        },
+        {
+          "german": "mager",
+          "article": "",
+          "plural": "",
+          "meaning_en": "lean; slim",
+          "meaning_fa": "لاغر",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adjective"
+        },
+        {
+          "german": "normal",
+          "article": "",
+          "plural": "",
+          "meaning_en": "normal",
+          "meaning_fa": "عادی",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adjective"
+        },
+        {
+          "german": "roh",
+          "article": "",
+          "plural": "",
+          "meaning_en": "raw",
+          "meaning_fa": "خام",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adjective"
+        },
+        {
+          "german": "weich",
+          "article": "",
+          "plural": "",
+          "meaning_en": "soft",
+          "meaning_fa": "نرم",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adjective"
+        },
+        {
+          "german": "die Dose",
+          "article": "die",
+          "plural": "die Dosen",
+          "meaning_en": "tin; can",
+          "meaning_fa": "قوطی",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "das Gramm",
+          "article": "das",
+          "plural": "die Gramme",
+          "meaning_en": "gram",
+          "meaning_fa": "گرم",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "das Kilo",
+          "article": "das",
+          "plural": "die Kilo",
+          "meaning_en": "kilogram",
+          "meaning_fa": "کیلوگرم",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "der Liter",
+          "article": "der",
+          "plural": "die Liter",
+          "meaning_en": "liter",
+          "meaning_fa": "لیتر",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "die Packung",
+          "article": "die",
+          "plural": "die Packungen",
+          "meaning_en": "pack; packet",
+          "meaning_fa": "بسته",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "das Pfund",
+          "article": "das",
+          "plural": "die Pfunde",
+          "meaning_en": "pound",
+          "meaning_fa": "پوند",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "die Portion",
+          "article": "die",
+          "plural": "die Portionen",
+          "meaning_en": "portion",
+          "meaning_fa": "پرس غذا",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "die Tüte",
+          "article": "die",
+          "plural": "die Tüten",
+          "meaning_en": "shopping bag",
+          "meaning_fa": "کیسه خرید",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "der Zettel",
+          "article": "der",
+          "plural": "die Zettel",
+          "meaning_en": "note; slip of paper",
+          "meaning_fa": "یادداشت",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "der Einkaufszettel",
+          "article": "der",
+          "plural": "die Einkaufszettel",
+          "meaning_en": "shopping list",
+          "meaning_fa": "لیست خرید",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "hungrig",
+          "article": "",
+          "plural": "",
+          "meaning_en": "hungry",
+          "meaning_fa": "گرسنه",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adjective"
+        },
+        {
+          "german": "sauer",
+          "article": "",
+          "plural": "",
+          "meaning_en": "sour; angry",
+          "meaning_fa": "ترش؛ عصبانی",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adjective"
+        },
+        {
+          "german": "je",
+          "article": "",
+          "plural": "",
+          "meaning_en": "each; per",
+          "meaning_fa": "هر؛ به‌ازای",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adverb"
+        },
+        {
+          "german": "pro",
+          "article": "",
+          "plural": "",
+          "meaning_en": "per; every",
+          "meaning_fa": "به‌ازای",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "preposition"
+        },
+        {
+          "german": "die Gewohnheit",
+          "article": "die",
+          "plural": "die Gewohnheiten",
+          "meaning_en": "habit",
+          "meaning_fa": "عادت",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "die Essgewohnheit",
+          "article": "die",
+          "plural": "die Essgewohnheiten",
+          "meaning_en": "eating habit",
+          "meaning_fa": "عادت غذایی",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "der Fehler",
+          "article": "der",
+          "plural": "die Fehler",
+          "meaning_en": "mistake",
+          "meaning_fa": "اشتباه",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "noun"
+        },
+        {
+          "german": "bestellen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to order",
+          "meaning_fa": "سفارش دادن",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "verb"
+        },
+        {
+          "german": "hoffen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to hope",
+          "meaning_fa": "امیدوار بودن",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "verb"
+        },
+        {
+          "german": "nämlich",
+          "article": "",
+          "plural": "",
+          "meaning_en": "namely; you see",
+          "meaning_fa": "یعنی؛ خب",
+          "example": "",
+          "canonicalLesson": "Lektion 4",
+          "appearsInLessons": [
+            "Lektion 4"
+          ],
+          "page": "Lernwortschatz p. 31",
+          "type": "adverb"
+        }
+      ]
+    },
+    "Lektion 5": {
+      "title": "Tourismus & Reisen",
+      "theme": "Reisen, Sehenswürdigkeiten und Verabredungen",
+      "source_pages": [
+        37
+      ],
+      "words": [
+        {
+          "german": "der Besuch",
+          "article": "der",
+          "plural": "die Besuche",
+          "meaning_en": "visit",
+          "meaning_fa": "بازدید",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "der Club",
+          "article": "der",
+          "plural": "die Clubs",
+          "meaning_en": "club",
+          "meaning_fa": "باشگاه",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "die Ferien",
+          "article": "die",
+          "plural": "die Ferien",
+          "meaning_en": "holiday; vacation",
+          "meaning_fa": "تعطیلات",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "die Kamera",
+          "article": "die",
+          "plural": "die Kameras",
+          "meaning_en": "camera",
+          "meaning_fa": "دوربین",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "die Mauer",
+          "article": "die",
+          "plural": "die Mauern",
+          "meaning_en": "wall",
+          "meaning_fa": "دیوار",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "der Prospekt",
+          "article": "der",
+          "plural": "die Prospekte",
+          "meaning_en": "brochure; leaflet",
+          "meaning_fa": "بروشور",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "der Reiseführer",
+          "article": "der",
+          "plural": "die Reiseführer",
+          "meaning_en": "tour guide; guidebook",
+          "meaning_fa": "راهنمای سفر",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "der Reiseleiter",
+          "article": "der",
+          "plural": "die Reiseleiter",
+          "meaning_en": "tour manager; guide",
+          "meaning_fa": "سرپرست تور",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "der Rundgang",
+          "article": "der",
+          "plural": "die Rundgänge",
+          "meaning_en": "walk; tour",
+          "meaning_fa": "گردش و بازدید",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "die Sehenswürdigkeit",
+          "article": "die",
+          "plural": "die Sehenswürdigkeiten",
+          "meaning_en": "sight; landmark",
+          "meaning_fa": "جاذبه گردشگری",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "der Tourist",
+          "article": "der",
+          "plural": "die Touristen",
+          "meaning_en": "tourist",
+          "meaning_fa": "گردشگر",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "das Trinkgeld",
+          "article": "das",
+          "plural": "die Trinkgelder",
+          "meaning_en": "tip; gratuity",
+          "meaning_fa": "انعام",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "die Unterkunft",
+          "article": "die",
+          "plural": "die Unterkünfte",
+          "meaning_en": "accommodation",
+          "meaning_fa": "اقامتگاه",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "besichtigen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to visit (a place)",
+          "meaning_fa": "بازدید کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "verb"
+        },
+        {
+          "german": "interessieren (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be interested in",
+          "meaning_fa": "علاقه‌مند بودن",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "verb"
+        },
+        {
+          "german": "wechseln",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to change; exchange",
+          "meaning_fa": "تعویض کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "verb"
+        },
+        {
+          "german": "Geld wechseln",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to exchange money",
+          "meaning_fa": "پول عوض کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "phrase"
+        },
+        {
+          "german": "zeigen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to show",
+          "meaning_fa": "نشان دادن",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "verb"
+        },
+        {
+          "german": "berühmt",
+          "article": "",
+          "plural": "",
+          "meaning_en": "famous",
+          "meaning_fa": "مشهور",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "adjective"
+        },
+        {
+          "german": "offen / geöffnet",
+          "article": "",
+          "plural": "",
+          "meaning_en": "open",
+          "meaning_fa": "باز",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "adjective"
+        },
+        {
+          "german": "die Nachricht",
+          "article": "die",
+          "plural": "die Nachrichten",
+          "meaning_en": "message; news",
+          "meaning_fa": "پیام؛ خبر",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "die Postkarte",
+          "article": "die",
+          "plural": "die Postkarten",
+          "meaning_en": "postcard",
+          "meaning_fa": "کارت پستال",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "der Supermarkt",
+          "article": "der",
+          "plural": "die Supermärkte",
+          "meaning_en": "supermarket",
+          "meaning_fa": "سوپرمارکت",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "der Wunsch",
+          "article": "der",
+          "plural": "die Wünsche",
+          "meaning_en": "wish",
+          "meaning_fa": "آرزو",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "noun"
+        },
+        {
+          "german": "abgeben",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to hand in; give back",
+          "meaning_fa": "تسلیم کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "verb"
+        },
+        {
+          "german": "ärgern (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to get annoyed",
+          "meaning_fa": "عصبانی شدن",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "verb"
+        },
+        {
+          "german": "dafür sein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be in favour",
+          "meaning_fa": "موافق بودن",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "verb"
+        },
+        {
+          "german": "dagegen sein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be against",
+          "meaning_fa": "مخالف بودن",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "verb"
+        },
+        {
+          "german": "freuen (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be glad",
+          "meaning_fa": "خوشحال شدن",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "verb"
+        },
+        {
+          "german": "bunt",
+          "article": "",
+          "plural": "",
+          "meaning_en": "colourful",
+          "meaning_fa": "رنگارنگ",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "adjective"
+        },
+        {
+          "german": "einverstanden",
+          "article": "",
+          "plural": "",
+          "meaning_en": "agreed",
+          "meaning_fa": "موافقم",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "adjective"
+        },
+        {
+          "german": "schick",
+          "article": "",
+          "plural": "",
+          "meaning_en": "chic; smart",
+          "meaning_fa": "شیک",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "adjective"
+        },
+        {
+          "german": "bestimmt",
+          "article": "",
+          "plural": "",
+          "meaning_en": "certainly; probably",
+          "meaning_fa": "حتماً",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "adverb"
+        },
+        {
+          "german": "meistens",
+          "article": "",
+          "plural": "",
+          "meaning_en": "mostly; usually",
+          "meaning_fa": "معمولاً",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "adverb"
+        },
+        {
+          "german": "später",
+          "article": "",
+          "plural": "",
+          "meaning_en": "later",
+          "meaning_fa": "بعداً",
+          "example": "",
+          "canonicalLesson": "Lektion 5",
+          "appearsInLessons": [
+            "Lektion 5"
+          ],
+          "page": "Lernwortschatz p. 37",
+          "type": "adverb"
+        }
+      ]
+    },
+    "Lektion 6": {
+      "title": "Veranstaltungen & Verabredungen",
+      "theme": "Veranstaltungen, Vorschläge und Zeitangaben",
+      "source_pages": [
+        43
+      ],
+      "words": [
+        {
+          "german": "die Bühne",
+          "article": "die",
+          "plural": "die Bühnen",
+          "meaning_en": "stage",
+          "meaning_fa": "صحنه",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "die Diskussion",
+          "article": "die",
+          "plural": "die Diskussionen",
+          "meaning_en": "discussion",
+          "meaning_fa": "گفت‌وگو؛ بحث",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "der Eintritt",
+          "article": "der",
+          "plural": "die Eintritte",
+          "meaning_en": "admission; entry",
+          "meaning_fa": "هزینه ورود؛ ورود",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "die Ermäßigung",
+          "article": "die",
+          "plural": "die Ermäßigungen",
+          "meaning_en": "discount; reduction",
+          "meaning_fa": "تخفیف",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "das Festival",
+          "article": "das",
+          "plural": "die Festivals",
+          "meaning_en": "festival",
+          "meaning_fa": "جشنواره",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "die Eintrittskarte",
+          "article": "die",
+          "plural": "die Eintrittskarten",
+          "meaning_en": "entry ticket",
+          "meaning_fa": "بلیط ورود",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "die Kinokarte",
+          "article": "die",
+          "plural": "die Kinokarten",
+          "meaning_en": "cinema ticket",
+          "meaning_fa": "بلیط سینما",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "das Kostüm",
+          "article": "das",
+          "plural": "die Kostüme",
+          "meaning_en": "costume",
+          "meaning_fa": "لباس نمایش",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "die Kunst",
+          "article": "die",
+          "plural": "die Künste",
+          "meaning_en": "art",
+          "meaning_fa": "هنر",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "der Künstler",
+          "article": "der",
+          "plural": "die Künstler",
+          "meaning_en": "artist",
+          "meaning_fa": "هنرمند",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "die Veranstaltung",
+          "article": "die",
+          "plural": "die Veranstaltungen",
+          "meaning_en": "event",
+          "meaning_fa": "رویداد",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "der Vortrag",
+          "article": "der",
+          "plural": "die Vorträge",
+          "meaning_en": "lecture; talk",
+          "meaning_fa": "سخنرانی",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "stattfinden",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to take place",
+          "meaning_fa": "برگزار شدن",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "verb"
+        },
+        {
+          "german": "zahlen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to pay",
+          "meaning_fa": "پرداخت کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "verb"
+        },
+        {
+          "german": "spannend",
+          "article": "",
+          "plural": "",
+          "meaning_en": "exciting",
+          "meaning_fa": "هیجان‌انگیز",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "adjective"
+        },
+        {
+          "german": "die Verabredung",
+          "article": "die",
+          "plural": "die Verabredungen",
+          "meaning_en": "date; appointment",
+          "meaning_fa": "قرار ملاقات",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "der Vorschlag",
+          "article": "der",
+          "plural": "die Vorschläge",
+          "meaning_en": "suggestion",
+          "meaning_fa": "پیشنهاد",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "ausmachen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to arrange; fix",
+          "meaning_fa": "هماهنگ کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "verb"
+        },
+        {
+          "german": "halten von",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to think of (something)",
+          "meaning_fa": "درباره ... چه فکری کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "verb"
+        },
+        {
+          "german": "hin",
+          "article": "",
+          "plural": "",
+          "meaning_en": "there; to there",
+          "meaning_fa": "به آنجا",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "adverb"
+        },
+        {
+          "german": "hinfahren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to go there (by vehicle)",
+          "meaning_fa": "به آنجا رفتن",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "verb"
+        },
+        {
+          "german": "lassen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to let; leave",
+          "meaning_fa": "اجازه دادن",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "verb"
+        },
+        {
+          "german": "Lass uns ...",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Let us ...!",
+          "meaning_fa": "بیا ...!",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "phrase"
+        },
+        {
+          "german": "mitkommen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to come along",
+          "meaning_fa": "همراه آمدن",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "verb"
+        },
+        {
+          "german": "verabreden (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to arrange to meet",
+          "meaning_fa": "قرار گذاشتن",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "verb"
+        },
+        {
+          "german": "vorschlagen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to suggest",
+          "meaning_fa": "پیشنهاد دادن",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "verb"
+        },
+        {
+          "german": "prima",
+          "article": "",
+          "plural": "",
+          "meaning_en": "great; fine",
+          "meaning_fa": "عالی",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "adjective"
+        },
+        {
+          "german": "über",
+          "article": "",
+          "plural": "",
+          "meaning_en": "over; about; for (a period)",
+          "meaning_fa": "حدود؛ به مدت",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "preposition"
+        },
+        {
+          "german": "vom ... bis",
+          "article": "",
+          "plural": "",
+          "meaning_en": "from ... to",
+          "meaning_fa": "از ... تا",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "phrase"
+        },
+        {
+          "german": "zwischen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "between",
+          "meaning_fa": "بین",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6",
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "preposition"
+        },
+        {
+          "german": "von ... an",
+          "article": "",
+          "plural": "",
+          "meaning_en": "from ... on",
+          "meaning_fa": "از ... به بعد",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "phrase"
+        },
+        {
+          "german": "das Feuer",
+          "article": "das",
+          "plural": "die Feuer",
+          "meaning_en": "fire",
+          "meaning_fa": "آتش",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "das Mal",
+          "article": "das",
+          "plural": "die Male",
+          "meaning_en": "time; occasion",
+          "meaning_fa": "بار؛ دفعه",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "noun"
+        },
+        {
+          "german": "das erste Mal",
+          "article": "",
+          "plural": "",
+          "meaning_en": "the first time",
+          "meaning_fa": "برای اولین بار",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "phrase"
+        },
+        {
+          "german": "da",
+          "article": "",
+          "plural": "",
+          "meaning_en": "there; then",
+          "meaning_fa": "آنجا؛ آن‌وقت",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "adverb"
+        },
+        {
+          "german": "dort",
+          "article": "",
+          "plural": "",
+          "meaning_en": "there",
+          "meaning_fa": "آنجا",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "adverb"
+        },
+        {
+          "german": "genau",
+          "article": "",
+          "plural": "",
+          "meaning_en": "exactly; right",
+          "meaning_fa": "دقیقاً",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "adverb"
+        },
+        {
+          "german": "mal",
+          "article": "",
+          "plural": "",
+          "meaning_en": "just; once",
+          "meaning_fa": "یک‌بار؛ مثلاً",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "adverb"
+        },
+        {
+          "german": "ziemlich",
+          "article": "",
+          "plural": "",
+          "meaning_en": "quite; rather",
+          "meaning_fa": "نسبتاً",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "adverb"
+        },
+        {
+          "german": "zusammen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "together",
+          "meaning_fa": "با هم",
+          "example": "",
+          "canonicalLesson": "Lektion 6",
+          "appearsInLessons": [
+            "Lektion 6",
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 43",
+          "type": "adverb"
+        }
+      ]
+    },
+    "Lektion 7": {
+      "title": "Gesundheit & Fitness",
+      "theme": "Gesundheit, Sport und Zeitangaben",
+      "source_pages": [
+        55
+      ],
+      "words": [
+        {
+          "german": "die Art",
+          "article": "die",
+          "plural": "die Arten",
+          "meaning_en": "type; kind",
+          "meaning_fa": "نوع",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "die Sportart",
+          "article": "die",
+          "plural": "die Sportarten",
+          "meaning_en": "type of sport",
+          "meaning_fa": "رشته ورزشی",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "die Diät",
+          "article": "die",
+          "plural": "die Diäten",
+          "meaning_en": "diet",
+          "meaning_fa": "رژیم غذایی",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "die Gesundheit",
+          "article": "die",
+          "plural": "die Gesundheit",
+          "meaning_en": "health",
+          "meaning_fa": "سلامت",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "das Gewicht",
+          "article": "das",
+          "plural": "die Gewichte",
+          "meaning_en": "weight",
+          "meaning_fa": "وزن",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "das Training",
+          "article": "das",
+          "plural": "die Trainings",
+          "meaning_en": "training; workout",
+          "meaning_fa": "تمرین",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "abnehmen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to lose (weight)",
+          "meaning_fa": "وزن کم کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "verb"
+        },
+        {
+          "german": "ausruhen (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to rest",
+          "meaning_fa": "استراحت کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "verb"
+        },
+        {
+          "german": "trainieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to train; work out",
+          "meaning_fa": "تمرین کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "verb"
+        },
+        {
+          "german": "wiegen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to weigh",
+          "meaning_fa": "وزن کشیدن",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "verb"
+        },
+        {
+          "german": "fit",
+          "article": "",
+          "plural": "",
+          "meaning_en": "fit",
+          "meaning_fa": "سرحال؛ آماده",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adjective"
+        },
+        {
+          "german": "frische Luft",
+          "article": "",
+          "plural": "",
+          "meaning_en": "fresh air",
+          "meaning_fa": "هوای تازه",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "phrase"
+        },
+        {
+          "german": "regelmäßig",
+          "article": "",
+          "plural": "",
+          "meaning_en": "regular; frequent",
+          "meaning_fa": "منظم؛ همیشگی",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adjective"
+        },
+        {
+          "german": "selten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "rarely; seldom",
+          "meaning_fa": "به‌ندرت",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "mindestens",
+          "article": "",
+          "plural": "",
+          "meaning_en": "at least",
+          "meaning_fa": "حداقل",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "das Golf",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "golf",
+          "meaning_fa": "گلف",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "die Nudel",
+          "article": "die",
+          "plural": "die Nudeln",
+          "meaning_en": "noodle; pasta",
+          "meaning_fa": "ماکارونی",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "die Post",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "post; mail",
+          "meaning_fa": "پست",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "die Stelle",
+          "article": "die",
+          "plural": "die Stellen",
+          "meaning_en": "job; place",
+          "meaning_fa": "شغل؛ جا",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "an deiner/Ihrer Stelle",
+          "article": "",
+          "plural": "",
+          "meaning_en": "in your place",
+          "meaning_fa": "به جای شما",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "phrase"
+        },
+        {
+          "german": "der Verein",
+          "article": "der",
+          "plural": "die Vereine",
+          "meaning_en": "club; association",
+          "meaning_fa": "باشگاه؛ انجمن",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "noun"
+        },
+        {
+          "german": "empfehlen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to recommend",
+          "meaning_fa": "توصیه کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "verb"
+        },
+        {
+          "german": "leihen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to borrow / to lend",
+          "meaning_fa": "قرض گرفتن / قرض دادن",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "verb"
+        },
+        {
+          "german": "öffnen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to open",
+          "meaning_fa": "باز کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "verb"
+        },
+        {
+          "german": "teilnehmen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to take part",
+          "meaning_fa": "شرکت کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "verb"
+        },
+        {
+          "german": "circa",
+          "article": "",
+          "plural": "",
+          "meaning_en": "about; approximately",
+          "meaning_fa": "حدود",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "früh",
+          "article": "",
+          "plural": "",
+          "meaning_en": "early",
+          "meaning_fa": "زود؛ زودهنگام",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adjective"
+        },
+        {
+          "german": "morgens",
+          "article": "",
+          "plural": "",
+          "meaning_en": "in the morning",
+          "meaning_fa": "صبح‌ها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "vormittags",
+          "article": "",
+          "plural": "",
+          "meaning_en": "before noon",
+          "meaning_fa": "پیش از ظهر",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "mittags",
+          "article": "",
+          "plural": "",
+          "meaning_en": "at midday",
+          "meaning_fa": "ظهرها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "nachmittags",
+          "article": "",
+          "plural": "",
+          "meaning_en": "in the afternoon",
+          "meaning_fa": "بعدازظهر",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "abends",
+          "article": "",
+          "plural": "",
+          "meaning_en": "in the evening",
+          "meaning_fa": "عصرها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "nachts",
+          "article": "",
+          "plural": "",
+          "meaning_en": "at night",
+          "meaning_fa": "شب‌ها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "montags",
+          "article": "",
+          "plural": "",
+          "meaning_en": "on Mondays",
+          "meaning_fa": "دوشنبه‌ها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "dienstags",
+          "article": "",
+          "plural": "",
+          "meaning_en": "on Tuesdays",
+          "meaning_fa": "سه‌شنبه‌ها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "mittwochs",
+          "article": "",
+          "plural": "",
+          "meaning_en": "on Wednesdays",
+          "meaning_fa": "چهارشنبه‌ها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "donnerstags",
+          "article": "",
+          "plural": "",
+          "meaning_en": "on Thursdays",
+          "meaning_fa": "پنجشنبه‌ها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "freitags",
+          "article": "",
+          "plural": "",
+          "meaning_en": "on Fridays",
+          "meaning_fa": "جمعه‌ها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "samstags",
+          "article": "",
+          "plural": "",
+          "meaning_en": "on Saturdays",
+          "meaning_fa": "شنبه‌ها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "sonntags",
+          "article": "",
+          "plural": "",
+          "meaning_en": "on Sundays",
+          "meaning_fa": "یکشنبه‌ها",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "adverb"
+        },
+        {
+          "german": "andere",
+          "article": "",
+          "plural": "",
+          "meaning_en": "other; different",
+          "meaning_fa": "دیگر؛ سایر",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "other"
+        },
+        {
+          "german": "zwischen sieben und Viertel nach sieben",
+          "article": "",
+          "plural": "",
+          "meaning_en": "between seven and a quarter past seven",
+          "meaning_fa": "بین هفت و هفت و ربع",
+          "example": "",
+          "canonicalLesson": "Lektion 7",
+          "appearsInLessons": [
+            "Lektion 7"
+          ],
+          "page": "Lernwortschatz p. 55",
+          "type": "phrase"
+        }
+      ]
+    },
+    "Lektion 8": {
+      "title": "Unfall & Gesundheit",
+      "theme": "Unfall, Notfall und Krankheit",
+      "source_pages": [
+        61
+      ],
+      "words": [
+        {
+          "german": "der Krankenwagen",
+          "article": "der",
+          "plural": "die Krankenwagen",
+          "meaning_en": "ambulance",
+          "meaning_fa": "آمبولانس",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "die Ambulanz",
+          "article": "die",
+          "plural": "die Ambulanzen",
+          "meaning_en": "ambulance; ER",
+          "meaning_fa": "آمبولانس",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "der Notarzt",
+          "article": "der",
+          "plural": "die Notärzte",
+          "meaning_en": "emergency doctor",
+          "meaning_fa": "پزشک اورژانس",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "die Notaufnahme",
+          "article": "die",
+          "plural": "die Notaufnahmen",
+          "meaning_en": "emergency room",
+          "meaning_fa": "بخش اورژانس",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "der Notfall",
+          "article": "der",
+          "plural": "die Notfälle",
+          "meaning_en": "emergency",
+          "meaning_fa": "وضعیت اضطراری",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "der Unfall",
+          "article": "der",
+          "plural": "die Unfälle",
+          "meaning_en": "accident",
+          "meaning_fa": "تصادف",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "die Verletzung",
+          "article": "die",
+          "plural": "die Verletzungen",
+          "meaning_en": "injury",
+          "meaning_fa": "مصدومیت",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "verletzen (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to injure oneself",
+          "meaning_fa": "مصدوم شدن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "verb"
+        },
+        {
+          "german": "das Blut",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "blood",
+          "meaning_fa": "خون",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "die Grippe",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "flu",
+          "meaning_fa": "آنفلوآنزا",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "das Herz",
+          "article": "das",
+          "plural": "die Herzen",
+          "meaning_en": "heart",
+          "meaning_fa": "قلب",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "die Krankheit",
+          "article": "die",
+          "plural": "die Krankheiten",
+          "meaning_en": "illness; disease",
+          "meaning_fa": "بیماری",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "der Magen",
+          "article": "der",
+          "plural": "die Mägen",
+          "meaning_en": "stomach",
+          "meaning_fa": "معده",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "die Operation",
+          "article": "die",
+          "plural": "die Operationen",
+          "meaning_en": "operation; surgery",
+          "meaning_fa": "عمل جراحی",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "die Sprechstunde",
+          "article": "die",
+          "plural": "die Sprechstunden",
+          "meaning_en": "consultation; clinic",
+          "meaning_fa": "مطب؛ ساعت ویزیت",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "die Untersuchung",
+          "article": "die",
+          "plural": "die Untersuchungen",
+          "meaning_en": "examination; test",
+          "meaning_fa": "معاینه؛ آزمایش",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "der Verband",
+          "article": "der",
+          "plural": "die Verbände",
+          "meaning_en": "bandage",
+          "meaning_fa": "باند؛ پانسمان",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "bluten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to bleed",
+          "meaning_fa": "خونریزی کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "verb"
+        },
+        {
+          "german": "operieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to operate",
+          "meaning_fa": "جراحی کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "verb"
+        },
+        {
+          "german": "sterben",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to die",
+          "meaning_fa": "مردن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "verb"
+        },
+        {
+          "german": "untersuchen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to examine",
+          "meaning_fa": "معاینه کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "verb"
+        },
+        {
+          "german": "verbinden",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to bandage; to connect",
+          "meaning_fa": "باند پیچی کردن؛ وصل کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "verb"
+        },
+        {
+          "german": "erkältet sein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to have a cold",
+          "meaning_fa": "سرما خورده بودن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "phrase"
+        },
+        {
+          "german": "verkühlen (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to catch a cold",
+          "meaning_fa": "سرما خوردن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "verb"
+        },
+        {
+          "german": "die Sorge",
+          "article": "die",
+          "plural": "die Sorgen",
+          "meaning_en": "worry; concern",
+          "meaning_fa": "نگرانی",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "sich Sorgen machen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to worry",
+          "meaning_fa": "نگران بودن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "phrase"
+        },
+        {
+          "german": "die Wahrheit",
+          "article": "die",
+          "plural": "die Wahrheiten",
+          "meaning_en": "truth",
+          "meaning_fa": "حقیقت",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "noun"
+        },
+        {
+          "german": "hinfallen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to fall down",
+          "meaning_fa": "زمین خوردن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "verb"
+        },
+        {
+          "german": "los sein",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be gone; wear off",
+          "meaning_fa": "تمام شده بودن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "phrase"
+        },
+        {
+          "german": "vertrauen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to trust",
+          "meaning_fa": "اعتماد کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "verb"
+        },
+        {
+          "german": "weil",
+          "article": "",
+          "plural": "",
+          "meaning_en": "because",
+          "meaning_fa": "چون؛ زیرا",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "conjunction"
+        },
+        {
+          "german": "deshalb",
+          "article": "",
+          "plural": "",
+          "meaning_en": "therefore",
+          "meaning_fa": "بنابراین",
+          "example": "",
+          "canonicalLesson": "Lektion 8",
+          "appearsInLessons": [
+            "Lektion 8"
+          ],
+          "page": "Lernwortschatz p. 61",
+          "type": "adverb"
+        }
+      ]
+    },
+    "Lektion 9": {
+      "title": "Arbeit & Beruf",
+      "theme": "Arbeit, Betrieb und Wirtschaft",
+      "source_pages": [
+        67
+      ],
+      "words": [
+        {
+          "german": "der/die Angestellte",
+          "article": "der/die",
+          "plural": "die Angestellten",
+          "meaning_en": "employee",
+          "meaning_fa": "کارمند",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Arbeiter",
+          "article": "der",
+          "plural": "die Arbeiter",
+          "meaning_en": "worker",
+          "meaning_fa": "کارگر",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "die Bedingung",
+          "article": "die",
+          "plural": "die Bedingungen",
+          "meaning_en": "condition",
+          "meaning_fa": "شرط",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "die Arbeitsbedingungen",
+          "article": "die",
+          "plural": "die Arbeitsbedingungen",
+          "meaning_en": "working conditions",
+          "meaning_fa": "شرایط کار",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Betrieb",
+          "article": "der",
+          "plural": "die Betriebe",
+          "meaning_en": "company; plant",
+          "meaning_fa": "کارخانه؛ شرکت",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Erfolg",
+          "article": "der",
+          "plural": "die Erfolge",
+          "meaning_en": "success",
+          "meaning_fa": "موفقیت",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Export",
+          "article": "der",
+          "plural": "die Exporte",
+          "meaning_en": "export",
+          "meaning_fa": "صادرات",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "die Halle",
+          "article": "die",
+          "plural": "die Hallen",
+          "meaning_en": "hall",
+          "meaning_fa": "سالن",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Import",
+          "article": "der",
+          "plural": "die Importe",
+          "meaning_en": "import",
+          "meaning_fa": "واردات",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "das Lager",
+          "article": "das",
+          "plural": "die Lager",
+          "meaning_en": "warehouse; camp",
+          "meaning_fa": "انبار؛ اردوگاه",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Lkw",
+          "article": "der",
+          "plural": "die Lkw",
+          "meaning_en": "lorry; truck",
+          "meaning_fa": "کامیون",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Lastwagen",
+          "article": "der",
+          "plural": "die Lastwagen",
+          "meaning_en": "lorry; truck",
+          "meaning_fa": "کامیون باری",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Lohn",
+          "article": "der",
+          "plural": "die Löhne",
+          "meaning_en": "salary; wage",
+          "meaning_fa": "حقوق؛ دستمزد",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "die Maschine",
+          "article": "die",
+          "plural": "die Maschinen",
+          "meaning_en": "machine",
+          "meaning_fa": "ماشین؛ دستگاه",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Mitarbeiter",
+          "article": "der",
+          "plural": "die Mitarbeiter",
+          "meaning_en": "employee; colleague",
+          "meaning_fa": "همکار",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "die Produktion",
+          "article": "die",
+          "plural": "die Produktionen",
+          "meaning_en": "production",
+          "meaning_fa": "تولید",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "das Prozent",
+          "article": "das",
+          "plural": "die Prozente",
+          "meaning_en": "percent",
+          "meaning_fa": "درصد",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "das Team",
+          "article": "das",
+          "plural": "die Teams",
+          "meaning_en": "team",
+          "meaning_fa": "تیم",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "das Werk",
+          "article": "das",
+          "plural": "die Werke",
+          "meaning_en": "factory",
+          "meaning_fa": "کارخانه",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "die Wirtschaft",
+          "article": "die",
+          "plural": "",
+          "meaning_en": "economy",
+          "meaning_fa": "اقتصاد",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "sinken",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to sink; to fall",
+          "meaning_fa": "فرور رفتن؛ پایین آمدن",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "verb"
+        },
+        {
+          "german": "sparen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to save",
+          "meaning_fa": "پس‌انداز کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "verb"
+        },
+        {
+          "german": "steigen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to rise; to climb",
+          "meaning_fa": "افزایش یافتن",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "verb"
+        },
+        {
+          "german": "selbstständig",
+          "article": "",
+          "plural": "",
+          "meaning_en": "independent; self-employed",
+          "meaning_fa": "مستقل؛ خوداشتغال",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "adjective"
+        },
+        {
+          "german": "der Bericht",
+          "article": "der",
+          "plural": "die Berichte",
+          "meaning_en": "report",
+          "meaning_fa": "گزارش",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "das Jahrzehnt",
+          "article": "das",
+          "plural": "die Jahrzehnte",
+          "meaning_en": "decade",
+          "meaning_fa": "دهه",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Kontakt",
+          "article": "der",
+          "plural": "die Kontakte",
+          "meaning_en": "contact",
+          "meaning_fa": "تماس؛ ارتباط",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "die Reparatur",
+          "article": "die",
+          "plural": "die Reparaturen",
+          "meaning_en": "repair",
+          "meaning_fa": "تعمیر",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "der Wagen",
+          "article": "der",
+          "plural": "die Wagen",
+          "meaning_en": "car; wagon",
+          "meaning_fa": "ماشین",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "noun"
+        },
+        {
+          "german": "erklären",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to explain",
+          "meaning_fa": "توضیح دادن",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "verb"
+        },
+        {
+          "german": "international",
+          "article": "",
+          "plural": "",
+          "meaning_en": "international",
+          "meaning_fa": "بین‌المللی",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "adjective"
+        },
+        {
+          "german": "dringend",
+          "article": "",
+          "plural": "",
+          "meaning_en": "urgent; pressing",
+          "meaning_fa": "فوری",
+          "example": "",
+          "canonicalLesson": "Lektion 9",
+          "appearsInLessons": [
+            "Lektion 9"
+          ],
+          "page": "Lernwortschatz p. 67",
+          "type": "adjective"
+        }
+      ]
+    },
+    "Lektion 10": {
+      "title": "Im Restaurant",
+      "theme": "Restaurant, Essen und Bezahlen",
+      "source_pages": [
+        79
+      ],
+      "words": [
+        {
+          "german": "das Besteck",
+          "article": "das",
+          "plural": "die Bestecke",
+          "meaning_en": "cutlery",
+          "meaning_fa": "کارد و چنگال",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "die Gabel",
+          "article": "die",
+          "plural": "die Gabeln",
+          "meaning_en": "fork",
+          "meaning_fa": "چنگال",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "das Glas",
+          "article": "das",
+          "plural": "die Gläser",
+          "meaning_en": "glass",
+          "meaning_fa": "لیوان؛ گیلاس",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "die Kanne",
+          "article": "die",
+          "plural": "die Kannen",
+          "meaning_en": "pot; jug",
+          "meaning_fa": "قوری؛ کتری",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "der Löffel",
+          "article": "der",
+          "plural": "die Löffel",
+          "meaning_en": "spoon",
+          "meaning_fa": "قاشق",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "das Lokal",
+          "article": "das",
+          "plural": "die Lokale",
+          "meaning_en": "restaurant; pub",
+          "meaning_fa": "رستوران",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "das Messer",
+          "article": "das",
+          "plural": "die Messer",
+          "meaning_en": "knife",
+          "meaning_fa": "چاقو",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "die Rechnung",
+          "article": "die",
+          "plural": "die Rechnungen",
+          "meaning_en": "bill",
+          "meaning_fa": "صورتحساب",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "Die Rechnung, bitte!",
+          "article": "",
+          "plural": "",
+          "meaning_en": "The bill, please!",
+          "meaning_fa": "لطفاً صورتحساب!",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "phrase"
+        },
+        {
+          "german": "die Tasse",
+          "article": "die",
+          "plural": "die Tassen",
+          "meaning_en": "cup",
+          "meaning_fa": "فنجان",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "der Teller",
+          "article": "der",
+          "plural": "die Teller",
+          "meaning_en": "plate",
+          "meaning_fa": "بشقاب",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "reservieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to reserve; book",
+          "meaning_fa": "رزرو کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "verb"
+        },
+        {
+          "german": "summen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to hum",
+          "meaning_fa": "زیر لب خواندن",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "verb"
+        },
+        {
+          "german": "stimmt so",
+          "article": "",
+          "plural": "",
+          "meaning_en": "keep the change",
+          "meaning_fa": "پول را نگه دارید",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "phrase"
+        },
+        {
+          "german": "getrennt zahlen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to pay separately",
+          "meaning_fa": "جداگانه پرداخت کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "phrase"
+        },
+        {
+          "german": "der Augenblick",
+          "article": "der",
+          "plural": "die Augenblicke",
+          "meaning_en": "moment",
+          "meaning_fa": "لحظه",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "einen Augenblick, bitte",
+          "article": "",
+          "plural": "",
+          "meaning_en": "just a moment, please",
+          "meaning_fa": "یک لحظه، لطفاً",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "phrase"
+        },
+        {
+          "german": "der Moment",
+          "article": "der",
+          "plural": "die Momente",
+          "meaning_en": "moment",
+          "meaning_fa": "لحظه",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "einen Moment, bitte",
+          "article": "",
+          "plural": "",
+          "meaning_en": "one moment, please",
+          "meaning_fa": "یک لحظه، لطفاً",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "phrase"
+        },
+        {
+          "german": "Verzeihen Sie",
+          "article": "",
+          "plural": "",
+          "meaning_en": "excuse me",
+          "meaning_fa": "ببخشید",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "phrase"
+        },
+        {
+          "german": "der Essig",
+          "article": "der",
+          "plural": "die Essige",
+          "meaning_en": "vinegar",
+          "meaning_fa": "سرکه",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "das Hähnchen",
+          "article": "das",
+          "plural": "die Hähnchen",
+          "meaning_en": "chicken",
+          "meaning_fa": "مرغ",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "das Öl",
+          "article": "das",
+          "plural": "die Öle",
+          "meaning_en": "oil",
+          "meaning_fa": "روغن",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "die Pommes frites",
+          "article": "die",
+          "plural": "die Pommes frites",
+          "meaning_en": "chips; fries",
+          "meaning_fa": "سیب‌زمینی سرخ‌کرده",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "das Salz",
+          "article": "das",
+          "plural": "die Salze",
+          "meaning_en": "salt",
+          "meaning_fa": "نمک",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "die Soße",
+          "article": "die",
+          "plural": "die Soßen",
+          "meaning_en": "sauce",
+          "meaning_fa": "سس",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "das Schnitzel",
+          "article": "das",
+          "plural": "die Schnitzel",
+          "meaning_en": "schnitzel",
+          "meaning_fa": "شنتسل",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "das Steak",
+          "article": "das",
+          "plural": "die Steaks",
+          "meaning_en": "steak",
+          "meaning_fa": "استیک",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "der Zucker",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "sugar",
+          "meaning_fa": "شکر",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "noun"
+        },
+        {
+          "german": "reagieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to react",
+          "meaning_fa": "واکنش نشان دادن",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "verb"
+        },
+        {
+          "german": "wenigstens",
+          "article": "",
+          "plural": "",
+          "meaning_en": "at least",
+          "meaning_fa": "حداقل",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "adverb"
+        },
+        {
+          "german": "dass",
+          "article": "",
+          "plural": "",
+          "meaning_en": "that",
+          "meaning_fa": "که",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "conjunction"
+        },
+        {
+          "german": "sondern",
+          "article": "",
+          "plural": "",
+          "meaning_en": "but rather",
+          "meaning_fa": "بلکه",
+          "example": "",
+          "canonicalLesson": "Lektion 10",
+          "appearsInLessons": [
+            "Lektion 10"
+          ],
+          "page": "Lernwortschatz p. 79",
+          "type": "conjunction"
+        }
+      ]
+    },
+    "Lektion 11": {
+      "title": "In der Firma",
+      "theme": "Firma, Produkte und Glückwünsche",
+      "source_pages": [
+        85
+      ],
+      "words": [
+        {
+          "german": "der Kunde",
+          "article": "der",
+          "plural": "die Kunden",
+          "meaning_en": "customer",
+          "meaning_fa": "مشتری",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "die Notiz",
+          "article": "die",
+          "plural": "die Notizen",
+          "meaning_en": "note",
+          "meaning_fa": "یادداشت",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "der Notizblock",
+          "article": "der",
+          "plural": "die Notizblöcke",
+          "meaning_en": "notepad",
+          "meaning_fa": "دفتر یادداشت",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "die Werkstatt",
+          "article": "die",
+          "plural": "die Werkstätten",
+          "meaning_en": "workshop; garage",
+          "meaning_fa": "تعمیرگاه",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "herstellen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to produce; manufacture",
+          "meaning_fa": "تولید کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "verb"
+        },
+        {
+          "german": "organisieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to organize",
+          "meaning_fa": "سازمان‌دهی کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "verb"
+        },
+        {
+          "german": "verwenden",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to use",
+          "meaning_fa": "استفاده کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "verb"
+        },
+        {
+          "german": "der Briefumschlag",
+          "article": "der",
+          "plural": "die Briefumschläge",
+          "meaning_en": "envelope",
+          "meaning_fa": "پاکت نامه",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "die Handtasche",
+          "article": "die",
+          "plural": "die Handtaschen",
+          "meaning_en": "handbag",
+          "meaning_fa": "کیف دستی",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "wegwerfen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to throw away",
+          "meaning_fa": "دور ریختن",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "verb"
+        },
+        {
+          "german": "viel Erfolg",
+          "article": "",
+          "plural": "",
+          "meaning_en": "good luck! (much success)",
+          "meaning_fa": "موفق باشید",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "phrase"
+        },
+        {
+          "german": "viel Glück",
+          "article": "",
+          "plural": "",
+          "meaning_en": "good luck!",
+          "meaning_fa": "خوش‌شانس باشید",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "phrase"
+        },
+        {
+          "german": "bedanken (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to thank",
+          "meaning_fa": "تشکر کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "verb"
+        },
+        {
+          "german": "wünschen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to wish",
+          "meaning_fa": "آرزو کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "verb"
+        },
+        {
+          "german": "der Artikel",
+          "article": "der",
+          "plural": "die Artikel",
+          "meaning_en": "article; item",
+          "meaning_fa": "کالا؛ مقاله",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "der/die Erwachsene",
+          "article": "der/die",
+          "plural": "die Erwachsenen",
+          "meaning_en": "adult",
+          "meaning_fa": "بزرگسال",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "der Grund",
+          "article": "der",
+          "plural": "die Gründe",
+          "meaning_en": "reason",
+          "meaning_fa": "دلیل",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "die Meinung",
+          "article": "die",
+          "plural": "die Meinungen",
+          "meaning_en": "opinion",
+          "meaning_fa": "نظر",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "meiner Meinung nach",
+          "article": "",
+          "plural": "",
+          "meaning_en": "in my opinion",
+          "meaning_fa": "به نظر من",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "phrase"
+        },
+        {
+          "german": "der Schmuck",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "jewellery",
+          "meaning_fa": "جواهرات",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "der Stoff",
+          "article": "der",
+          "plural": "die Stoffe",
+          "meaning_en": "fabric; material",
+          "meaning_fa": "پارچه؛ ماده",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "noun"
+        },
+        {
+          "german": "erinnern (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to remember",
+          "meaning_fa": "به یاد آوردن",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "verb"
+        },
+        {
+          "german": "fühlen (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to feel",
+          "meaning_fa": "احساس کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "verb"
+        },
+        {
+          "german": "unterhalten (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to have a chat",
+          "meaning_fa": "گپ زدن",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "verb"
+        },
+        {
+          "german": "verlieren",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to lose",
+          "meaning_fa": "از دست دادن؛ باختن",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "verb"
+        },
+        {
+          "german": "froh",
+          "article": "",
+          "plural": "",
+          "meaning_en": "glad; happy",
+          "meaning_fa": "خوشحال",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "adjective"
+        },
+        {
+          "german": "jung",
+          "article": "",
+          "plural": "",
+          "meaning_en": "young",
+          "meaning_fa": "جوان",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "adjective"
+        },
+        {
+          "german": "schrecklich",
+          "article": "",
+          "plural": "",
+          "meaning_en": "terrible",
+          "meaning_fa": "وحشتناک",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "adjective"
+        },
+        {
+          "german": "stark",
+          "article": "",
+          "plural": "",
+          "meaning_en": "strong",
+          "meaning_fa": "قوی",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "adjective"
+        },
+        {
+          "german": "willkommen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "welcome",
+          "meaning_fa": "خوش آمدید",
+          "example": "",
+          "canonicalLesson": "Lektion 11",
+          "appearsInLessons": [
+            "Lektion 11"
+          ],
+          "page": "Lernwortschatz p. 85",
+          "type": "adjective"
+        }
+      ]
+    },
+    "Lektion 12": {
+      "title": "Essen, Getränke & Mengen",
+      "theme": "Essen, Getränke und Mengenangaben",
+      "source_pages": [
+        91
+      ],
+      "words": [
+        {
+          "german": "der Alkohol",
+          "article": "der",
+          "plural": "",
+          "meaning_en": "alcohol",
+          "meaning_fa": "الکل",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "das Gericht",
+          "article": "das",
+          "plural": "die Gerichte",
+          "meaning_en": "dish",
+          "meaning_fa": "غذا؛ خوراک",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "die Suppe",
+          "article": "die",
+          "plural": "die Suppen",
+          "meaning_en": "soup",
+          "meaning_fa": "سوپ",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "das Getreide",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "grain; cereal",
+          "meaning_fa": "غلات",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "das Huhn",
+          "article": "das",
+          "plural": "die Hühner",
+          "meaning_en": "chicken (animal)",
+          "meaning_fa": "مرغ",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "das Hühnerfleisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "chicken meat",
+          "meaning_fa": "گوشت مرغ",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "die Limonade",
+          "article": "die",
+          "plural": "die Limonaden",
+          "meaning_en": "lemonade; soft drink",
+          "meaning_fa": "لیموناد؛ نوشابه",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "das Mineralwasser",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "mineral water",
+          "meaning_fa": "آب معدنی",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "das Rind",
+          "article": "das",
+          "plural": "die Rinder",
+          "meaning_en": "cattle; cow",
+          "meaning_fa": "گاو",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "das Rindfleisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "beef",
+          "meaning_fa": "گوشت گاو",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "das Schwein",
+          "article": "das",
+          "plural": "die Schweine",
+          "meaning_en": "pig",
+          "meaning_fa": "خوک",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "das Schweinefleisch",
+          "article": "das",
+          "plural": "",
+          "meaning_en": "pork",
+          "meaning_fa": "گوشت خوک",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "braten",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to fry; roast",
+          "meaning_fa": "سرخ کردن؛ کباب کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "verb"
+        },
+        {
+          "german": "scharf",
+          "article": "",
+          "plural": "",
+          "meaning_en": "spicy; sharp",
+          "meaning_fa": "تند",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "adjective"
+        },
+        {
+          "german": "vegetarisch",
+          "article": "",
+          "plural": "",
+          "meaning_en": "vegetarian",
+          "meaning_fa": "گیاه‌خوار",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "adjective"
+        },
+        {
+          "german": "die Hälfte",
+          "article": "die",
+          "plural": "die Hälften",
+          "meaning_en": "half",
+          "meaning_fa": "نصف",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "doppelt",
+          "article": "",
+          "plural": "",
+          "meaning_en": "double",
+          "meaning_fa": "دو برابر",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "adjective"
+        },
+        {
+          "german": "doppelt so viele",
+          "article": "",
+          "plural": "",
+          "meaning_en": "twice as many",
+          "meaning_fa": "دو برابر بیشتر",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "phrase"
+        },
+        {
+          "german": "durchschnittlich",
+          "article": "",
+          "plural": "",
+          "meaning_en": "average; on average",
+          "meaning_fa": "میانگین",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "adjective"
+        },
+        {
+          "german": "genug",
+          "article": "",
+          "plural": "",
+          "meaning_en": "enough",
+          "meaning_fa": "کافی",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "adjective"
+        },
+        {
+          "german": "häufig",
+          "article": "",
+          "plural": "",
+          "meaning_en": "frequent; often",
+          "meaning_fa": "مکرر",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "adjective"
+        },
+        {
+          "german": "kaum",
+          "article": "",
+          "plural": "",
+          "meaning_en": "hardly; barely",
+          "meaning_fa": "به‌سختی",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "adverb"
+        },
+        {
+          "german": "rund",
+          "article": "",
+          "plural": "",
+          "meaning_en": "round; approx.",
+          "meaning_fa": "گرد؛ حدود",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "adjective"
+        },
+        {
+          "german": "der/die Deutsche",
+          "article": "der/die",
+          "plural": "die Deutschen",
+          "meaning_en": "German (person)",
+          "meaning_fa": "آلمانی",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "ein Deutscher",
+          "article": "",
+          "plural": "",
+          "meaning_en": "a German (man)",
+          "meaning_fa": "یک آلمانی (مرد)",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "phrase"
+        },
+        {
+          "german": "eine Deutsche",
+          "article": "",
+          "plural": "",
+          "meaning_en": "a German (woman)",
+          "meaning_fa": "یک آلمانی (زن)",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "phrase"
+        },
+        {
+          "german": "die Heimat",
+          "article": "die",
+          "plural": "die Heimaten",
+          "meaning_en": "home; homeland",
+          "meaning_fa": "موطن؛ وطن",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "die Zeitschrift",
+          "article": "die",
+          "plural": "die Zeitschriften",
+          "meaning_en": "magazine",
+          "meaning_fa": "مجله",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "noun"
+        },
+        {
+          "german": "ansehen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to watch; look at",
+          "meaning_fa": "تماشا کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "verb"
+        },
+        {
+          "german": "aussuchen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to choose; pick",
+          "meaning_fa": "انتخاب کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "verb"
+        },
+        {
+          "german": "holen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to fetch; get",
+          "meaning_fa": "آوردن؛ گرفتن",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "verb"
+        },
+        {
+          "german": "überraschen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to surprise",
+          "meaning_fa": "شگفت‌زده کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "verb"
+        },
+        {
+          "german": "verbrauchen",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to consume",
+          "meaning_fa": "مصرف کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "verb"
+        },
+        {
+          "german": "vorbereiten (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to get ready",
+          "meaning_fa": "آماده شدن",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "verb"
+        },
+        {
+          "german": "wundern (sich)",
+          "article": "",
+          "plural": "",
+          "meaning_en": "to be surprised",
+          "meaning_fa": "تعجب کردن",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "verb"
+        },
+        {
+          "german": "preiswert",
+          "article": "",
+          "plural": "",
+          "meaning_en": "good value; inexpensive",
+          "meaning_fa": "ارزان‌قیمت؛ به‌صرفه",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "adjective"
+        },
+        {
+          "german": "wahrscheinlich",
+          "article": "",
+          "plural": "",
+          "meaning_en": "probably",
+          "meaning_fa": "احتمالاً",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "adverb"
+        },
+        {
+          "german": "Komisch!",
+          "article": "",
+          "plural": "",
+          "meaning_en": "Funny! / Strange!",
+          "meaning_fa": "عجیب!",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "phrase"
+        },
+        {
+          "german": "wenn ... dann",
+          "article": "",
+          "plural": "",
+          "meaning_en": "if ... then",
+          "meaning_fa": "اگر ... آنگاه",
+          "example": "",
+          "canonicalLesson": "Lektion 12",
+          "appearsInLessons": [
+            "Lektion 12"
+          ],
+          "page": "Lernwortschatz p. 91",
+          "type": "phrase"
+        }
+      ]
+    }
+  }
+}

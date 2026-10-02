@@ -83,7 +83,7 @@ export default function QuizReport({ report, meta = {}, actions = {} }) {
           <SectionLabel>LEKTION PERFORMANCE</SectionLabel>
           <Block display="flex" flexDirection="column" gridGap="8px" marginTop="10px">
             {report.perLektion.filter((e) => e.key !== '__unassigned__').map((e, i) => (
-              <LektionPerfRow key={e.key} entry={e} index={i} onPractice={onPracticeLektion} />
+              <LektionPerfRow key={e.key} entry={e} index={i} book={meta.book} onPractice={onPracticeLektion} />
             ))}
           </Block>
           {report.unassigned && (

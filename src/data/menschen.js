@@ -1,5 +1,13 @@
 import a11Raw from '../../menschen_a1_1_vocabulary.json';
 import a12Raw from '../../menschen_a1_2_vocabulary.json';
+import a21Raw from '../../menchen-a2.1-lernwortchatz.json';
+
+// Raw JSON per book id — single source of truth for lektionen + metadata.
+const RAW_BY_BOOK = {
+  'a1.1': a11Raw,
+  'a1.2': a12Raw,
+  'a2.1': a21Raw,
+};
 
 // Book definitions
 export const BOOKS = [
@@ -41,12 +49,38 @@ export const BOOKS = [
     lektionKeys: Object.keys(a12Raw.lektionen),
     lektionCount: Object.keys(a12Raw.lektionen).length,
   },
+  {
+    id: 'a2.1',
+    key: 'a2.1',
+    label: 'Menschen A2.1',
+    shortLabel: 'A2.1',
+    title: a21Raw.metadata.book,
+    publisher: a21Raw.metadata.publisher,
+    isbn: a21Raw.metadata.isbn,
+    levels: a21Raw.metadata.levels,
+    total: a21Raw.metadata.total_words,
+    note: a21Raw.metadata.note,
+    color: '#059669',
+    color2: '#14b8a6',
+    gradient: 'linear-gradient(135deg,#059669 0%,#10b981 45%,#84cc16 100%)',
+    accent: '#059669',
+    coverIcon: 'book',
+    lektionKeys: Object.keys(a21Raw.lektionen),
+    lektionCount: Object.keys(a21Raw.lektionen).length,
+  },
 ];
 
-export const LEKTION_META = {
-  ...a11Raw.lektionen,
-  ...a12Raw.lektionen,
-};
+// Lektion metadata (title/theme) keyed by `${book}::${lektion}` — book-scoped
+// because every Menschen book reuses "Lektion 1".."Lektion 12".
+export const LEKTION_META = {};
+for (const [bookId, raw] of Object.entries(RAW_BY_BOOK)) {
+  for (const [lektion, data] of Object.entries(raw.lektionen)) {
+    LEKTION_META[`${bookId}::${lektion}`] = {
+      title: data.title || '',
+      theme: data.theme || '',
+    };
+  }
+}
 
 // helper to derive pos
 function derivePos(article) {
@@ -64,14 +98,18 @@ function derivePos(article) {
 const ID_BASE = {
   'a1.1': 50001,
   'a1.2': 10438,
+  // A2.1 sits far above A1.1's range (50001-50704) so IDs never collide.
+  'a2.1': 70001,
 };
 const idCounters = {
   'a1.1': ID_BASE['a1.1'],
   'a1.2': ID_BASE['a1.2'],
+  'a2.1': ID_BASE['a2.1'],
 };
 const rawMap = {
   'a1.1': a11Raw.lektionen,
   'a1.2': a12Raw.lektionen,
+  'a2.1': a21Raw.lektionen,
 };
 
 export const ALL_MENSCHEN_WORDS = [];
@@ -127,21 +165,21 @@ for (const book of BOOKS) {
   }
 }
 
-export const LEKTION_LIST = ALL_MENSCHEN_WORDS.reduce((acc, w) => {
-  const key = `${w.book}::${w.lektion}`;
-  if (!acc.find((x) => x.key === key)) {
-    acc.push({
-      key,
-      book: w.book,
-      bookLabel: w.bookLabel,
-      lektion: w.lektion,
-      title: w.lektionTitle,
-      theme: w.theme,
-      count: ALL_MENSCHEN_WORDS.filter((x) => x.book === w.book && x.lektion === w.lektion).length,
+export const LEKTION_LIST = [];
+for (const book of BOOKS) {
+  for (const lektion of book.lektionKeys) {
+    const meta = rawMap[book.id]?.[lektion] || {};
+    LEKTION_LIST.push({
+      key: `${book.id}::${lektion}`,
+      book: book.id,
+      bookLabel: book.label,
+      lektion,
+      title: meta.title || '',
+      theme: meta.theme || '',
+      count: ALL_MENSCHEN_WORDS.filter((x) => x.book === book.id && x.lektion === lektion).length,
     });
   }
-  return acc;
-}, []);
+}
 
 // helpers
 export function wordsForScope(book, lektion) {

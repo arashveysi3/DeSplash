@@ -22,9 +22,10 @@ export function accuracyColor(value) {
   return '#ea580c';
 }
 
-export function lektionTitle(lektion) {
+export function lektionTitle(lektion, book) {
   if (!lektion || lektion === '__unassigned__') return '';
-  return LEKTION_META?.[lektion]?.title || '';
+  if (!book) return '';
+  return LEKTION_META?.[`${book}::${lektion}`]?.title || '';
 }
 
 /** Small stat tile: big value + caption. Reuses DeSplash card language. */
@@ -73,8 +74,8 @@ export function AccuracyBar({ value, height = 6, delay = 0 }) {
 }
 
 /** One Lektion performance row: name, counts, accuracy, bar, optional practice action. */
-export function LektionPerfRow({ entry, index = 0, onPractice, showWords }) {
-  const title = lektionTitle(entry.key);
+export function LektionPerfRow({ entry, index = 0, onPractice, showWords, book }) {
+  const title = lektionTitle(entry.key, book);
   return (
     <div
       className="gs-report-item"
