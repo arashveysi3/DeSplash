@@ -41,6 +41,24 @@
 .mobile-header .shell-menu-wrap { justify-self: end; }
 .mobile-header .shell-menu { right: 0; }
 
+/* ---- Shell: keep the mobile header clear of the notch/status bar ----
+   viewport-fit=cover lets the PWA extend under the status area, so the sticky
+   header absorbs the dynamic top safe-area inset instead of using a fixed height. */
+@media (max-width: 900px) {
+  .mobile-header {
+    height: auto;
+    min-height: calc(64px + constant(safe-area-inset-top));
+    min-height: calc(64px + env(safe-area-inset-top));
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+  }
+  main { scroll-padding-top: calc(84px + env(safe-area-inset-top)); }
+  .ntf-toast {
+    top: calc(74px + constant(safe-area-inset-top));
+    top: calc(74px + env(safe-area-inset-top));
+  }
+}
+
 /* ---- Legacy screens wrapper (until each screen is rewritten to design) ---- */
 .legacy-wrap {
   max-width: 620px; width: 100%; margin: 0 auto; padding: 24px 16px 110px;

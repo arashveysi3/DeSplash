@@ -1,8 +1,16 @@
 {
-  "version": "d1b8fb8",
-  "generatedAt": "2026-10-08T17:08:27.614Z",
+  "version": "939b6f2",
+  "generatedAt": "2026-10-08T17:31:18.804Z",
   "repo": "https://github.com/arashveysi3/DeSplash",
   "commits": [
+    {
+      "hash": "939b6f2",
+      "fullHash": "939b6f2a0a1b28a999c7e7e2f3921fd0fe07b97b",
+      "subject": "feat: full UI redesign to Figma Make design system, drop BaseUI/Styletron",
+      "author": "arashveysi3",
+      "date": "15 minutes ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/939b6f2"
+    },
     {
       "hash": "d1b8fb8",
       "fullHash": "d1b8fb8f4e922427490afec3860d4d4cae661539",
@@ -114,14 +122,6 @@
       "author": "arashveysi3",
       "date": "2 weeks ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/5f73faa"
-    },
-    {
-      "hash": "a47eae6",
-      "fullHash": "a47eae652a1a74088c12b01616379057e958dc88",
-      "subject": "feat: add quiz performance reports and book-level learning analytics",
-      "author": "arashveysi3",
-      "date": "2 weeks ago",
-      "url": "https://github.com/arashveysi3/DeSplash/commit/a47eae6"
     }
   ]
 }

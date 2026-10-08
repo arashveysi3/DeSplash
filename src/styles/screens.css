@@ -175,6 +175,18 @@
 .bk-bar span { display: block; height: 100%; background: #fff; border-radius: inherit; transition: width .5s; }
 .bk-actions { display: flex; gap: 8px; margin-top: 14px; position: relative; z-index: 1; flex-wrap: wrap; }
 .bk-actions .btn.light { min-height: 42px; font-size: 11px; }
+/* Light buttons sit on colorful book gradients. Give them dark, readable text. */
+.bk-book .btn.light,
+.bk-hero-actions .btn.light {
+  background: #fff;
+  border-color: rgba(255, 255, 255, .9);
+  color: var(--ink);
+  box-shadow: 0 6px 16px rgba(20, 20, 18, .16);
+}
+.bk-book .btn.light:hover,
+.bk-hero-actions .btn.light:hover {
+  background: #fff;
+}
 .bk-lek { background: rgba(255, 255, 255, .18); border: 1px solid rgba(255, 255, 255, .4); color: #fff; border-radius: 99px; padding: 0 16px; min-height: 42px; display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; cursor: pointer; backdrop-filter: blur(8px); }
 .bk-lek:hover { background: rgba(255, 255, 255, .28); }
 .bk-scope { margin-top: 16px; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
