@@ -1,18 +1,8 @@
 import { useMemo } from 'react';
-import { Block } from 'baseui/block';
-import { Button, KIND, SHAPE } from 'baseui/button';
-import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import UberCard from '../cards/UberCard.jsx';
+import { BookOpen, CheckCircle2, Target, Medal, LoaderCircle } from 'lucide-react';
 import { calcBookAnalytics } from '../../utils/analytics.js';
 import { isWordMastered } from '../../utils/progress.js';
 import { StatTile, AccuracyBar, LektionPerfRow, StrengthCallout, RecommendationBox, SectionLabel, AnalyticsEmpty, AnalyticsError, fmtPct } from './shared.jsx';
-import {
-  BookOpen,
-  CheckCircle2,
-  Target,
-  Medal,
-  LoaderCircle,
-} from '../icons.jsx';
 
 /**
  * Full-book learning analytics (Issue #2 §2).
@@ -28,12 +18,10 @@ export default function BookAnalytics({ book, allWords, progressMap, attempts, l
 
   if (loading) {
     return (
-      <UberCard styleOverride={{ textAlign: 'center', paddingTop: 24, paddingBottom: 24 }}>
-        <div className="gs-report-item" style={{ display: 'flex', justifyContent: 'center' }}>
-          <LoaderCircle size={28} aria-hidden="true" className="gs-spin" style={{ color: '#4f46e5' }} />
-        </div>
-        <ParagraphSmall color="#6b6b6b" margin="8px 0 0">Loading your learning report…</ParagraphSmall>
-      </UberCard>
+      <div className="bka bka-card bka-loading">
+        <span className="bka-spin"><LoaderCircle size={28} strokeWidth={1.8} aria-hidden="true" /></span>
+        <p>Loading your learning report…</p>
+      </div>
     );
   }
 
@@ -52,10 +40,10 @@ export default function BookAnalytics({ book, allWords, progressMap, attempts, l
           hint="Study flashcards or complete a quiz in this book — your accuracy, mastery and per-Lektion breakdown will appear here."
         />
         {(actions.onStudy || actions.onQuizBook) && (
-          <Block display="flex" gridGap="8px" marginTop="8px" overrides={{ Block: { style: { flexWrap: 'wrap' } } }}>
-            {actions.onStudy && <Button shape={SHAPE.pill} onClick={actions.onStudy}>Study this book →</Button>}
-            {actions.onQuizBook && <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={actions.onQuizBook}>Quiz this book</Button>}
-          </Block>
+          <div className="bka-actions">
+            {actions.onStudy && <button type="button" className="btn dark" onClick={actions.onStudy}>Study this book →</button>}
+            {actions.onQuizBook && <button type="button" className="btn light" onClick={actions.onQuizBook}>Quiz this book</button>}
+          </div>
         )}
       </>
     );
@@ -65,104 +53,101 @@ export default function BookAnalytics({ book, allWords, progressMap, attempts, l
   const maxDayQuestions = Math.max(1, ...analytics.progressOverTime.map((d) => d.questions));
 
   return (
-    <Block display="flex" flexDirection="column" gridGap="12px">
+    <div className="bka">
       {/* Overview: how well do I know this entire book? */}
-      <UberCard>
-        <Block display="flex" justifyContent="space-between" alignItems="flex-start">
-          <Block>
+      <section className="bka-card">
+        <div className="bka-overview">
+          <div>
             <SectionLabel>BOOK REPORT — {book.label}</SectionLabel>
-            <div className="gs-report-item" style={{ fontWeight: 800, fontSize: 26, marginTop: 6 }}>
+            <div className="bka-accuracy">
               {fmtPct(analytics.accuracy)}
-              <span style={{ fontSize: 12, fontWeight: 400, color: '#6b6b7a' }}> quiz accuracy</span>
+              <span> quiz accuracy</span>
             </div>
-            <div style={{ fontSize: 12, color: '#6b6b7a', marginTop: 2 }}>
+            <div className="bka-sub">
               {analytics.totalCorrect}/{analytics.totalQuestions} correct
               {analytics.hasHistory ? '' : ' • no quiz history yet'} • +{analytics.xp} XP from quizzes
             </div>
-          </Block>
-          <Block display="flex" flexDirection="column" alignItems="flex-end" overrides={{ Block: { style: { flexShrink: 0 } } }}>
-            <div style={{ fontWeight: 800, fontSize: 18 }}>{analytics.masteredPct}%</div>
-            <LabelSmall color="#6b6b6b">mastered</LabelSmall>
-          </Block>
-        </Block>
-        <Block marginTop="10px">
+          </div>
+          <div className="bka-mastered">
+            <b>{analytics.masteredPct}%</b>
+            <span>mastered</span>
+          </div>
+        </div>
+        <div className="bka-bar">
           <AccuracyBar value={analytics.accuracy} height={8} delay={120} />
-        </Block>
-        <div className="gs-report-item gs-stats-grid" style={{ marginTop: 12, animationDelay: '100ms' }}>
+        </div>
+        <div className="bka-tiles">
           <StatTile icon={Target} value={analytics.totalQuestions} label="Answered" sub="quiz questions" delay={100} />
           <StatTile icon={BookOpen} value={analytics.wordsPracticed} label="Practiced" sub={`of ${analytics.totalWords} words`} delay={140} />
           <StatTile icon={Medal} value={analytics.mastered} label="Mastered" sub={`${analytics.masteredPct}% of book`} color="#16a34a" delay={180} />
           <StatTile icon={CheckCircle2} value={`${analytics.seen}/${analytics.totalWords}`} label="Seen" sub={`${analytics.seenPct}% coverage`} delay={220} />
         </div>
         {!analytics.hasHistory && (
-          <ParagraphSmall color="#9aa0b2" margin="8px 0 0">
-            Mastery above comes from your flashcard progress. Complete a quiz to add accuracy data.
-          </ParagraphSmall>
+          <p className="bka-note">Mastery above comes from your flashcard progress. Complete a quiz to add accuracy data.</p>
         )}
-      </UberCard>
+      </section>
 
       {/* Progress over time */}
       {analytics.progressOverTime.length > 0 && (
-        <UberCard>
+        <section className="bka-card">
           <SectionLabel>PROGRESS OVER TIME</SectionLabel>
-          <Block display="flex" alignItems="flex-end" gridGap="6px" marginTop="12px" overrides={{ Block: { style: { minHeight: 84 } } }}>
+          <div className="bka-chart">
             {analytics.progressOverTime.map((d, i) => (
-              <div key={d.date} className="gs-report-item" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, animationDelay: `${Math.min(i, 13) * 50}ms` }} title={`${d.date}: ${d.correct}/${d.questions} (${fmtPct(d.accuracy)})`}>
-                <div style={{ fontSize: 10, fontWeight: 800, color: (d.accuracy ?? 0) >= 80 ? '#16a34a' : '#0f0f12' }}>{fmtPct(d.accuracy)}</div>
-                <div style={{ width: '100%', maxWidth: 34, height: 56, background: '#f1f1f4', borderRadius: 8, display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
-                  <div
-                    className="gs-bar-fill"
+              <div key={d.date} className="bka-day" title={`${d.date}: ${d.correct}/${d.questions} (${fmtPct(d.accuracy)})`}>
+                <b style={{ color: (d.accuracy ?? 0) >= 80 ? '#16a34a' : '#0f0f12' }}>{fmtPct(d.accuracy)}</b>
+                <div className="bka-col">
+                  <span
+                    className="bka-fill"
                     style={{
-                      width: '100%',
                       height: `${Math.max(6, Math.round((d.questions / maxDayQuestions) * 100))}%`,
                       background: (d.accuracy ?? 0) >= 80 ? '#16a34a' : (d.accuracy ?? 0) >= 50 ? '#0f0f12' : '#ea580c',
-                      borderRadius: 8,
                       animationDelay: `${Math.min(i, 13) * 50 + 100}ms`,
                     }}
                   />
                 </div>
-                <div style={{ fontSize: 9, color: '#9aa0b2' }}>{d.date.slice(5)}</div>
+                <small>{d.date.slice(5)}</small>
               </div>
             ))}
-          </Block>
-          <ParagraphSmall color="#9aa0b2" margin="6px 0 0">Bar height = questions that day • number = accuracy</ParagraphSmall>
-        </UberCard>
+          </div>
+          <p className="bka-note">Bar height = questions that day • number = accuracy</p>
+        </section>
       )}
 
       {/* Per-Lektion */}
-      <UberCard>
+      <section className="bka-card">
         <SectionLabel>PERFORMANCE BY LEKTION</SectionLabel>
-        <Block display="flex" flexDirection="column" gridGap="8px" marginTop="10px">
+        <div className="bka-lek">
           {analytics.perLektion.map((e, i) => (
             <LektionPerfRow key={e.key} entry={e} index={i} book={book.id} showWords onPractice={onQuizLektion} />
           ))}
-        </Block>
-      </UberCard>
+        </div>
+      </section>
 
       {/* Strengths + recommendation */}
       {(analytics.strongest || analytics.weakest) && (
-        <UberCard>
+        <section className="bka-card">
           <SectionLabel>STRENGTHS & FOCUS</SectionLabel>
-          <Block marginTop="10px">
+          <div className="bka-strength">
             <StrengthCallout strongest={analytics.strongest} weakest={analytics.weakest} delay={60} />
-          </Block>
-        </UberCard>
+          </div>
+        </section>
       )}
-      <UberCard>
+
+      <section className="bka-card">
         <RecommendationBox recommendation={analytics.recommendation} delay={100} />
         {(onStudy || onQuizBook || onPracticeWeak) && (
-          <Block display="flex" gridGap="8px" marginTop="12px" overrides={{ Block: { style: { flexWrap: 'wrap' } } }}>
+          <div className="bka-actions">
             {analytics.recommendation?.focusLektion && onQuizLektion && (
-              <Button shape={SHAPE.pill} onClick={() => onQuizLektion(analytics.recommendation.focusLektion)}>
+              <button type="button" className="btn dark" onClick={() => onQuizLektion(analytics.recommendation.focusLektion)}>
                 Practice {analytics.recommendation.focusLektion} →
-              </Button>
+              </button>
             )}
-            {onPracticeWeak && <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={onPracticeWeak}>Review weak words</Button>}
-            {onStudy && <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={onStudy}>Study book</Button>}
-            {onQuizBook && <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={onQuizBook}>Quiz book</Button>}
-          </Block>
+            {onPracticeWeak && <button type="button" className="btn light" onClick={onPracticeWeak}>Review weak words</button>}
+            {onStudy && <button type="button" className="btn light" onClick={onStudy}>Study book</button>}
+            {onQuizBook && <button type="button" className="btn light" onClick={onQuizBook}>Quiz book</button>}
+          </div>
         )}
-      </UberCard>
-    </Block>
+      </section>
+    </div>
   );
 }

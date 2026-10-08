@@ -1,13 +1,8 @@
 import { useState, useRef } from 'react';
-import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
-import { Tag } from 'baseui/tag';
-import { Block } from 'baseui/block';
-import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import { genderColor, genderBg } from '../../theme';
+import Icon from '../shell/Icon.jsx';
 import { XP_MAP } from '../../srs';
 import { speakGerman } from '../../utils/speak';
 import { playFlip } from '../../utils/sounds.js';
-import { Volume2, MessageCircle, Mic, CheckCircle2, ICON_SIZES } from '../icons.jsx';
 
 export default function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, listening, setListening, transcript, setTranscript }) {
   const [dragX, setDragX] = useState(0);
@@ -41,18 +36,17 @@ export default function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, 
     setDragX(0);
   };
 
-  const color = genderColor(word.article);
-  const bg = genderBg(word.article);
   // Intelligent display: handle sentences vs vocab
   const rawGerman = word.german || '';
   const hasSlash = rawGerman.includes(' / ');
   const displayGerman = hasSlash ? rawGerman.split(' / ')[0].trim() : rawGerman;
   const tokenCount = rawGerman.split(/\s+/).filter(Boolean).length;
   const isSentence = !hasSlash ? (tokenCount > 6 && /[?!.]/.test(rawGerman)) : false;
-  // For vocab display in flashcard: if sentence-like long, show full but smaller; for slash phrases, show first variant compactly
   const frontGerman = displayGerman;
   const isLongSentence = tokenCount > 6 && isSentence;
   const frontFontSize = isLongSentence ? '22px' : tokenCount > 4 ? '28px' : '40px';
+  const articleClass = word.article === 'der' || word.article === 'die' || word.article === 'das' ? ` gender-${word.article}` : '';
+  const transcriptOk = transcript && transcript.toLowerCase().trim() === rawGerman.toLowerCase().trim();
 
   const startListening = () => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -72,144 +66,156 @@ export default function FlashCard({ word, flipped, setFlipped, onSwipe, onRate, 
   };
 
   return (
-    <div
-      onTouchStart={(e) => handleStart(e.touches[0].clientX)}
-      onTouchMove={(e) => handleMove(e.touches[0].clientX)}
-      onTouchEnd={handleEnd}
-      onMouseDown={(e) => handleStart(e.clientX)}
-      onMouseMove={(e) => handleMove(e.clientX)}
-      onMouseUp={handleEnd}
-      onMouseLeave={handleEnd}
-      style={{
-        touchAction: 'pan-y',
-        userSelect: 'none',
-        transform: `translateX(${dragX}px) rotate(${dragX / 18}deg)`,
-        transition: dragging ? 'none' : 'transform 0.3s cubic-bezier(.2,.8,.2,1)',
-        opacity: Math.abs(dragX) > 20 ? 1 - Math.min(Math.abs(dragX) / 300, 0.35) : 1,
-        position: 'relative',
-      }}
-    >
+    <div className="card-swipe">
       <div
+        onTouchStart={(e) => handleStart(e.touches[0].clientX)}
+        onTouchMove={(e) => handleMove(e.touches[0].clientX)}
+        onTouchEnd={handleEnd}
+        onMouseDown={(e) => handleStart(e.clientX)}
+        onMouseMove={(e) => handleMove(e.clientX)}
+        onMouseUp={handleEnd}
+        onMouseLeave={handleEnd}
         style={{
-          position: 'absolute',
-          inset: 0,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '0 18px',
-          pointerEvents: 'none',
-          opacity: Math.abs(dragX) > 30 ? 1 : 0,
-          transition: 'opacity 0.2s',
+          touchAction: 'pan-y',
+          userSelect: 'none',
+          transform: `translateX(${dragX}px) rotate(${dragX / 18}deg)`,
+          transition: dragging ? 'none' : 'transform 0.3s cubic-bezier(.2,.8,.2,1)',
+          opacity: Math.abs(dragX) > 20 ? 1 - Math.min(Math.abs(dragX) / 300, 0.35) : 1,
+          position: 'relative',
         }}
       >
-        <span style={{ background: '#fee2e2', color: '#dc2626', padding: '6px 12px', borderRadius: '999px', fontWeight: 700, fontSize: 12 }}>AGAIN</span>
-        <span style={{ background: '#dcfce7', color: '#16a34a', padding: '6px 12px', borderRadius: '999px', fontWeight: 700, fontSize: 12 }}>KNOWN</span>
-      </div>
+        <span className={`swipe-badge again${Math.abs(dragX) > 30 ? ' show' : ''}`}>NOCH MAL</span>
+        <span className={`swipe-badge known${Math.abs(dragX) > 30 ? ' show' : ''}`}>GEWUSST</span>
 
-      <Block
-        onClick={() => {
-          playFlip();
-          const next = !flipped;
-          setFlipped(next);
-          if (next) speakGerman(word.german);
-        }}
-        overrides={{
-          Block: {
-            style: {
-              backgroundColor: flipped ? bg : '#fff',
-              borderWidth: '1.5px',
-              borderStyle: 'solid',
-              borderColor: flipped ? color : '#000',
-              borderRadius: '24px',
-              boxShadow: '0 12px 32px rgba(0,0,0,0.08)',
-              cursor: 'pointer',
-              minHeight: '400px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              overflow: 'hidden',
-              padding: '18px',
-            },
-          },
-        }}
-      >
-        <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="12px">
-          <Block display="flex" gridGap="6px" alignItems="center">
-            <Tag closeable={false} overrides={{ Root: { style: { backgroundColor: '#000', color: '#fff', fontWeight: 700, fontSize: '11px' } } }}>{word.bookLabel || word.level} • {word.lektion}</Tag>
-            {word.plural && <Tag closeable={false} overrides={{ Root: { style: { backgroundColor: '#f7f7f7', color: '#6b6b6b', fontSize: '11px' } } }}>Pl: {word.plural}</Tag>}
-          </Block>
-          <Block display="flex" gridGap="8px" alignItems="center">
-            <span style={{ width: 8, height: 8, borderRadius: '999px', background: color, display: 'inline-block' }} />
-            <LabelSmall color="#6b6b6b" overrides={{ Block: { style: { textTransform: 'uppercase', fontSize: 11 } } }}>{word.article ? `${word.article} • noun` : word.pos}</LabelSmall>
-          </Block>
-        </Block>
-
-        {!flipped ? (
-          <Block textAlign="center" paddingTop="16px" paddingBottom="16px">
-            <div style={{ fontSize: frontFontSize, fontWeight: 800, letterSpacing: isLongSentence ? '-0.5px' : '-1px', lineHeight: 1.15, color: word.article ? color : '#000' }}>
-              {word.article && !isLongSentence && <span style={{ fontSize: 18, fontWeight: 600, marginRight: 8, opacity: 0.9 }}>{word.article}</span>}
-              {frontGerman}
+        <button
+          type="button"
+          className={`flashcard${articleClass}${flipped ? ' flipped' : ''}`}
+          onClick={() => {
+            playFlip();
+            const next = !flipped;
+            setFlipped(next);
+            if (next) speakGerman(word.german);
+          }}
+        >
+          {!flipped ? (
+            <div className="card-face front">
+              <div className="card-meta">
+                <span>
+                  {word.bookLabel || word.level} · {word.lektion}
+                </span>
+                <span>{word.article || word.pos || ''}</span>
+              </div>
+              <div className="word-wrap">
+                {word.article && !isLongSentence && (
+                  <span className="article">{word.article}</span>
+                )}
+                <strong style={{ fontSize: frontFontSize }}>{frontGerman}</strong>
+                {word.plural && <small>Pl: {word.plural}</small>}
+                {isLongSentence && <small>Satz · sentence</small>}
+                {!isLongSentence && hasSlash && rawGerman !== frontGerman && (
+                  <small>auch: {rawGerman.split(' / ').slice(1).join(' / ').slice(0, 80)}</small>
+                )}
+              </div>
+              <div className="tap-hint">
+                Tippen zum Umdrehen <span>↻</span>
+              </div>
             </div>
-            {isLongSentence && <div style={{ fontSize: 11, color: '#9aa0b2', marginTop: 6, fontStyle:'italic' }}>Satz • sentence • full: “{rawGerman.slice(0,120)}{rawGerman.length>120?'…':''}”</div>}
-            {hasSlash && rawGerman !== frontGerman && <div style={{ fontSize: 11, color:'#9aa0b2', marginTop:4 }}>also: {rawGerman.split(' / ').slice(1).join(' / ').slice(0,80)}</div>}
-            {word.plural && <div style={{ fontSize: 13, color: '#6b6b6b', marginTop: 6 }}>Plural: {word.plural}</div>}
-            <ParagraphSmall color="#9a9a9a" marginTop="14px">Tap to reveal • Swipe → Known • Swipe ← Again</ParagraphSmall>
-            <Block marginTop="16px" display="flex" justifyContent="center" gridGap="8px">
-              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(frontGerman); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={ICON_SIZES.small} aria-hidden="true" /> Listen</span></Button>
-              {word.example && <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(word.example); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><MessageCircle size={ICON_SIZES.small} aria-hidden="true" /> Example</span></Button>}
-            </Block>
-          </Block>
-        ) : (
-          <Block textAlign="center">
-            <div style={{ display: 'grid', gap: 8 }}>
-              <div style={{ background: '#fff', border: '1px solid #eee', borderRadius: 14, padding: 12, textAlign: 'left' }}>
-                <LabelSmall color="#9a9a9a">English</LabelSmall>
-                <div style={{ fontWeight: 700, fontSize: 18 }}>{word.meaning_en || word.english}</div>
-                <LabelSmall color="#9a9a9a" marginTop="8px">فارسی</LabelSmall>
-                <div style={{ fontWeight: 700, fontSize: 18, fontFamily: 'IRANSans, Tahoma, sans-serif', direction: 'rtl' }}>{word.meaning_fa}</div>
-                {word.plural && <div style={{ fontSize: 12, color: '#6b6b6b', marginTop: 6 }}>Plural: <b>{word.plural}</b></div>}
+          ) : (
+            <div className="card-face back">
+              <div className="translation">
+                <small>ENGLISH</small>
+                <strong>{word.meaning_en || word.english || '—'}</strong>
+                {word.plural && <small className="plural">Pl: {word.plural}</small>}
+              </div>
+              <div className="translation fa" dir="rtl">
+                <small>فارسی</small>
+                <strong>{word.meaning_fa || '—'}</strong>
               </div>
               {word.example ? (
-                <div style={{ background: '#fff', border: '1px solid #eee', borderRadius: 14, padding: 12, textAlign: 'left' }}>
-                  <LabelSmall color="#6b6b6b" marginBottom="4px">Beispiel • Example</LabelSmall>
-                  <div style={{ fontStyle: 'italic', fontSize: 14, lineHeight: 1.4 }}>{word.example}</div>
-                  <div style={{ fontSize: 12, color: '#6b6b6b', marginTop: 4 }}>{word.meaning_en} • <span style={{ fontFamily: 'IRANSans, Tahoma, sans-serif', direction: 'rtl' }}>{word.meaning_fa}</span></div>
+                <div className="example">
+                  <small>BEISPIEL</small>
+                  <p>{word.example}</p>
+                  <button
+                    type="button"
+                    aria-label="Beispiel anhören"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      speakGerman(word.example);
+                    }}
+                  >
+                    <Icon name="sound" size={18} />
+                  </button>
                 </div>
               ) : isLongSentence ? (
-                <div style={{ background: '#fff', border: '1px solid #eee', borderRadius: 14, padding: 12, textAlign: 'left' }}>
-                  <LabelSmall color="#6b6b6b" marginBottom="4px">Satz • Sentence</LabelSmall>
-                  <div style={{ fontStyle: 'italic', fontSize: 14, lineHeight: 1.4 }}>{rawGerman}</div>
-                  <div style={{ fontSize: 12, color: '#6b6b6b', marginTop: 4 }}>{word.meaning_en} • <span style={{ fontFamily: 'IRANSans, Tahoma, sans-serif', direction: 'rtl' }}>{word.meaning_fa}</span></div>
+                <div className="example">
+                  <small>SATZ</small>
+                  <p>{rawGerman}</p>
+                  <button
+                    type="button"
+                    aria-label="Satz anhören"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      speakGerman(rawGerman);
+                    }}
+                  >
+                    <Icon name="sound" size={18} />
+                  </button>
                 </div>
-              ) : null}
+              ) : (
+                <div className="example">
+                  <small>MEANING</small>
+                  <p>
+                    {word.meaning_en || word.english || ''}
+                    {word.meaning_fa ? ` · ${word.meaning_fa}` : ''}
+                  </p>
+                </div>
+              )}
+              <span className="tap-hint">
+                Tippen für Vorderseite <span>↻</span>
+              </span>
             </div>
+          )}
+        </button>
+      </div>
 
-            <Block display="flex" justifyContent="center" gridGap="8px" marginTop="12px">
-              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); speakGerman(word.example || rawGerman); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={ICON_SIZES.small} aria-hidden="true" /> Sentence</span></Button>
-              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={(e) => { e.stopPropagation(); startListening(); }} isLoading={listening}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Mic size={ICON_SIZES.small} aria-hidden="true" /> {listening ? 'Listening...' : 'Pronunciation'}</span></Button>
-            </Block>
-            {transcript && (
-              <Block marginTop="8px" padding="8px" backgroundColor={transcript.toLowerCase().trim() === word.german.toLowerCase().trim() ? '#dcfce7' : '#fef2f2'} overrides={{ Block: { style: { borderRadius: '8px' } } }}>
-                <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>You said: “{transcript}” — {transcript.toLowerCase().trim() === word.german.toLowerCase().trim() ? (<><CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> Perfect!</>) : `Compare: “${word.german}”`}</span></LabelSmall>
-              </Block>
-            )}
-
-            <Block display="flex" gridGap="8px" marginTop="14px">
-              {[
-                { label: 'Again', color: '#dc2626', bg: '#fef2f2' },
-                { label: 'Hard', color: '#ea580c', bg: '#fff7ed' },
-                { label: 'Good', color: '#16a34a', bg: '#f0fdf4' },
-                { label: 'Easy', color: '#2563eb', bg: '#eff6ff' },
-              ].map((b) => (
-                <Button key={b.label} size={SIZE.mini} overrides={{ BaseButton: { style: { flex: 1, backgroundColor: b.bg, color: b.color, borderWidth: '1px', borderStyle: 'solid', borderColor: b.color + '30', borderRadius: '12px', fontWeight: 700 } } }} onClick={(e) => { e.stopPropagation(); onRate(b.label); }}>
-                  {b.label}<br /><span style={{ fontSize: 10, opacity: 0.7 }}>+{XP_MAP[b.label]} XP</span>
-                </Button>
-              ))}
-            </Block>
-            <ParagraphSmall color="#9a9a9a" marginTop="8px" overrides={{ Block: { style: { fontSize: 11 } } }}>Swipe right = Good • Swipe left = Again</ParagraphSmall>
-          </Block>
+      <div className="listen-row">
+        <button
+          type="button"
+          onClick={() => speakGerman(flipped ? word.example || rawGerman : frontGerman)}
+        >
+          <Icon name="sound" /> {flipped ? 'Satz anhören' : 'Anhören'}
+        </button>
+        {!flipped && word.example && (
+          <button type="button" onClick={() => speakGerman(word.example)}>
+            <Icon name="quiz" /> Beispiel
+          </button>
         )}
-      </Block>
+        {flipped && (
+          <button type="button" onClick={startListening} disabled={listening}>
+            <Icon name="mic" /> {listening ? 'Höre zu …' : 'Aussprache'}
+          </button>
+        )}
+      </div>
+
+      {transcript && (
+        <p className={`transcript-box${transcriptOk ? ' ok' : ''}`}>
+          {transcriptOk ? 'Perfekt! ' : ''}Du hast gesagt: „{transcript}“
+          {!transcriptOk && <> — vergleiche: „{rawGerman}“</>}
+        </p>
+      )}
+
+      {flipped ? (
+        <div className="rating-row">
+          {['Again', 'Hard', 'Good', 'Easy'].map((b) => (
+            <button key={b} type="button" onClick={() => onRate(b)}>
+              <span>{b}</span>
+              <b>+{XP_MAP[b]}</b>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <p className="swipe-hint">← Noch mal &nbsp;&nbsp; Wischen oder tippen &nbsp;&nbsp; Gewusst →</p>
+      )}
     </div>
   );
 }

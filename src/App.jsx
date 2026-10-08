@@ -1,8 +1,4 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
-import { Tabs, Tab } from 'baseui/tabs-motion';
-import { Block } from 'baseui/block';
-import { HeadingLevel } from 'baseui/heading';
-import { Notification } from 'baseui/notification';
 import { db, initDB, getStats, COMPETITORS, getAllWords, addCustomWord, deleteCustomWord, fetchOnlineLeaderboard, submitOnlineScore, deleteOnlineScore, resetOnlineBoard, recordQuizAttempts, getQuizAttempts, recordLearningActivity, applyLearningXp, mergeServerStreak } from './db';
 import { signup, login, fetchMe, logout, fetchUsers, deleteUser, fetchProgress, saveProgress, saveProgressOne, fetchStatsOnline, saveStatsOnline, submitStreakActivity, fetchStreakState } from './auth';
 import { getMilestoneForStreak } from './utils/streak.js';
@@ -16,9 +12,13 @@ import { prepareExamQuestions, selectBookQuestions, scoreExam, analyzeExam, getE
 import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
 import PWAUpdater from './components/PWAUpdater.jsx';
 import SplashScreen from './components/SplashScreen.jsx';
-import Header from './components/layout/Header.jsx';
+import { Sidebar, DesktopTopbar, MobileHeader, BottomNav, ScopePill } from './components/shell/Shell.jsx';
 import AddCardModal from './components/modals/AddCardModal.jsx';
 import AuthModal from './components/modals/AuthModal.jsx';
+import HomeTab from './components/tabs/HomeTab.jsx';
+import { lekLabel } from './utils/scope.js';
+import MoreTab from './components/tabs/MoreTab.jsx';
+import SettingsTab from './components/tabs/SettingsTab.jsx';
 import BuecherTab from './components/tabs/BuecherTab.jsx';
 import LernenTab from './components/tabs/LernenTab.jsx';
 import QuizTab from './components/tabs/QuizTab.jsx';
@@ -31,29 +31,6 @@ import ProfileTab from './components/tabs/ProfileTab.jsx';
 import AdminTab from './components/tabs/AdminTab.jsx';
 import { speakGerman } from './utils/speak.js';
 import { playCorrect, playIncorrect, playPackComplete, playQuizComplete, playGameWin, playGameOver, playMatchPair, playXp, playStreak, playTap, primeAudio } from './utils/sounds.js';
-import {
-  BookOpen,
-  GraduationCap,
-  Brain,
-  Award,
-  Flame,
-  Search,
-  Target,
-  Trophy,
-  User,
-  ShieldCheck,
-  CheckCircle2,
-  ICON_SIZES,
-} from './components/icons.jsx';
-
-function NavLabel({ icon: Icon, label }) {
-  return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-      <Icon size={ICON_SIZES.nav} aria-hidden="true" style={{ flexShrink: 0 }} />
-      <span>{label}</span>
-    </span>
-  );
-}
 
 // --- helpers: shuffle & vocab presentation ---
 function shuffleArray(arr) {
@@ -180,7 +157,7 @@ function selectPlausibleDistractors(targetWord, pool, need = 3) {
 }
 
 export default function App() {
-  const [activeKey, setActiveKey] = useState('0');
+  const [activeKey, setActiveKey] = useState('home');
   const [splashPhase, setSplashPhase] = useState('visible');
   const [splashCanContinue, setSplashCanContinue] = useState(false);
   const [isFirstLaunch] = useState(() => {
@@ -806,7 +783,7 @@ export default function App() {
   }, [handlePackRate]);
 
   useEffect(() => {
-    if (dbReady && activeKey === '1' && packWords.length === 0 && studyQueue.length > 0 && !showPackSummary) {
+    if (dbReady && activeKey === 'study' && packWords.length === 0 && studyQueue.length > 0 && !showPackSummary) {
       startNewPack();
     }
   }, [dbReady, activeKey, studyQueue, packWords.length, showPackSummary, startNewPack]);
@@ -2096,14 +2073,9 @@ export default function App() {
     } catch (e) { setToast('Admin only'); setTimeout(()=> setToast(null),1500); }
   };
 
-  // keep active tab visible on mobile (navbar indicator scroll) — must be before early return per Rules of Hooks
+  // scroll to top on screen change — must be before early return per Rules of Hooks
   useEffect(() => {
-    const el = document.querySelector('[role="tab"][aria-selected="true"]');
-    if (el && el.scrollIntoView) {
-      try {
-        el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      } catch {}
-    }
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch {}
   }, [activeKey]);
 
   // === Quiz report navigation (Issue #2): reuse tab + scope routing ===
@@ -2121,17 +2093,17 @@ export default function App() {
     setQuizBook(book);
     setQuizLektions([lektion]);
     setShowQuizReport(false);
-    setActiveKey('2');
+    setActiveKey('quiz');
   };
   const goWeakFromReport = () => {
     setShowQuizReport(false);
-    setActiveKey('5');
+    setActiveKey('weak');
   };
   const goBookFromQuiz = (bookId) => {
     const target = bookId || quizBook;
     setSelectedBook(target);
     setBookView(target);
-    setActiveKey('0');
+    setActiveKey('books');
   };
 
   if (!dbReady) return <SplashScreen phase="visible" />;
@@ -2146,152 +2118,120 @@ export default function App() {
     startNewPack();
   };
 
+  const scopePill = (
+    <ScopePill
+      bookLabel={selectedBookMeta?.shortLabel || 'A1.1'}
+      lekLabel={lekLabel(selectedLektions)}
+      count={scopeWords.length}
+      onClick={() => setActiveKey('books')}
+    />
+  );
+
   return (
-    <HeadingLevel>
+    <>
       {splashPhase !== 'hidden' && (
         <SplashScreen
           phase={splashPhase}
           action={isFirstLaunch && splashCanContinue ? { label: "Los geht's", onClick: handleSplashContinue } : null}
         />
       )}
-      <Header stats={stats} authUser={authUser} onAdd={()=> setShowAdd(true)} onLogout={handleLogout} setShowAuth={setShowAuth} setAuthMode={setAuthMode} setActiveKey={setActiveKey} />
-      <PWAUpdater />
-      {toast && (
-        <Block overrides={{ Block: { style: { position: 'fixed', top: '70px', left: '50%', transform: 'translateX(-50%)', zIndex: 20 } } }}>
-          <Notification overrides={{ Body: { style: { backgroundColor: '#000', color: '#fff', borderRadius: '999px', paddingTop: '8px', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px', fontWeight: 700, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' } } }}>
-            <span style={{ display: 'inline-flex', flexShrink: 0 }}><CheckCircle2 size={16} aria-hidden="true" /></span>
-            <span>{toast}</span>
-          </Notification>
-        </Block>
-      )}
-
+      <div className="app-shell">
+        <Sidebar
+          activeKey={activeKey}
+          go={setActiveKey}
+          stats={stats}
+          dueCount={studyQueue.length}
+          wordCount={allWords.length}
+          weakCount={weakWords.length}
+          rank={leaderboard.rank}
+          authUser={authUser}
+          username={username}
+          onAdd={() => setShowAdd(true)}
+          onLogout={handleLogout}
+          onLogin={() => { setAuthMode('login'); setShowAuth(true); }}
+          isAdmin={authUser?.isAdmin}
+        />
+        <main>
+          <DesktopTopbar scope={scopePill} go={setActiveKey} stats={stats} />
+          <MobileHeader scope={scopePill} go={setActiveKey} stats={stats} authUser={authUser} username={username} onAdd={() => setShowAdd(true)} onLogout={handleLogout} onLogin={() => { setAuthMode('login'); setShowAuth(true); }} />
+          {activeKey === 'home' && (
+            <HomeTab
+              stats={stats}
+              authUser={authUser}
+              username={username}
+              scopeWords={scopeWords}
+              studyQueue={studyQueue}
+              weakForScope={weakForScope}
+              progressMap={progressMap}
+              selectedBookMeta={selectedBookMeta}
+              selectedLektions={selectedLektions}
+              quizHistory={quizHistory}
+              rank={leaderboard.rank}
+              go={setActiveKey}
+            />
+          )}
+          {activeKey === 'books' && (
+              <BuecherTab selectedBook={selectedBook} setSelectedBook={setSelectedBook} selectedLektions={selectedLektions} setSelectedLektions={setSelectedLektions} bookView={bookView} setBookView={setBookView} allWords={allWords} progressMap={progressMap} scopeWords={scopeWords} setActiveKey={setActiveKey} setQuizBook={setQuizBook} setQuizLektions={setQuizLektions} selectedBookMeta={selectedBookMeta} quizHistory={quizHistory} historyLoading={historyLoading} historyError={historyError} onReloadHistory={reloadHistory} />
+          )}
+          {activeKey === 'study' && (
+            <LernenTab selectedBook={selectedBook} setSelectedBook={setSelectedBook} selectedLektions={selectedLektions} setSelectedLektions={setSelectedLektions} selectedBookMeta={selectedBookMeta} scopeWords={scopeWords} weakForScope={weakForScope} studyQueue={studyQueue} packSize={packSize} setPackSize={setPackSize} packWords={packWords} packIdx={packIdx} packAnswers={packAnswers} showPackSummary={showPackSummary} flipped={flipped} setFlipped={setFlipped} listening={listening} setListening={setListening} transcript={transcript} setTranscript={setTranscript} handlePackSwipe={handlePackSwipe} handlePackRate={handlePackRate} startNewPack={startNewPack} savePack={savePack} isSavingPack={isSavingPack} progressMap={progressMap} setActiveKey={setActiveKey} onDiscard={handleDiscardPack} />
+          )}
+          {activeKey === 'quiz' && (
+              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} quizScopeStatus={quizScopeStatus} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} lastQuizReport={lastQuizReport} showQuizReport={showQuizReport} setShowQuizReport={setShowQuizReport} onRetakeQuiz={retakeQuiz} onPracticeLektion={practiceReportLektion} onPracticeWeak={goWeakFromReport} onGoToBook={goBookFromQuiz} diktatOptions={diktatOptions} diktatKind={diktatKind} diktatCorrect={diktatCorrect} diktatHint={diktatHint} handleDiktatSelect={handleDiktatSelect} />
+          )}
+          {activeKey === 'exam' && (
+              <ExamTab examStarted={examStarted} examQuestions={examQuestions} examIdx={examIdx} examPicks={examPicks} examResult={examResult} examBest={examBest} examMode={examMode} examBook={examBook} examFinishing={examFinishing} onStartExam={startExam} onExamBook={setExamBook} onExamPick={handleExamPick} onExamNav={handleExamNav} onRetakeExam={retakeExam} onExitExam={exitExam} onPracticeWeak={() => setActiveKey('weak')} onGoToBooks={() => setActiveKey('books')} />
+          )}
+          {activeKey === 'streak' && (
+              <StreakTab authToken={authToken} refreshKey={streakRefreshKey} pendingCelebration={pendingCelebration} onCelebrationSeen={() => setPendingCelebration(null)} />
+          )}
+          {activeKey === 'search' && (
+              <SucheTab search={search} setSearch={setSearch} setSelectedBook={setSelectedBook} selectedBook={selectedBook} filteredWordsForSearch={filteredWordsForSearch} handleDeleteCustom={handleDeleteCustom} />
+          )}
+          {activeKey === 'weak' && (
+              <WeakTab weakWords={weakWords} weakForScope={weakForScope} weakIds={weakIds} scopeWords={scopeWords} packSize={packSize} selectedBook={selectedBook} selectedLektions={selectedLektions} selectedBookMeta={selectedBookMeta} setPackWords={setPackWords} setPackIdx={setPackIdx} setPackAnswers={setPackAnswers} setPendingProgress={setPendingProgress} setShowPackSummary={setShowPackSummary} setFlipped={setFlipped} setActiveKey={setActiveKey} setQuizBook={setQuizBook} setQuizLektions={setQuizLektions} startQuiz={startQuiz} setToast={setToast} />
+          )}
+          {activeKey === 'board' && (
+              <BoardTab leaderboard={leaderboard} stats={stats} username={username} setUsername={setUsername} onlineBoard={onlineBoard} onlineError={onlineError} setOnlineError={setOnlineError} useOnline={useOnline} setUseOnline={setUseOnline} adminMode={adminMode} setAdminMode={setAdminMode} adminToken={adminToken} setAdminToken={setAdminToken} setOnlineBoard={setOnlineBoard} setToast={setToast} selectedBookMeta={selectedBookMeta} />
+          )}
+          {activeKey === 'profile' && (
+              <ProfileTab authUser={authUser} stats={stats} selectedBookMeta={selectedBookMeta} selectedLektions={selectedLektions} scopeWords={scopeWords} progressMap={progressMap} allWords={allWords} weakForScope={weakForScope} weakWords={weakWords} setAuthMode={setAuthMode} setShowAuth={setShowAuth} handleLogout={handleLogout} setToast={setToast} setOnlineBoard={setOnlineBoard} setUseOnline={setUseOnline} />
+          )}
+          {activeKey === 'more' && (
+            <MoreTab
+              stats={stats}
+              authUser={authUser}
+              username={username}
+              totalWords={allWords.length}
+              bookCount={BOOKS.length}
+              weakCount={weakWords.length}
+              rank={leaderboard.rank}
+              selectedBookMeta={selectedBookMeta}
+              selectedLektions={selectedLektions}
+              go={setActiveKey}
+            />
+          )}
+          {activeKey === 'settings' && (
+            <SettingsTab
+              go={setActiveKey}
+              stats={stats}
+              authUser={authUser}
+              username={username}
+              onAdd={() => setShowAdd(true)}
+              onLogout={handleLogout}
+              onLogin={() => { setAuthMode('login'); setShowAuth(true); }}
+            />
+          )}
+          {activeKey === 'admin' && authUser?.isAdmin && (
+              <AdminTab authUser={authUser} usersList={usersList} loadUsersList={loadUsersList} setToast={setToast} setOnlineBoard={setOnlineBoard} setUseOnline={setUseOnline} adminToken={adminToken} />
+          )}
+        </main>
+        <BottomNav activeKey={activeKey} go={setActiveKey} dueCount={studyQueue.length} />
+      </div>
+      {toast && <div className="ntf-toast">{toast}</div>}
       <AddCardModal show={showAdd} onClose={()=> setShowAdd(false)} newCard={newCard} setNewCard={setNewCard} onAdd={handleAddCard} selectedBookMeta={selectedBookMeta} selectedLektions={selectedLektions} />
       <AuthModal show={showAuth} onClose={()=> setShowAuth(false)} authMode={authMode} setAuthMode={setAuthMode} authForm={authForm} setAuthForm={setAuthForm} onLogin={handleLogin} onSignup={handleSignup} />
-
-      <Block maxWidth="620px" width="100%" margin="0 auto" padding="0 16px 100px">
-        <Tabs
-          activeKey={activeKey}
-          onChange={({ activeKey }) => setActiveKey(activeKey)}
-          overrides={{
-            Root: { props: { className: 'gs-tabs' } },
-            TabBar: {
-              style: {
-                backgroundColor: '#fff',
-                borderRadius: 0,
-                paddingTop: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                marginTop: '16px',
-                overflowX: 'auto',
-                overflowY: 'hidden',
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'touch',
-                scrollBehavior: 'smooth',
-                display: 'flex',
-                flexWrap: 'nowrap',
-                alignItems: 'center',
-                borderBottomWidth: '1px',
-                borderBottomStyle: 'solid',
-                borderBottomColor: '#e9e8f0',
-              },
-              props: { className: 'gs-tabs-bar' },
-            },
-            TabList: {
-              style: {
-                gap: '24px',
-                paddingBottom: 0,
-                marginBottom: 0,
-                overflow: 'visible',
-              },
-            },
-            Tab: {
-              style: ({ $active }) => ({
-                backgroundColor: 'transparent',
-                color: $active ? '#0f0f12' : '#9aa0b2',
-                fontWeight: $active ? 800 : 600,
-                fontSize: '13px',
-                lineHeight: '14px',
-                flex: '0 0 auto',
-                whiteSpace: 'nowrap',
-                paddingTop: '14px',
-                paddingBottom: '14px',
-                paddingLeft: '4px',
-                paddingRight: '4px',
-                borderRadius: 0,
-                borderWidth: 0,
-                borderStyle: 'none',
-                borderColor: 'transparent',
-                boxShadow: 'none',
-                transform: 'none',
-                opacity: 1,
-                transitionProperty: 'color',
-                transitionDuration: '200ms',
-                transitionTimingFunction: 'ease',
-                scrollMarginLeft: '16px',
-                scrollMarginRight: '16px',
-                ':hover': { backgroundColor: 'transparent', color: $active ? '#0f0f12' : '#6b6b7a' },
-              }),
-            },
-            TabHighlight: {
-              style: {
-                backgroundColor: '#000',
-                height: '3px',
-                borderRadius: '999px',
-                bottom: '-1px',
-                display: 'block',
-                transitionDuration: '520ms',
-                transitionTimingFunction: 'cubic-bezier(0.68, -0.60, 0.32, 1.60)',
-                zIndex: 2,
-              },
-            },
-            TabBorder: { style: { display: 'none', backgroundColor: 'transparent', height: '1px' } },
-          }}
-        >
-          <Tab title={<NavLabel icon={BookOpen} label="Bücher" />}>
-            <Block paddingTop="16px">
-              <BuecherTab selectedBook={selectedBook} setSelectedBook={setSelectedBook} selectedLektions={selectedLektions} setSelectedLektions={setSelectedLektions} bookView={bookView} setBookView={setBookView} allWords={allWords} progressMap={progressMap} scopeWords={scopeWords} setActiveKey={setActiveKey} setQuizBook={setQuizBook} setQuizLektions={setQuizLektions} selectedBookMeta={selectedBookMeta} quizHistory={quizHistory} historyLoading={historyLoading} historyError={historyError} onReloadHistory={reloadHistory} />
-            </Block>
-          </Tab>
-          <Tab title={<NavLabel icon={GraduationCap} label="Lernen" />}>
-            <Block paddingTop="16px">
-              <LernenTab selectedBook={selectedBook} setSelectedBook={setSelectedBook} selectedLektions={selectedLektions} setSelectedLektions={setSelectedLektions} selectedBookMeta={selectedBookMeta} scopeWords={scopeWords} weakForScope={weakForScope} studyQueue={studyQueue} packSize={packSize} setPackSize={setPackSize} packWords={packWords} packIdx={packIdx} packAnswers={packAnswers} showPackSummary={showPackSummary} flipped={flipped} setFlipped={setFlipped} listening={listening} setListening={setListening} transcript={transcript} setTranscript={setTranscript} handlePackSwipe={handlePackSwipe} handlePackRate={handlePackRate} startNewPack={startNewPack} savePack={savePack} isSavingPack={isSavingPack} progressMap={progressMap} setActiveKey={setActiveKey} onDiscard={handleDiscardPack} />
-            </Block>
-          </Tab>
-          <Tab title={<NavLabel icon={Brain} label="Quiz" />}>
-            <Block paddingTop="16px">
-              <QuizTab quizBook={quizBook} setQuizBook={setQuizBook} quizLektions={quizLektions} setQuizLektions={setQuizLektions} quizBookMeta={quizBookMeta} quizMode={quizMode} setQuizMode={setQuizMode} quizStarted={quizStarted} setQuizStarted={setQuizStarted} quizScopeWords={quizScopeWords} quizScopeStatus={quizScopeStatus} weakIds={weakIds} allWords={allWords} startQuiz={startQuiz} quizQueue={quizQueue} quizIdx={quizIdx} currentQuizWord={currentQuizWord} choiceOptions={choiceOptions} choicePick={choicePick} setChoicePick={setChoicePick} quizAnswer={quizAnswer} setQuizAnswer={setQuizAnswer} quizArtikelChoice={quizArtikelChoice} setQuizArtikelChoice={setQuizArtikelChoice} quizFeedback={quizFeedback} setQuizFeedback={setQuizFeedback} quizScore={quizScore} submitQuiz={submitQuiz} nextQuiz={nextQuiz} insertUmlaut={insertUmlaut} choiceEliminated={choiceEliminated} choiceCorrectLocked={choiceCorrectLocked} choiceCorrectEn={choiceCorrectEn} choiceTransition={choiceTransition} questionFade={questionFade} choiceAnimKey={choiceAnimKey} quizSubmitting={quizSubmitting} handleChoiceSelect={handleChoiceSelect} matchBoard={matchBoard} matchMatched={matchMatched} matchMoves={matchMoves} matchDone={matchDone} matchXp={matchXp} handleMatchPick={handleMatchPick} startMatchGame={startMatchGame} matchStarted={matchStarted} setMatchStarted={setMatchStarted} matchFadingIds={matchFadingIds} matchShakeIds={matchShakeIds} matchWrongIds={matchWrongIds} matchHiddenIds={matchHiddenIds} sprintActive={sprintActive} setSprintActive={setSprintActive} sprintQueue={sprintQueue} sprintIdx={sprintIdx} sprintOptions={sprintOptions} sprintTime={sprintTime} sprintScore={sprintScore} sprintFeedback={sprintFeedback} handleSprintPick={handleSprintPick} startSprintGame={startSprintGame} satzQueue={satzQueue} satzIdx={satzIdx} setSatzIdx={setSatzIdx} satzBuilt={satzBuilt} setSatzBuilt={setSatzBuilt} satzPool={satzPool} setSatzPool={setSatzPool} satzFeedback={satzFeedback} setSatzFeedback={setSatzFeedback} satzScore={satzScore} satzActive={satzActive} setSatzActive={setSatzActive} handleSatzPick={handleSatzPick} handleSatzRemove={handleSatzRemove} checkSatz={checkSatz} startSatzGame={startSatzGame} rainQueue={rainQueue} rainIdx={rainIdx} rainOptions={rainOptions} rainTime={rainTime} rainLives={rainLives} rainScore={rainScore} rainFeedback={rainFeedback} rainActive={rainActive} setRainActive={setRainActive} handleRainPick={handleRainPick} startRainGame={startRainGame} lastQuizReport={lastQuizReport} showQuizReport={showQuizReport} setShowQuizReport={setShowQuizReport} onRetakeQuiz={retakeQuiz} onPracticeLektion={practiceReportLektion} onPracticeWeak={goWeakFromReport} onGoToBook={goBookFromQuiz} diktatOptions={diktatOptions} diktatKind={diktatKind} diktatCorrect={diktatCorrect} diktatHint={diktatHint} handleDiktatSelect={handleDiktatSelect} />
-            </Block>
-          </Tab>
-          <Tab title={<NavLabel icon={Award} label="Prüfung" />}>
-            <Block paddingTop="16px">
-              <ExamTab examStarted={examStarted} examQuestions={examQuestions} examIdx={examIdx} examPicks={examPicks} examResult={examResult} examBest={examBest} examMode={examMode} examBook={examBook} examFinishing={examFinishing} onStartExam={startExam} onExamBook={setExamBook} onExamPick={handleExamPick} onExamNav={handleExamNav} onRetakeExam={retakeExam} onExitExam={exitExam} onPracticeWeak={() => setActiveKey('5')} onGoToBooks={() => setActiveKey('0')} />
-            </Block>
-          </Tab>
-          <Tab title={<NavLabel icon={Flame} label="Streak" />}>
-            <StreakTab authToken={authToken} refreshKey={streakRefreshKey} pendingCelebration={pendingCelebration} onCelebrationSeen={() => setPendingCelebration(null)} />
-          </Tab>
-          <Tab title={<NavLabel icon={Search} label="Suche" />}>
-            <SucheTab search={search} setSearch={setSearch} setSelectedBook={setSelectedBook} selectedBook={selectedBook} filteredWordsForSearch={filteredWordsForSearch} handleDeleteCustom={handleDeleteCustom} />
-          </Tab>
-          <Tab title={<NavLabel icon={Target} label={`Weak (${weakWords.length})`} />}>
-            <WeakTab weakWords={weakWords} weakForScope={weakForScope} weakIds={weakIds} scopeWords={scopeWords} packSize={packSize} selectedBook={selectedBook} selectedLektions={selectedLektions} selectedBookMeta={selectedBookMeta} setPackWords={setPackWords} setPackIdx={setPackIdx} setPackAnswers={setPackAnswers} setPendingProgress={setPendingProgress} setShowPackSummary={setShowPackSummary} setFlipped={setFlipped} setActiveKey={setActiveKey} setQuizBook={setQuizBook} setQuizLektions={setQuizLektions} startQuiz={startQuiz} setToast={setToast} />
-          </Tab>
-          <Tab title={<NavLabel icon={Trophy} label="Board" />}>
-            <BoardTab leaderboard={leaderboard} stats={stats} username={username} setUsername={setUsername} onlineBoard={onlineBoard} onlineError={onlineError} setOnlineError={setOnlineError} useOnline={useOnline} setUseOnline={setUseOnline} adminMode={adminMode} setAdminMode={setAdminMode} adminToken={adminToken} setAdminToken={setAdminToken} setOnlineBoard={setOnlineBoard} setToast={setToast} selectedBookMeta={selectedBookMeta} />
-          </Tab>
-          <Tab title={<NavLabel icon={User} label="Profile" />}>
-            <ProfileTab authUser={authUser} stats={stats} selectedBookMeta={selectedBookMeta} selectedLektions={selectedLektions} scopeWords={scopeWords} progressMap={progressMap} allWords={allWords} weakForScope={weakForScope} weakWords={weakWords} setAuthMode={setAuthMode} setShowAuth={setShowAuth} handleLogout={handleLogout} setToast={setToast} setOnlineBoard={setOnlineBoard} setUseOnline={setUseOnline} />
-          </Tab>
-          {authUser?.isAdmin && (
-            <Tab title={<NavLabel icon={ShieldCheck} label="Admin" />}>
-              <AdminTab authUser={authUser} usersList={usersList} loadUsersList={loadUsersList} setToast={setToast} setOnlineBoard={setOnlineBoard} setUseOnline={setUseOnline} adminToken={adminToken} />
-            </Tab>
-          )}
-        </Tabs>
-      </Block>
-      <div style={{ height: 'env(safe-area-inset-bottom)' }} />
-    </HeadingLevel>
+      <PWAUpdater />
+    </>
   );
 }

@@ -1,0 +1,1265 @@
+﻿/* STREAK SCREEN (StreakTab + components/streak/*) — new sk-/st- prefixed classes only.
+   Never globally redefine design classes from src/index.css; scoped additions/overrides
+   live under .streak-page. Tile/effect layer is the legacy gs- system ported to sk-.
+   Design references: redesign App.tsx Streak() 886-1020; index.css design classes.
+ */
+
+/* .legacy-wrap (app.css) constrains legacy screens to 620px — opt out when it wraps the
+   rewritten streak page so .page gets the full design width/padding. */
+.legacy-wrap:has(> .streak-page) {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---- additions on design classes (scoped) ---- */
+
+.streak-page .calendar-head button {
+  display: grid;
+  place-items: center;
+}
+
+.streak-page .calendar-head button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.calendar-legend i.future {
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.calendar-legend i.complete {
+  background: var(--red);
+}
+
+.streak-page [lang="fa"] {
+  font-family: "Vazirmatn", sans-serif;
+}
+
+/* ---- shared cards / states ---- */
+
+.sk-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  margin-top: 15px;
+}
+
+.sk-card-label {
+  display: block;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+
+.sk-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  padding: 34px 20px;
+}
+
+.streak-page .sk-muted {
+  margin: 0;
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.streak-page .sk-error {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #b91c1c;
+}
+
+.sk-spin {
+  color: var(--red);
+  animation: sk-spin 1s linear infinite;
+}
+
+@keyframes sk-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sk-footnote {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 9px;
+  color: var(--ink-soft);
+}
+
+/* ---- hero tier orb pop ---- */
+
+.sk-orb-pop {
+  animation: sk-streak-pop 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  will-change: transform, opacity;
+}
+
+@keyframes sk-streak-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.82) translateY(8px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.04) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ---- tier badge ---- */
+
+.sk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ---- calendar tile: dual Gregorian + Shamsi, RTL grid ---- */
+
+.sk-cal-cell {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+
+.sk-cal-cell[tabindex="0"] {
+  cursor: pointer;
+}
+
+.sk-cal-cell[tabindex="0"]:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+
+.sk-cal-g {
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.1;
+  position: relative;
+  z-index: 3;
+}
+
+.sk-cal-j {
+  font-size: 9px;
+  color: var(--ink-soft);
+  line-height: 1.2;
+  position: relative;
+  z-index: 3;
+}
+
+/* month transition: soft fade */
+.sk-month-enter {
+  animation: sk-cal-month-in 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes sk-cal-month-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* neutral day states (design palette) */
+.sk-cal-completed {
+  background: linear-gradient(145deg, #e94632, #be2f25);
+  border-color: #be2f25;
+  color: #fff;
+  box-shadow: inset 0 -3px rgba(0, 0, 0, 0.12);
+}
+
+.sk-cal-completed::after {
+  content: "";
+  position: absolute;
+  bottom: 7px;
+  left: calc(50% - 2px);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--yellow);
+  z-index: 3;
+}
+
+.sk-cal-protected {
+  background: linear-gradient(145deg, #dff3fb, #83c7df);
+  border-color: #83c7df;
+  color: #245d73;
+}
+
+.sk-cal-protected .sk-cal-j {
+  color: #245d73;
+}
+
+.sk-cal-missed {
+  background: #e8e5db;
+  border-color: var(--line);
+}
+
+.sk-cal-missed .sk-cal-g {
+  color: #a5a29a;
+  font-weight: 600;
+}
+
+.sk-cal-missed .sk-cal-j {
+  color: #bdbab0;
+}
+
+.sk-cal-future {
+  background: var(--white);
+  border-color: #eeece4;
+}
+
+.sk-cal-future .sk-cal-g {
+  color: #c9c6bc;
+  font-weight: 600;
+}
+
+.sk-cal-future .sk-cal-j {
+  color: #d4d1c7;
+}
+
+.sk-cal-today {
+  outline: 2px solid var(--red);
+  outline-offset: -2px;
+}
+
+.sk-cal-today:not(.sk-cal-completed):not(.sk-cal-protected):not(.sk-cal-missed) .sk-cal-g {
+  color: var(--red);
+}
+
+.sk-cal-milestone {
+  box-shadow: 0 0 0 1.5px #f59e0b;
+}
+
+.sk-cal-today.sk-cal-milestone {
+  box-shadow: 0 0 0 1.5px #f59e0b, 0 0 0 4px rgba(245, 158, 11, 0.25);
+}
+
+/* === Legendary evolution tiers: completed days keep their earned tier === */
+.sk-tier-1 {
+  background: linear-gradient(135deg, #fdba74 0%, #f97316 60%, #ea580c 100%);
+  border-color: #fdba74;
+  animation: sk-breathe 3.6s ease-in-out infinite;
+}
+
+.sk-tier-2 {
+  background: linear-gradient(135deg, #fb923c 0%, #ef4444 60%, #b91c1c 100%);
+  border-color: #fca5a5;
+}
+
+.sk-tier-3 {
+  background: linear-gradient(135deg, #7c2d12 0%, #b45309 45%, #0ea5e9 100%);
+  border-color: #38bdf8;
+}
+
+.sk-tier-4 {
+  background: linear-gradient(135deg, #67e8f9 0%, #0ea5e9 55%, #1e40af 100%);
+  border-color: #a5f3fc;
+}
+
+.sk-tier-5 {
+  background: linear-gradient(135deg, #e0f2fe 0%, #67e8f9 45%, #0e7490 100%);
+  border-color: #cffafe;
+}
+
+.sk-tier-6 {
+  background: linear-gradient(135deg, #1c1917 0%, #44403c 45%, #c2410c 100%);
+  border-color: #fb923c;
+  animation: sk-rumble 6s ease-in-out infinite;
+}
+
+.sk-tier-7 {
+  background: linear-gradient(135deg, #fef3c7 0%, #f59e0b 50%, #ea580c 100%);
+  border-color: #fde68a;
+}
+
+.sk-tier-8 {
+  background: linear-gradient(135deg, #8b5cf6 0%, #4f46e5 50%, #0ea5e9 100%);
+  border-color: #c4b5fd;
+}
+
+.sk-tier-9 {
+  background: linear-gradient(135deg, #7e22ce 0%, #4f46e5 45%, #0e7490 80%, #a16207 100%);
+  border-color: #e9d5ff;
+}
+
+.sk-tier-1 .sk-cal-g,
+.sk-tier-2 .sk-cal-g,
+.sk-tier-3 .sk-cal-g,
+.sk-tier-4 .sk-cal-g,
+.sk-tier-5 .sk-cal-g,
+.sk-tier-6 .sk-cal-g,
+.sk-tier-7 .sk-cal-g,
+.sk-tier-8 .sk-cal-g,
+.sk-tier-9 .sk-cal-g {
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.sk-tier-1 .sk-cal-j,
+.sk-tier-2 .sk-cal-j,
+.sk-tier-3 .sk-cal-j,
+.sk-tier-4 .sk-cal-j,
+.sk-tier-5 .sk-cal-j,
+.sk-tier-6 .sk-cal-j,
+.sk-tier-7 .sk-cal-j,
+.sk-tier-8 .sk-cal-j,
+.sk-tier-9 .sk-cal-j {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@keyframes sk-breathe {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.08);
+  }
+}
+
+@keyframes sk-rumble {
+  0%,
+  92%,
+  100% {
+    transform: translate(0, 0);
+  }
+  93% {
+    transform: translate(0.5px, -0.5px);
+  }
+  95% {
+    transform: translate(-0.5px, 0.5px);
+  }
+  97% {
+    transform: translate(0.5px, 0.5px);
+  }
+}
+
+/* === elemental effect layers + tile glow === */
+.sk-tier-fx {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sk-tile-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 120%, rgba(255, 255, 255, 0.5), transparent 65%);
+}
+
+.sk-p {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.sk-p-rise {
+  bottom: -4px;
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.9);
+  animation: sk-rise 3.4s ease-in infinite;
+}
+
+.sk-p-spark {
+  bottom: -4px;
+  width: 3px;
+  height: 5px;
+  background: #fef08a;
+  box-shadow: 0 0 6px #fbbf24;
+  animation: sk-rise 2.2s ease-in infinite;
+}
+
+.sk-p-volt {
+  background: #bae6fd;
+  box-shadow: 0 0 6px #38bdf8;
+}
+
+.sk-p-magma {
+  background: #fdba74;
+  box-shadow: 0 0 8px #f97316;
+}
+
+.sk-p-mist {
+  left: -8px;
+  width: 14px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  filter: blur(1px);
+  animation: sk-mist 4.2s linear infinite;
+}
+
+.sk-p-float {
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+  animation: sk-float-y 3s ease-in-out infinite;
+}
+
+.sk-p-star {
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  animation: sk-twinkle 3.6s ease-in-out infinite;
+}
+
+@keyframes sk-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-52px);
+    opacity: 0;
+  }
+}
+
+@keyframes sk-mist {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(60px);
+    opacity: 0;
+  }
+}
+
+@keyframes sk-float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+@keyframes sk-twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.sk-fx-flicker {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1.5px rgba(254, 240, 138, 0.9);
+  animation: sk-flicker 2.8s ease-in-out infinite;
+}
+
+@keyframes sk-flicker {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.sk-fx-flash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 42%, rgba(186, 230, 253, 0.85) 50%, transparent 58%);
+  opacity: 0;
+  animation: sk-flash 4.5s linear infinite;
+}
+
+.sk-fx-flash-b {
+  animation-delay: 2.2s;
+}
+
+@keyframes sk-flash {
+  0%,
+  90%,
+  100% {
+    opacity: 0;
+  }
+  92%,
+  94% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.2;
+  }
+}
+
+.sk-fx-wave {
+  position: absolute;
+  left: -30%;
+  width: 160%;
+  height: 46%;
+  border-radius: 45%;
+  background: rgba(255, 255, 255, 0.28);
+  animation: sk-wave 5s linear infinite;
+}
+
+.sk-fx-wave-a {
+  bottom: -12%;
+}
+
+.sk-fx-wave-b {
+  bottom: -20%;
+  animation-duration: 7s;
+  animation-direction: reverse;
+  opacity: 0.7;
+}
+
+@keyframes sk-wave {
+  from {
+    transform: translateX(-8%) rotate(0deg);
+  }
+  to {
+    transform: translateX(8%) rotate(0deg);
+  }
+}
+
+.sk-fx-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.35) 50%, transparent 60%);
+  animation: sk-sheen 4s linear infinite;
+}
+
+@keyframes sk-sheen {
+  from {
+    transform: translateX(-60%);
+  }
+  to {
+    transform: translateX(60%);
+  }
+}
+
+.sk-fx-swirl {
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.3), transparent 40%);
+  animation: sk-spin-slow 7s linear infinite;
+}
+
+@keyframes sk-spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sk-fx-crack {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, transparent 46%, rgba(251, 146, 60, 0.95) 47%, rgba(251, 146, 60, 0.95) 49%, transparent 50%),
+    linear-gradient(65deg, transparent 60%, rgba(249, 115, 22, 0.9) 61%, rgba(249, 115, 22, 0.9) 63%, transparent 64%);
+  animation: sk-crack 5s ease-in-out infinite;
+}
+
+@keyframes sk-crack {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.sk-fx-rays {
+  position: absolute;
+  inset: -45%;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(255, 255, 255, 0.35) 8deg, transparent 16deg, transparent 30deg, rgba(255, 255, 255, 0.3) 38deg, transparent 46deg, transparent 60deg, rgba(255, 255, 255, 0.35) 68deg, transparent 76deg);
+  animation: sk-spin-slow 12s linear infinite;
+}
+
+.sk-fx-nebula {
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(circle at 30% 40%, rgba(240, 171, 252, 0.5), transparent 55%),
+    radial-gradient(circle at 70% 65%, rgba(56, 189, 248, 0.5), transparent 55%);
+  animation: sk-nebula 11s ease-in-out infinite alternate;
+}
+
+@keyframes sk-nebula {
+  from {
+    transform: translate(-4%, -2%) scale(1);
+  }
+  to {
+    transform: translate(4%, 3%) scale(1.08);
+  }
+}
+
+.sk-fx-aurora {
+  position: absolute;
+  inset: -30%;
+  background: linear-gradient(120deg, rgba(240, 171, 252, 0.45), rgba(34, 211, 238, 0.45), rgba(254, 240, 138, 0.35), rgba(139, 92, 246, 0.45));
+  background-size: 220% 220%;
+  animation: sk-aurora 9s ease-in-out infinite alternate;
+}
+
+@keyframes sk-aurora {
+  from {
+    background-position: 0% 30%;
+  }
+  to {
+    background-position: 100% 70%;
+  }
+}
+
+.sk-fx-shoot {
+  position: absolute;
+  top: 12%;
+  left: -20%;
+  width: 34%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #fff);
+  opacity: 0;
+  animation: sk-shoot 7s linear infinite;
+}
+
+@keyframes sk-shoot {
+  0%,
+  88%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  90% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0;
+    transform: translate(220%, 160%);
+  }
+}
+
+/* active streak trail: continuous elemental path in the CURRENT tier theme */
+.sk-in-chain {
+  z-index: 2;
+}
+
+.sk-chain-1 {
+  box-shadow: inset 0 -3px 0 rgba(249, 115, 22, 0.7);
+}
+
+.sk-chain-2 {
+  box-shadow: inset 0 -3px 0 rgba(239, 68, 68, 0.7), 0 0 10px rgba(239, 68, 68, 0.35);
+}
+
+.sk-chain-3 {
+  box-shadow: inset 0 -3px 0 rgba(234, 179, 8, 0.8), 0 0 10px rgba(234, 179, 8, 0.3);
+}
+
+.sk-chain-4 {
+  box-shadow: inset 0 -3px 0 rgba(14, 165, 233, 0.8), 0 0 10px rgba(14, 165, 233, 0.3);
+}
+
+.sk-chain-5 {
+  box-shadow: inset 0 -3px 0 rgba(34, 211, 238, 0.9), 0 0 10px rgba(34, 211, 238, 0.35);
+}
+
+.sk-chain-6 {
+  box-shadow: inset 0 -3px 0 rgba(251, 146, 60, 0.9), 0 0 12px rgba(249, 115, 22, 0.4);
+}
+
+.sk-chain-7 {
+  box-shadow: inset 0 -3px 0 rgba(245, 158, 11, 0.9), 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+.sk-chain-8 {
+  box-shadow: inset 0 -3px 0 rgba(139, 92, 246, 0.9), 0 0 12px rgba(139, 92, 246, 0.4);
+}
+
+.sk-chain-9 {
+  box-shadow: inset 0 -3px 0 rgba(233, 213, 255, 1), 0 0 14px rgba(240, 171, 252, 0.55);
+}
+
+/* today's tile: animated progress ring */
+.sk-today-ring {
+  position: absolute;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  z-index: 4;
+  animation: sk-ring-spin 9s linear infinite;
+}
+
+.sk-today-ring-done {
+  animation: sk-ring-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes sk-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sk-ring-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.03);
+  }
+}
+
+/* frozen day: ice glass + crystal shield + shimmer */
+.sk-freeze-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent 60%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+}
+
+.sk-freeze-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.7) 50%, transparent 60%);
+  animation: sk-sheen 3.2s linear infinite;
+}
+
+.sk-freeze-icon {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  color: #0284c7;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  padding: 2px;
+  box-shadow: 0 1px 6px rgba(2, 132, 199, 0.4);
+}
+
+/* ---- milestone celebration overlay (project modal pattern) ---- */
+
+.sk-celebrate-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(24, 24, 22, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: sk-celebrate-fade 220ms ease both;
+}
+
+.sk-celebrate-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 28px 24px;
+  text-align: center;
+  max-width: 340px;
+  width: 100%;
+  box-shadow: 0 24px 64px rgba(24, 24, 22, 0.28);
+  animation: sk-celebrate-in 380ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.sk-celebrate-icon {
+  display: inline-flex;
+  padding: 12px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.streak-page .sk-celebrate-heading {
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  margin: 12px 0 4px;
+}
+
+.sk-celebrate-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 16px;
+  margin-top: 6px;
+}
+
+.sk-celebrate-name svg {
+  color: var(--yellow);
+}
+
+.sk-celebrate-fa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.sk-celebrate-card .sk-celebrate-fa {
+  color: #4b4b58;
+}
+
+.sk-celebrate-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+@keyframes sk-celebrate-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sk-celebrate-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ---- day detail bottom sheet ---- */
+
+.sk-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(24, 24, 22, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: sk-celebrate-fade 200ms ease both;
+}
+
+.sk-sheet-card {
+  background: var(--white);
+  border-radius: 20px 20px 0 0;
+  padding: 14px 20px calc(20px + env(safe-area-inset-bottom));
+  width: 100%;
+  max-width: 480px;
+  max-height: 82vh;
+  overflow-y: auto;
+  animation: sk-sheet-up 300ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes sk-sheet-up {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sk-sheet-handle {
+  display: block;
+  width: 40px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+  margin: 0 auto 12px;
+}
+
+.sk-sheet-date {
+  display: block;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+}
+
+.sk-sheet-fa {
+  font-size: 15px;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.sk-sheet-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.sk-sheet-freeze {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e0f2fe;
+  color: #0369a1;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.sk-sheet-status {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.sk-sheet-day {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.sk-sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.sk-sheet-stats {
+  display: flex;
+  gap: 8px;
+}
+
+.sk-sheet-stat {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.sk-sheet-stat-v {
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1.1;
+}
+
+.sk-sheet-stat-l {
+  font-size: 10px;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.sk-sheet-modes {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.sk-sheet-milestone {
+  font-size: 12px;
+  font-weight: 800;
+  color: #b45309;
+}
+
+.streak-page .sk-sheet-note {
+  margin: 12px 0 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.sk-sheet-close {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.sk-sheet-close .btn {
+  min-height: 42px;
+  padding: 0 24px;
+  font-size: 12px;
+}
+
+.sk-sheet-fa-note {
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ---- tier celebration fullscreen ---- */
+
+.sk-tier-celebrate {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(1000px 600px at 50% 20%, #1c1917 0%, #09090b 60%);
+  animation: sk-celebrate-fade 300ms ease both;
+  overflow: hidden;
+}
+
+.sk-tier-celebrate-4,
+.sk-tier-celebrate-5 {
+  background: radial-gradient(1000px 600px at 50% 20%, #0c4a6e 0%, #09090b 60%);
+}
+
+.sk-tier-celebrate-8,
+.sk-tier-celebrate-9 {
+  background: radial-gradient(1000px 600px at 50% 20%, #2e1065 0%, #09090b 60%);
+}
+
+.sk-tier-celebrate-6 {
+  background: radial-gradient(1000px 600px at 50% 30%, #431407 0%, #09090b 62%);
+}
+
+.sk-tier-celebrate-7 {
+  background: radial-gradient(1000px 600px at 50% 20%, #451a03 0%, #09090b 60%);
+}
+
+.sk-tier-celebrate-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sk-tier-celebrate-fx .sk-p {
+  transform: scale(2);
+}
+
+.sk-tier-celebrate-card {
+  position: relative;
+  text-align: center;
+  max-width: 340px;
+  width: 100%;
+  animation: sk-celebrate-in 450ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.streak-page .sk-celebrate-title {
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  margin: 14px 0 4px;
+  color: #fff;
+}
+
+.sk-celebrate-sub {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.sk-tier-celebrate .sk-celebrate-fa {
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 8px;
+}
+
+.sk-tier-celebrate .sk-celebrate-actions {
+  margin-top: 20px;
+}
+
+/* ---- tier list extras (design .tier row handles the base) ---- */
+
+.sk-tier-side {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-style: normal;
+}
+
+.sk-tier-reward {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--ink-soft);
+}
+
+.tier.done .sk-tier-reward,
+.tier.active .sk-tier-reward {
+  color: inherit;
+}
+
+/* ---- calendar note / history / empty ---- */
+
+.streak-page .sk-cal-note {
+  margin: 14px 0 0;
+  font-size: 9px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.sk-history {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sk-history-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sk-history-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.sk-history-left svg {
+  color: var(--blue);
+  flex: none;
+}
+
+.sk-history-date {
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+.sk-empty {
+  text-align: center;
+  padding: 30px 22px;
+}
+
+.sk-empty-icon {
+  display: inline-flex;
+  padding: 12px;
+  border-radius: 999px;
+  background: #e6f5ec;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.streak-page .sk-empty p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* ---- reduced motion ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .sk-orb-pop,
+  .sk-celebrate-overlay,
+  .sk-celebrate-card,
+  .sk-month-enter,
+  .sk-sheet-card,
+  .sk-sheet-overlay,
+  .sk-tier-celebrate,
+  .sk-tier-celebrate-card {
+    animation: none !important;
+  }
+
+  .sk-tier-1,
+  .sk-tier-6 {
+    animation: none !important;
+  }
+
+  .sk-tier-fx,
+  .sk-today-ring,
+  .sk-freeze-shimmer,
+  .sk-tile-glow {
+    animation: none !important;
+  }
+
+  .sk-tier-fx .sk-p,
+  .sk-fx-wave,
+  .sk-fx-sheen,
+  .sk-fx-swirl,
+  .sk-fx-rays,
+  .sk-fx-nebula,
+  .sk-fx-aurora,
+  .sk-fx-shoot,
+  .sk-fx-flash,
+  .sk-fx-flicker,
+  .sk-fx-crack {
+    animation: none !important;
+    opacity: 0.35;
+  }
+
+  .sk-spin {
+    animation: none !important;
+  }
+}
+
+/* ---- mobile (design media rules already cover hero/stats/calendar/tier-track) ---- */
+
+@media (max-width: 900px) {
+  .sk-cal-cell {
+    border-radius: 9px;
+  }
+
+  .sk-history-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .sk-history-date {
+    text-align: left;
+  }
+
+  .sk-sheet-stats {
+    flex-wrap: wrap;
+  }
+}

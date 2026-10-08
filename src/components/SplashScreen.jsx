@@ -1,37 +1,56 @@
-import './SplashScreen.css';
+import { BOOKS } from '../data/menschen.js';
+import Icon from './shell/Icon.jsx';
+import { Brand } from './shell/Shell.jsx';
+
+const fmt = (n) => (Number(n) || 0).toLocaleString('de-DE');
 
 export default function SplashScreen({ phase = 'visible', action = null }) {
+  const total = BOOKS.reduce((a, b) => a + b.total, 0);
   return (
     <div
-      className={`loading-screen${phase === 'leaving' ? ' is-leaving' : ''}`}
+      className={`splash${phase === 'leaving' ? ' is-leaving' : ''}`}
       role="status"
       aria-live="polite"
     >
-      <div className="loading-brand">
-        <div className="loading-symbol" aria-hidden="true">
-          <span className="loading-card loading-card-back">A</span>
-          <span className="loading-card loading-card-front">Ä</span>
-          <span className="loading-ripple loading-ripple-one" />
-          <span className="loading-ripple loading-ripple-two" />
-          <span className="loading-drop" />
-        </div>
-        <div className="loading-wordmark">
-          German<span>Splash</span>
-        </div>
-        <p>Dein Deutsch-Moment beginnt</p>
-        <div className="loading-track" aria-label="App wird geladen">
-          <span />
-        </div>
-        {action && (
-          <button className="loading-continue" type="button" onClick={action.onClick}>
-            <span>{action.label}</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M5 12h13m-5-5 5 5-5 5" />
-            </svg>
-          </button>
-        )}
+      <div className="splash-top">
+        <Brand />
       </div>
-      <span className="loading-caption">Wörter, die bleiben.</span>
+      <div className="splash-art" aria-hidden="true">
+        <div className="orbit orbit-one" />
+        <div className="orbit orbit-two" />
+        <div className="letter-card card-a">
+          A<small>APFEL</small>
+        </div>
+        <div className="letter-card card-umlaut">
+          Ä<small>ÄPFEL</small>
+        </div>
+        <div className="spark spark-one" />
+        <div className="spark spark-two" />
+      </div>
+      <div className="splash-copy">
+        <span className="eyebrow">DEIN DEUTSCH-MOMENT BEGINNT</span>
+        <h1>
+          Wörter, die
+          <br />
+          <em>bleiben.</em>
+        </h1>
+        <p>
+          German vocabulary. Persian warmth.
+          <br />A little progress, every day.
+        </p>
+        {action ? (
+          <button className="btn dark" type="button" onClick={action.onClick}>
+            {action.label} <Icon name="arrow" size={18} />
+          </button>
+        ) : (
+          <span className="loading-pill">
+            <i /> Wörter werden geladen …
+          </span>
+        )}
+        <small className="safe-note">
+          <Icon name="offline" size={15} /> {fmt(total)} Wörter · offline bereit
+        </small>
+      </div>
     </div>
   );
 }

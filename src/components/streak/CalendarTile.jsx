@@ -31,16 +31,17 @@ function CalendarTile({ cell, onSelect }) {
   const visuals = tierLevel ? STREAK_TIER_VISUALS[tierLevel] : null;
 
   const className = [
-    'gs-cal-cell',
-    `gs-cal-${status}`,
-    completed && tierLevel ? `gs-tier-${tierLevel}` : '',
-    inCurrentChain ? `gs-in-chain gs-chain-${chainTierLevel || tierLevel || 1}` : '',
-    isToday ? 'gs-cal-today' : '',
-    isMilestoneDay ? 'gs-cal-milestone' : '',
+    'sk-cal-cell',
+    `sk-cal-${status}`,
+    completed && tierLevel ? `sk-tier-${tierLevel}` : '',
+    inCurrentChain ? 'sk-in-chain' : '',
+    inCurrentChain ? `sk-chain-${chainTierLevel || tierLevel || 1}` : '',
+    isToday ? 'sk-cal-today' : '',
+    isMilestoneDay ? 'sk-cal-milestone' : '',
   ].filter(Boolean).join(' ');
 
   const style = completed && visuals
-    ? { '--gs-tier-glow': visuals.glow, '--gs-tier-accent': visuals.accent }
+    ? { '--sk-tier-glow': visuals.glow, '--sk-tier-accent': visuals.accent }
     : undefined;
 
   const label = completed
@@ -64,13 +65,13 @@ function CalendarTile({ cell, onSelect }) {
     >
       {completed && tierLevel && <TierEffect level={tierLevel} />}
       {completed && visuals && (
-        <span aria-hidden="true" className="gs-tile-glow" style={{ opacity: intensity ?? 0.7 }} />
+        <span aria-hidden="true" className="sk-tile-glow" style={{ opacity: intensity ?? 0.7 }} />
       )}
       {isToday && <TodayRing completed={completed || frozen} tierLevel={tierLevel || chainTierLevel} />}
       {frozen && <FreezeOverlay />}
-      <span className="gs-cal-g">{gregorianDay}</span>
-      <span className="gs-cal-j" lang="fa">{toPersianDigits(jalali.jd)}</span>
-      {inCurrentChain && <span aria-hidden="true" className="gs-tile-trail" />}
+      <span className="sk-cal-g">{gregorianDay}</span>
+      <span className="sk-cal-j" lang="fa">{toPersianDigits(jalali.jd)}</span>
+      {inCurrentChain && <span aria-hidden="true" className="sk-tile-trail" />}
     </div>
   );
 }

@@ -1,20 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Provider as StyletronProvider } from 'styletron-react'
-import { Client as Styletron } from 'styletron-engine-atomic'
-import { BaseProvider } from 'baseui'
-import { theme } from './theme'
 import App from './App.jsx'
 import './index.css'
-
-const engine = new Styletron()
+import './styles/app.css'
+import './styles/quiz.css'
+import './styles/exam.css'
+import './styles/streak.css'
+import './styles/screens.css'
+import './styles/modals.css'
+import './styles/analytics.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <StyletronProvider value={engine}>
-      <BaseProvider theme={theme}>
-        <App />
-      </BaseProvider>
-    </StyletronProvider>
+    <App />
   </StrictMode>,
 )

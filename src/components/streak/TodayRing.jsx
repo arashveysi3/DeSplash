@@ -9,15 +9,15 @@ const C = 2 * Math.PI * 20;
  */
 export default function TodayRing({ completed, tierLevel }) {
   const visuals = STREAK_TIER_VISUALS[Number(tierLevel)] || STREAK_TIER_VISUALS[1];
-  const accent = completed ? visuals.accent : '#0f0f12';
+  const accent = completed ? visuals.accent : '#181816';
   return (
     <svg
       aria-hidden="true"
       viewBox="0 0 44 44"
-      className={`gs-today-ring${completed ? ' gs-today-ring-done' : ''}`}
+      className={`sk-today-ring${completed ? ' sk-today-ring-done' : ''}`}
       focusable="false"
     >
-      <circle cx="22" cy="22" r="20" fill="none" stroke="rgba(15,15,18,0.12)" strokeWidth="2.5" />
+      <circle cx="22" cy="22" r="20" fill="none" stroke="rgba(24,24,22,0.12)" strokeWidth="2.5" />
       <circle
         cx="22"
         cy="22"

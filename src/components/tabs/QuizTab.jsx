@@ -1,40 +1,28 @@
-import { Block } from 'baseui/block';
-import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
-import { Select } from 'baseui/select';
-import { Input } from 'baseui/input';
-import { ProgressBar } from 'baseui/progress-bar';
-import { Heading, HeadingLevel } from 'baseui/heading';
-import { LabelSmall, ParagraphSmall, DisplaySmall } from 'baseui/typography';
 import { BOOKS, lektionenForBook } from '../../data/menschen.js';
 import { QUIZ_XP, GAME_XP } from '../../srs.js';
-import { genderColor } from '../../theme';
+import { genderColor } from '../../utils/gender.js';
 import { speakGerman } from '../../utils/speak';
-import UberCard from '../cards/UberCard.jsx';
+import { BarChart3, CircleX, CloudRainWind, Eye, Hammer, Heart, PartyPopper, RotateCcw, Skull, Star, Timer } from 'lucide-react';
+import Icon from '../shell/Icon.jsx';
 import QuizReport from '../analytics/QuizReport.jsx';
-import {
-  Sparkles,
-  BarChart3,
-  BookOpen,
-  Gamepad2,
-  Puzzle,
-  Star,
-  Target,
-  Zap,
-  Hammer,
-  CloudRainWind,
-  PartyPopper,
-  Timer,
-  CheckCircle2,
-  CircleX,
-  Volume2,
-  RotateCcw,
-  Eye,
-  Skull,
-  Heart,
-  Play,
-  Check,
-  ICON_SIZES,
-} from '../icons.jsx';
+
+const MODE_TOP = {
+  dictation: 'DIKTATION',
+  artikel: 'ARTIKEL',
+  mixed: 'GEMISCHT',
+  choice: '4-CHOICE',
+  fa: 'DE → فارسی',
+  diktat: 'DIKTAT-CHECK',
+};
+
+const MODES = [
+  { key: 'dictation', title: 'Diktat', desc: 'Hören & exakt tippen', xp: `+${QUIZ_XP.dictation} XP`, icon: 'sound' },
+  { key: 'artikel', title: 'Artikel', desc: 'der, die oder das?', xp: `+${QUIZ_XP.artikel} XP`, icon: 'cards' },
+  { key: 'fa', title: 'DE → فارسی', desc: 'Auf Persisch antworten', xp: `+${QUIZ_XP.fa} XP`, icon: 'arrow' },
+  { key: 'diktat', title: 'Diktat-Check', desc: 'Falsche Schreibweise finden', xp: `+${QUIZ_XP.diktat} XP`, icon: 'search' },
+  { key: 'mixed', title: 'Gemischt', desc: 'Diktat & Artikel abwechselnd', xp: '+8–12 XP', icon: 'book' },
+  { key: 'choice', title: '4-Choice', desc: 'Bedeutung aus 4 Optionen wählen', xp: `+${QUIZ_XP.choice} XP`, icon: 'quiz' },
+];
 
 export default function QuizTab(props) {
   const {
@@ -63,695 +51,666 @@ export default function QuizTab(props) {
     lastQuizReport, showQuizReport, setShowQuizReport, onRetakeQuiz, onPracticeLektion, onPracticeWeak, onGoToBook,
   } = props;
 
+  const GAMES = [
+    { key: 'match', title: 'Match Dash', desc: 'DE ↔ EN+FA · 6 Paare · ohne Vorschau', xp: `+${GAME_XP.matchPair}/Paar +${GAME_XP.matchPerfectBonus} perfekt = ~40 XP`, icon: <Icon name="puzzle" size={20} />, iconBg: '#eef2ff', iconColor: '#4f46e5', cta: 'Spielen →', start: () => startQuiz('match', 6) },
+    { key: 'sprint', title: 'Blitzsprint', desc: '45 s · DE → EN+FA · 2× Serie', xp: `+${GAME_XP.sprintBase} pro Treffer`, icon: <Icon name="bolt" size={20} />, iconBg: '#fff0bd', iconColor: '#b27b00', cta: 'Sprint →', start: () => startQuiz('sprint', 12) },
+    { key: 'satz', title: 'SatzBau', desc: 'Deutschen Satz zusammensetzen · gemischte Wörter', xp: `+${GAME_XP.scramblePerWord} XP pro Satz · Wortstellungs-Meisterschaft`, icon: <Hammer size={20} aria-hidden="true" />, iconBg: '#f1f1f3', iconColor: '#0f0f12', cta: 'Schmieden →', start: () => startQuiz('satz', 8) },
+    { key: 'rain', title: 'WortSturm', desc: '6 s pro Wort · 3 Leben · EN+FA-Auswahl', xp: 'Serien-Multiplikator · Arcade-Panik', icon: <CloudRainWind size={20} aria-hidden="true" />, iconBg: '#e8f8f0', iconColor: '#059669', cta: 'Stürmen →', start: () => startQuiz('rain', 10) },
+  ];
+
+  const exitQuiz = () => {
+    if (quizMode === 'match') { setQuizStarted(false); setMatchStarted(false); return; }
+    if (quizMode === 'sprint') { setSprintActive(false); setQuizStarted(false); return; }
+    if (quizMode === 'satz') { setSatzActive(false); setQuizStarted(false); return; }
+    if (quizMode === 'rain') { setRainActive(false); setQuizStarted(false); return; }
+    setQuizStarted(false);
+    if (setQuizFeedback) setQuizFeedback(null);
+  };
+  const exitLabel = quizMode === 'match' ? 'Spiel beenden'
+    : quizMode === 'sprint' ? 'Sprint beenden'
+      : quizMode === 'satz' ? 'Spiel beenden'
+        : quizMode === 'rain' ? 'Sturm beenden' : 'Quiz beenden';
+
   // Quiz completion report replaces the start screen after a finished quiz.
   if (!quizStarted && showQuizReport && lastQuizReport) {
     return (
-      <>
-        <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-          <LabelSmall color="#6b6b6b">Quiz report • {lastQuizReport.meta?.scopeLabel || ''}</LabelSmall>
-          <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => setShowQuizReport(false)}>New quiz</Button>
-        </Block>
+      <div className="page report-page">
+        <div className="qz-report-top">
+          <span className="qz-report-title">AUSWERTUNG{lastQuizReport.meta?.scopeLabel ? ` · ${lastQuizReport.meta.scopeLabel}` : ''}</span>
+          <button className="btn light small" onClick={() => setShowQuizReport(false)}>Neues Quiz</button>
+        </div>
         <QuizReport
           report={lastQuizReport.report}
           meta={lastQuizReport.meta}
           actions={{ onRetake: onRetakeQuiz, onNewQuiz: () => setShowQuizReport(false), onGoToBook: () => onGoToBook && onGoToBook(), onPracticeWeak, onPracticeLektion }}
         />
-      </>
+      </div>
     );
   }
 
   if (!quizStarted) {
     return (
-      <>
-        <UberCard styleOverride={{ backgroundColor:'#f7f7f7', borderColor:'#e5e5e5' }}>
-          <Heading $style={{fontSize:16, margin:0}}>Quiz — scoped to book & Lektion</Heading>
-          <ParagraphSmall color="#6b6b6b">Dictation (ä ö ü ß), Artikel, and فارسی modes. Supports multi-Lektion scope.</ParagraphSmall>
-          <Block display="flex" gridGap="8px" marginTop="10px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-            <Select options={BOOKS.map(b=> ({id:b.id, label:b.label}))} value={[{id:quizBook, label: quizBookMeta?.label}]} onChange={({value})=> { setQuizBook(value[0].id); setQuizLektions([]); }} size="compact" overrides={{ControlContainer:{style:{minWidth:'140px', borderRadius:'999px'}}}} />
-          </Block>
-          <Block display="flex" gridGap="6px" marginTop="10px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-            {lektionenForBook(quizBook).map(l=>{
+      <div className="page quiz-page">
+        <div className="page-title-row">
+          <div>
+            <span className="eyebrow">TRAINING</span>
+            <h1>Quiz</h1>
+            <p>Kurze Challenges. Sofortiges Feedback.</p>
+          </div>
+          <label className="qz-book">
+            <span className="qz-book-label">BUCH</span>
+            <select
+              className="qz-book-select"
+              value={quizBook}
+              onChange={(e) => { setQuizBook(e.target.value); setQuizLektions([]); }}
+            >
+              {BOOKS.map((b) => <option key={b.id} value={b.id}>{b.label}</option>)}
+            </select>
+          </label>
+        </div>
+
+        <section className="qz-scope">
+          <div className="qz-scope-row">
+            <span className="eyebrow">LEKTIONEN</span>
+            <span className="qz-scope-sub">{quizBookMeta?.label} · {quizLektions.length ? quizLektions.join(', ') : 'Ganzes Buch'}</span>
+          </div>
+          <div className="qz-chips">
+            {lektionenForBook(quizBook).map((l) => {
               const active = quizLektions.includes(l.lektion);
               return (
-                <Button key={l.lektion} size={SIZE.mini} kind={active?KIND.primary:KIND.secondary} shape={SHAPE.pill}
-                  overrides={{BaseButton:{style:{fontWeight:700, fontSize:11, backgroundColor: active? '#0f0f12':'#fff', color: active?'#fff':'#0f0f12'}}}}
-                  onClick={()=> setQuizLektions(prev=> prev.includes(l.lektion) ? prev.filter(x=>x!==l.lektion) : [...prev,l.lektion])}>
-                  {active && <Check size={12} aria-hidden="true" style={{ marginRight: 2 }} />}{l.lektion}
-                </Button>
+                <button
+                  key={l.lektion}
+                  className={`qz-chip-btn ${active ? 'on' : ''}`}
+                  onClick={() => setQuizLektions((prev) => prev.includes(l.lektion) ? prev.filter((x) => x !== l.lektion) : [...prev, l.lektion])}
+                >
+                  {active && <Icon name="check" size={12} />}{l.lektion}
+                </button>
               );
             })}
-            <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setQuizLektions([])}>All</Button>
-            <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setQuizLektions(lektionenForBook(quizBook).map(x=>x.lektion))}>All +</Button>
-          </Block>
-          <Block display="flex" gridGap="8px" marginTop="12px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-            <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='dictation'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('dictation')}>Dictation DE</Button>
-            <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='artikel'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('artikel')}>Artikel</Button>
-            <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='mixed'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('mixed')}>Mixed</Button>
-            <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='choice'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('choice')}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Sparkles size={14} aria-hidden="true" /> 4-Choice</span></Button>
-            <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='fa'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('fa')}>DE → فارسی</Button>
-            <Button size={SIZE.compact} shape={SHAPE.pill} kind={quizMode==='diktat'?KIND.primary:KIND.secondary} onClick={()=> setQuizMode('diktat')}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><CheckCircle2 size={14} aria-hidden="true" /> Diktat-Check</span></Button>
-          </Block>
+            <button className="qz-chip-btn" onClick={() => setQuizLektions([])}>Alle</button>
+            <button className="qz-chip-btn" onClick={() => setQuizLektions(lektionenForBook(quizBook).map((x) => x.lektion))}>Alle +</button>
+          </div>
           {quizMode === 'diktat' && quizScopeStatus && (
-            <UberCard styleOverride={{ marginTop: '12px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: '#f7f7fb', borderColor: '#e9e8f0' }}>
-              <Block display="flex" justifyContent="space-between" alignItems="center">
-                <LabelSmall color="#6b6b6b">Lernstand • {quizBookMeta?.label} {quizLektions.length ? quizLektions.join(', ') : 'whole book'}</LabelSmall>
-                <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{quizScopeStatus.total} Wörter</LabelSmall>
-              </Block>
-              <Block display="flex" gridGap="8px" marginTop="10px">
-                <Block overrides={{Block:{style:{flex:1, background:'#fff', border:'1px solid #e9e8f0', borderRadius:'14px', padding:'10px 8px', textAlign:'center'}}}}>
-                  <span style={{ display: 'inline-flex', padding: 6, borderRadius: 999, background: '#f1f1f3' }}><Eye size={16} aria-hidden="true" style={{ color: '#6b6b7a' }} /></span>
-                  <div style={{fontWeight:800, fontSize:18, marginTop:4}}>{quizScopeStatus.unseen}</div>
-                  <div style={{fontSize:11, color:'#6b6b7a', fontWeight:600}}>Unseen</div>
-                </Block>
-                <Block overrides={{Block:{style:{flex:1, background:'#fff', border:'1px solid #e9e8f0', borderRadius:'14px', padding:'10px 8px', textAlign:'center'}}}}>
-                  <span style={{ display: 'inline-flex', padding: 6, borderRadius: 999, background: '#eef2ff' }}><BookOpen size={16} aria-hidden="true" style={{ color: '#4f46e5' }} /></span>
-                  <div style={{fontWeight:800, fontSize:18, marginTop:4}}>{quizScopeStatus.practiced}</div>
-                  <div style={{fontSize:11, color:'#6b6b7a', fontWeight:600}}>Practiced</div>
-                </Block>
-                <Block overrides={{Block:{style:{flex:1, background:'#fff', border: quizScopeStatus.weak > 0 ? '1px solid #fecaca' : '1px solid #e9e8f0', borderRadius:'14px', padding:'10px 8px', textAlign:'center'}}}}>
-                  <span style={{ display: 'inline-flex', padding: 6, borderRadius: 999, background: '#fef2f2' }}><Target size={16} aria-hidden="true" style={{ color: '#dc2626' }} /></span>
-                  <div style={{fontWeight:800, fontSize:18, marginTop:4, color: quizScopeStatus.weak > 0 ? '#dc2626' : '#0f0f12'}}>{quizScopeStatus.weak}</div>
-                  <div style={{fontSize:11, color:'#6b6b7a', fontWeight:600}}>Weak</div>
-                </Block>
-              </Block>
-              <Block display="flex" justifyContent="space-between" alignItems="center" marginTop="8px">
-                <LabelSmall color="#6b6b6b"><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Star size={12} aria-hidden="true" style={{ color: '#eab308' }} /> {quizScopeStatus.mastered} mastered</span></LabelSmall>
-                <LabelSmall color="#6b6b6b">{quizScopeStatus.weak > 0 ? 'Weak words appear first' : quizScopeStatus.unseen === quizScopeStatus.total ? 'Fresh scope — good luck' : 'Solid base — keep going'}</LabelSmall>
-              </Block>
-            </UberCard>
+            <div className="qz-status">
+              <div className="qz-status-head">
+                <span>Lernstand · {quizBookMeta?.label} {quizLektions.length ? quizLektions.join(', ') : 'ganzes Buch'}</span>
+                <strong>{quizScopeStatus.total} Wörter</strong>
+              </div>
+              <div className="qz-tiles">
+                <div className="qz-tile">
+                  <span className="qz-tile-ic"><Eye size={16} aria-hidden="true" /></span>
+                  <b>{quizScopeStatus.unseen}</b>
+                  <small>Neu</small>
+                </div>
+                <div className="qz-tile">
+                  <span className="qz-tile-ic" style={{ background: '#eef2ff', color: '#4f46e5' }}><Icon name="book" size={16} /></span>
+                  <b>{quizScopeStatus.practiced}</b>
+                  <small>Geübt</small>
+                </div>
+                <div className={`qz-tile ${quizScopeStatus.weak > 0 ? 'warn' : ''}`}>
+                  <span className="qz-tile-ic" style={{ background: '#fef2f2', color: '#dc2626' }}><Icon name="target" size={16} /></span>
+                  <b>{quizScopeStatus.weak}</b>
+                  <small>Schwach</small>
+                </div>
+              </div>
+              <div className="qz-status-foot">
+                <span className="qz-mastered"><Star size={12} aria-hidden="true" /> {quizScopeStatus.mastered} gemeistert</span>
+                <span>{quizScopeStatus.weak > 0 ? 'Schwache Wörter zuerst' : quizScopeStatus.unseen === quizScopeStatus.total ? 'Frischer Satz — viel Erfolg' : 'Solide Basis — weiter so'}</span>
+              </div>
+            </div>
           )}
-          <Block display="flex" gridGap="8px" marginTop="12px">
-            {quizMode === 'diktat' ? (
-              <>
-                <Button shape={SHAPE.pill} onClick={()=> startQuiz('diktat', 20)}>Start 20-Pack</Button>
-                <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz('diktat', 10)}>Start 10</Button>
-              </>
-            ) : (
-              <>
-                <Button shape={SHAPE.pill} onClick={()=> startQuiz(quizMode, 5)}>Start 5</Button>
-                <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 10)}>Start 10</Button>
-                <Button shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> startQuiz(quizMode, 20)}>Start 20</Button>
-              </>
-            )}
-          </Block>
-          <ParagraphSmall color="#9a9a9a" marginTop="8px">{quizScopeWords.length} words in {quizBookMeta?.label} {quizLektions.length? quizLektions.join(', ') : 'whole book'} • {quizScopeWords.filter(w=> weakIds.has(w.id)).length} weak • {quizScopeWords.filter(w=> w.article).length} nouns</ParagraphSmall>
+          <p className="qz-meta">{quizScopeWords.length} Wörter in {quizBookMeta?.label} {quizLektions.length ? quizLektions.join(', ') : 'ganzes Buch'} · {quizScopeWords.filter((w) => weakIds.has(w.id)).length} schwach · {quizScopeWords.filter((w) => w.article).length} Nomen</p>
           {lastQuizReport && !showQuizReport && (
-            <Block marginTop="10px">
-              <Button size={SIZE.compact} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => setShowQuizReport(true)}>
-                <BarChart3 size={14} aria-hidden="true" style={{ verticalAlign: -2, marginRight: 4 }} /> View last report • {lastQuizReport.report.correct}/{lastQuizReport.report.total} ({lastQuizReport.report.accuracy !== null ? `${lastQuizReport.report.accuracy}%` : '—'})
-              </Button>
-            </Block>
+            <button className="btn light small qz-report-btn" onClick={() => setShowQuizReport(true)}>
+              <BarChart3 size={14} aria-hidden="true" /> Auswertung ansehen · {lastQuizReport.report.correct}/{lastQuizReport.report.total} ({lastQuizReport.report.accuracy !== null ? `${lastQuizReport.report.accuracy}%` : '—'})
+            </button>
           )}
-        </UberCard>
-        <Block display="flex" flexDirection="column" gridGap="10px" marginTop="12px">
-          <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px', borderLeftWidth:'3px', borderLeftColor:'#059669'}}>
-            <ParagraphSmall margin={0}><b>Diktat-Check NEW — 20-Pack:</b> German spelling 4-choice, single words only (no article). Half the cards ask <b>“Which is CORRECT?”</b> (1 right + 3 misspelled), half ask <b>“Which is WRONG?”</b> (3 right + 1 misspelled). <b>+{QUIZ_XP.diktat} XP</b> per correct.</ParagraphSmall>
-          </UberCard>
-          <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px', borderLeftWidth:'3px', borderLeftColor:'#4f46e5'}}>
-            <ParagraphSmall margin={0}><b>4-Choice NEW:</b> German word → pick 1 of 4 English meanings. Distractors from same Lektion so you really have to know it. <b>+{QUIZ_XP.choice} XP</b> per correct. Most efficient way to earn!</ParagraphSmall>
-          </UberCard>
-          <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-            <ParagraphSmall margin={0}><b>Dictation:</b> Hear German → type exact word (<b>ä ö ü Ä Ö Ü ß</b> strict). <b>+{QUIZ_XP.dictation} XP</b>.</ParagraphSmall>
-          </UberCard>
-          <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-            <ParagraphSmall margin={0}><b>Artikel:</b> Pick <span style={{color:genderColor('der'), fontWeight:700}}>der</span> / <span style={{color:genderColor('die'), fontWeight:700}}>die</span> / <span style={{color:genderColor('das'), fontWeight:700}}>das</span>. <b>+{QUIZ_XP.artikel} XP</b>.</ParagraphSmall>
-          </UberCard>
-          <UberCard styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-            <ParagraphSmall margin={0}><b>فارسی:</b> See German → type Persian meaning exactly. <b>+{QUIZ_XP.fa} XP</b>.</ParagraphSmall>
-          </UberCard>
-        </Block>
-        <Heading $style={{fontSize:16, margin:'16px 0 8px'}}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}><Gamepad2 size={ICON_SIZES.card} aria-hidden="true" /> Games — DE ↔ EN + فارسی</span></Heading>
-        <ParagraphSmall color="#6b6b6b" margin="0 0 8px">Left side German • Right side English + فارسی. Every game uses your multi-Lektion scope.</ParagraphSmall>
-        <Block display="flex" flexDirection="column" gridGap="12px">
-          <UberCard styleOverride={{background:'linear-gradient(135deg,#4f46e5 0%,#7c3aed 50%,#a78bfa 100%)', color:'#fff', borderWidth:0, paddingTop:'16px', paddingBottom:'16px', boxShadow:'0 12px 28px rgba(79,70,229,0.28)'}} >
-            <Block display="flex" justifyContent="space-between" alignItems="center">
-              <Block>
-                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.18)', padding:'4px 8px', borderRadius:999, fontSize:12, display:'inline-flex'}}><Puzzle size={14} aria-hidden="true" /></span> Match Dash</div>
-                <div style={{fontSize:12, opacity:0.92, marginTop:4}}>DE ↔ EN+FA • 6 pairs • no spoilers</div>
-                <div style={{fontSize:11, opacity:0.78, marginTop:2}}>+{GAME_XP.matchPair}/pair + {GAME_XP.matchPerfectBonus} perfect = ~40 XP</div>
-              </Block>
-              <Button size={SIZE.compact} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#4f46e5', fontWeight:800, boxShadow:'0 4px 12px rgba(0,0,0,0.12)'}}}} onClick={()=> startQuiz('match', 6)}>Play →</Button>
-            </Block>
-          </UberCard>
-          <UberCard styleOverride={{background:'linear-gradient(135deg,#ea580c 0%,#f97316 55%,#f59e0b 100%)', color:'#fff', borderWidth:0, paddingTop:'16px', paddingBottom:'16px', boxShadow:'0 12px 28px rgba(234,88,12,0.22)'}}>
-            <Block display="flex" justifyContent="space-between" alignItems="center">
-              <Block>
-                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.18)', padding:'4px 8px', borderRadius:999, fontSize:12, display:'inline-flex'}}><Zap size={14} aria-hidden="true" /></span> Lightning Sprint</div>
-                <div style={{fontSize:12, opacity:0.92, marginTop:4}}>45s • DE → EN+FA • 2× streak</div>
-                <div style={{fontSize:11, opacity:0.78, marginTop:2}}>+{GAME_XP.sprintBase} base / correct</div>
-              </Block>
-              <Button size={SIZE.compact} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#ea580c', fontWeight:800}}}} onClick={()=> startQuiz('sprint', 12)}>Sprint →</Button>
-            </Block>
-          </UberCard>
-          <UberCard styleOverride={{background:'linear-gradient(135deg,#0f0f12 0%,#2a2a3a 55%,#4f46e5 100%)', color:'#fff', borderWidth:0, paddingTop:'16px', paddingBottom:'16px', boxShadow:'0 12px 28px rgba(15,15,18,0.22)'}}>
-            <Block display="flex" justifyContent="space-between" alignItems="center">
-              <Block>
-                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.14)', padding:'4px 8px', borderRadius:999, fontSize:12, display:'inline-flex'}}><Hammer size={14} aria-hidden="true" /></span> SatzBau — Sentence Forge</div>
-                <div style={{fontSize:12, opacity:0.92, marginTop:4}}>Rebuild the German sentence • scrambled words</div>
-                <div style={{fontSize:11, opacity:0.78, marginTop:2}}>+{GAME_XP.scramblePerWord} XP / puzzle • word order mastery</div>
-              </Block>
-              <Button size={SIZE.compact} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#0f0f12', fontWeight:800}}}} onClick={()=> startQuiz('satz', 8)}>Forge →</Button>
-            </Block>
-          </UberCard>
-          <UberCard styleOverride={{background:'linear-gradient(135deg,#059669 0%,#0ea5e9 60%,#06b6d4 100%)', color:'#fff', borderWidth:0, paddingTop:'16px', paddingBottom:'16px', boxShadow:'0 12px 28px rgba(5,150,105,0.22)'}}>
-            <Block display="flex" justifyContent="space-between" alignItems="center">
-              <Block>
-                <div style={{fontWeight:800, fontSize:15, display:'flex', alignItems:'center', gap:6}}><span style={{background:'rgba(255,255,255,0.18)', padding:'4px 8px', borderRadius:999, fontSize:12, display:'inline-flex'}}><CloudRainWind size={14} aria-hidden="true" /></span> WortSturm — Word Rain</div>
-                <div style={{fontSize:12, opacity:0.92, marginTop:4}}>6s per word • 3 lives • EN+FA choices</div>
-                <div style={{fontSize:11, opacity:0.78, marginTop:2}}>Streak multiplier • arcade panic fun</div>
-              </Block>
-              <Button size={SIZE.compact} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', color:'#059669', fontWeight:800}}}} onClick={()=> startQuiz('rain', 10)}>Drop →</Button>
-            </Block>
-          </UberCard>
-          <ParagraphSmall color="#9a9a9a">{quizScopeWords.length} words in {quizBookMeta?.label} {quizLektions.length? quizLektions.join(', ') : 'whole book'}</ParagraphSmall>
-        </Block>
-      </>
+        </section>
+
+        <section className="featured-mode">
+          <span className="mode-badge">BESTE XP-RATE</span>
+          <div className="mode-art" aria-hidden="true"><div>A</div><div>B</div><div>C</div></div>
+          <div className="mode-copy">
+            <span className="eyebrow">EMPFOHLEN</span>
+            <h2>4-Choice Sprint</h2>
+            <p>Finde die richtige Bedeutung. Schnell, fokussiert, effektiv.</p>
+            <div className="mode-meta">
+              <span>10 Fragen</span>
+              <span>~4 Min</span>
+              <span>bis +100 XP</span>
+            </div>
+            <button className="btn yellow" onClick={() => startQuiz('choice', 10)}>Starten <Icon name="arrow" size={18} /></button>
+          </div>
+        </section>
+
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">TRAININGSMODI</span>
+            <h2>Wähle deine Challenge</h2>
+          </div>
+        </div>
+        <div className="mode-grid">
+          {MODES.map((m) => (
+            <button key={m.key} className={`mode-card ${quizMode === m.key ? 'qz-on' : ''}`} onClick={() => setQuizMode(m.key)}>
+              <div className="mode-icon"><Icon name={m.icon} size={22} /></div>
+              <div><h3>{m.title}</h3><p>{m.desc}</p></div>
+              <span>{m.xp}</span>
+              <Icon name="chevron" size={18} />
+            </button>
+          ))}
+        </div>
+        <div className="qz-start-bar">
+          {quizMode === 'diktat' ? (
+            <>
+              <button className="btn dark" onClick={() => startQuiz('diktat', 20)}>20er-Pack starten</button>
+              <button className="btn light" onClick={() => startQuiz('diktat', 10)}>10er-Pack starten</button>
+            </>
+          ) : (
+            <>
+              <button className="btn dark" onClick={() => startQuiz(quizMode, 5)}>Starten · 5</button>
+              <button className="btn light" onClick={() => startQuiz(quizMode, 10)}>Starten · 10</button>
+              <button className="btn light" onClick={() => startQuiz(quizMode, 20)}>Starten · 20</button>
+            </>
+          )}
+        </div>
+
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">MODUS-INFO</span>
+            <h2>So funktioniert&apos;s</h2>
+          </div>
+        </div>
+        <div className="qz-info-grid">
+          <p className="qz-info green"><b>Diktat-Check NEW — 20-Pack:</b> German spelling 4-choice, single words only (no article). Half the cards ask <b>"Which is CORRECT?"</b> (1 right + 3 misspelled), half ask <b>"Which is WRONG?"</b> (3 right + 1 misspelled). <b>+{QUIZ_XP.diktat} XP</b> per correct.</p>
+          <p className="qz-info blue"><b>4-Choice NEW:</b> German word → pick 1 of 4 English meanings. Distractors from same Lektion so you really have to know it. <b>+{QUIZ_XP.choice} XP</b> per correct. Most efficient way to earn!</p>
+          <p className="qz-info"><b>Dictation:</b> Hear German → type exact word (<b>ä ö ü Ä Ö Ü ß</b> strict). <b>+{QUIZ_XP.dictation} XP</b>.</p>
+          <p className="qz-info"><b>Artikel:</b> Pick <span style={{ color: genderColor('der'), fontWeight: 700 }}>der</span> / <span style={{ color: genderColor('die'), fontWeight: 700 }}>die</span> / <span style={{ color: genderColor('das'), fontWeight: 700 }}>das</span>. <b>+{QUIZ_XP.artikel} XP</b>.</p>
+          <p className="qz-info"><b>فارسی:</b> See German → type Persian meaning exactly. <b>+{QUIZ_XP.fa} XP</b>.</p>
+        </div>
+
+        <section className="games-strip">
+          <div>
+            <span className="eyebrow">SPIELHALLE</span>
+            <h2>Mehr Tempo. Mehr XP.</h2>
+            <p>Match Dash · Blitzsprint · SatzBau · WortSturm</p>
+          </div>
+        </section>
+        <p className="qz-games-note">Left side German • Right side English + فارسی. Every game uses your multi-Lektion scope.</p>
+        <div className="mode-grid">
+          {GAMES.map((g) => (
+            <button key={g.key} className="mode-card" onClick={g.start}>
+              <div className="mode-icon" style={{ background: g.iconBg, color: g.iconColor }}>{g.icon}</div>
+              <div><h3>{g.title}</h3><p>{g.desc}</p></div>
+              <span>{g.xp}</span>
+              <span className="btn small light qz-cta">{g.cta} <Icon name="arrow" size={14} /></span>
+            </button>
+          ))}
+        </div>
+      </div>
     );
   }
 
   // quizStarted true
+  let topLabel = '';
+  let topProgress = 0;
+  let topTone = '';
+  let topXp = 0;
+  let topHud = [];
+  if (quizMode === 'match') {
+    topLabel = `MATCH DASH · ${matchMatched}/6 PAARE · ${matchMoves} ZÜGE`;
+    topProgress = (matchMatched / 6) * 100;
+    topTone = 'green';
+    topXp = matchXp;
+  } else if (quizMode === 'sprint') {
+    topLabel = `BLITZSPRINT · ${sprintScore.correct}/${sprintScore.total} RICHTIG · SERIE ${sprintScore.streak} (REKORD ${sprintScore.best})`;
+    topProgress = Math.max(0, Math.min(100, (sprintTime / 45) * 100));
+    topTone = sprintTime <= 10 ? '' : 'yellow';
+    topXp = sprintScore.xp;
+    topHud = [<span key="time" className={`qz-chip ${sprintTime <= 10 ? 'warn' : ''}`}>{sprintTime}s</span>];
+  } else if (quizMode === 'satz') {
+    topLabel = `SATZBAU · ${satzIdx + 1}/${satzQueue.length} · ${satzScore.correct}/${satzScore.total} RICHTIG`;
+    topProgress = satzQueue.length ? (satzIdx / satzQueue.length) * 100 : 0;
+    topXp = satzScore.xp;
+  } else if (quizMode === 'rain') {
+    topLabel = `WORTSTURM · ${rainIdx + 1}/${rainQueue.length} · ${rainScore.correct}/${rainScore.total} RICHTIG · SERIE ${rainScore.streak}`;
+    topProgress = Math.max(0, Math.min(100, (rainTime / 6) * 100));
+    topTone = rainTime <= 2 ? '' : 'blue';
+    topXp = rainScore.xp;
+    topHud = [
+      <span key="time" className={`qz-chip ${rainTime <= 2 ? 'warn' : 'blue'}`}>{rainTime}s</span>,
+      <span key="lives" className="qz-chip">
+        {[0, 1, 2].map((i) => (
+          <Heart key={i} size={14} aria-hidden="true" style={{ color: i < rainLives ? '#dc2626' : '#d4d4d8' }} fill={i < rainLives ? '#dc2626' : 'none'} />
+        ))}
+      </span>,
+    ];
+  } else {
+    topLabel = `${MODE_TOP[quizMode]} · ${quizIdx + 1} VON ${quizQueue.length} · ${quizScore.correct}/${quizScore.total} RICHTIG`;
+    topProgress = quizQueue.length ? (quizIdx / quizQueue.length) * 100 : 0;
+    topTone = quizMode === 'diktat' ? 'green' : 'yellow';
+    topXp = quizScore.xp;
+    topHud = [<span key="scope" className="qz-chip">{quizBookMeta?.label}{quizLektions.length ? ` · ${quizLektions.join(', ')}` : ' · Ganzes Buch'}</span>];
+  }
+
   return (
-    <>
-      <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-        <LabelSmall color="#6b6b6b">Quiz • {quizMode} • {quizBookMeta?.label} {quizLektions.length? quizLektions.join(', ') : 'whole book'}</LabelSmall>
-        <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{quizScore.correct}/{quizScore.total} • {quizScore.xp} XP</LabelSmall>
-      </Block>
-      {quizMode==='match' ? (
+    <div className="page quiz-play">
+      <div className="quiz-top">
+        <button onClick={exitQuiz} aria-label={exitLabel} title={exitLabel}><Icon name="close" size={20} /></button>
+        <div>
+          <span>{topLabel}</span>
+          <div className={topTone ? `progress ${topTone}` : 'progress'}><span style={{ width: `${topProgress}%` }} /></div>
+        </div>
+        <b><Icon name="bolt" size={16} /> {topXp} XP</b>
+      </div>
+      {topHud.length > 0 && <div className="qz-hud">{topHud}</div>}
+
+      {quizMode === 'match' ? (
         <>
-          <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-            <LabelSmall color="#6b6b6b">DE ↔ EN+FA • {matchMatched}/6 pairs • {matchMoves} moves</LabelSmall>
-            <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{matchXp} XP</LabelSmall>
-          </Block>
-          <div style={{display:'flex', justifyContent:'space-between', marginTop:10, padding:'0 2px', fontSize:10, fontWeight:800, letterSpacing:1, color:'#9aa0b2'}}>
-            <span style={{flex:1, textAlign:'center'}}>DEUTSCH — LEFT</span>
-            <span style={{flex:1, textAlign:'center'}}>EN + فارسی — RIGHT</span>
+          <div className="qz-board-labels">
+            <span>DEUTSCH — LINKS</span>
+            <span>EN + فارسی — RECHTS</span>
           </div>
-          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginTop:8, alignItems:'start'}}>
-            {/* LEFT — German */}
-            <div style={{display:'flex', flexDirection:'column', gap:0, minWidth:0}}>
-              {matchBoard.filter(t=> t.type==='de').map(t=> {
+          <div className="qz-board">
+            <div className="qz-col">
+              {matchBoard.filter((t) => t.type === 'de').map((t) => {
                 const isFading = matchFadingIds?.has(t.uid);
                 const isShake = matchShakeIds?.has(t.uid);
                 const isWrong = matchWrongIds?.has(t.uid);
                 const isMatched = t.matched;
                 const isHidden = matchHiddenIds?.has(t.uid);
                 const collapsed = isHidden;
-                const borderColor = isWrong ? '#dc2626' : isMatched ? '#16a34a' : t.flipped ? '#0f0f12' : '#1a1a20';
-                const bg = isHidden ? '#e6f9ed' : isFading ? '#e6f9ed' : isMatched ? '#e6f9ed' : isWrong ? '#fef2f2' : t.flipped ? '#ffffff' : '#0f0f12';
+                const borderColor = isWrong ? '#dc2626' : isMatched ? '#16a34a' : t.flipped ? '#181816' : '#1a1a20';
+                const bg = isHidden ? '#e6f9ed' : isFading ? '#e6f9ed' : isMatched ? '#e6f9ed' : isWrong ? '#fef2f2' : t.flipped ? '#ffffff' : '#181816';
                 const isGreen = isMatched || isFading || isHidden;
                 return (
-                <div key={t.uid} onClick={()=> handleMatchPick(t.uid)} className={`gs-match-card ${isFading ? 'gs-fading' : ''} ${isShake ? 'gs-shake' : ''} ${collapsed ? 'gs-matched-collapsed' : isMatched ? 'gs-matched' : ''}`} style={{minHeight: collapsed ? 0 : 84, height: collapsed ? 0 : 84, background: bg, border: collapsed ? '0px solid transparent' : `1.8px solid ${borderColor}`, borderRadius: collapsed ? 0 : 16, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding: collapsed ? '0px 8px' : '10px 8px', margin: collapsed ? '0px' : '0 0 10px 0', cursor: (isMatched || isFading || isHidden) ? 'default' : 'pointer', textAlign:'center', opacity: (isFading || isHidden) ? 0 : 1, transform: isShake ? undefined : isFading ? 'scale(0.95)' : t.flipped ? 'scale(1.02)' : 'scale(1)', transition:'opacity 0.38s cubic-bezier(0.2,0.8,0.2,1), transform 0.38s cubic-bezier(0.2,0.8,0.2,1), border-color 0.2s, background-color 0.2s, height 0.35s cubic-bezier(0.2,0.8,0.2,1), min-height 0.35s ease, margin 0.35s ease, padding 0.35s ease, border-width 0.35s ease', boxShadow: t.flipped && !isMatched && !isHidden ? '0 8px 20px rgba(15,15,18,0.10)': 'none', color: !t.flipped && !isWrong && !isMatched && !isHidden ? '#fff' : t.word.article? genderColor(t.word.article):'#0f0f12', overflow:'hidden', pointerEvents: (isMatched || isFading || isHidden) ? 'none' : 'auto'}}>
-                    <div style={{fontWeight:800, fontSize:14, lineHeight:1.2, color: (t.flipped || isWrong || isGreen) ? (t.word.article? genderColor(t.word.article):'#0f0f12') : '#fff'}}>{t.label}</div>
-                    <div style={{fontSize:10, color: (t.flipped || isWrong || isGreen) ? '#9aa0b2' : 'rgba(255,255,255,0.72)', marginTop: collapsed ? 0 : 3}}>{collapsed ? '' : t.sub}</div>
-                    <div style={{fontSize:9, fontWeight:800, letterSpacing:0.6, color: (t.flipped || isWrong || isGreen) ? '#0f0f12' : 'rgba(255,255,255,0.9)', marginTop: collapsed ? 0 : 4, background: (t.flipped || isWrong || isGreen) ? '#f7f7fb' : 'rgba(255,255,255,0.16)', padding:'2px 6px', borderRadius:999, display: collapsed ? 'none' : 'block'}}>DE</div>
-                </div>
-              )})}
-            </div>
-            {/* RIGHT — EN+FA */}
-            <div style={{display:'flex', flexDirection:'column', gap:0, minWidth:0}}>
-              {matchBoard.filter(t=> t.type==='tr').map(t=> {
-                const isFading = matchFadingIds?.has(t.uid);
-                const isShake = matchShakeIds?.has(t.uid);
-                const isWrong = matchWrongIds?.has(t.uid);
-                const isMatched = t.matched;
-                const isHidden = matchHiddenIds?.has(t.uid);
-                const collapsed = isHidden;
-                const borderColor = isWrong ? '#dc2626' : isMatched ? '#16a34a' : t.flipped ? '#0f0f12' : '#e9e8f0';
-                const bg = isHidden ? '#e6f9ed' : isFading ? '#e6f9ed' : isMatched ? '#e6f9ed' : isWrong ? '#fef2f2' : t.flipped ? '#ffffff' : '#f7f7fb';
-                const isGreen = isMatched || isFading || isHidden;
-                return (
-                <div key={t.uid} onClick={()=> handleMatchPick(t.uid)} className={`gs-match-card ${isFading ? 'gs-fading' : ''} ${isShake ? 'gs-shake' : ''} ${collapsed ? 'gs-matched-collapsed' : isMatched ? 'gs-matched' : ''}`} style={{minHeight: collapsed ? 0 : 84, height: collapsed ? 0 : 84, background: bg, border: collapsed ? '0px solid transparent' : `1.8px solid ${borderColor}`, borderRadius: collapsed ? 0 : 16, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding: collapsed ? '0px 8px' : '10px 8px', margin: collapsed ? '0px' : '0 0 10px 0', cursor: (isMatched || isFading || isHidden) ? 'default' : 'pointer', textAlign:'center', opacity: (isFading || isHidden) ? 0 : 1, transform: isShake ? undefined : isFading ? 'scale(0.95)' : t.flipped ? 'scale(1.02)' : 'scale(1)', transition:'opacity 0.38s cubic-bezier(0.2,0.8,0.2,1), transform 0.38s cubic-bezier(0.2,0.8,0.2,1), border-color 0.2s, background-color 0.2s, height 0.35s cubic-bezier(0.2,0.8,0.2,1), min-height 0.35s ease, margin 0.35s ease, padding 0.35s ease, border-width 0.35s ease', boxShadow: t.flipped && !isMatched && !isHidden ? '0 8px 20px rgba(15,15,18,0.10)': '0 2px 8px rgba(15,15,18,0.04)', color:'#0f0f12', overflow:'hidden', pointerEvents: (isMatched || isFading || isHidden) ? 'none' : 'auto'}}>
-                    <div style={{fontWeight:700, fontSize:12, lineHeight:1.2}}>{collapsed ? '' : t.label}</div>
-                    <div style={{fontSize:11, color:'#6b6b7a', marginTop: collapsed ? 0 : 2, fontFamily:'IRANSans, sans-serif', direction:'rtl', display: collapsed ? 'none' : 'block'}}>{t.sub}</div>
-                    <div style={{fontSize:9, color:'#9aa0b2', marginTop: collapsed ? 0 : 2, display: collapsed ? 'none' : 'block'}}>{t.sub2}</div>
-                    <div style={{fontSize:9, fontWeight:800, letterSpacing:0.6, color:'#4f46e5', marginTop: collapsed ? 0 : 4, background:'#eef2ff', padding:'2px 6px', borderRadius:999, display: collapsed ? 'none' : 'block'}}>EN+FA</div>
-                </div>
-              )})}
-            </div>
-          </div>
-          {matchDone && (
-            <UberCard styleOverride={{marginTop:'12px', textAlign:'center', backgroundColor:'#f0fdf4', borderColor:'#bbf7d0'}}>
-              <div style={{ display: 'flex', justifyContent: 'center' }}><PartyPopper size={28} aria-hidden="true" style={{ color: '#16a34a' }} /></div>
-              <div style={{fontWeight:800, marginTop:4}}>Match complete! {matchMatched}/6 in {matchMoves} moves</div>
-              <div style={{fontSize:13, color:'#16a34a', marginTop:4}}>+{matchXp} XP earned</div>
-              <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
-                <Button shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setMatchStarted(false); }}>Done</Button>
-                <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={startMatchGame}>Play again</Button>
-              </Block>
-            </UberCard>
-          )}
-          {!matchDone && <Block marginTop="12px" display="flex" justifyContent="center"><Button kind={KIND.secondary} size={SIZE.mini} shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setMatchStarted(false); }}>Exit game</Button></Block>}
-        </>
-      ) : quizMode==='sprint' ? (
-        <>
-          <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-            <LabelSmall color="#6b6b6b"><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Zap size={12} aria-hidden="true" /> Sprint • {sprintScore.correct}/{sprintScore.total} • streak {sprintScore.streak} (best {sprintScore.best})</span></LabelSmall>
-            <Block display="flex" gridGap="8px" alignItems="center">
-              <span style={{background: sprintTime<=10 ? '#fef2f2' : '#fff7ed', color: sprintTime<=10 ? '#dc2626' : '#ea580c', padding:'4px 8px', borderRadius:999, fontWeight:800, fontSize:12, border:'1px solid #ffedd5'}}>{sprintTime}s</span>
-              <span style={{background:'#000', color:'#fff', padding:'4px 8px', borderRadius:999, fontWeight:800, fontSize:12}}>{sprintScore.xp} XP</span>
-            </Block>
-          </Block>
-          <div style={{height:6, background:'#eee', borderRadius:999, overflow:'hidden'}}><div style={{height:'100%', width:`${(sprintTime/45)*100}%`, background: sprintTime<=10 ? '#dc2626' : '#ea580c', transition:'width 1s linear'}}/></div>
-          {!sprintActive && sprintTime===0 ? (
-            <UberCard styleOverride={{marginTop:'12px', textAlign:'center'}}>
-              <div style={{ display: 'flex', justifyContent: 'center' }}><Timer size={28} aria-hidden="true" style={{ color: '#ea580c' }} /></div>
-              <div style={{fontWeight:800, marginTop:6}}>Time&apos;s up!</div>
-              <div style={{fontSize:13, color:'#6b6b6b', marginTop:4}}>{sprintScore.correct}/{sprintScore.total} correct • best streak {sprintScore.best} • +{sprintScore.xp} XP</div>
-              <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
-                <Button shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setSprintActive(false); }}>Done</Button>
-                <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> startSprintGame(12)}>Again</Button>
-              </Block>
-            </UberCard>
-          ) : sprintQueue[sprintIdx] ? (
-            <UberCard styleOverride={{marginTop:'12px', minHeight:'260px'}}>
-              <Block textAlign="center">
-                <LabelSmall color="#6b6b6b">DE → EN + فارسی — pick the right translation</LabelSmall>
-                <div style={{fontSize:26, fontWeight:800, marginTop:8, color: sprintQueue[sprintIdx].word.article ? genderColor(sprintQueue[sprintIdx].word.article): '#0f0f12'}}>{sprintQueue[sprintIdx].word.article ? `${sprintQueue[sprintIdx].word.article} ` : ''}{sprintQueue[sprintIdx].word.german}</div>
-                <div style={{fontSize:11, color:'#9a9a9a'}}>{sprintQueue[sprintIdx].word.lektion} • {sprintQueue[sprintIdx].word.plural ? `Pl: ${sprintQueue[sprintIdx].word.plural}`: ''}</div>
-                {sprintFeedback ? (
-                  <Block marginTop="12px" padding="10px" backgroundColor={sprintFeedback.correct? '#dcfce7':'#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
-                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{sprintFeedback.correct ? <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> : <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} />}{sprintFeedback.correct ? `+${sprintFeedback.xp} XP (×${(1+ sprintScore.streak*0.15).toFixed(2)})` : `was "${typeof sprintFeedback.expected==='object'? sprintFeedback.expected.en : sprintFeedback.expected}" • ${typeof sprintFeedback.expected==='object'? sprintFeedback.expected.fa : ''}`}</span></LabelSmall>
-                  </Block>
-                ) : (
-                  <Block display="grid" gridGap="8px" marginTop="14px" overrides={{Block:{style:{gridTemplateColumns:'1fr 1fr'}}}}>
-                    {sprintOptions.map((opt,i)=> {
-                      const en = typeof opt==='object'? opt.en : opt;
-                      const fa = typeof opt==='object'? opt.fa : '';
-                      return (
-                      <Button key={en+i} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{backgroundColor:'#fff', borderColor:'#e9e8f0', borderWidth:'1.5px', fontWeight:600, minHeight:'56px', whiteSpace:'normal', lineHeight:1.2, flexDirection:'column', paddingTop:'8px', paddingBottom:'8px'}}}} onClick={()=> handleSprintPick(opt)}>
-                        <span style={{fontWeight:700, fontSize:12}}>{en}</span>
-                        {fa && <span style={{fontFamily:'IRANSans', direction:'rtl', fontSize:11, color:'#6b6b7a', marginTop:2}}>{fa}</span>}
-                      </Button>
-                      );
-                    })}
-                  </Block>
-                )}
-              </Block>
-            </UberCard>
-          ) : null}
-          {sprintActive && <Block marginTop="12px" display="flex" justifyContent="center"><Button kind={KIND.secondary} size={SIZE.mini} shape={SHAPE.pill} onClick={()=> { setSprintActive(false); setQuizStarted(false); }}>Exit sprint</Button></Block>}
-        </>
-      ) : quizMode==='satz' ? (
-        <>
-          <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-            <LabelSmall color="#6b6b6b">Forge {satzIdx+1}/{satzQueue.length} • {satzScore.correct}/{satzScore.total} • {satzScore.xp} XP</LabelSmall>
-            <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setSatzActive(false); setQuizStarted(false); }}>Exit</Button>
-          </Block>
-          {satzQueue[satzIdx] && (
-            <UberCard styleOverride={{marginTop:'8px'}}>
-              <Block textAlign="center">
-                <LabelSmall color="#6b6b6b">Rebuild the sentence — tap words in order</LabelSmall>
-                <div style={{fontSize:13, color:'#6b6b6b', marginTop:6, fontStyle:'italic'}}>Hint: {satzQueue[satzIdx].hintEn} <span style={{fontFamily:'IRANSans', direction:'rtl'}}>— {satzQueue[satzIdx].hintFa}</span> • {satzQueue[satzIdx].word.lektion}</div>
-                <Block marginTop="8px" display="flex" justifyContent="center" gridGap="6px">
-                  <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(satzQueue[satzIdx].source || satzQueue[satzIdx].word.example || satzQueue[satzIdx].tokens.join(' '))}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={14} aria-hidden="true" /> Play sentence</span></Button>
-                  <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); setSatzFeedback(null); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><RotateCcw size={14} aria-hidden="true" /> Reset</span></Button>
-                </Block>
-                <div style={{minHeight:56, background:'#f7f7fb', border:'1.5px dashed #e9e8f0', borderRadius:14, padding:10, marginTop:12, display:'flex', flexWrap:'wrap', gap:6, justifyContent:'center', alignItems:'center'}}>
-                  {satzBuilt.length===0 ? <span style={{color:'#9a9a9a', fontSize:12}}>Tap words below…</span> : satzBuilt.map((t,i)=> {
-                    const isCorrectPos = satzFeedback && !satzFeedback.correct && satzFeedback.perPos ? satzFeedback.perPos[i] : null;
-                    const bg = satzFeedback && !satzFeedback.correct ? (isCorrectPos ? '#dcfce7' : '#fee2e2') : '#0f0f12';
-                    const color = satzFeedback && !satzFeedback.correct ? (isCorrectPos ? '#16a34a' : '#dc2626') : '#fff';
-                    const border = satzFeedback && !satzFeedback.correct ? (isCorrectPos ? '1.5px solid #16a34a' : '1.5px solid #dc2626') : 'none';
-                    return (
-                    <span key={i} onClick={()=> handleSatzRemove(i)} style={{background:bg, color, padding:'6px 10px', borderRadius:999, fontWeight:700, fontSize:13, cursor:'pointer', border, transition:'all 0.2s'}}>{t} ×</span>
-                  )})}
-                </div>
-                <Block display="flex" gridGap="6px" marginTop="12px" overrides={{Block:{style:{flexWrap:'wrap', justifyContent:'center'}}}}>
-                  {satzPool.map((tok,i)=> (
-                    <Button key={tok+i} size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{background:'#fff', borderColor:'#e9e8f0', fontWeight:700}}}} onClick={()=> handleSatzPick(tok,i)}>{tok}</Button>
-                  ))}
-                </Block>
-                {satzFeedback?.correct ? (
-                  <Block marginTop="12px" padding="10px" backgroundColor={'#dcfce7'} overrides={{Block:{style:{borderRadius:12}}}}>
-                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> Perfect! +{satzFeedback.xp} XP — “{satzFeedback.expected}”</span></LabelSmall>
-                  </Block>
-                ) : satzFeedback && !satzFeedback.correct ? (
-                  <Block marginTop="12px" padding="10px" backgroundColor={'#fef2f2'} overrides={{Block:{style:{borderRadius:12}}}}>
-                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} /> Not quite — correct positions in <span style={{color:'#16a34a', fontWeight:800}}>green</span>, wrong in <span style={{color:'#dc2626', fontWeight:800}}>red</span>. Fix the red ones and try again.</span></LabelSmall>
-                    <div style={{marginTop:6, fontSize:12, color:'#6b6b6b'}}>You: “{satzFeedback.built?.join(' ') || satzBuilt.join(' ')}”</div>
-                    <div style={{marginTop:4, fontSize:13, fontWeight:700, color:'#0f0f12'}}>Correct: “{satzFeedback.expected}”</div>
-                    <div style={{marginTop:6, fontSize:11, color:'#9aa0b2'}}>Tap red word to remove it, then pick correct word.</div>
-                  </Block>
-                ) : null}
-                {!satzFeedback?.correct && (
-                  <Button shape={SHAPE.pill} disabled={satzBuilt.length===0} onClick={checkSatz} overrides={{BaseButton:{style:{marginTop:'14px', width:'100%', backgroundColor: satzFeedback && !satzFeedback.correct ? '#dc2626' : '#0f0f12'}}}}>{satzFeedback && !satzFeedback.correct ? 'Try again →' : 'Check'}</Button>
-                )}
-                {satzFeedback && !satzFeedback.correct && (
-                  <Block display="flex" gridGap="6px" marginTop="8px">
-                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); setSatzFeedback(null); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><RotateCcw size={14} aria-hidden="true" /> Reset</span></Button>
-                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzBuilt([...satzQueue[satzIdx].tokens]); setSatzPool([]); setSatzFeedback(null); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Eye size={14} aria-hidden="true" /> Show answer</span></Button>
-                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{flex:1}}}} onClick={()=> { setSatzFeedback(null); if (satzIdx+1>=satzQueue.length){ setSatzActive(false); setQuizStarted(false);} else { const ni=satzIdx+1; setSatzIdx(ni); setSatzBuilt([]); setSatzPool(satzQueue[ni].shuffled); } }}>Skip →</Button>
-                  </Block>
-                )}
-              </Block>
-            </UberCard>
-          )}
-          {!satzActive && satzScore.total===satzQueue.length && (
-            <UberCard styleOverride={{marginTop:'12px', textAlign:'center', background:'#f0fdf4', borderColor:'#bbf7d0'}}>
-              <div style={{ display: 'flex', justifyContent: 'center' }}><PartyPopper size={28} aria-hidden="true" style={{ color: '#16a34a' }} /></div>
-              <div style={{fontWeight:800, marginTop:6}}>Forge complete! {satzScore.correct}/{satzScore.total} • +{satzScore.xp} XP</div>
-              <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
-                <Button shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setSatzActive(false); }}>Done</Button>
-                <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> startSatzGame(8)}>Again</Button>
-              </Block>
-            </UberCard>
-          )}
-        </>
-      ) : quizMode==='rain' ? (
-        <>
-          <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-            <LabelSmall color="#6b6b6b">Sturm {rainIdx+1}/{rainQueue.length} • {rainScore.correct}/{rainScore.total} • streak {rainScore.streak}</LabelSmall>
-            <Block display="flex" gridGap="6px" alignItems="center">
-              <span style={{background: rainTime<=2 ? '#fef2f2':'#f0fdf4', color: rainTime<=2?'#dc2626':'#059669', padding:'4px 8px', borderRadius:999, fontWeight:800, fontSize:12}}>{rainTime}s</span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>{[0,1,2].map((i) => (<Heart key={i} size={14} aria-hidden="true" style={{ color: i < rainLives ? '#dc2626' : '#d4d4d8' }} fill={i < rainLives ? '#dc2626' : 'none'} />))}</span>
-              <span style={{background:'#0f0f12', color:'#fff', padding:'4px 8px', borderRadius:999, fontWeight:800, fontSize:12}}>{rainScore.xp} XP</span>
-            </Block>
-          </Block>
-          <div style={{height:6, background:'#e9e8f0', borderRadius:999, overflow:'hidden'}}><div style={{height:'100%', width:`${(rainTime/6)*100}%`, background: rainTime<=2? '#dc2626':'#0ea5e9', transition:'width 1s linear'}}/></div>
-          {!rainActive && rainLives<=0 ? (
-            <UberCard styleOverride={{marginTop:'12px', textAlign:'center'}}>
-              <div style={{ display: 'flex', justifyContent: 'center' }}><Skull size={28} aria-hidden="true" style={{ color: '#6b6b7a' }} /></div>
-              <div style={{fontWeight:800, marginTop:6}}>Storm over!</div>
-              <div style={{fontSize:13, color:'#6b6b6b', marginTop:4}}>{rainScore.correct}/{rainScore.total} correct • best streak {rainScore.best} • +{rainScore.xp} XP</div>
-              <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
-                <Button shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setRainActive(false); }}>Done</Button>
-                <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> startRainGame(10)}>Try again</Button>
-              </Block>
-            </UberCard>
-          ) : rainQueue[rainIdx] ? (
-            <UberCard styleOverride={{marginTop:'12px', minHeight:'260px', background: 'linear-gradient(180deg,#f7fdff 0%,#ffffff 100%)'}}>
-              <Block textAlign="center">
-                <div style={{fontSize:11, letterSpacing:1, color:'#0ea5e9', fontWeight:800}}>WORTSTURM • FALLING WORD</div>
-                <div style={{marginTop:8, display:'inline-block', background:'linear-gradient(135deg,#0f0f12 0%,#1a1a2e 100%)', color:'#fff', padding:'12px 18px', borderRadius:16, fontWeight:800, fontSize:22, boxShadow:'0 8px 20px rgba(15,15,18,0.18)', animation:'gs-float 1.2s ease-in-out infinite'}}>{rainQueue[rainIdx].word.article? `${rainQueue[rainIdx].word.article} `:''}{rainQueue[rainIdx].word.german}</div>
-                <div style={{fontSize:11, color:'#9aa0b2', marginTop:6}}>{rainQueue[rainIdx].word.lektion} • {rainQueue[rainIdx].word.plural? `Pl: ${rainQueue[rainIdx].word.plural}`: ''}</div>
-                {rainFeedback ? (
-                  <Block marginTop="12px" padding="10px" backgroundColor={rainFeedback.correct? '#dcfce7':'#fef2f2'} overrides={{Block:{style:{borderRadius:12}}}}>
-                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{rainFeedback.correct ? <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> : rainFeedback.timeout ? <Timer size={14} aria-hidden="true" style={{ color: '#ea580c' }} /> : <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} />}{rainFeedback.correct? `+${rainFeedback.xp} XP` : rainFeedback.timeout? `Time! was "${typeof rainFeedback.expected==='object'? rainFeedback.expected.en : rainFeedback.expected}"` : `was "${typeof rainFeedback.expected==='object'? rainFeedback.expected.en : rainFeedback.expected}" • ${typeof rainFeedback.expected==='object'? rainFeedback.expected.fa : ''}`}</span></LabelSmall>
-                  </Block>
-                ) : (
-                  <Block display="grid" gridGap="8px" marginTop="14px" overrides={{Block:{style:{gridTemplateColumns:'1fr'}}}}>
-                    {rainOptions.map((opt,i)=> {
-                      const en=typeof opt==='object'?opt.en:opt; const fa=typeof opt==='object'?opt.fa:'';
-                      return (
-                        <Button key={en+i} kind={KIND.secondary} shape={SHAPE.pill} overrides={{BaseButton:{style:{background:'#fff', borderColor:'#e9e8f0', borderWidth:'1.5px', fontWeight:700, minHeight:'52px', justifyContent:'space-between', paddingLeft:'16px', paddingRight:'16px'}}}} onClick={()=> handleRainPick(opt)}>
-                          <span style={{fontWeight:700}}>{en}</span>
-                          <span style={{fontFamily:'IRANSans', direction:'rtl', color:'#6b6b7a', fontSize:12}}>{fa}</span>
-                        </Button>
-                      )
-                    })}
-                  </Block>
-                )}
-              </Block>
-            </UberCard>
-          ) : null}
-          {rainActive && <Block marginTop="12px" display="flex" justifyContent="center"><Button kind={KIND.secondary} size={SIZE.mini} shape={SHAPE.pill} onClick={()=> { setRainActive(false); setQuizStarted(false); }}>Exit storm</Button></Block>}
-        </>
-      ) : quizMode==='diktat' ? (
-      <>
-      <ProgressBar value={quizQueue.length ? (quizIdx/quizQueue.length)*100 : 0} overrides={{ BarProgress:{style:{backgroundColor:'#059669'}}, BarContainer:{style:{backgroundColor:'#eee', height:'4px', borderRadius:'999px'}}, Bar:{style:{height:'4px'}} }} />
-      {currentQuizWord && (
-        <UberCard styleOverride={{marginTop:'12px', minHeight:'280px'}}>
-          <Block textAlign="center">
-            <LabelSmall color="#059669">{diktatKind === 'find-error' ? 'DIKTAT-CHECK — Welches ist FALSCH geschrieben?' : 'DIKTAT-CHECK — Welches ist RICHTIG geschrieben?'}</LabelSmall>
-            <div style={{fontSize:11, color:'#9a9a9a', marginTop:2}}>Frage {quizIdx + 1}/{quizQueue.length} • Einzelwort • ohne Artikel • {currentQuizWord.lektion}</div>
-            <div className={`gs-question ${questionFade ? 'gs-question-fading' : ''}`} style={{transition:'opacity 320ms ease'}}>
-              {diktatKind === 'find-correct' ? (
-                <>
-                  <div style={{fontSize:15, fontWeight:700, marginTop:8, color:'#0f0f12'}}>{diktatHint?.en || currentQuizWord.meaning_en || currentQuizWord.english}</div>
-                  {diktatHint?.fa && <div style={{fontFamily:'IRANSans', direction:'rtl', fontSize:12, color:'#6b6b7a'}}>{diktatHint.fa}</div>}
-                  <Block marginTop="8px"><Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(diktatCorrect || currentQuizWord.german)}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={14} aria-hidden="true" /> Anhören</span></Button></Block>
-                </>
-              ) : (
-                <div style={{fontSize:13, color:'#6b6b6b', marginTop:8}}>3 sind richtig geschrieben — 1 hat einen Fehler. Finde den Fehler!</div>
-              )}
-            </div>
-            <div key={choiceAnimKey} className={`gs-choice-grid ${choiceTransition==='entering' ? 'gs-choice-entering' : ''} ${choiceTransition==='exiting' ? 'gs-choice-exiting' : ''} ${choiceTransition==='returning' ? 'gs-choice-returning' : ''}`} style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px', marginTop:'14px'}}>
-              {(diktatOptions || []).map((opt,i)=> {
-                const de = typeof opt === 'object' ? (opt.de || opt.text || opt.en) : opt;
-                const isCorrect = choiceCorrectLocked && diktatCorrect ? de === diktatCorrect : false;
-                const isEliminated = choiceEliminated ? choiceEliminated.has(de) : false;
-                const isLocked = !!choiceCorrectLocked;
-                const isLeft = i % 2 === 0;
-                let bg = '#fff';
-                let borderColor = '#e9e8f0';
-                let color = '#0f0f12';
-                let opacity = 1;
-                let pointerEvents = 'auto';
-                let transform = undefined;
-                let boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
-                if (isLocked) {
-                  if (isCorrect) {
-                    bg = '#dcfce7';
-                    borderColor = '#16a34a';
-                    boxShadow = '0 4px 12px rgba(22,163,74,0.18)';
-                  } else {
-                    bg = '#f3f3f3';
-                    borderColor = '#e5e5e5';
-                    color = '#9aa0b2';
-                    opacity = 0.52;
-                    pointerEvents = 'none';
-                  }
-                } else if (isEliminated) {
-                  bg = '#f1f1f3';
-                  borderColor = '#e0e0e6';
-                  color = '#9aa0b2';
-                  opacity = 0.48;
-                  pointerEvents = 'none';
-                }
-                if (choiceTransition==='exiting') {
-                  transform = isLeft ? 'translateX(-130%)' : 'translateX(130%)';
-                  opacity = 0;
-                }
-                const isReturning = choiceTransition==='returning';
-                const isEntering = choiceTransition==='entering';
-                const animDelay = (isEntering || isReturning || choiceTransition==='idle') ? `${i*65}ms` : '0ms';
-                return (
-                  <button
-                    key={de+'-'+i+'-'+choiceAnimKey}
-                    onClick={()=> handleDiktatSelect && handleDiktatSelect(de)}
-                    disabled={isLocked || isEliminated || choiceTransition==='exiting' || isReturning}
-                    className={`gs-choice-tile ${isCorrect && isLocked ? 'gs-choice-correct' : ''} ${isEliminated ? 'gs-choice-eliminated' : ''} ${isEntering ? 'gs-choice-enter' : ''} ${isReturning ? (isLeft ? 'gs-choice-return-left' : 'gs-choice-return-right') : ''}`}
-                    style={{
-                      backgroundColor: bg,
-                      color,
-                      border: `1.8px solid ${borderColor}`,
-                      borderRadius:'16px',
-                      minHeight:'64px',
-                      padding:'10px',
-                      fontWeight:800,
-                      fontSize:17,
-                      display:'flex',
-                      alignItems:'center',
-                      justifyContent:'center',
-                      cursor: (isLocked || isEliminated || choiceTransition==='exiting' || isReturning) ? 'default' : 'pointer',
-                      opacity: isReturning ? undefined : opacity,
-                      transform: isReturning ? undefined : transform,
-                      transition: choiceTransition==='exiting' ? 'transform 380ms cubic-bezier(0.4,0,0.2,1), opacity 280ms ease, background-color 200ms, border-color 200ms' : 'background-color 200ms, border-color 200ms, opacity 200ms, transform 200ms',
-                      boxShadow,
-                      animationDelay: animDelay,
-                      pointerEvents,
-                      lineHeight:1.2,
-                      width:'100%',
-                    }}
-                  >
-                    {de}
-                  </button>
+                  <div key={t.uid} onClick={() => handleMatchPick(t.uid)} className={`qz-match-card ${isFading ? 'qz-fading' : ''} ${isShake ? 'qz-shake' : ''} ${collapsed ? 'qz-matched-collapsed' : isMatched ? 'qz-matched' : ''}`} style={{ minHeight: collapsed ? 0 : 84, height: collapsed ? 0 : 84, background: bg, border: collapsed ? '0px solid transparent' : `1.8px solid ${borderColor}`, borderRadius: collapsed ? 0 : 16, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: collapsed ? '0px 8px' : '10px 8px', margin: collapsed ? '0px' : '0 0 10px 0', cursor: (isMatched || isFading || isHidden) ? 'default' : 'pointer', textAlign: 'center', opacity: (isFading || isHidden) ? 0 : 1, transform: isShake ? undefined : isFading ? 'scale(0.95)' : t.flipped ? 'scale(1.02)' : 'scale(1)', transition: 'opacity 0.38s cubic-bezier(0.2,0.8,0.2,1), transform 0.38s cubic-bezier(0.2,0.8,0.2,1), border-color 0.2s, background-color 0.2s, height 0.35s cubic-bezier(0.2,0.8,0.2,1), min-height 0.35s ease, margin 0.35s ease, padding 0.35s ease, border-width 0.35s ease', boxShadow: t.flipped && !isMatched && !isHidden ? '0 8px 20px rgba(24,24,22,0.10)' : 'none', color: !t.flipped && !isWrong && !isMatched && !isHidden ? '#fff' : t.word.article ? genderColor(t.word.article) : '#181816', overflow: 'hidden', pointerEvents: (isMatched || isFading || isHidden) ? 'none' : 'auto' }}>
+                    <div style={{ fontWeight: 800, fontSize: 14, lineHeight: 1.2, color: (t.flipped || isWrong || isGreen) ? (t.word.article ? genderColor(t.word.article) : '#181816') : '#fff' }}>{t.label}</div>
+                    <div style={{ fontSize: 10, color: (t.flipped || isWrong || isGreen) ? '#9aa0b2' : 'rgba(255,255,255,0.72)', marginTop: collapsed ? 0 : 3 }}>{collapsed ? '' : t.sub}</div>
+                    <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: 0.6, color: (t.flipped || isWrong || isGreen) ? '#181816' : 'rgba(255,255,255,0.9)', marginTop: collapsed ? 0 : 4, background: (t.flipped || isWrong || isGreen) ? '#f7f7fb' : 'rgba(255,255,255,0.16)', padding: '2px 6px', borderRadius: 999, display: collapsed ? 'none' : 'block' }}>DE</div>
+                  </div>
                 );
               })}
             </div>
-            {choiceCorrectLocked && (
-              <Block marginTop="12px" padding="10px" backgroundColor="#dcfce7" overrides={{Block:{style:{borderRadius:'12px'}}}}>
-                <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} />{diktatKind === 'find-error' ? `Fehler gefunden! Richtig: "${currentQuizWord.german}"` : `Richtig: "${diktatCorrect}"`} +{QUIZ_XP.diktat} XP</span></LabelSmall>
-                {diktatKind === 'find-error'
-                  ? <div style={{fontSize:12, color:'#6b6b6b', marginTop:2}}>{currentQuizWord.meaning_en || currentQuizWord.english || ''}</div>
-                  : <div style={{fontSize:12, color:'#6b6b6b', marginTop:2}}>{currentQuizWord.lektion} • {currentQuizWord.meaning_en || currentQuizWord.english || ''}</div>}
-              </Block>
-            )}
-          </Block>
-        </UberCard>
-      )}
-      <Block marginTop="12px" display="flex" justifyContent="center">
-        <Button kind={KIND.secondary} size={SIZE.mini} shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setQuizFeedback && setQuizFeedback(null); }}>Exit quiz</Button>
-      </Block>
-      </>
-      ) : (
-      <>
-      <ProgressBar value={quizQueue.length ? (quizIdx/quizQueue.length)*100 : 0} overrides={{ BarProgress:{style:{backgroundColor:'#000'}}, BarContainer:{style:{backgroundColor:'#eee', height:'4px', borderRadius:'999px'}}, Bar:{style:{height:'4px'}} }} />
-      {currentQuizWord && (
-        <UberCard styleOverride={{marginTop:'12px', minHeight:'280px'}}>
-          {(quizMode==='artikel' || (quizMode==='mixed' && currentQuizWord.article && quizIdx %2===0)) ? (
-            <Block textAlign="center">
-              <LabelSmall color="#6b6b6b">ARTIKEL — Wähle den Artikel</LabelSmall>
-              <div style={{fontSize:28, fontWeight:800, marginTop:8}}>{currentQuizWord.german} <span style={{fontWeight:400, color:'#6b6b6b', fontSize:14}}>- {currentQuizWord.meaning_en}</span></div>
-              <div style={{fontSize:12, color:'#9a9a9a', marginTop:4, fontFamily:'IRANSans', direction:'rtl'}}>{currentQuizWord.meaning_fa}</div>
-              <div style={{fontSize:12, color:'#9a9a9a', marginTop:4}}>{currentQuizWord.lektion} • {currentQuizWord.example}</div>
-              {!quizFeedback ? (
-                <Block display="flex" gridGap="8px" marginTop="16px" justifyContent="center">
-                  {['der','die','das'].map(a=>(
-                    <Button key={a} shape={SHAPE.pill} kind={quizArtikelChoice===a?KIND.primary:KIND.secondary} onClick={()=> setQuizArtikelChoice(a)} overrides={{BaseButton:{style:{flex:1, backgroundColor: quizArtikelChoice===a ? genderColor(a) : undefined, borderColor: genderColor(a)}}}}>{a}</Button>
-                  ))}
-                </Block>
-              ) : (
-                <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
-                  <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{quizFeedback.correct ? <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> : <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} />}{quizFeedback.correct ? 'Correct!' : `Was "${quizFeedback.expected}"`} {quizFeedback.correct ? `+${quizFeedback.xp} XP` : ''}</span></LabelSmall>
-                  {quizFeedback.expectedFa && <div style={{fontFamily:'IRANSans', direction:'rtl', fontSize:12, color:'#6b6b6b'}}>{quizFeedback.expectedFa}</div>}
-                </Block>
-              )}
-              {!quizFeedback ? (
-                <Button shape={SHAPE.pill} disabled={!!quizSubmitting || !quizArtikelChoice} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'16px', width:'100%', opacity: quizSubmitting ? 0.6 : 1}}}}>Check</Button>
-              ) : (
-                <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'16px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
-              )}
-            </Block>
-          ) : quizMode==='choice' ? (
-            <Block textAlign="center">
-              <LabelSmall color="#6b6b6b">4-CHOICE — Pick the right meaning</LabelSmall>
-              <div className={`gs-question ${questionFade ? 'gs-question-fading' : ''}`} style={{transition:'opacity 320ms ease'}}>
-                <div style={{fontSize:26, fontWeight:800, marginTop:8, color: currentQuizWord.article ? genderColor(currentQuizWord.article) : '#000'}}>{currentQuizWord.article ? `${currentQuizWord.article} ` : ''}{currentQuizWord.german}</div>
-                <div style={{fontSize:11, color:'#9a9a9a', marginTop:2}}>{currentQuizWord.lektion} • {currentQuizWord.plural ? `Pl: ${currentQuizWord.plural}` : currentQuizWord.example?.slice(0,48) || currentQuizWord.type}</div>
+            <div className="qz-col">
+              {matchBoard.filter((t) => t.type === 'tr').map((t) => {
+                const isFading = matchFadingIds?.has(t.uid);
+                const isShake = matchShakeIds?.has(t.uid);
+                const isWrong = matchWrongIds?.has(t.uid);
+                const isMatched = t.matched;
+                const isHidden = matchHiddenIds?.has(t.uid);
+                const collapsed = isHidden;
+                const borderColor = isWrong ? '#dc2626' : isMatched ? '#16a34a' : t.flipped ? '#181816' : '#e9e8f0';
+                const bg = isHidden ? '#e6f9ed' : isFading ? '#e6f9ed' : isMatched ? '#e6f9ed' : isWrong ? '#fef2f2' : t.flipped ? '#ffffff' : '#f7f7fb';
+                return (
+                  <div key={t.uid} onClick={() => handleMatchPick(t.uid)} className={`qz-match-card ${isFading ? 'qz-fading' : ''} ${isShake ? 'qz-shake' : ''} ${collapsed ? 'qz-matched-collapsed' : isMatched ? 'qz-matched' : ''}`} style={{ minHeight: collapsed ? 0 : 84, height: collapsed ? 0 : 84, background: bg, border: collapsed ? '0px solid transparent' : `1.8px solid ${borderColor}`, borderRadius: collapsed ? 0 : 16, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: collapsed ? '0px 8px' : '10px 8px', margin: collapsed ? '0px' : '0 0 10px 0', cursor: (isMatched || isFading || isHidden) ? 'default' : 'pointer', textAlign: 'center', opacity: (isFading || isHidden) ? 0 : 1, transform: isShake ? undefined : isFading ? 'scale(0.95)' : t.flipped ? 'scale(1.02)' : 'scale(1)', transition: 'opacity 0.38s cubic-bezier(0.2,0.8,0.2,1), transform 0.38s cubic-bezier(0.2,0.8,0.2,1), border-color 0.2s, background-color 0.2s, height 0.35s cubic-bezier(0.2,0.8,0.2,1), min-height 0.35s ease, margin 0.35s ease, padding 0.35s ease, border-width 0.35s ease', boxShadow: t.flipped && !isMatched && !isHidden ? '0 8px 20px rgba(24,24,22,0.10)' : '0 2px 8px rgba(24,24,22,0.04)', color: '#181816', overflow: 'hidden', pointerEvents: (isMatched || isFading || isHidden) ? 'none' : 'auto' }}>
+                    <div style={{ fontWeight: 700, fontSize: 12, lineHeight: 1.2 }}>{collapsed ? '' : t.label}</div>
+                    <div style={{ fontSize: 11, color: '#6b6b7a', marginTop: collapsed ? 0 : 2, fontFamily: 'IRANSans, sans-serif', direction: 'rtl', display: collapsed ? 'none' : 'block' }}>{t.sub}</div>
+                    <div style={{ fontSize: 9, color: '#9aa0b2', marginTop: collapsed ? 0 : 2, display: collapsed ? 'none' : 'block' }}>{t.sub2}</div>
+                    <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: 0.6, color: '#4f46e5', marginTop: collapsed ? 0 : 4, background: '#eef2ff', padding: '2px 6px', borderRadius: 999, display: collapsed ? 'none' : 'block' }}>EN+FA</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          {matchDone && (
+            <div className="qz-done">
+              <div style={{ display: 'flex', justifyContent: 'center' }}><PartyPopper size={28} aria-hidden="true" style={{ color: '#3fa970' }} /></div>
+              <h3>Match geschafft! {matchMatched}/6 in {matchMoves} Zügen</h3>
+              <p className="qz-done-sub">+{matchXp} XP verdient</p>
+              <div className="qz-actions">
+                <button className="btn dark" onClick={() => { setQuizStarted(false); setMatchStarted(false); }}>Fertig</button>
+                <button className="btn light" onClick={startMatchGame}>Nochmal spielen</button>
               </div>
-              <Block marginTop="10px"><Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={14} aria-hidden="true" /> Listen</span></Button></Block>
-              <div key={choiceAnimKey} className={`gs-choice-grid ${choiceTransition==='entering' ? 'gs-choice-entering' : ''} ${choiceTransition==='exiting' ? 'gs-choice-exiting' : ''} ${choiceTransition==='returning' ? 'gs-choice-returning' : ''}`} style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px', marginTop:'14px'}}>
-                {choiceOptions.map((opt,i)=> {
-                  const en = typeof opt==='object'? opt.en : opt;
-                  const fa = typeof opt==='object'? opt.fa : '';
-                  const isCorrect = choiceCorrectEn ? en === choiceCorrectEn : false;
-                  const isEliminated = choiceEliminated ? choiceEliminated.has(en) : false;
+            </div>
+          )}
+        </>
+      ) : quizMode === 'sprint' ? (
+        <>
+          {!sprintActive && sprintTime === 0 ? (
+            <div className="qz-done">
+              <div style={{ display: 'flex', justifyContent: 'center' }}><Timer size={28} aria-hidden="true" style={{ color: '#ea580c' }} /></div>
+              <h3>Zeit ab!</h3>
+              <p className="qz-done-sub">{sprintScore.correct}/{sprintScore.total} richtig · beste Serie {sprintScore.best} · +{sprintScore.xp} XP</p>
+              <div className="qz-actions">
+                <button className="btn dark" onClick={() => { setQuizStarted(false); setSprintActive(false); }}>Fertig</button>
+                <button className="btn light" onClick={() => startSprintGame(12)}>Nochmal</button>
+              </div>
+            </div>
+          ) : sprintQueue[sprintIdx] ? (
+            <>
+              <div className="question-wrap qz-tight">
+                <span className="eyebrow">DE → EN + فارسی — RICHTIGE ÜBERSETZUNG WÄHLEN</span>
+                <h1 style={sprintQueue[sprintIdx].word.article ? { color: genderColor(sprintQueue[sprintIdx].word.article) } : undefined}>{sprintQueue[sprintIdx].word.article ? `${sprintQueue[sprintIdx].word.article} ` : ''}{sprintQueue[sprintIdx].word.german}</h1>
+                <p className="qz-qmeta">{sprintQueue[sprintIdx].word.lektion} · {sprintQueue[sprintIdx].word.plural ? `Pl: ${sprintQueue[sprintIdx].word.plural}` : ''}</p>
+              </div>
+              {sprintFeedback ? (
+                <div className={`qz-feedback ${sprintFeedback.correct ? 'ok' : 'bad'}`}>
+                  <span className="qz-fb-line">{sprintFeedback.correct ? <Icon name="check" size={14} /> : <CircleX size={14} aria-hidden="true" />}{sprintFeedback.correct ? `+${sprintFeedback.xp} XP (×${(1 + sprintScore.streak * 0.15).toFixed(2)})` : `War „${typeof sprintFeedback.expected === 'object' ? sprintFeedback.expected.en : sprintFeedback.expected}" • ${typeof sprintFeedback.expected === 'object' ? sprintFeedback.expected.fa : ''}`}</span>
+                </div>
+              ) : (
+                <div className="answer-grid">
+                  {sprintOptions.map((opt, i) => {
+                    const en = typeof opt === 'object' ? opt.en : opt;
+                    const fa = typeof opt === 'object' ? opt.fa : '';
+                    return (
+                      <button key={en + i} className="qz-tile" onClick={() => handleSprintPick(opt)}>
+                        <span>{String.fromCharCode(65 + i)}</span>
+                        <b><span className="qz-opt-en">{en}</span>{fa && <small className="qz-opt-fa">{fa}</small>}</b>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          ) : null}
+        </>
+      ) : quizMode === 'satz' ? (
+        <>
+          {satzQueue[satzIdx] && (
+            <>
+              <div className="question-wrap qz-tight">
+                <span className="eyebrow">SATZBAU — DEUTSCHEN SATZ ZUSAMMENSETZEN</span>
+                <p className="qz-hint">Tipp: {satzQueue[satzIdx].hintEn} <span className="qz-fa">— {satzQueue[satzIdx].hintFa}</span> · {satzQueue[satzIdx].word.lektion}</p>
+                <div className="qz-satz-tools">
+                  <button className="btn small" onClick={() => speakGerman(satzQueue[satzIdx].source || satzQueue[satzIdx].word.example || satzQueue[satzIdx].tokens.join(' '))}><Icon name="sound" size={14} /> Satz anhören</button>
+                  <button className="btn small light" onClick={() => { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); setSatzFeedback(null); }}><RotateCcw size={14} aria-hidden="true" /> Zurücksetzen</button>
+                </div>
+              </div>
+              <div className="qz-built">
+                {satzBuilt.length === 0 ? <span className="qz-built-empty">Wörter antippen …</span> : satzBuilt.map((t, i) => {
+                  const isCorrectPos = satzFeedback && !satzFeedback.correct && satzFeedback.perPos ? satzFeedback.perPos[i] : null;
+                  const bg = satzFeedback && !satzFeedback.correct ? (isCorrectPos ? '#dcfce7' : '#fee2e2') : '#181816';
+                  const color = satzFeedback && !satzFeedback.correct ? (isCorrectPos ? '#16a34a' : '#dc2626') : '#fff';
+                  const border = satzFeedback && !satzFeedback.correct ? (isCorrectPos ? '1.5px solid #16a34a' : '1.5px solid #dc2626') : 'none';
+                  return (
+                    <span key={i} onClick={() => handleSatzRemove(i)} style={{ background: bg, color, padding: '6px 10px', borderRadius: 999, fontWeight: 700, fontSize: 13, cursor: 'pointer', border, transition: 'all 0.2s' }}>{t} ×</span>
+                  );
+                })}
+              </div>
+              <div className="qz-words">
+                {satzPool.map((tok, i) => (
+                  <button key={tok + i} className="qz-word" onClick={() => handleSatzPick(tok, i)}>{tok}</button>
+                ))}
+              </div>
+              {satzFeedback?.correct ? (
+                <div className="qz-feedback ok">
+                  <span className="qz-fb-line"><Icon name="check" size={14} /> Perfekt! +{satzFeedback.xp} XP — „{satzFeedback.expected}"</span>
+                </div>
+              ) : satzFeedback && !satzFeedback.correct ? (
+                <div className="qz-feedback bad">
+                  <span className="qz-fb-line"><CircleX size={14} aria-hidden="true" /> Noch nicht ganz — richtige Positionen sind <b style={{ color: '#16a34a' }}>grün</b>, falsche <b style={{ color: '#dc2626' }}>rot</b>. Korrigiere die roten und versuche es erneut.</span>
+                  <span className="qz-fb-sub">Du: „{satzFeedback.built?.join(' ') || satzBuilt.join(' ')}"</span>
+                  <span className="qz-fb-sub st">Richtig: „{satzFeedback.expected}"</span>
+                  <span className="qz-fb-sub">Tippe das rote Wort zum Entfernen, dann wähle das richtige.</span>
+                </div>
+              ) : null}
+              {!satzFeedback?.correct && (
+                <div className="qz-actions">
+                  <button className="btn dark" disabled={satzBuilt.length === 0} onClick={checkSatz} style={satzFeedback && !satzFeedback.correct ? { background: '#dc2626' } : undefined}>{satzFeedback && !satzFeedback.correct ? 'Nochmal versuchen →' : 'Prüfen'}</button>
+                </div>
+              )}
+              {satzFeedback && !satzFeedback.correct && (
+                <div className="qz-actions">
+                  <button className="btn small light" onClick={() => { setSatzBuilt([]); setSatzPool(satzQueue[satzIdx].shuffled); setSatzFeedback(null); }}><RotateCcw size={14} aria-hidden="true" /> Zurücksetzen</button>
+                  <button className="btn small light" onClick={() => { setSatzBuilt([...satzQueue[satzIdx].tokens]); setSatzPool([]); setSatzFeedback(null); }}><Eye size={14} aria-hidden="true" /> Lösung zeigen</button>
+                  <button className="btn small light" onClick={() => { setSatzFeedback(null); if (satzIdx + 1 >= satzQueue.length) { setSatzActive(false); setQuizStarted(false); } else { const ni = satzIdx + 1; setSatzIdx(ni); setSatzBuilt([]); setSatzPool(satzQueue[ni].shuffled); } }}>Überspringen →</button>
+                </div>
+              )}
+            </>
+          )}
+          {!satzActive && satzScore.total === satzQueue.length && (
+            <div className="qz-done">
+              <div style={{ display: 'flex', justifyContent: 'center' }}><PartyPopper size={28} aria-hidden="true" style={{ color: '#3fa970' }} /></div>
+              <h3>Satz fertig! {satzScore.correct}/{satzScore.total} · +{satzScore.xp} XP</h3>
+              <div className="qz-actions">
+                <button className="btn dark" onClick={() => { setQuizStarted(false); setSatzActive(false); }}>Fertig</button>
+                <button className="btn light" onClick={() => startSatzGame(8)}>Nochmal</button>
+              </div>
+            </div>
+          )}
+        </>
+      ) : quizMode === 'rain' ? (
+        <>
+          {!rainActive && rainLives <= 0 ? (
+            <div className="qz-done">
+              <div style={{ display: 'flex', justifyContent: 'center' }}><Skull size={28} aria-hidden="true" style={{ color: '#6b6b7a' }} /></div>
+              <h3>Sturm vorbei!</h3>
+              <p className="qz-done-sub">{rainScore.correct}/{rainScore.total} richtig · beste Serie {rainScore.best} · +{rainScore.xp} XP</p>
+              <div className="qz-actions">
+                <button className="btn dark" onClick={() => { setQuizStarted(false); setRainActive(false); }}>Fertig</button>
+                <button className="btn light" onClick={() => startRainGame(10)}>Nochmal versuchen</button>
+              </div>
+            </div>
+          ) : rainQueue[rainIdx] ? (
+            <>
+              <div className="question-wrap qz-tight">
+                <span className="eyebrow">WORTSTURM · FALLENDES WORT</span>
+                <div className="qz-rain-word">{rainQueue[rainIdx].word.article ? `${rainQueue[rainIdx].word.article} ` : ''}{rainQueue[rainIdx].word.german}</div>
+                <p className="qz-qmeta">{rainQueue[rainIdx].word.lektion} · {rainQueue[rainIdx].word.plural ? `Pl: ${rainQueue[rainIdx].word.plural}` : ''}</p>
+              </div>
+              {rainFeedback ? (
+                <div className={`qz-feedback ${rainFeedback.correct ? 'ok' : 'bad'}`}>
+                  <span className="qz-fb-line">{rainFeedback.correct ? <Icon name="check" size={14} /> : rainFeedback.timeout ? <Timer size={14} aria-hidden="true" /> : <CircleX size={14} aria-hidden="true" />}{rainFeedback.correct ? `+${rainFeedback.xp} XP` : rainFeedback.timeout ? `Zeit ab! War „${typeof rainFeedback.expected === 'object' ? rainFeedback.expected.en : rainFeedback.expected}"` : `War „${typeof rainFeedback.expected === 'object' ? rainFeedback.expected.en : rainFeedback.expected}" • ${typeof rainFeedback.expected === 'object' ? rainFeedback.expected.fa : ''}`}</span>
+                </div>
+              ) : (
+                <div className="answer-grid qz-one">
+                  {rainOptions.map((opt, i) => {
+                    const en = typeof opt === 'object' ? opt.en : opt;
+                    const fa = typeof opt === 'object' ? opt.fa : '';
+                    return (
+                      <button key={en + i} className="qz-tile" onClick={() => handleRainPick(opt)}>
+                        <span>{String.fromCharCode(65 + i)}</span>
+                        <b>{en}</b>
+                        {fa && <small className="qz-opt-fa">{fa}</small>}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          ) : null}
+        </>
+      ) : quizMode === 'diktat' ? (
+        <>
+          {currentQuizWord && (
+            <>
+              <div className="question-wrap qz-tight">
+                <span className="eyebrow">{diktatKind === 'find-error' ? 'DIKTAT-CHECK — Welches ist FALSCH geschrieben?' : 'DIKTAT-CHECK — Welches ist RICHTIG geschrieben?'}</span>
+                <p className="qz-qmeta">Frage {quizIdx + 1}/{quizQueue.length} · Einzelwort · ohne Artikel · {currentQuizWord.lektion}</p>
+                <div className={`qz-q ${questionFade ? 'qz-q-fading' : ''}`}>
+                  {diktatKind === 'find-correct' ? (
+                    <>
+                      <p className="qz-prompt">{diktatHint?.en || currentQuizWord.meaning_en || currentQuizWord.english}</p>
+                      {diktatHint?.fa && <p className="qz-sub-fa">{diktatHint.fa}</p>}
+                      <button className="speak-button" onClick={() => speakGerman(diktatCorrect || currentQuizWord.german)}><Icon name="sound" size={16} /> Anhören</button>
+                    </>
+                  ) : (
+                    <p className="qz-prompt">3 sind richtig geschrieben — 1 hat einen Fehler. Finde den Fehler!</p>
+                  )}
+                </div>
+              </div>
+              <div className="answer-grid qz-choice-grid" key={choiceAnimKey}>
+                {(diktatOptions || []).map((opt, i) => {
+                  const de = typeof opt === 'object' ? (opt.de || opt.text || opt.en) : opt;
+                  const isCorrect = choiceCorrectLocked && diktatCorrect ? de === diktatCorrect : false;
+                  const isEliminated = choiceEliminated ? choiceEliminated.has(de) : false;
                   const isLocked = !!choiceCorrectLocked;
                   const isLeft = i % 2 === 0;
-                  // styling logic
-                  let bg = '#fff';
-                  let borderColor = '#e9e8f0';
-                  let color = '#0f0f12';
-                  let opacity = 1;
-                  let pointerEvents = 'auto';
-                  let transform = undefined;
-                  let boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
-                  if (isLocked) {
-                    if (isCorrect) {
-                      bg = '#dcfce7';
-                      borderColor = '#16a34a';
-                      color = '#0f0f12';
-                      boxShadow = '0 4px 12px rgba(22,163,74,0.18)';
-                    } else {
-                      bg = '#f3f3f3';
-                      borderColor = '#e5e5e5';
-                      color = '#9aa0b2';
-                      opacity = 0.52;
-                      pointerEvents = 'none';
-                    }
-                  } else if (isEliminated) {
-                    bg = '#f1f1f3';
-                    borderColor = '#e0e0e6';
-                    color = '#9aa0b2';
-                    opacity = 0.48;
-                    pointerEvents = 'none';
-                  }
-                  // exit swipe transform
-                  if (choiceTransition==='exiting') {
-                    transform = isLeft ? 'translateX(-130%)' : 'translateX(130%)';
-                    opacity = 0;
-                  }
-                  const isReturning = choiceTransition==='returning';
-                  const isEntering = choiceTransition==='entering';
-                  const animDelay = (isEntering || isReturning || choiceTransition==='idle') ? `${i*65}ms` : '0ms';
+                  const exiting = choiceTransition === 'exiting';
+                  const isReturning = choiceTransition === 'returning';
+                  const isEntering = choiceTransition === 'entering';
+                  const animDelay = (isEntering || isReturning || choiceTransition === 'idle') ? `${i * 65}ms` : '0ms';
+                  const state = isLocked ? (isCorrect ? 'correct' : 'dim') : isEliminated ? 'dim' : '';
                   return (
                     <button
-                      key={en+'-'+i+'-'+choiceAnimKey}
-                      onClick={()=> handleChoiceSelect && handleChoiceSelect(opt)}
-                      disabled={isLocked || isEliminated || choiceTransition==='exiting' || isReturning}
-                      className={`gs-choice-tile ${isCorrect && isLocked ? 'gs-choice-correct' : ''} ${isEliminated ? 'gs-choice-eliminated' : ''} ${isEntering ? 'gs-choice-enter' : ''} ${isReturning ? (isLeft ? 'gs-choice-return-left' : 'gs-choice-return-right') : ''}`}
+                      key={de + '-' + i + '-' + choiceAnimKey}
+                      onClick={() => handleDiktatSelect && handleDiktatSelect(de)}
+                      disabled={isLocked || isEliminated || exiting || isReturning}
+                      className={`qz-tile ${state} ${isCorrect && isLocked ? 'qz-tile-pop' : ''} ${isEliminated ? 'qz-tile-elim' : ''} ${isEntering ? 'qz-tile-enter' : ''} ${isReturning ? (isLeft ? 'qz-tile-back-l' : 'qz-tile-back-r') : ''}`}
                       style={{
-                        backgroundColor: bg,
-                        color,
-                        border: `1.8px solid ${borderColor}`,
-                        borderRadius:'999px',
-                        minHeight:'58px',
-                        padding:'8px 10px',
-                        fontWeight:600,
-                        display:'flex',
-                        flexDirection:'column',
-                        alignItems:'center',
-                        justifyContent:'center',
-                        cursor: (isLocked || isEliminated || choiceTransition==='exiting' || isReturning) ? 'default' : 'pointer',
-                        opacity: isReturning ? undefined : opacity,
-                        transform: isReturning ? undefined : transform,
-                        transition: choiceTransition==='exiting' ? 'transform 380ms cubic-bezier(0.4,0,0.2,1), opacity 280ms ease, background-color 200ms, border-color 200ms' : 'background-color 200ms, border-color 200ms, opacity 200ms, transform 200ms',
-                        boxShadow,
                         animationDelay: animDelay,
-                        pointerEvents,
-                        lineHeight:1.15,
-                        width:'100%',
+                        pointerEvents: (isLocked || isEliminated || exiting || isReturning) ? 'none' : 'auto',
+                        cursor: (isLocked || isEliminated || exiting || isReturning) ? 'default' : 'pointer',
+                        ...(exiting ? { transform: isLeft ? 'translateX(-130%)' : 'translateX(130%)', opacity: 0, transition: 'transform 380ms cubic-bezier(0.4,0,0.2,1), opacity 280ms ease, background-color 200ms, border-color 200ms' } : { transition: 'background-color 200ms, border-color 200ms, opacity 200ms, transform 200ms' }),
                       }}
                     >
-                      <span style={{fontSize:12, fontWeight:700, textAlign:'center'}}>{en}</span>
-                      {fa && <span style={{fontFamily:'IRANSans', direction:'rtl', fontSize:11, color: (isCorrect && isLocked) ? '#16a34a' : (isEliminated || (isLocked && !isCorrect)) ? '#9aa0b2' : '#6b6b7a', marginTop:2, textAlign:'center'}}>{fa}</span>}
+                      <span>{String.fromCharCode(65 + i)}</span>
+                      <b className="qz-word-de">{de}</b>
+                      {isCorrect && isLocked && <Icon name="check" size={16} />}
                     </button>
                   );
                 })}
               </div>
-              {/* No Check/Next buttons for choice — direct interaction with auto-advance after correct */}
-            </Block>
-          ) : quizMode==='fa' ? (
-            <Block textAlign="center">
-              <LabelSmall color="#6b6b6b">FARSI — Tippe die persische Bedeutung</LabelSmall>
-              <div style={{fontSize:22, fontWeight:800, marginTop:8}}>{currentQuizWord.german} <span style={{color: genderColor(currentQuizWord.article), fontSize:14, fontWeight:600}}>{currentQuizWord.article || ''}</span></div>
-              <div style={{fontSize:12, color:'#6b6b6b'}}>{currentQuizWord.meaning_en} • {currentQuizWord.lektion}</div>
-              <Block marginTop="10px">
-                <Button size={SIZE.mini} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Volume2 size={14} aria-hidden="true" /> German</span></Button>
-              </Block>
-              {!quizFeedback ? (
-                <>
-                  <Input value={quizAnswer} onChange={(e)=> setQuizAnswer(e.target.value)} placeholder="فارسی را تایپ کنید..." onKeyDown={(e)=> { if(e.key==='Enter' && !quizSubmitting) submitQuiz(); }} autoFocus overrides={{ Root:{style:{marginTop:'12px', borderRadius:'12px'}}}} />
-                  <Button shape={SHAPE.pill} disabled={!!quizSubmitting || !quizAnswer.trim()} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%', opacity: quizSubmitting ? 0.6 : 1}}}}>Check</Button>
-                </>
-              ) : (
-                <>
-                  <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
-                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{quizFeedback.correct ? <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> : <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} />}{quizFeedback.correct ? `Correct! "${quizFeedback.expectedFa}" +${quizFeedback.xp} XP` : `"${quizAnswer.trim()}" is wrong → "${quizFeedback.expectedFa}"`}</span></LabelSmall>
-                  </Block>
-                  <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
-                </>
+              {choiceCorrectLocked && (
+                <div className="qz-feedback ok">
+                  <span className="qz-fb-line"><Icon name="check" size={14} />{diktatKind === 'find-error' ? `Fehler gefunden! Richtig: „${currentQuizWord.german}"` : `Richtig: „${diktatCorrect}"`} +{QUIZ_XP.diktat} XP</span>
+                  {diktatKind === 'find-error'
+                    ? <span className="qz-fb-sub">{currentQuizWord.meaning_en || currentQuizWord.english || ''}</span>
+                    : <span className="qz-fb-sub">{currentQuizWord.lektion} · {currentQuizWord.meaning_en || currentQuizWord.english || ''}</span>}
+                </div>
               )}
-            </Block>
-          ) : (
-            <Block textAlign="center">
-              <LabelSmall color="#6b6b6b">DICTATION — Höre und tippe (Umlaute wichtig!)</LabelSmall>
-              <DisplaySmall $style={{fontSize:16, color:'#6b6b6b', marginTop:'8px'}}>{currentQuizWord.meaning_en} — {currentQuizWord.lektion}</DisplaySmall>
-              <div style={{fontFamily:'IRANSans', direction:'rtl', fontSize:13, color:'#9a9a9a'}}>{currentQuizWord.meaning_fa}</div>
-              <Block marginTop="12px">
-                <Button size={SIZE.compact} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.german)}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Play size={14} aria-hidden="true" /> Play German</span></Button>
-                <Button size={SIZE.compact} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> speakGerman(currentQuizWord.example)} overrides={{BaseButton:{style:{marginLeft:'8px'}}}}>Sentence</Button>
-              </Block>
-              {!quizFeedback ? (
-                <>
-                  <Input value={quizAnswer} onChange={(e)=> setQuizAnswer(e.target.value)} placeholder="Tippe das deutsche Wort..." onKeyDown={(e)=> { if(e.key==='Enter' && !quizSubmitting) submitQuiz(); }} autoFocus overrides={{ Root:{style:{marginTop:'12px', borderRadius:'12px'}}}} />
-                  <Block display="flex" gridGap="6px" marginTop="8px" justifyContent="center" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-                    {['ä','ö','ü','Ä','Ö','Ü','ß'].map(ch=>(
-                      <Button key={ch} size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={()=> insertUmlaut(ch)}>{ch}</Button>
-                    ))}
-                    <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setQuizAnswer('')}>Clear</Button>
-                  </Block>
-                  <Button shape={SHAPE.pill} disabled={!!quizSubmitting || !quizAnswer.trim()} onClick={submitQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%', opacity: quizSubmitting ? 0.6 : 1}}}}>Check</Button>
-                </>
-              ) : (
-                <>
-                  <Block marginTop="12px" padding="10px" backgroundColor={quizFeedback.correct ? '#dcfce7' : '#fef2f2'} overrides={{Block:{style:{borderRadius:'12px'}}}}>
-                    <LabelSmall><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{quizFeedback.correct ? <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} /> : <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626' }} />}{quizFeedback.correct ? `Correct! "${quizFeedback.expected}" +${quizFeedback.xp} XP` : `"${quizAnswer.trim()}" → "${quizFeedback.expected}"`}</span></LabelSmall>
-                    {!quizFeedback.correct && <ParagraphSmall margin="4px 0 0">Umlaute: ä ≠ a, ö ≠ o, ü ≠ u, ß ≠ ss</ParagraphSmall>}
-                  </Block>
-                  <Button shape={SHAPE.pill} onClick={nextQuiz} overrides={{BaseButton:{style:{marginTop:'12px', width:'100%'}}}}>{quizIdx+1>=quizQueue.length ? 'Finish' : 'Next'}</Button>
-                </>
-              )}
-            </Block>
+            </>
           )}
-        </UberCard>
+        </>
+      ) : (
+        <>
+          {currentQuizWord && (
+            <>
+              {(quizMode === 'artikel' || (quizMode === 'mixed' && currentQuizWord.article && quizIdx % 2 === 0)) ? (
+                <>
+                  <div className="question-wrap">
+                    <span className="eyebrow">ARTIKEL — WÄHLE DEN ARTIKEL</span>
+                    <h1>{currentQuizWord.german}</h1>
+                    <p className="qz-sub">- {currentQuizWord.meaning_en}</p>
+                    <p className="qz-sub-fa">{currentQuizWord.meaning_fa}</p>
+                    <p className="qz-qmeta">{currentQuizWord.lektion} · {currentQuizWord.example}</p>
+                  </div>
+                  {!quizFeedback ? (
+                    <div className="qz-artikel-row">
+                      {['der', 'die', 'das'].map((a) => (
+                        <button key={a} className="qz-artikel" style={{ borderColor: genderColor(a), color: quizArtikelChoice === a ? '#fff' : genderColor(a), background: quizArtikelChoice === a ? genderColor(a) : '#fff' }} onClick={() => setQuizArtikelChoice(a)}>{a}</button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className={`qz-feedback ${quizFeedback.correct ? 'ok' : 'bad'}`}>
+                      <span className="qz-fb-line">{quizFeedback.correct ? <Icon name="check" size={14} /> : <CircleX size={14} aria-hidden="true" />}{quizFeedback.correct ? `Richtig! +${quizFeedback.xp} XP` : `War „${quizFeedback.expected}"`}</span>
+                      {quizFeedback.expectedFa && <span className="qz-fb-sub">{quizFeedback.expectedFa}</span>}
+                    </div>
+                  )}
+                  {!quizFeedback ? (
+                    <div className="qz-actions"><button className="btn dark qz-btn-block" disabled={!!quizSubmitting || !quizArtikelChoice} onClick={submitQuiz}>Prüfen</button></div>
+                  ) : (
+                    <div className="qz-actions"><button className="btn dark qz-btn-block" onClick={nextQuiz}>{quizIdx + 1 >= quizQueue.length ? 'Abschließen' : 'Weiter'}</button></div>
+                  )}
+                </>
+              ) : quizMode === 'choice' ? (
+                <>
+                  <div className="question-wrap">
+                    <span className="eyebrow">4-CHOICE — RICHTIGE BEDEUTUNG WÄHLEN</span>
+                    <div className={`qz-q ${questionFade ? 'qz-q-fading' : ''}`}>
+                      <h1 style={currentQuizWord.article ? { color: genderColor(currentQuizWord.article) } : undefined}>{currentQuizWord.article ? `${currentQuizWord.article} ` : ''}{currentQuizWord.german}</h1>
+                      <p className="qz-qmeta">{currentQuizWord.lektion} · {currentQuizWord.plural ? `Pl: ${currentQuizWord.plural}` : currentQuizWord.example?.slice(0, 48) || currentQuizWord.type}</p>
+                    </div>
+                    <button className="speak-button" onClick={() => speakGerman(currentQuizWord.german)}><Icon name="sound" size={16} /> Anhören</button>
+                  </div>
+                  <div className="answer-grid qz-choice-grid" key={choiceAnimKey}>
+                    {choiceOptions.map((opt, i) => {
+                      const en = typeof opt === 'object' ? opt.en : opt;
+                      const fa = typeof opt === 'object' ? opt.fa : '';
+                      const isCorrect = choiceCorrectEn ? en === choiceCorrectEn : false;
+                      const isEliminated = choiceEliminated ? choiceEliminated.has(en) : false;
+                      const isLocked = !!choiceCorrectLocked;
+                      const isLeft = i % 2 === 0;
+                      const exiting = choiceTransition === 'exiting';
+                      const isReturning = choiceTransition === 'returning';
+                      const isEntering = choiceTransition === 'entering';
+                      const animDelay = (isEntering || isReturning || choiceTransition === 'idle') ? `${i * 65}ms` : '0ms';
+                      const state = isLocked ? (isCorrect ? 'correct' : 'dim') : isEliminated ? 'dim' : '';
+                      return (
+                        <button
+                          key={en + '-' + i + '-' + choiceAnimKey}
+                          onClick={() => handleChoiceSelect && handleChoiceSelect(opt)}
+                          disabled={isLocked || isEliminated || exiting || isReturning}
+                          className={`qz-tile ${state} ${isCorrect && isLocked ? 'qz-tile-pop' : ''} ${isEliminated ? 'qz-tile-elim' : ''} ${isEntering ? 'qz-tile-enter' : ''} ${isReturning ? (isLeft ? 'qz-tile-back-l' : 'qz-tile-back-r') : ''}`}
+                          style={{
+                            animationDelay: animDelay,
+                            pointerEvents: (isLocked || isEliminated || exiting || isReturning) ? 'none' : 'auto',
+                            cursor: (isLocked || isEliminated || exiting || isReturning) ? 'default' : 'pointer',
+                            ...(exiting ? { transform: isLeft ? 'translateX(-130%)' : 'translateX(130%)', opacity: 0, transition: 'transform 380ms cubic-bezier(0.4,0,0.2,1), opacity 280ms ease, background-color 200ms, border-color 200ms' } : { transition: 'background-color 200ms, border-color 200ms, opacity 200ms, transform 200ms' }),
+                          }}
+                        >
+                          <span>{String.fromCharCode(65 + i)}</span>
+                          <b><span className="qz-opt-en">{en}</span>{fa && <small className="qz-opt-fa">{fa}</small>}</b>
+                          {isCorrect && isLocked && <Icon name="check" size={16} />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : quizMode === 'fa' ? (
+                <>
+                  <div className="question-wrap">
+                    <span className="eyebrow">FARSI — TIPPE DIE PERSISCHE BEDEUTUNG</span>
+                    <h1>{currentQuizWord.german} <span className="qz-art" style={{ color: genderColor(currentQuizWord.article) }}>{currentQuizWord.article || ''}</span></h1>
+                    <p className="qz-sub">{currentQuizWord.meaning_en} · {currentQuizWord.lektion}</p>
+                    <button className="speak-button" onClick={() => speakGerman(currentQuizWord.german)}><Icon name="sound" size={16} /> Anhören</button>
+                  </div>
+                  {!quizFeedback ? (
+                    <div className="qz-inputzone">
+                      <div className="search-box">
+                        <input value={quizAnswer} onChange={(e) => setQuizAnswer(e.target.value)} placeholder="فارسی را تایپ کنید..." onKeyDown={(e) => { if (e.key === 'Enter' && !quizSubmitting) submitQuiz(); }} autoFocus />
+                      </div>
+                      <button className="btn dark qz-btn-block" disabled={!!quizSubmitting || !quizAnswer.trim()} onClick={submitQuiz}>Prüfen</button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className={`qz-feedback ${quizFeedback.correct ? 'ok' : 'bad'}`}>
+                        <span className="qz-fb-line">{quizFeedback.correct ? <Icon name="check" size={14} /> : <CircleX size={14} aria-hidden="true" />}{quizFeedback.correct ? `Richtig! „${quizFeedback.expectedFa}" +${quizFeedback.xp} XP` : `„${quizAnswer.trim()}" ist falsch → „${quizFeedback.expectedFa}"`}</span>
+                      </div>
+                      <div className="qz-actions"><button className="btn dark qz-btn-block" onClick={nextQuiz}>{quizIdx + 1 >= quizQueue.length ? 'Abschließen' : 'Weiter'}</button></div>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="question-wrap">
+                    <span className="eyebrow">DIKTATION — HÖRE UND TIPPE (UMLAUTE WICHTIG!)</span>
+                    <h1>{currentQuizWord.meaning_en || currentQuizWord.english || ''}</h1>
+                    <p className="qz-qmeta">{currentQuizWord.lektion}</p>
+                    <p className="qz-sub-fa">{currentQuizWord.meaning_fa}</p>
+                    <div className="listen-row">
+                      <button onClick={() => speakGerman(currentQuizWord.german)}><Icon name="sound" size={16} /> Wort abspielen</button>
+                      <button onClick={() => speakGerman(currentQuizWord.example)}><Icon name="sound" size={16} /> Satz anhören</button>
+                    </div>
+                  </div>
+                  {!quizFeedback ? (
+                    <div className="qz-inputzone">
+                      <div className="search-box">
+                        <input value={quizAnswer} onChange={(e) => setQuizAnswer(e.target.value)} placeholder="Tippe das deutsche Wort..." onKeyDown={(e) => { if (e.key === 'Enter' && !quizSubmitting) submitQuiz(); }} autoFocus />
+                      </div>
+                      <div className="qz-umlauts">
+                        {['ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'].map((ch) => (
+                          <button key={ch} className="btn small light qz-umlaut" onClick={() => insertUmlaut(ch)}>{ch}</button>
+                        ))}
+                        <button className="btn small light" onClick={() => setQuizAnswer('')}>Leeren</button>
+                      </div>
+                      <button className="btn dark qz-btn-block" disabled={!!quizSubmitting || !quizAnswer.trim()} onClick={submitQuiz}>Prüfen</button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className={`qz-feedback ${quizFeedback.correct ? 'ok' : 'bad'}`}>
+                        <span className="qz-fb-line">{quizFeedback.correct ? <Icon name="check" size={14} /> : <CircleX size={14} aria-hidden="true" />}{quizFeedback.correct ? `Richtig! „${quizFeedback.expected}" +${quizFeedback.xp} XP` : `„${quizAnswer.trim()}" → „${quizFeedback.expected}"`}</span>
+                        {!quizFeedback.correct && <span className="qz-fb-sub">Umlaute: ä ≠ a, ö ≠ o, ü ≠ u, ß ≠ ss</span>}
+                      </div>
+                      <div className="qz-actions"><button className="btn dark qz-btn-block" onClick={nextQuiz}>{quizIdx + 1 >= quizQueue.length ? 'Abschließen' : 'Weiter'}</button></div>
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </>
       )}
-      <Block marginTop="12px" display="flex" justifyContent="center">
-        <Button kind={KIND.secondary} size={SIZE.mini} shape={SHAPE.pill} onClick={()=> { setQuizStarted(false); setQuizFeedback && setQuizFeedback(null); }}>Exit quiz</Button>
-      </Block>
-    </>
-      )}
-    </>
+    </div>
   );
 }

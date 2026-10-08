@@ -1,51 +1,24 @@
-import { Block } from 'baseui/block';
-import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
-import { ProgressBar } from 'baseui/progress-bar';
-import { Heading } from 'baseui/heading';
-import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { BOOK_EXAM_COUNTS, EXAM_BOOK_TITLES, GRAMMAR_TOPICS_A11, GRAMMAR_TOPICS_A12, findReadingText } from '../../data/exam.js';
 import { EXAM_SECTION_LABELS, EXAM_SECTIONS, examModeTotal, examModeLabel, readExamBest } from '../../utils/exam.js';
 import { speakGerman } from '../../utils/speak';
-import UberCard from '../cards/UberCard.jsx';
-import {
-  Award,
-  BookMarked,
-  BookOpen,
-  Check,
-  CheckCircle2,
-  CircleX,
-  GraduationCap,
-  Info,
-  Languages,
-  RotateCcw,
-  Sparkles,
-  Target,
-  ICON_SIZES,
-} from '../icons.jsx';
+import Icon from '../shell/Icon.jsx';
+import { CircleX, Sparkles } from 'lucide-react';
 
-const SECTION_ICONS = {
-  diktation: CheckCircle2,
-  grammatik: BookOpen,
-  wortschatz: Languages,
-  lesen: BookMarked,
+const SECTION_ICON_NAMES = {
+  diktation: 'sound',
+  grammatik: 'puzzle',
+  wortschatz: 'cards',
+  lesen: 'book',
+};
+
+const SECTION_NOTES = {
+  diktation: 'Rechtschreibung',
+  grammatik: 'Strukturen',
+  wortschatz: 'Bedeutung',
+  lesen: 'Verständnis',
 };
 
 const SECTION_MODES = ['diktation', 'grammatik', 'wortschatz', 'lesen'];
-
-function SectionRow({ sectionKey, count }) {
-  const Icon = SECTION_ICONS[sectionKey] || BookOpen;
-  return (
-    <Block display="flex" justifyContent="space-between" alignItems="center" padding="10px 0" overrides={{ Block: { style: { borderBottom: '1px solid #f1f1f3' } } }}>
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontWeight: 700, fontSize: 13 }}>
-        <span style={{ display: 'inline-flex', padding: 6, borderRadius: 999, background: '#f7f7fb', border: '1px solid #e9e8f0' }}>
-          <Icon size={14} aria-hidden="true" style={{ color: '#0f0f12' }} />
-        </span>
-        {EXAM_SECTION_LABELS[sectionKey]}
-      </span>
-      <span style={{ fontWeight: 800, fontSize: 13 }}>{count} Fragen</span>
-    </Block>
-  );
-}
 
 function readingTextFor(question) {
   if (!question || question.section !== 'lesen' || !question.textId) return null;
@@ -82,107 +55,122 @@ export default function ExamTab(props) {
     const { score, analysis, bonus, isNewBest } = examResult;
     const mode = examResult.mode || examMode || 'full';
     const resultBook = examResult.book || examBook || 'a1.2';
+    const resultTag = resultBook === 'a1.1' ? 'A1.1' : 'A1.2';
     const incorrect = (score.results || []).filter((r) => !r.correct);
     const byId = new Map((examQuestions || []).map((q) => [q.id, q]));
     const presentSections = EXAM_SECTIONS.filter((s) => (score.perSection[s] || { total: 0 }).total > 0);
     return (
-      <>
-        <UberCard styleOverride={{ background: 'linear-gradient(135deg,#0f0f12 0%,#2a2a3a 60%,#4f46e5 100%)', color: '#fff', borderWidth: 0, textAlign: 'center', paddingTop: '20px', paddingBottom: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <span style={{ display: 'inline-flex', padding: 10, borderRadius: 999, background: 'rgba(255,255,255,0.14)' }}>
-              <Award size={ICON_SIZES.hero} aria-hidden="true" style={{ color: '#fff' }} />
-            </span>
+      <div className="page exam-page exam-result">
+        <section className="exam-hero">
+          <div className="exam-copy">
+            <span className="eyebrow">PRÜFUNGSERGEBNIS · MENSCHEN {resultTag}</span>
+            <h2>{examModeLabel(mode, resultBook)}</h2>
+            <p>
+              {score.correct}/{score.total} richtig
+              {isNewBest ? ' · Neue Bestleistung!' : ''}
+              {bonus > 0 ? ` · +${bonus} XP` : ''}
+            </p>
           </div>
-          <Heading $style={{ fontSize: 18, margin: '8px 0 0', color: '#fff' }}>{examModeLabel(mode, resultBook)}</Heading>
-          <div style={{ fontSize: 40, fontWeight: 800, marginTop: 6, letterSpacing: '-1px' }}>{score.correct}<span style={{ fontSize: 20, opacity: 0.7 }}>/{score.total}</span></div>
-          <div style={{ fontSize: 14, opacity: 0.9, fontWeight: 700 }}>{score.pct}%{isNewBest ? ' • Neue Bestleistung!' : ''}{bonus > 0 ? ` • +${bonus} XP` : ''}</div>
-        </UberCard>
+          <div className="best-score">
+            <span>ERGEBNIS</span>
+            <strong>
+              {score.pct}<small>%</small>
+            </strong>
+            <p>{score.correct} von {score.total}</p>
+            {bonus > 0 && <small>+{bonus} XP</small>}
+          </div>
+        </section>
 
-        <UberCard styleOverride={{ marginTop: '12px', paddingTop: '12px', paddingBottom: '12px' }}>
-          <LabelSmall color="#6b6b6b">Teil-Ergebnisse</LabelSmall>
-          <Block marginTop="6px">
+        <div className="ex-actions">
+          <button type="button" className="btn dark" onClick={onRetakeExam}>
+            <Icon name="refresh" size={16} /> Neu mischen &amp; erneut versuchen
+          </button>
+          <button type="button" className="btn light" onClick={onPracticeWeak}>Schwache Wörter üben</button>
+          <button type="button" className="btn light" onClick={onGoToBooks}>Bücher</button>
+        </div>
+
+        <div className="ex-card">
+          <span className="ex-card-label">Teil-Ergebnisse</span>
+          <div className="ex-rows">
             {presentSections.map((key) => {
               const sec = score.perSection[key] || { total: 0, correct: 0, accuracy: null };
-              const Icon = SECTION_ICONS[key] || BookOpen;
-              const label = EXAM_SECTION_LABELS[key];
               return (
-                <Block key={key} display="flex" justifyContent="space-between" alignItems="center" padding="8px 0" overrides={{ Block: { style: { borderBottom: '1px solid #f1f1f3' } } }}>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, fontWeight: 600 }}>
-                    <Icon size={14} aria-hidden="true" style={{ color: '#6b6b7a' }} /> {label}
-                  </span>
-                  <span style={{ fontSize: 13, fontWeight: 800 }}>{sec.correct}/{sec.total}{sec.accuracy !== null ? ` • ${sec.accuracy}%` : ''}</span>
-                </Block>
+                <div className="ex-row" key={key}>
+                  <span className="ex-row-icon"><Icon name={SECTION_ICON_NAMES[key]} size={16} /></span>
+                  <span className="ex-row-label">{EXAM_SECTION_LABELS[key]}</span>
+                  <b className="ex-row-value">
+                    {sec.correct}/{sec.total}{sec.accuracy !== null ? ` • ${sec.accuracy}%` : ''}
+                  </b>
+                </div>
               );
             })}
-          </Block>
-        </UberCard>
+          </div>
+        </div>
 
-        <UberCard styleOverride={{ marginTop: '12px', paddingTop: '12px', paddingBottom: '12px', borderColor: '#e9e8f0' }}>
-          <Block display="flex" alignItems="center" gridGap="6px">
-            <Target size={14} aria-hidden="true" style={{ color: '#dc2626' }} />
-            <LabelSmall color="#000" overrides={{ Block: { style: { fontWeight: 800 } } }}>Needs practice</LabelSmall>
-          </Block>
+        <div className="ex-card">
+          <div className="ex-card-head">
+            <Icon name="target" size={16} />
+            <span className="ex-card-label">Übungsbedarf</span>
+          </div>
           {analysis && (analysis.weakTopics.length > 0 || analysis.weakLektions.length > 0) ? (
-            <Block display="flex" gridGap="6px" marginTop="8px" overrides={{ Block: { style: { flexWrap: 'wrap' } } }}>
+            <div className="ex-pills">
               {analysis.weakTopics.map((t) => (
-                <span key={`t-${t.label}`} style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b', borderRadius: 999, padding: '4px 10px', fontSize: 12, fontWeight: 700 }}>
+                <span className="ex-pill bad" key={`t-${t.label}`}>
                   {t.label} • {t.incorrect}/{t.total} falsch
                 </span>
               ))}
               {analysis.weakLektions.map((l) => (
-                <span key={`l-${l.label}`} style={{ background: '#f7f7fb', border: '1px solid #e9e8f0', color: '#0f0f12', borderRadius: 999, padding: '4px 10px', fontSize: 12, fontWeight: 700 }}>
+                <span className="ex-pill" key={`l-${l.label}`}>
                   {l.label} • {l.incorrect}/{l.total} falsch
                 </span>
               ))}
-            </Block>
+            </div>
           ) : (
-            <ParagraphSmall color="#16a34a" margin="8px 0 0">Stark in allen Bereichen — keine klaren Schwächen in dieser Prüfung.</ParagraphSmall>
+            <p className="ex-ok">Stark in allen Bereichen — keine klaren Schwächen in dieser Prüfung.</p>
           )}
-        </UberCard>
+        </div>
 
-        <Heading $style={{ fontSize: 16, margin: '16px 0 8px' }}>Review — {incorrect.length} falsch</Heading>
+        <h2 className="ex-section-title">Auswertung — {incorrect.length} falsch</h2>
         {incorrect.length === 0 ? (
-          <UberCard styleOverride={{ textAlign: 'center', backgroundColor: '#f0fdf4', borderColor: '#bbf7d0' }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}><CheckCircle2 size={ICON_SIZES.empty} aria-hidden="true" style={{ color: '#16a34a' }} /></div>
-            <ParagraphSmall margin="8px 0 0"><b>Fehlerfrei!</b> Alle {score.total} Fragen richtig — herausragend.</ParagraphSmall>
-          </UberCard>
+          <div className="ex-card ex-perfect">
+            <span className="success-mark">
+              <Icon name="check" size={36} />
+            </span>
+            <p><b>Fehlerfrei!</b> Alle {score.total} Fragen richtig — herausragend.</p>
+          </div>
         ) : (
-          <Block display="flex" flexDirection="column" gridGap="8px">
+          <div className="ex-review-list">
             {incorrect.map((r) => {
               const q = byId.get(r.questionId);
               if (!q) return null;
               const text = readingTextFor(q);
               return (
-                <UberCard key={r.questionId} styleOverride={{ borderColor: '#fecaca', paddingTop: '12px', paddingBottom: '12px' }}>
-                  <Block display="flex" justifyContent="space-between" alignItems="center">
-                    <LabelSmall color="#6b6b6b">{EXAM_SECTION_LABELS[q.section]}{q.topic ? ` • ${q.topic}` : ''}{q.lektion ? ` • ${q.lektion}` : ''}</LabelSmall>
-                    <CircleX size={14} aria-hidden="true" style={{ color: '#dc2626', flexShrink: 0 }} />
-                  </Block>
-                  {text && <div style={{ fontSize: 11, color: '#9aa0b2', marginTop: 2 }}>Text: {text.title}</div>}
-                  <div style={{ fontWeight: 700, fontSize: 14, marginTop: 6 }}>{q.prompt}</div>
-                  <div style={{ fontSize: 13, marginTop: 6 }}>
-                    <span style={{ color: '#dc2626', fontWeight: 700 }}>Deine Antwort: </span>
+                <div className="ex-review" key={r.questionId}>
+                  <div className="ex-review-top">
+                    <span className="ex-review-label">
+                      {EXAM_SECTION_LABELS[q.section]}{q.topic ? ` • ${q.topic}` : ''}{q.lektion ? ` • ${q.lektion}` : ''}
+                    </span>
+                    <CircleX size={16} strokeWidth={1.8} aria-hidden="true" />
+                  </div>
+                  {text && <div className="ex-review-text">Text: {text.title}</div>}
+                  <div className="ex-review-q">{q.prompt}</div>
+                  <div className="ex-review-line">
+                    <span className="bad">Deine Antwort: </span>
                     <span>{r.picked || '— (übersprungen)'}</span>
                   </div>
-                  <div style={{ fontSize: 13, marginTop: 2 }}>
-                    <span style={{ color: '#16a34a', fontWeight: 700 }}>Richtig: </span>
-                    <span style={{ fontWeight: 700 }}>{q.answer}</span>
+                  <div className="ex-review-line">
+                    <span className="ok">Richtig: </span>
+                    <span className="ans">{q.answer}</span>
                   </div>
                   {q.explanation && (
-                    <div style={{ fontSize: 12, color: '#4b4b55', marginTop: 6, background: '#f7f7fb', borderRadius: 10, padding: '8px 10px' }}>{q.explanation}</div>
+                    <div className="ex-review-note">{q.explanation}</div>
                   )}
-                </UberCard>
+                </div>
               );
             })}
-          </Block>
+          </div>
         )}
-
-        <Block display="flex" gridGap="8px" marginTop="16px" overrides={{ Block: { style: { flexWrap: 'wrap' } } }}>
-          <Button shape={SHAPE.pill} onClick={onRetakeExam}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><RotateCcw size={14} aria-hidden="true" /> Neu mischen & erneut versuchen</span></Button>
-          <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={onPracticeWeak}>Schwache Wörter üben</Button>
-          <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={onGoToBooks}>Bücher</Button>
-        </Block>
-      </>
+      </div>
     );
   }
 
@@ -195,39 +183,49 @@ export default function ExamTab(props) {
     const answered = Object.keys(examPicks).length;
     const isLast = examIdx + 1 >= examQuestions.length;
     return (
-      <>
-        <Block display="flex" justifyContent="space-between" alignItems="center" marginBottom="8px">
-          <LabelSmall color="#6b6b6b">{EXAM_SECTION_LABELS[q.section]} • Frage {examIdx + 1}/{examQuestions.length}</LabelSmall>
-          <LabelSmall color="#000" overrides={{ Block: { style: { fontWeight: 700 } } }}>{answered}/{examQuestions.length} beantwortet</LabelSmall>
-        </Block>
-        <ProgressBar value={(examIdx / examQuestions.length) * 100} overrides={{ BarProgress: { style: { backgroundColor: '#0f0f12' } }, BarContainer: { style: { backgroundColor: '#eee', height: '4px', borderRadius: '999px' } }, Bar: { style: { height: '4px' } } }} />
-        <UberCard key={q.id} styleOverride={{ marginTop: '12px', minHeight: '280px' }} className="gs-exam-card">
-          <Block textAlign="center">
-            <LabelSmall color="#6b6b6b">
+      <div className="page exam-page exam-play">
+        <div className="quiz-top">
+          <button type="button" aria-label="Prüfung abbrechen" onClick={onExitExam}>
+            <Icon name="close" />
+          </button>
+          <div>
+            <span>{EXAM_SECTION_LABELS[q.section]} • Frage {examIdx + 1}/{examQuestions.length}</span>
+            <div className="progress yellow">
+              <span style={{ width: `${(examIdx / examQuestions.length) * 100}%` }} />
+            </div>
+          </div>
+          <b>{answered}/{examQuestions.length} beantwortet</b>
+        </div>
+
+        <section className="ex-question" key={q.id}>
+          <div className="ex-q-head">
+            <span className="eyebrow">
               {q.section === 'diktation'
                 ? (q.kind === 'find-error' ? 'DIKTATION — Welches ist FALSCH geschrieben?' : 'DIKTATION — Welches ist RICHTIG geschrieben?')
                 : `${EXAM_SECTION_LABELS[q.section].toUpperCase()}${q.topic ? ` — ${q.topic}` : ''}`}
-            </LabelSmall>
-            {text && (
-              <div style={{ textAlign: 'left', background: '#f7f7fb', border: '1px solid #e9e8f0', borderRadius: 14, padding: '12px 14px', marginTop: 10, fontSize: 14, lineHeight: 1.6, whiteSpace: 'pre-line' }}>
-                <div style={{ fontSize: 11, letterSpacing: 1, color: '#9aa0b2', fontWeight: 800, marginBottom: 4 }}>{text.kind.toUpperCase()} — {text.title}</div>
-                {text.text}
+            </span>
+          </div>
+          {text && (
+            <div className="ex-reading">
+              <div className="ex-reading-kind">{text.kind.toUpperCase()} — {text.title}</div>
+              <div className="ex-reading-body">{text.text}</div>
+            </div>
+          )}
+          <div className="ex-prompt">{q.prompt}</div>
+          {q.section === 'diktation' && q.kind === 'find-correct' && q.hint && (
+            <>
+              <div className="ex-hint">{q.hint.en}</div>
+              <div className="ex-listen">
+                <button type="button" className="speak-button" onClick={() => speakGerman(q.answer)} aria-label="Wort anhören">
+                  <Icon name="sound" size={14} /> Anhören
+                </button>
               </div>
-            )}
-            <div style={{ fontSize: q.section === 'grammatik' || q.section === 'wortschatz' ? 17 : 15, fontWeight: 700, marginTop: 10, lineHeight: 1.4 }}>{q.prompt}</div>
-            {q.section === 'diktation' && q.kind === 'find-correct' && q.hint && (
-              <>
-                <div style={{ fontSize: 13, color: '#6b6b7a', marginTop: 4 }}>{q.hint.en}</div>
-                <Block marginTop="8px">
-                  <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => speakGerman(q.answer)} aria-label="Wort anhören">Anhören</Button>
-                </Block>
-              </>
-            )}
-            {q.section === 'diktation' && q.kind === 'find-error' && (
-              <div style={{ fontSize: 12, color: '#6b6b7a', marginTop: 4 }}>3 sind richtig geschrieben — 1 hat einen Fehler.</div>
-            )}
-          </Block>
-          <Block display="flex" flexDirection="column" gridGap="8px" marginTop="14px" role="group" aria-label="Antwortmöglichkeiten">
+            </>
+          )}
+          {q.section === 'diktation' && q.kind === 'find-error' && (
+            <div className="ex-hint">3 sind richtig geschrieben — 1 hat einen Fehler.</div>
+          )}
+          <div className="ex-options" role="group" aria-label="Antwortmöglichkeiten">
             {(q.shuffledOptions || []).map((opt) => {
               const selected = picked === opt;
               return (
@@ -236,60 +234,44 @@ export default function ExamTab(props) {
                   type="button"
                   onClick={() => onExamPick && onExamPick(opt)}
                   aria-pressed={selected}
-                  className="gs-exam-option"
-                  style={{
-                    backgroundColor: selected ? '#0f0f12' : '#fff',
-                    color: selected ? '#fff' : '#0f0f12',
-                    border: selected ? '1.8px solid #0f0f12' : '1.8px solid #e9e8f0',
-                    borderRadius: 14,
-                    minHeight: 56,
-                    padding: '12px 14px',
-                    fontWeight: selected ? 800 : 600,
-                    fontSize: 15,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    textAlign: 'left',
-                    width: '100%',
-                    cursor: 'pointer',
-                    lineHeight: 1.3,
-                  }}
+                  className={selected ? 'ex-option on' : 'ex-option'}
                 >
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      width: 22,
-                      height: 22,
-                      borderRadius: 999,
-                      border: selected ? '2px solid #fff' : '2px solid #d4d4d8',
-                      background: selected ? '#16a34a' : 'transparent',
-                      color: '#fff',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {selected && <Check size={13} aria-hidden="true" />}
+                  <span className="ex-option-dot" aria-hidden="true">
+                    {selected && <Icon name="check" size={13} />}
                   </span>
                   <span>{opt}</span>
                 </button>
               );
             })}
-          </Block>
-        </UberCard>
-        <Block display="flex" gridGap="8px" marginTop="12px">
-          <Button kind={KIND.secondary} shape={SHAPE.pill} disabled={examIdx === 0} onClick={() => onExamNav && onExamNav('prev')} overrides={{ BaseButton: { style: { flex: 1 } } }}>Zurück</Button>
+          </div>
+        </section>
+
+        <div className="ex-actions">
+          <button type="button" className="btn light" disabled={examIdx === 0} onClick={() => onExamNav && onExamNav('prev')}>
+            Zurück
+          </button>
           {!isLast ? (
-            <Button shape={SHAPE.pill} onClick={() => onExamNav && onExamNav('next')} overrides={{ BaseButton: { style: { flex: 2 } } }}>Weiter →</Button>
+            <button type="button" className="btn dark" onClick={() => onExamNav && onExamNav('next')}>
+              Weiter →
+            </button>
           ) : (
-            <Button shape={SHAPE.pill} isLoading={!!examFinishing} disabled={!!examFinishing} onClick={() => onExamNav && onExamNav('finish')} overrides={{ BaseButton: { style: { flex: 2, backgroundColor: '#0f0f12' } } }}>Prüfung abgeben</Button>
+            <button
+              type="button"
+              className="btn dark"
+              disabled={!!examFinishing}
+              aria-busy={!!examFinishing}
+              onClick={() => onExamNav && onExamNav('finish')}
+            >
+              {examFinishing && <span className="ex-spin" aria-hidden="true" />} Prüfung abgeben
+            </button>
           )}
-        </Block>
-        <Block marginTop="8px" display="flex" justifyContent="center">
-          <Button kind={KIND.tertiary} size={SIZE.mini} shape={SHAPE.pill} onClick={onExitExam}>Abbrechen (Fortschritt geht verloren)</Button>
-        </Block>
-      </>
+        </div>
+        <div className="ex-cancel">
+          <button type="button" className="text-link" onClick={onExitExam}>
+            Abbrechen (Fortschritt geht verloren)
+          </button>
+        </div>
+      </div>
     );
   }
 
@@ -305,97 +287,122 @@ export default function ExamTab(props) {
   const otherTag = otherBook === 'a1.1' ? 'A1.1' : 'A1.2';
   const grammarTopics = book === 'a1.1' ? GRAMMAR_TOPICS_A11.length : GRAMMAR_TOPICS_A12.length;
   return (
-    <>
-      <Block display="flex" gridGap="8px" marginBottom="12px" role="group" aria-label="Buch wählen">
-        {['a1.1', 'a1.2'].map((b) => {
-          const active = b === book;
-          const label = b === 'a1.1' ? 'A1.1' : 'A1.2';
-          const sub = b === 'a1.1' ? 'Lektion 1–12' : 'Lektion 13–24';
-          return (
-            <button
-              key={b}
-              type="button"
-              onClick={() => onExamBook && onExamBook(b)}
-              aria-pressed={active}
-              style={{
-                flex: 1,
-                backgroundColor: active ? '#0f0f12' : '#fff',
-                color: active ? '#fff' : '#0f0f12',
-                border: active ? '1.8px solid #0f0f12' : '1.8px solid #e9e8f0',
-                borderRadius: 14,
-                padding: '10px 12px',
-                fontWeight: 800,
-                fontSize: 14,
-                cursor: 'pointer',
-                lineHeight: 1.3,
-              }}
-            >
-              <div>{label} Final Mock</div>
-              <div style={{ fontSize: 11, fontWeight: 600, opacity: active ? 0.75 : 0.6 }}>{sub}</div>
-            </button>
-          );
-        })}
-      </Block>
+    <div className="page exam-page">
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">PRÜFUNGSVORBEREITUNG</span>
+          <h1>Probeprüfung</h1>
+          <p>Realistisch üben. Ruhig abliefern.</p>
+        </div>
+        <div className="book-toggle" role="group" aria-label="Buch wählen">
+          {['a1.1', 'a1.2'].map((b) => {
+            const active = b === book;
+            const label = b === 'a1.1' ? 'A1.1' : 'A1.2';
+            const sub = b === 'a1.1' ? 'Lektion 1–12' : 'Lektion 13–24';
+            return (
+              <button
+                key={b}
+                type="button"
+                onClick={() => onExamBook && onExamBook(b)}
+                aria-pressed={active}
+                className={active ? 'active' : ''}
+              >
+                {label}
+                <small>{sub}</small>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
-      <UberCard styleOverride={{ background: 'linear-gradient(135deg,#0f0f12 0%,#2a2a3a 60%,#4f46e5 100%)', color: '#fff', borderWidth: 0, paddingTop: '20px', paddingBottom: '20px' }}>
-        <Block display="flex" justifyContent="space-between" alignItems="flex-start">
-          <Block>
-            <div style={{ fontSize: 11, letterSpacing: 1, opacity: 0.8, fontWeight: 700 }}>MENSCHEN {bookTag} • FINAL MOCK</div>
-            <div style={{ fontSize: 22, fontWeight: 800, marginTop: 4 }}>{bookTag} Final Mock</div>
-            <div style={{ fontSize: 12, opacity: 0.85, marginTop: 4 }}>{EXAM_BOOK_TITLES[book]}</div>
-            <div style={{ fontSize: 12, opacity: 0.85, marginTop: 2 }}>{bookTotal} Fragen • 4 Teile • {bestLine(fullBest)}</div>
-            <div style={{ fontSize: 11, opacity: 0.65, marginTop: 2 }}>{otherTag} Final Mock: {bestLine(otherBest)}</div>
-          </Block>
-          <span style={{ display: 'inline-flex', padding: 10, borderRadius: 999, background: 'rgba(255,255,255,0.14)', flexShrink: 0 }}>
-            <GraduationCap size={ICON_SIZES.card} aria-hidden="true" style={{ color: '#fff' }} />
-          </span>
-        </Block>
-        <Block marginTop="14px">
-          <Button shape={SHAPE.pill} onClick={() => onStartExam && onStartExam('full', book)} overrides={{ BaseButton: { style: { backgroundColor: '#fff', color: '#0f0f12', fontWeight: 800, width: '100%' } } }}>Prüfung starten →</Button>
-        </Block>
-      </UberCard>
+      <section className="exam-hero">
+        <div className="exam-copy">
+          <span className="eyebrow">MENSCHEN {bookTag} · FINAL MOCK</span>
+          <h2>{bookTag} Final Mock</h2>
+          <p>
+            {EXAM_BOOK_TITLES[book]} — {bookTotal} Fragen in vier Teilen. {bestLine(fullBest)}.
+          </p>
+          <button type="button" className="btn yellow" onClick={() => onStartExam && onStartExam('full', book)}>
+            Prüfung starten <Icon name="arrow" size={18} />
+          </button>
+        </div>
+        <div className="best-score">
+          <span>BESTLEISTUNG</span>
+          <strong>
+            {fullBest ? fullBest.pct : '—'}{fullBest ? <small>%</small> : null}
+          </strong>
+          <p>{fullBest ? `${fullBest.correct} von ${fullBest.total}` : 'Noch kein Versuch'}</p>
+          <small>{otherTag} Final Mock: {bestLine(otherBest)}</small>
+        </div>
+      </section>
 
-      <UberCard styleOverride={{ marginTop: '12px', paddingTop: '12px', paddingBottom: '4px' }}>
-        <LabelSmall color="#6b6b6b">Komplette Prüfung ({bookTag}) • Antwort pro Frage genau 1 von 4</LabelSmall>
-        <Block marginTop="4px">
-          {EXAM_SECTIONS.map((key) => (
-            <SectionRow key={key} sectionKey={key} count={bookCounts[key]} />
-          ))}
-        </Block>
-      </UberCard>
+      <p className="ex-caption">Komplette Prüfung ({bookTag}) · Antwort pro Frage genau 1 von 4</p>
+      <div className="exam-parts">
+        {EXAM_SECTIONS.map((key, i) => (
+          <div key={key}>
+            <span>{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{EXAM_SECTION_LABELS[key]}</h3>
+              <p>{SECTION_NOTES[key]}</p>
+            </div>
+            <b>{bookCounts[key]} Fragen</b>
+          </div>
+        ))}
+      </div>
 
-      <Heading $style={{ fontSize: 16, margin: '16px 0 8px' }}>Einzelteile üben ({bookTag})</Heading>
-      <ParagraphSmall color="#6b6b6b" margin="0 0 8px">Nur ein Teil pro Lauf aus {EXAM_BOOK_TITLES[book]} — ideal zum gezielten Üben. Jedes Mal neu gemischt.</ParagraphSmall>
-      <Block display="flex" flexDirection="column" gridGap="8px">
+      <section className="practice-parts">
+        <div>
+          <span className="eyebrow">EINZELTEILE ÜBEN ({bookTag})</span>
+          <h2>Noch nicht bereit für alles?</h2>
+          <p>
+            Nur ein Teil pro Lauf aus {EXAM_BOOK_TITLES[book]} — ideal zum gezielten Üben. Jedes Mal neu gemischt.
+          </p>
+        </div>
+      </section>
+
+      <div className="ex-mode-list">
         {SECTION_MODES.map((key) => {
-          const Icon = SECTION_ICONS[key] || BookOpen;
           const best = readExamBest(key, book);
           return (
-            <UberCard key={key} styleOverride={{ paddingTop: '12px', paddingBottom: '12px' }}>
-              <Block display="flex" justifyContent="space-between" alignItems="center" gridGap="8px">
-                <Block display="flex" alignItems="center" gridGap="8px">
-                  <span style={{ display: 'inline-flex', padding: 8, borderRadius: 999, background: '#f7f7fb', border: '1px solid #e9e8f0' }}>
-                    <Icon size={16} aria-hidden="true" style={{ color: '#0f0f12' }} />
-                  </span>
-                  <Block>
-                    <div style={{ fontWeight: 800, fontSize: 14 }}>{EXAM_SECTION_LABELS[key]} • {examModeTotal(key)} Fragen</div>
-                    <div style={{ fontSize: 11, color: '#9aa0b2', fontWeight: 600 }}>{bestLine(best)}</div>
-                  </Block>
-                </Block>
-                <Button size={SIZE.compact} shape={SHAPE.pill} onClick={() => onStartExam && onStartExam(key, book)}>Start</Button>
-              </Block>
-            </UberCard>
+            <div className="ex-mode" key={key}>
+              <span className="ex-mode-icon"><Icon name={SECTION_ICON_NAMES[key]} size={18} /></span>
+              <div>
+                <div className="ex-mode-title">{EXAM_SECTION_LABELS[key]} · {examModeTotal(key)} Fragen</div>
+                <div className="ex-mode-best">{bestLine(best)}</div>
+              </div>
+              <button
+                type="button"
+                className="btn dark ex-mode-start"
+                onClick={() => onStartExam && onStartExam(key, book)}
+              >
+                Start
+              </button>
+            </div>
           );
         })}
-      </Block>
+      </div>
 
-      <UberCard styleOverride={{ marginTop: '12px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: '#f7f7fb', borderColor: '#e9e8f0' }}>
-        <ParagraphSmall margin={0}><span style={{ display: 'inline-flex', verticalAlign: -3, marginRight: 6 }}><Sparkles size={14} aria-hidden="true" style={{ color: '#6b6b7a' }} /></span>Der {bookTag} Final Mock deckt <b>alle {grammarTopics} Grammatik-Themen</b> des Buches ab — jedes Thema mindestens 1× pro Lauf. Dazu <b>Wortschatz</b> und <b>Lesen</b> aus {EXAM_BOOK_TITLES[book]} (plus Diktation aus den Wörtern des Buches). Keine zwei Läufe sind gleich.</ParagraphSmall>
-      </UberCard>
+      <div className="honest-note">
+        <Sparkles size={20} strokeWidth={1.8} aria-hidden="true" />
+        <div>
+          <p>
+            Der {bookTag} Final Mock deckt <b>alle {grammarTopics} Grammatik-Themen</b> des Buches ab — jedes Thema
+            mindestens 1× pro Lauf. Dazu <b>Wortschatz</b> und <b>Lesen</b> aus {EXAM_BOOK_TITLES[book]} (plus
+            Diktation aus den Wörtern des Buches). Keine zwei Läufe sind gleich.
+          </p>
+        </div>
+      </div>
 
-      <UberCard styleOverride={{ marginTop: '12px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: '#f7f7fb', borderColor: '#e9e8f0' }}>
-        <ParagraphSmall margin={0}><span style={{ display: 'inline-flex', verticalAlign: -3, marginRight: 6 }}><Info size={14} aria-hidden="true" style={{ color: '#6b6b7a' }} /></span><b>Hören ist nicht dabei</b> — die App hat noch keine Audio-Prüfung. Abschluss-Bonus: bis zu 40 XP, einmalig — Wiederholungen zählen nur bei Verbesserung.</ParagraphSmall>
-      </UberCard>
-    </>
+      <div className="honest-note">
+        <Icon name="sound" size={20} />
+        <div>
+          <b>Hören ist nicht dabei</b>
+          <p>
+            Die App hat noch keine Audio-Prüfung. Abschluss-Bonus: bis zu 40 XP, einmalig — Wiederholungen zählen nur
+            bei Verbesserung.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }

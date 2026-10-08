@@ -1,40 +1,26 @@
-import { Block } from 'baseui/block';
-import { Button, KIND, SHAPE } from 'baseui/button';
-import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import UberCard from '../cards/UberCard.jsx';
-import { StatTile, AccuracyBar, LektionPerfRow, StrengthCallout, RecommendationBox, SectionLabel, fmtPct, accuracyColor } from './shared.jsx';
-import {
-  BarChart3,
-  PartyPopper,
-  Target,
-  Zap,
-  CheckCircle2,
-  CircleX,
-  BookOpen,
-  Medal,
-  ICON_SIZES,
-} from '../icons.jsx';
+import { BarChart3, Medal, PartyPopper, Target } from 'lucide-react';
+import { LektionPerfRow, StrengthCallout, RecommendationBox, SectionLabel, fmtPct } from './shared.jsx';
 
-const MODE_LABELS = { dictation: 'Dictation', artikel: 'Artikel', mixed: 'Mixed', choice: '4-Choice', fa: 'DE → فارسی' };
+const MODE_LABELS = { dictation: 'Diktation', artikel: 'Artikel', mixed: 'Gemischt', choice: '4-Choice', fa: 'DE → فارسی' };
 
 /**
- * Quiz completion performance report (Issue #2 §1).
+ * Quiz completion performance report.
  * Pure presentational component — all math comes from calcQuizReport().
  */
 export default function QuizReport({ report, meta = {}, actions = {} }) {
   if (!report || report.total === 0) {
     return (
-      <UberCard styleOverride={{ textAlign: 'center', paddingTop: 24, paddingBottom: 24 }}>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <BarChart3 size={ICON_SIZES.empty} aria-hidden="true" style={{ color: '#9aa0b2' }} />
-        </div>
-        <div style={{ fontWeight: 800, fontSize: 15, marginTop: 8 }}>No questions answered</div>
-        <ParagraphSmall color="#6b6b6b" margin="6px 0 0">Start a quiz to get your performance report.</ParagraphSmall>
-        <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px">
-          {actions.onNewQuiz && <Button shape={SHAPE.pill} onClick={actions.onNewQuiz}>New quiz</Button>}
-          {actions.onGoToBook && <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={actions.onGoToBook}>Back to book</Button>}
-        </Block>
-      </UberCard>
+      <div className="rpr-empty">
+        <div className="rpr-empty-ic"><BarChart3 size={44} aria-hidden="true" /></div>
+        <h2>Keine Fragen beantwortet</h2>
+        <p>Starte ein Quiz, um deinen Leistungsbericht zu sehen.</p>
+        {(actions.onNewQuiz || actions.onGoToBook) && (
+          <div className="next-actions">
+            {actions.onNewQuiz && <button type="button" className="btn dark" onClick={actions.onNewQuiz}>Neues Quiz</button>}
+            {actions.onGoToBook && <button type="button" className="btn light" onClick={actions.onGoToBook}>Zurück zum Buch</button>}
+          </div>
+        )}
+      </div>
     );
   }
 
@@ -42,105 +28,134 @@ export default function QuizReport({ report, meta = {}, actions = {} }) {
   const modeLabel = MODE_LABELS[meta.mode] || meta.mode || 'Quiz';
   const scopeLabel = meta.scopeLabel || '';
   const passed = report.accuracy !== null && report.accuracy >= 60;
+  const low = report.accuracy !== null && report.accuracy < 40;
+  const headline = report.accuracy !== null && report.accuracy < 40
+    ? 'Weiter üben.'
+    : report.accuracy !== null && report.accuracy < 60
+      ? 'Guter Lauf.'
+      : 'Sehr stark.';
+
+  const focusLektion = report.recommendation?.focusLektion;
+  const focusAction = onPracticeLektion && focusLektion;
+
+  const primary = focusAction
+    ? { label: `Lektion ${focusLektion} üben`, onClick: () => onPracticeLektion(focusLektion) }
+    : onPracticeWeak
+      ? { label: 'Schwache Wörter üben', onClick: onPracticeWeak }
+      : onRetake
+        ? { label: 'Quiz wiederholen', onClick: onRetake }
+        : onNewQuiz
+          ? { label: 'Neues Quiz', onClick: onNewQuiz }
+          : null;
+
+  const secondary = onNewQuiz && primary?.label !== 'Neues Quiz'
+    ? { label: 'Neues Quiz', onClick: onNewQuiz }
+    : null;
+
+  const more = [];
+  if (onPracticeWeak && primary?.label !== 'Schwache Wörter üben') more.push({ label: 'Schwache Wörter üben', onClick: onPracticeWeak });
+  if (onRetake && primary?.label !== 'Quiz wiederholen' && secondary?.label !== 'Quiz wiederholen') more.push({ label: 'Quiz wiederholen', onClick: onRetake });
+  if (onGoToBook) more.push({ label: 'Zurück zum Buch', onClick: onGoToBook });
 
   return (
-    <Block display="flex" flexDirection="column" gridGap="12px">
+    <div className="rpr-stack">
       {/* Result overview */}
-      <UberCard styleOverride={{ textAlign: 'center', paddingTop: 20, paddingBottom: 18 }}>
-        <div className="gs-report-item" style={{ display: 'flex', justifyContent: 'center' }}>
-          {passed ? (
-            <PartyPopper size={40} aria-hidden="true" style={{ color: '#16a34a' }} />
-          ) : report.accuracy !== null && report.accuracy < 40 ? (
-            <Target size={40} aria-hidden="true" style={{ color: '#ea580c' }} />
-          ) : (
-            <BarChart3 size={40} aria-hidden="true" style={{ color: '#6b6b7a' }} />
-          )}
+      <div className="report-hero">
+        {passed ? (
+          <div className="success-mark"><PartyPopper size={36} aria-hidden="true" /></div>
+        ) : (
+          <div className={`rpr-mark ${low ? 'low' : 'warn'}`}>
+            {low ? <Target size={30} aria-hidden="true" /> : <BarChart3 size={30} aria-hidden="true" />}
+          </div>
+        )}
+        <span className="eyebrow">{modeLabel} ABGESCHLOSSEN{scopeLabel ? ` · ${scopeLabel}` : ''}</span>
+        <h1>{headline}</h1>
+        <p>{scopeLabel || 'Dein Wortschatz wird sicherer.'}</p>
+        <div className="accuracy">
+          <strong>{fmtPct(report.accuracy)}</strong>
+          <span>GENAUIGKEIT</span>
         </div>
-        <LabelSmall color="#6b6b6b">{modeLabel} complete{scopeLabel ? ` • ${scopeLabel}` : ''}</LabelSmall>
-        <div className="gs-report-item" style={{ fontWeight: 800, fontSize: 34, marginTop: 4, color: accuracyColor(report.accuracy), animationDelay: '60ms' }}>
-          {fmtPct(report.accuracy)}
+      </div>
+
+      <div className="report-stats">
+        <div>
+          <span>RICHTIG</span>
+          <b>{report.correct}</b>
+          <small>von {report.total}</small>
         </div>
-        <div className="gs-report-item" style={{ fontSize: 13, color: '#6b6b7a', marginTop: 2, animationDelay: '100ms', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-          {report.correct}/{report.total} correct • +{report.xp} XP
+        <div>
+          <span>XP</span>
+          <b>+{report.xp}</b>
+          <small>verdient</small>
         </div>
-        <Block marginTop="12px">
-          <AccuracyBar value={report.accuracy} height={8} delay={150} />
-        </Block>
-        <div className="gs-report-item gs-stats-grid" style={{ marginTop: 12, paddingBottom: 6, animationDelay: '140ms' }}>
-          <StatTile icon={BookOpen} value={report.total} label="Questions" delay={140} />
-          <StatTile icon={CheckCircle2} value={report.correct} label="Correct" color="#16a34a" delay={180} />
-          <StatTile icon={CircleX} value={report.incorrect} label="Missed" color={report.incorrect > 0 ? '#dc2626' : '#0f0f12'} delay={220} />
-          <StatTile icon={Zap} value={`+${report.xp}`} label="XP earned" color="#eab308" delay={260} />
+        <div>
+          <span>FEHLER</span>
+          <b>{report.incorrect}</b>
         </div>
-        <Block marginTop="8px" display="flex" justifyContent="center" gridGap="12px">
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#6b6b7a' }}><Medal size={14} aria-hidden="true" /> Score counts toward mastery</span>
-        </Block>
-      </UberCard>
+      </div>
 
       {/* Lektion performance */}
       {report.hasLektionData ? (
-        <UberCard>
-          <SectionLabel>LEKTION PERFORMANCE</SectionLabel>
-          <Block display="flex" flexDirection="column" gridGap="8px" marginTop="10px">
+        <section className="rpr-card">
+          <SectionLabel>LEKTIONSLEISTUNG</SectionLabel>
+          <div className="rpr-lek-list">
             {report.perLektion.filter((e) => e.key !== '__unassigned__').map((e, i) => (
               <LektionPerfRow key={e.key} entry={e} index={i} book={meta.book} onPractice={onPracticeLektion} />
             ))}
-          </Block>
+          </div>
           {report.unassigned && (
-            <ParagraphSmall color="#9aa0b2" margin="8px 0 0">
-              + {report.unassigned.questions} question{report.unassigned.questions === 1 ? '' : 's'} without Lektion metadata (not counted above).
-            </ParagraphSmall>
+            <p className="rpr-unassigned">
+              + {report.unassigned.questions} Frage{report.unassigned.questions === 1 ? '' : 'n'} ohne Lektion-Angabe (oben nicht gezählt).
+            </p>
           )}
-        </UberCard>
+        </section>
       ) : (
-        <UberCard>
-          <SectionLabel>LEKTION PERFORMANCE</SectionLabel>
-          <ParagraphSmall color="#6b6b6b" margin="8px 0 0">
-            These questions had no Lektion metadata, so per-Lektion breakdown isn&apos;t available — your overall score above still counts.
-          </ParagraphSmall>
-        </UberCard>
+        <section className="rpr-card">
+          <SectionLabel>LEKTIONSLEISTUNG</SectionLabel>
+          <p className="rpr-unassigned">
+            Diese Fragen hatten keine Lektion-Infos — die Aufschlüsselung pro Lektion ist daher nicht verfügbar. Dein Gesamtwert oben zählt trotzdem.
+          </p>
+        </section>
       )}
 
-      {/* Strongest / weakest */}
+      {/* Strengths + focus */}
       {(report.strongest || report.weakest) && (
-        <UberCard>
-          <SectionLabel>STRENGTHS & FOCUS</SectionLabel>
-          <Block marginTop="10px">
+        <section className="rpr-card">
+          <SectionLabel>STÄRKEN & FOKUS</SectionLabel>
+          <div className="rpr-strength">
             <StrengthCallout strongest={report.strongest} weakest={report.weakest} delay={80} />
-          </Block>
+          </div>
           {report.needsPractice.length > 0 && (
-            <Block marginTop="10px">
-              <LabelSmall color="#6b6b6b">Words to review</LabelSmall>
-              <div style={{ fontSize: 12, color: '#0f0f12', marginTop: 4 }}>
-                {report.needsPractice.map((e) => `${e.label} (${e.incorrect} missed)`).join(' • ')}
+            <div className="rpr-words">
+              <div className="rpr-words-label">Wörter zum Wiederholen</div>
+              <div className="rpr-words-list">
+                {report.needsPractice.map((e) => `${e.label} (${e.incorrect} falsch)`).join(' • ')}
               </div>
-            </Block>
+            </div>
           )}
-        </UberCard>
+        </section>
       )}
 
       {/* Recommendation */}
-      <UberCard>
-        <Block display="flex" flexDirection="column" gridGap="8px">
-          <RecommendationBox recommendation={report.recommendation} delay={120} />
-        </Block>
-      </UberCard>
+      <RecommendationBox recommendation={report.recommendation} delay={120} />
 
       {/* Next actions — reuse app routing via callbacks */}
-      <UberCard styleOverride={{ backgroundColor: '#f7f7fb', borderColor: '#e9e8f0' }}>
-        <SectionLabel>WHAT&apos;S NEXT?</SectionLabel>
-        <Block display="flex" gridGap="8px" marginTop="10px" overrides={{ Block: { style: { flexWrap: 'wrap' } } }}>
-          {onPracticeLektion && report.recommendation?.focusLektion && (
-            <Button shape={SHAPE.pill} onClick={() => onPracticeLektion(report.recommendation.focusLektion)}>
-              Practice {report.recommendation.focusLektion} →
-            </Button>
-          )}
-          {onPracticeWeak && <Button shape={SHAPE.pill} kind={report.recommendation?.focusLektion ? KIND.secondary : KIND.primary} onClick={onPracticeWeak}>Review weak words</Button>}
-          {onRetake && <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={onRetake}>Retake quiz</Button>}
-          {onNewQuiz && <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={onNewQuiz}>New quiz</Button>}
-          {onGoToBook && <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={onGoToBook}>Back to book</Button>}
-        </Block>
-      </UberCard>
-    </Block>
+      {(primary || secondary) && (
+        <div className="next-actions">
+          {primary && <button type="button" className="btn dark" onClick={primary.onClick}>{primary.label}</button>}
+          {secondary && <button type="button" className="btn light" onClick={secondary.onClick}>{secondary.label}</button>}
+        </div>
+      )}
+
+      {more.length > 0 && (
+        <div className="rpr-more">
+          {more.map((m) => (
+            <button key={m.label} type="button" className="btn small light" onClick={m.onClick}>{m.label}</button>
+          ))}
+        </div>
+      )}
+
+      <p className="rpr-note"><Medal size={14} aria-hidden="true" /> Zählt für deinen Lernstand</p>
+    </div>
   );
 }

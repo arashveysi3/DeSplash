@@ -1,37 +1,79 @@
-import { Block } from 'baseui/block';
-import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
-import { Heading } from 'baseui/heading';
-import { ParagraphSmall } from 'baseui/typography';
+import Icon from '../shell/Icon.jsx';
 import { resetOnlineBoard, fetchOnlineLeaderboard } from '../../db.js';
 import { deleteUser } from '../../auth.js';
-import UberCard from '../cards/UberCard.jsx';
 
 export default function AdminTab({ authUser, usersList, loadUsersList, setToast, setOnlineBoard, setUseOnline, adminToken }) {
   return (
-    <Block paddingTop="16px">
-      <UberCard styleOverride={{backgroundColor:'#fef2f2', borderColor:'#fecaca'}}>
-        <Heading $style={{fontSize:16, margin:0}}>Admin — User management</Heading>
-        <ParagraphSmall color="#991b1b">You are admin ({authUser.username}).</ParagraphSmall>
-        <Block display="flex" gridGap="8px" marginTop="8px">
-          <Button size={SIZE.mini} shape={SHAPE.pill} onClick={loadUsersList}>Refresh users</Button>
-          <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={async()=> { const b=await resetOnlineBoard(adminToken); if(b){ setOnlineBoard(b); setUseOnline(true); setToast('Leaderboard reset'); } setTimeout(()=> setToast(null),1500); }}>Reset board</Button>
-        </Block>
-      </UberCard>
-      <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
-        {usersList.length===0 ? <ParagraphSmall color="#6b6b6b">No users loaded. Tap Refresh.</ParagraphSmall> :
-          usersList.map(u=>(
-            <UberCard key={u.username} styleOverride={{paddingTop:'12px', paddingBottom:'12px'}}>
-              <Block display="flex" justifyContent="space-between" alignItems="center">
-                <Block>
-                  <div style={{fontWeight:700}}>{u.username} {u.isAdmin && <span style={{fontSize:10, background:'#000', color:'#fff', padding:'1px 5px', borderRadius:'999px'}}>admin</span>} <span style={{fontSize:11, color:'#6b6b6b'}}>• {u.xp} XP • {u.email || 'no email'}</span></div>
-                  <div style={{fontSize:11, color:'#9a9a9a'}}>Joined {new Date(u.createdAt).toLocaleDateString()} • {u.streak||0} streak • {u.totalReviews||0} reviews</div>
-                </Block>
-                <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.circle} onClick={async()=> { if(!confirm(`Delete ${u.username}?`)) return; const r=await deleteUser(u.username); if(r){ const b=await fetchOnlineLeaderboard(); if(b) setOnlineBoard(b); setToast(`Deleted ${u.username}`); setTimeout(()=> setToast(null),1500); } else { setToast('Delete failed'); setTimeout(()=> setToast(null),1500); } }}>×</Button>
-              </Block>
-            </UberCard>
+    <div className="page adm-page">
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">ADMIN</span>
+          <h1>Nutzerverwaltung</h1>
+          <p>Konten, Punktestände und Rangliste.</p>
+        </div>
+      </div>
+
+      <section className="adm-card">
+        <h2>Admin — User management</h2>
+        <p>You are admin ({authUser.username}).</p>
+        <div className="adm-actions">
+          <button type="button" className="btn dark" onClick={loadUsersList}>
+            <Icon name="refresh" size={16} /> Refresh users
+          </button>
+          <button
+            type="button"
+            className="btn light"
+            onClick={async () => {
+              const b = await resetOnlineBoard(adminToken);
+              if (b) {
+                setOnlineBoard(b);
+                setUseOnline(true);
+                setToast('Leaderboard reset');
+              }
+              setTimeout(() => setToast(null), 1500);
+            }}
+          >
+            Reset board
+          </button>
+        </div>
+      </section>
+
+      <div className="adm-list">
+        {usersList.length === 0 ? (
+          <p className="adm-empty">No users loaded. Tap Refresh.</p>
+        ) : (
+          usersList.map((u) => (
+            <div key={u.username} className="adm-row">
+              <div>
+                <b>
+                  {u.username} {u.isAdmin && <span className="adm-chip">admin</span>} <span className="adm-sub">• {u.xp} XP • {u.email || 'no email'}</span>
+                </b>
+                <p>Joined {new Date(u.createdAt).toLocaleDateString()} • {u.streak || 0} streak • {u.totalReviews || 0} reviews</p>
+              </div>
+              <button
+                type="button"
+                className="adm-del"
+                onClick={async () => {
+                  if (!confirm(`Delete ${u.username}?`)) return;
+                  const r = await deleteUser(u.username);
+                  if (r) {
+                    const b = await fetchOnlineLeaderboard();
+                    if (b) setOnlineBoard(b);
+                    setToast(`Deleted ${u.username}`);
+                    setTimeout(() => setToast(null), 1500);
+                  } else {
+                    setToast('Delete failed');
+                    setTimeout(() => setToast(null), 1500);
+                  }
+                }}
+                aria-label={`${u.username} löschen`}
+              >
+                ×
+              </button>
+            </div>
           ))
-        }
-      </Block>
-    </Block>
+        )}
+      </div>
+    </div>
   );
 }

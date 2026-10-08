@@ -1,14 +1,22 @@
 {
-  "version": "b11ce1d",
-  "generatedAt": "2026-10-02T13:31:08.451Z",
+  "version": "d1b8fb8",
+  "generatedAt": "2026-10-08T17:08:27.614Z",
   "repo": "https://github.com/arashveysi3/DeSplash",
   "commits": [
+    {
+      "hash": "d1b8fb8",
+      "fullHash": "d1b8fb8f4e922427490afec3860d4d4cae661539",
+      "subject": "feat: add Menschen A2.1 book with 435-word Lernwortschatz data",
+      "author": "arashveysi3",
+      "date": "6 days ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/d1b8fb8"
+    },
     {
       "hash": "b11ce1d",
       "fullHash": "b11ce1d35a575b09b1cab5c81d796d19e0c52ffe",
       "subject": "fix: shuffle quiz queue and cap correctly-answered words to once per day",
       "author": "arashveysi3",
-      "date": "3 days ago",
+      "date": "9 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/b11ce1d"
     },
     {
@@ -16,7 +24,7 @@
       "fullHash": "3f4b72c4812dc53b7fcbc9e2f979252cbe1ed84d",
       "subject": "feat: split Pruefung by book with full-grammar-coverage Final Mocks (A1.1 + A1.2)",
       "author": "arashveysi3",
-      "date": "5 days ago",
+      "date": "11 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/3f4b72c"
     },
     {
@@ -24,7 +32,7 @@
       "fullHash": "f60642e087cf6c6919639f9fe9c6fc128ed98a52",
       "subject": "feat: add 20 Persian rivals to local leaderboard with competitive XP ladder",
       "author": "arashveysi3",
-      "date": "5 days ago",
+      "date": "11 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/f60642e"
     },
     {
@@ -32,7 +40,7 @@
       "fullHash": "e415436eec2b6be2b6600edea93c031cf4a7d229",
       "subject": "feat: expand Pruefung to 315-question banks with fresh shuffle and single-section training",
       "author": "arashveysi3",
-      "date": "5 days ago",
+      "date": "11 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/e415436"
     },
     {
@@ -40,7 +48,7 @@
       "fullHash": "f5d05df31221c5c9dcd6eec5ebfe02f2c4fb1227",
       "subject": "feat: add Diktat learning insights + A1 Final Mock Exam (55 Qs)",
       "author": "arashveysi3",
-      "date": "5 days ago",
+      "date": "11 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/f5d05df"
     },
     {
@@ -48,7 +56,7 @@
       "fullHash": "27838462cb9591d9caa4f48023f3c23386cdc32e",
       "subject": "Revise README for clarity and consistency",
       "author": "Arash Veysi",
-      "date": "5 days ago",
+      "date": "11 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/2783846"
     },
     {
@@ -56,7 +64,7 @@
       "fullHash": "bb7045fa0f02b3f409d5742ad5ba6ca439b41a1b",
       "subject": "feat: add Diktat-Check spelling quiz (20-pack, single-word, find-correct/find-error)",
       "author": "arashveysi3",
-      "date": "6 days ago",
+      "date": "12 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/bb7045f"
     },
     {
@@ -64,7 +72,7 @@
       "fullHash": "494c5933e8197ff178359ba673dd6df9eb763255",
       "subject": "feat: replace emojis with Lucide icon system and legendary streak calendar",
       "author": "arashveysi3",
-      "date": "7 days ago",
+      "date": "13 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/494c593"
     },
     {
@@ -72,7 +80,7 @@
       "fullHash": "0b6f817479fede39f96dff9d316b01e452961e2d",
       "subject": "feat: splash as loading screen with first-launch continue gate",
       "author": "arashveysi3",
-      "date": "7 days ago",
+      "date": "13 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/0b6f817"
     },
     {
@@ -80,7 +88,7 @@
       "fullHash": "ad151217e4b5e2da18308eaadba71bd36cfbc008",
       "subject": "feat: replace app icons with DeSplash brand pack",
       "author": "arashveysi3",
-      "date": "7 days ago",
+      "date": "13 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/ad15121"
     },
     {
@@ -88,7 +96,7 @@
       "fullHash": "753927c24d6e76580deb4fbfe9f46775b3a2866f",
       "subject": "feat: add animated splash screen from design",
       "author": "arashveysi3",
-      "date": "7 days ago",
+      "date": "13 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/753927c"
     },
     {
@@ -96,7 +104,7 @@
       "fullHash": "78b781621da647763bcf0d31cb069e04117084ef",
       "subject": "feat: persistent daily streak system with milestones, freezes, and Shamsi calendar",
       "author": "arashveysi3",
-      "date": "8 days ago",
+      "date": "2 weeks ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/78b7816"
     },
     {
@@ -104,7 +112,7 @@
       "fullHash": "5f73faaf5b4e4617cd8a866b75690effb1c36d35",
       "subject": "fix: shared vocabulary repetition engine with DB-backed daily limits",
       "author": "arashveysi3",
-      "date": "8 days ago",
+      "date": "2 weeks ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/5f73faa"
     },
     {
@@ -112,16 +120,8 @@
       "fullHash": "a47eae652a1a74088c12b01616379057e958dc88",
       "subject": "feat: add quiz performance reports and book-level learning analytics",
       "author": "arashveysi3",
-      "date": "8 days ago",
+      "date": "2 weeks ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/a47eae6"
-    },
-    {
-      "hash": "fe625f7",
-      "fullHash": "fe625f710470559174216d39cb2c76c4704a9468",
-      "subject": "fix(quiz): tiles return from same side they exited",
-      "author": "arashveysi3",
-      "date": "10 days ago",
-      "url": "https://github.com/arashveysi3/DeSplash/commit/fe625f7"
     }
   ]
 }

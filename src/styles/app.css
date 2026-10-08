@@ -1,0 +1,134 @@
+/* Supplementary app styles — features the Figma design does not cover.
+   Never redefine design tokens or design classes here; prefix new classes with a screen scope:
+   shell- (chrome) / set- (settings) / ntf- (toast) / mdl- (modals) / gme- (games)
+   / brd- (board) / prf- (profile) / bk- (books) / adm- (admin) / pwa- (updater). */
+
+/* ---- Splash as full-screen overlay (design splash + app loading flow) ---- */
+.splash { position: fixed; inset: 0; z-index: 100; overflow-y: auto; }
+.splash.is-leaving { opacity: 0; pointer-events: none; transition: opacity .7s ease; }
+.loading-pill {
+  display: inline-flex; align-items: center; gap: 11px; min-height: 52px; padding: 0 20px;
+  border-radius: 15px; background: rgba(24, 24, 22, .06); color: #5d574e;
+  font-weight: 700; font-size: 13px;
+}
+.loading-pill i {
+  width: 14px; height: 14px; border-radius: 50%; font-style: normal;
+  border: 2px solid rgba(24, 24, 22, .18); border-top-color: var(--red);
+  animation: spin .8s linear infinite;
+}
+
+/* ---- Shell: account menu ---- */
+.shell-menu-wrap { position: relative; }
+.shell-menu {
+  position: absolute; z-index: 60; right: 0; top: calc(100% + 8px);
+  min-width: 232px; background: var(--white); border: 1px solid var(--line);
+  border-radius: 16px; box-shadow: var(--shadow); padding: 6px;
+  display: flex; flex-direction: column;
+}
+.shell-menu.up { top: auto; bottom: calc(100% + 8px); }
+.sidebar-account .shell-menu { right: auto; left: 0; }
+.shell-menu-head { padding: 10px 12px 8px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+.shell-menu-head b { display: block; font-size: 13px; }
+.shell-menu-head span { display: block; font-size: 9px; color: var(--ink-soft); margin-top: 2px; }
+.shell-menu button {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 40px;
+  padding: 8px 10px; border: 0; background: transparent; border-radius: 10px;
+  font-size: 12px; font-weight: 700; cursor: pointer; text-align: left; color: var(--ink);
+}
+.shell-menu button:hover { background: var(--paper); }
+.shell-menu-sep { height: 1px; background: var(--line); margin: 4px 6px; }
+.sidebar-account .avatar { cursor: pointer; }
+.mobile-header .shell-menu-wrap { justify-self: end; }
+.mobile-header .shell-menu { right: 0; }
+
+/* ---- Legacy screens wrapper (until each screen is rewritten to design) ---- */
+.legacy-wrap {
+  max-width: 620px; width: 100%; margin: 0 auto; padding: 24px 16px 110px;
+}
+
+/* ---- Settings screen ---- */
+.btn.small { min-height: 38px; padding: 0 14px; font-size: 11px; border-radius: 12px; gap: 8px; }
+.set-card {
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 4px 20px; margin-bottom: 14px;
+}
+.set-row {
+  display: grid; grid-template-columns: 44px 1fr auto; gap: 14px;
+  align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line);
+}
+.set-row:last-child { border-bottom: 0; }
+.set-icon {
+  width: 44px; height: 44px; border-radius: 13px; background: var(--paper);
+  display: grid; place-items: center; color: var(--ink);
+}
+.set-row b { font-size: 13px; }
+.set-row p { font-size: 9px; color: var(--ink-soft); margin: 3px 0 0; line-height: 1.5; }
+.set-badge {
+  font-size: 7px; font-weight: 800; letter-spacing: .12em;
+  background: #e6f2eb; color: #2e7050; padding: 6px 9px; border-radius: 99px;
+}
+.switch {
+  width: 46px; height: 27px; border-radius: 99px; border: 1px solid var(--line);
+  background: #ddd9ce; position: relative; cursor: pointer; padding: 0; transition: .2s;
+}
+.switch span {
+  position: absolute; top: 2px; left: 2px; width: 21px; height: 21px; border-radius: 50%;
+  background: var(--white); transition: .2s; box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+}
+.switch.on { background: var(--green); border-color: var(--green); }
+.switch.on span { left: auto; right: 2px; }
+.settings-page .back-link { margin-bottom: 30px; text-align: left; }
+
+/* ---- Profile banner as button ---- */
+button.profile-banner {
+  width: 100%; border: 0; text-align: left; cursor: pointer;
+  font: inherit; color: inherit; transition: transform .2s ease;
+}
+button.profile-banner:hover { transform: translateY(-2px); }
+button.profile-banner > svg { color: #aaa89f; }
+
+/* ---- Toast ---- */
+.ntf-toast {
+  position: fixed; top: 84px; left: 50%; transform: translateX(-50%); z-index: 90;
+  background: var(--ink); color: #fff; border-radius: 999px; padding: 9px 16px;
+  font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px;
+  box-shadow: var(--shadow); animation: fade-up .25s ease both; max-width: calc(100vw - 32px);
+}
+@media (max-width: 900px) { .ntf-toast { top: 74px; } }
+
+/* ==========================================================================
+   STUDY FLOW (LernenTab + FlashCard) — supplementary to design classes
+   ========================================================================== */
+.card-swipe { position: relative; }
+.swipe-badge {
+  position: absolute; top: 50%; z-index: 5; transform: translateY(-50%);
+  padding: 7px 14px; border-radius: 999px; font-size: 11px; font-weight: 800;
+  letter-spacing: .08em; opacity: 0; transition: opacity .15s; pointer-events: none;
+}
+.swipe-badge.again { left: 14px; background: #ffe1e3; color: #b82e3d; }
+.swipe-badge.known { right: 14px; background: #e3f4ea; color: #29784e; }
+.swipe-badge.show { opacity: 1; }
+
+.transcript-box {
+  margin: 0 0 14px; padding: 10px 13px; border-radius: 12px; font-size: 11px;
+  font-weight: 700; text-align: center; background: #ffe1e3; color: #b82e3d;
+}
+.transcript-box.ok { background: #e3f4ea; color: #29784e; }
+
+.study-ready .warn {
+  margin: 14px auto 0; max-width: 400px; font-size: 11px; font-weight: 700;
+  color: #b82e3d; line-height: 1.5;
+}
+.summary-card small.meta {
+  display: block; margin-top: 12px; font-size: 9px; color: var(--ink-soft);
+}
+.listen-row button:disabled { opacity: .6; cursor: wait; }
+
+.study-progress > div { flex: 1; min-width: 0; }
+.study-progress .progress { margin-top: 7px; height: 7px; }
+
+/* Article colors follow the card's grammatical gender */
+.gender-die .word-wrap .article,
+.gender-die .card-meta span:last-child { color: var(--die); }
+.gender-das .word-wrap .article,
+.gender-das .card-meta span:last-child { color: var(--das); }

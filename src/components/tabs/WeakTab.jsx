@@ -1,54 +1,105 @@
-import { Block } from 'baseui/block';
-import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
-import { Heading } from 'baseui/heading';
-import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import { genderColor } from '../../theme';
+import Icon from '../shell/Icon.jsx';
+import { CheckCircle2 } from 'lucide-react';
 import { speakGerman } from '../../utils/speak';
-import UberCard from '../cards/UberCard.jsx';
-import { TriangleAlert, Volume2, Target, CheckCircle2, ICON_SIZES } from '../icons.jsx';
 
 export default function WeakTab({ weakWords, weakForScope, weakIds, scopeWords, packSize, selectedBook, selectedLektions, selectedBookMeta, setPackWords, setPackIdx, setPackAnswers, setPendingProgress, setShowPackSummary, setFlipped, setActiveKey, setQuizBook, setQuizLektions, startQuiz, setToast }) {
   return (
-    <Block paddingTop="16px">
-      <UberCard styleOverride={{ backgroundColor: '#fef2f2', borderColor: '#fecaca' }}>
-        <Block display="flex" justifyContent="space-between" alignItems="center">
-          <Block>
-            <Heading $style={{ fontSize: 16, margin: 0 }}>Mistake Bank</Heading>
-            <ParagraphSmall margin="4px 0 0" color="#991b1b">Failed cards auto-collected. Filtered to current scope: {selectedBookMeta?.label} {selectedLektions.length ? selectedLektions.join(', ') : 'Whole book'}</ParagraphSmall>
-          </Block>
-          <span style={{ display: 'inline-flex', padding: 10, borderRadius: 999, background: '#fff', border: '1px solid #fecaca' }}>
-            <TriangleAlert size={ICON_SIZES.card} aria-hidden="true" style={{ color: '#dc2626' }} />
+    <div className="page weak-page">
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">FEHLERBANK</span>
+          <h1>Schwache Wörter</h1>
+          <p>Deine Fehlerkarten — gezielt wiederholen und meistern.</p>
+        </div>
+        <button type="button" className="scope-pill" onClick={() => setActiveKey('books')}>
+          <span>
+            {selectedBookMeta?.shortLabel || selectedBookMeta?.label} · {selectedLektions.length ? selectedLektions.join(', ') : 'Ganzes Buch'}
+            <small>{weakForScope.length} schwach</small>
           </span>
-        </Block>
+          <Icon name="arrow" size={16} />
+        </button>
+      </div>
+
+      <section className="weak-hero">
+        <div className="weak-hero-icon">
+          <Icon name="weak" size={26} />
+        </div>
+        <div className="weak-hero-copy">
+          <span className="eyebrow">MISTAKE BANK</span>
+          <h2>Mistake Bank</h2>
+          <p>Failed cards auto-collected. Filtered to current scope: {selectedBookMeta?.label} {selectedLektions.length ? selectedLektions.join(', ') : 'Whole book'}</p>
+        </div>
         {weakWords.length > 0 && (
-          <Block marginTop="12px" display="flex" gridGap="8px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-            <Button size={SIZE.mini} shape={SHAPE.pill} kind={KIND.primary} onClick={()=> { const w = weakForScope.slice(0, packSize); if(!w.length){ setToast('No weak in this scope'); setTimeout(()=> setToast(null),1500); return; } setPackWords(w); setPackIdx(0); setPackAnswers([]); setPendingProgress({}); setShowPackSummary(false); setFlipped(false); setActiveKey('1'); }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Target size={14} aria-hidden="true" /> Practice Weak ({weakForScope.length})</span></Button>
-            <Button size={SIZE.mini} shape={SHAPE.pill} kind={KIND.secondary} onClick={()=> { setQuizBook(selectedBook); setQuizLektions([...selectedLektions]); setTimeout(()=> startQuiz('mixed', Math.min(10, weakForScope.length)), 100); setActiveKey('2');}}>Quiz Weak</Button>
-            <LabelSmall color="#6b6b6b" overrides={{Block:{style:{alignSelf:'center'}}}}>{weakForScope.length} in scope • {weakWords.length} total</LabelSmall>
-          </Block>
+          <div className="weak-hero-actions">
+            <button
+              type="button"
+              className="btn dark"
+              onClick={() => {
+                const w = weakForScope.slice(0, packSize);
+                if (!w.length) {
+                  setToast('No weak in this scope');
+                  setTimeout(() => setToast(null), 1500);
+                  return;
+                }
+                setPackWords(w);
+                setPackIdx(0);
+                setPackAnswers([]);
+                setPendingProgress({});
+                setShowPackSummary(false);
+                setFlipped(false);
+                setActiveKey('study');
+              }}
+            >
+              <Icon name="target" size={16} /> Practice Weak ({weakForScope.length})
+            </button>
+            <button
+              type="button"
+              className="btn light"
+              onClick={() => {
+                setQuizBook(selectedBook);
+                setQuizLektions([...selectedLektions]);
+                setTimeout(() => startQuiz('mixed', Math.min(10, weakForScope.length)), 100);
+                setActiveKey('quiz');
+              }}
+            >
+              Quiz Weak
+            </button>
+            <span className="weak-count">{weakForScope.length} in scope • {weakWords.length} total</span>
+          </div>
         )}
-      </UberCard>
-      <Block display="flex" flexDirection="column" gridGap="8px" marginTop="12px">
-        {weakWords.length === 0 ? (
-          <UberCard styleOverride={{ textAlign: 'center', paddingTop: '30px', paddingBottom: '30px' }}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }}>
-              <CheckCircle2 size={ICON_SIZES.empty} aria-hidden="true" style={{ color: '#16a34a' }} />
-            </div>
-            <ParagraphSmall>No weak words yet. Cards marked “Again” appear here.</ParagraphSmall>
-          </UberCard>
-        ) : (
-          (scopeWords.filter(w=> weakIds.has(w.id)).length ? scopeWords.filter(w=> weakIds.has(w.id)) : weakWords).slice(0, 60).map((w) => (
-            <UberCard key={w.id} styleOverride={{ borderColor: '#fecaca' }}>
-              <Block display="flex" justifyContent="space-between" alignItems="center">
-                <div><span style={{ fontWeight: 700, color: genderColor(w.article) }}>{w.fullGerman || (w.article? `${w.article} ${w.german}`: w.german)}</span> <span style={{ color: '#6b6b6b' }}>— {w.meaning_en || w.english}</span> <span style={{fontFamily:'IRANSans, Tahoma, sans-serif', direction:'rtl', color:'#9a9a9a'}}>— {w.meaning_fa}</span> <span style={{ fontSize: 11, background: '#000', color: '#fff', borderRadius: '999px', padding: '2px 6px', marginLeft: 6 }}>{w.lektion}</span></div>
-                <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => speakGerman(w.german)} aria-label="Listen"><Volume2 size={14} aria-hidden="true" /></Button>
-              </Block>
-              <div style={{ fontSize: 12, fontStyle: 'italic', color: '#6b6b6b', marginTop: 6 }}>{w.example}</div>
-              {w.plural && <div style={{fontSize:11, color:'#9a9a9a'}}>Plural: {w.plural}</div>}
-            </UberCard>
-          ))
-        )}
-      </Block>
-    </Block>
+      </section>
+
+      {weakWords.length === 0 ? (
+        <div className="weak-empty">
+          <div className="weak-empty-icon">
+            <CheckCircle2 size={44} strokeWidth={1.8} style={{ color: '#16a34a' }} aria-hidden="true" />
+          </div>
+          <p>No weak words yet. Cards marked “Again” appear here.</p>
+        </div>
+      ) : (
+        <div className="weak-list">
+          {(scopeWords.filter((w) => weakIds.has(w.id)).length ? scopeWords.filter((w) => weakIds.has(w.id)) : weakWords)
+            .slice(0, 60)
+            .map((w) => (
+              <div key={w.id} className={`weak-rep${w.article ? ` is-${w.article}` : ''}`}>
+                <span className={w.article || ''}>{w.article || ''}</span>
+                <div className="weak-main">
+                  <div className="weak-line">
+                    <b>{w.fullGerman || (w.article ? `${w.article} ${w.german}` : w.german)}</b>
+                    <span className="weak-en">— {w.meaning_en || w.english}</span>
+                    <span className="weak-fa" dir="rtl">— {w.meaning_fa}</span>
+                  </div>
+                  {w.example ? <div className="weak-ex">{w.example}</div> : null}
+                  {w.plural ? <div className="weak-pl">Plural: {w.plural}</div> : null}
+                </div>
+                <span className="weak-lek">{w.lektion}</span>
+                <button type="button" className="weak-audio" onClick={() => speakGerman(w.german)} aria-label="Listen">
+                  <Icon name="sound" size={16} />
+                </button>
+              </div>
+            ))}
+        </div>
+      )}
+    </div>
   );
 }

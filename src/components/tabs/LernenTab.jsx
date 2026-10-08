@@ -1,122 +1,178 @@
-import { Block } from 'baseui/block';
-import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
-import { Select } from 'baseui/select';
-import { ProgressBar } from 'baseui/progress-bar';
-import { Tag } from 'baseui/tag';
-import { Heading } from 'baseui/heading';
-import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import { BOOKS, lektionenForBook } from '../../data/menschen.js';
+import Icon from '../shell/Icon.jsx';
 import { getLektionMastery } from '../../utils/progress.js';
-import UberCard from '../cards/UberCard.jsx';
 import FlashCard from '../cards/FlashCard.jsx';
-import { PartyPopper, Package, Check, ICON_SIZES } from '../icons.jsx';
 
 export default function LernenTab({
-  selectedBook, setSelectedBook, selectedLektions, setSelectedLektions, selectedBookMeta, scopeWords, weakForScope, studyQueue, packSize, setPackSize, packWords, packIdx, packAnswers, showPackSummary, flipped, setFlipped, listening, setListening, transcript, setTranscript, handlePackSwipe, handlePackRate, startNewPack, savePack, isSavingPack, progressMap, setActiveKey, onDiscard
+  selectedLektions, selectedBookMeta, scopeWords, weakForScope, studyQueue, packSize, setPackSize, packWords, packIdx, packAnswers, showPackSummary, flipped, setFlipped, listening, setListening, transcript, setTranscript, handlePackSwipe, handlePackRate, startNewPack, savePack, isSavingPack, progressMap, setActiveKey, onDiscard
 }) {
-  return (
-    <>
-      <UberCard styleOverride={{backgroundColor:'#f7f7f7', borderColor:'#e5e5e5', paddingTop:'12px', paddingBottom:'12px'}}>
-        <Block display="flex" justifyContent="space-between" alignItems="center">
-          <Block>
-            <LabelSmall color="#6b6b6b">Scope</LabelSmall>
-            <div style={{fontWeight:800, fontSize:14}}>{selectedBookMeta?.label} • {selectedLektions.length===0 ? 'Whole book' : `${selectedLektions.length} Lektionen`}</div>
-            <div style={{fontSize:11, color:'#6b6b6b'}}>{selectedLektions.length? selectedLektions.join(', ') : 'All'} • {scopeWords.length} words • {weakForScope.length} weak</div>
-          </Block>
-          <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setActiveKey('0')}>Change →</Button>
-        </Block>
-        <Block display="flex" gridGap="8px" marginTop="10px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-          <Select options={BOOKS.map(b=> ({id:b.id, label:b.label}))} value={[{id:selectedBook, label:selectedBookMeta?.label}]} onChange={({value})=> { if(value[0]) { setSelectedBook(value[0].id); setSelectedLektions([]); }}} size="compact" overrides={{ControlContainer:{style:{minWidth:'140px', borderRadius:'999px'}}}} />
-          <Select options={[{id:10, label:'10 / pack'},{id:20, label:'20 / pack'},{id:50, label:'50 / pack'}]} value={[{id:packSize, label:`${packSize} / pack`}]} onChange={({value})=> setPackSize(value[0].id)} size="compact" overrides={{ ControlContainer: { style: { minWidth: '110px', borderRadius:'999px' } } }} />
-        </Block>
-        <Block display="flex" gridGap="6px" marginTop="10px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-          {lektionenForBook(selectedBook).map(l=>{
-            const active = selectedLektions.includes(l.lektion);
-            return (
-              <Button key={l.key} size={SIZE.mini} kind={active?KIND.primary:KIND.secondary} shape={SHAPE.pill}
-                overrides={{BaseButton:{style:{fontWeight:700, fontSize:11, backgroundColor: active? '#0f0f12' : '#fff', color: active? '#fff':'#0f0f12', borderColor:'#e9e8f0'}}}}
-                onClick={()=> setSelectedLektions(prev=> prev.includes(l.lektion) ? prev.filter(x=>x!==l.lektion) : [...prev, l.lektion])}>
-                {active && <Check size={12} aria-hidden="true" style={{ marginRight: 2, verticalAlign: -2 }} />}{l.lektion}
-              </Button>
-            );
-          })}
-          <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setSelectedLektions([])}>All</Button>
-          <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={()=> setSelectedLektions(lektionenForBook(selectedBook).map(l=>l.lektion))}>All +</Button>
-        </Block>
-        <Block display="flex" gridGap="8px" marginTop="10px">
-          <Button size={SIZE.mini} shape={SHAPE.pill} onClick={startNewPack}>New pack</Button>
-          <LabelSmall color="#6b6b6b" overrides={{Block:{style:{alignSelf:'center'}}}}>{studyQueue.length} due</LabelSmall>
-        </Block>
-      </UberCard>
+  const m = getLektionMastery(scopeWords, progressMap);
+  const activePack = packWords.length > 0 && !showPackSummary;
+  const scopeLabel = selectedLektions.length ? selectedLektions.join(', ') : 'Ganzes Buch';
+  const correctCount = packAnswers.filter((a) => a.correct).length;
+  const packXp = packAnswers.reduce((a, b) => a + b.xp, 0);
+  const progressPct = Math.round((packIdx / Math.max(packWords.length, 1)) * 100);
 
-      {packWords.length > 0 && !showPackSummary ? (
-        <>
-          <Block display="flex" justifyContent="space-between" alignItems="center" marginTop="12px" marginBottom="8px">
-            <LabelSmall color="#6b6b6b">Pack {packIdx+1}/{packWords.length} • {packAnswers.length} answered</LabelSmall>
-            <LabelSmall color="#000" overrides={{ Block: { style: { fontWeight: 700 } } }}>{Math.round((packIdx/packWords.length)*100)}%</LabelSmall>
-          </Block>
-          <ProgressBar value={(packIdx/packWords.length)*100} overrides={{ Bar: { style: { height: '4px' } }, BarProgress: { style: { backgroundColor: '#000' } }, BarContainer: { style: { backgroundColor: '#eee', height: '4px', borderRadius: '999px' } } }} />
-          <Block marginTop="16px">
-            <FlashCard word={packWords[packIdx]} flipped={flipped} setFlipped={setFlipped} onSwipe={handlePackSwipe} onRate={handlePackRate} listening={listening} setListening={setListening} transcript={transcript} setTranscript={setTranscript} />
-          </Block>
-          <Block display="flex" justifyContent="center" marginTop="12px">
-            <LabelSmall color="#9a9a9a">{packWords.length - packIdx - 1} remaining</LabelSmall>
-          </Block>
-        </>
+  return (
+    <div className="page study-page">
+      <div className="page-title-row">
+        <div>
+          <span className="eyebrow">SPACED REPETITION</span>
+          <h1>Lernen</h1>
+          <p>
+            {selectedBookMeta?.label} · {scopeLabel} · {scopeWords.length} Wörter · {weakForScope.length} schwach
+          </p>
+        </div>
+        <button type="button" className="scope-pill" onClick={() => setActiveKey('books')}>
+          <span>
+            {selectedBookMeta?.shortLabel || selectedBookMeta?.label} · {scopeLabel}
+            <small>{scopeWords.length} Wörter</small>
+          </span>
+          <Icon name="arrow" size={16} />
+        </button>
+      </div>
+
+      {activePack ? (
+        <section className="study-active">
+          <div className="pack-status">
+            <button
+              type="button"
+              aria-label="Zur Startseite"
+              onClick={() => setActiveKey('home')}
+            >
+              <Icon name="close" />
+            </button>
+            <div>
+              <span>
+                PACK {packIdx + 1} / {packWords.length}
+              </span>
+              <span className="progress yellow">
+                <span style={{ width: `${progressPct}%` }} />
+              </span>
+            </div>
+            <b>+{packXp} XP</b>
+          </div>
+
+          <FlashCard
+            word={packWords[packIdx]}
+            flipped={flipped}
+            setFlipped={setFlipped}
+            onSwipe={handlePackSwipe}
+            onRate={handlePackRate}
+            listening={listening}
+            setListening={setListening}
+            transcript={transcript}
+            setTranscript={setTranscript}
+          />
+
+          <p className="swipe-hint" style={{ textAlign: 'center' }}>
+            {packWords.length - packIdx - 1} übrig
+          </p>
+        </section>
       ) : showPackSummary ? (
-        <UberCard styleOverride={{textAlign:'center', paddingTop:'24px', paddingBottom:'24px', backgroundColor:'#f7f7f7', borderColor:'#e5e5e5', marginTop:'12px'}}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <span style={{ display: 'inline-flex', padding: 12, borderRadius: 999, background: '#fef3c7' }}>
-              <PartyPopper size={ICON_SIZES.empty} aria-hidden="true" style={{ color: '#b45309' }} />
-            </span>
+        <section className="summary-card">
+          <span className="success-mark">
+            <Icon name="check" size={36} />
+          </span>
+          <span className="eyebrow">PACK GESCHAFFT</span>
+          <h2>Geschafft.</h2>
+          <p>
+            {correctCount} von {packAnswers.length} richtig · {selectedBookMeta?.label} · {scopeLabel}
+          </p>
+          <div className="score-circle">
+            <strong>
+              {correctCount}<small>/{packAnswers.length}</small>
+            </strong>
+            <span>RICHTIG</span>
           </div>
-          <Heading $style={{fontSize:18, margin:'8px 0 0'}}>Pack complete!</Heading>
-          <ParagraphSmall margin="8px 0 0">{packAnswers.filter(a=>a.correct).length}/{packAnswers.length} correct • +{packAnswers.reduce((a,b)=>a+b.xp,0)} XP • {selectedBookMeta?.label} {selectedLektions.length? selectedLektions.join(', ') : 'Whole book'}</ParagraphSmall>
-          <Block display="flex" gridGap="8px" justifyContent="center" marginTop="12px" overrides={{Block:{style:{flexWrap:'wrap'}}}}>
-            {packAnswers.map((a,i)=>(
-              <Tag key={i} closeable={false} overrides={{Root:{style:{backgroundColor: a.correct ? '#dcfce7' : '#fee2e2', color: a.correct ? '#16a34a' : '#dc2626', borderRadius:'999px'}}}}>{a.word.german}: {a.label}</Tag>
+          <div className="summary-stats">
+            <div>
+              <Icon name="bolt" />
+              <b>+{packXp}</b>
+              <span>XP verdient</span>
+            </div>
+            <div>
+              <Icon name="cards" />
+              <b>{packAnswers.length}</b>
+              <span>Wörter</span>
+            </div>
+          </div>
+          <div className="word-pills">
+            {packAnswers.map((a, i) => (
+              <span key={i} className={a.correct ? '' : 'miss'}>
+                {a.word.german}
+                {a.correct ? ' ✓' : ` · ${a.label}`}
+              </span>
             ))}
-          </Block>
-          <Block display="flex" gridGap="8px" justifyContent="center" marginTop="16px">
-            <Button shape={SHAPE.pill} onClick={savePack} isLoading={isSavingPack}>Save & next pack</Button>
-            <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={onDiscard}>Discard</Button>
-          </Block>
-          <ParagraphSmall color="#6b6b6b" margin="8px 0 0">Tap Save to keep your progress.</ParagraphSmall>
-        </UberCard>
-      ) : (
-        <UberCard styleOverride={{ backgroundColor: '#f7f7f7', borderColor: '#e5e5e5', textAlign: 'center', paddingTop: '30px', paddingBottom: '30px', marginTop:'12px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <span style={{ display: 'inline-flex', padding: 12, borderRadius: 999, background: '#fff', border: '1px solid #e9e8f0' }}>
-              <Package size={ICON_SIZES.empty} aria-hidden="true" style={{ color: '#6b6b7a' }} />
-            </span>
           </div>
-          <Heading $style={{fontSize:16}}>Ready for a pack?</Heading>
-          <ParagraphSmall color="#6b6b6b">Scoped to <b>{selectedBookMeta?.label} {selectedLektions.length? selectedLektions.join(', ') : 'whole book'}</b> • {scopeWords.length} words. Tap Start to begin.</ParagraphSmall>
-          <Block marginTop="12px" display="flex" justifyContent="center"><Button shape={SHAPE.pill} onClick={startNewPack}>Start {packSize}-word pack</Button></Block>
-          {studyQueue.length===0 && <ParagraphSmall color="#dc2626" margin="8px 0 0">No due words for this scope — try another Lektion or whole book.</ParagraphSmall>}
-          <Block display="flex" justifyContent="center" gridGap="16px" marginTop="16px">
-            <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderRadius: '999px', background: '#2563eb' }} /><LabelSmall>der</LabelSmall></Block>
-            <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderRadius: '999px', background: '#dc2626' }} /><LabelSmall>die</LabelSmall></Block>
-            <Block display="flex" alignItems="center" gridGap="6px"><span style={{ width: 10, height: 10, borderRadius: '999px', background: '#16a34a' }} /><LabelSmall>das</LabelSmall></Block>
-          </Block>
-        </UberCard>
+          <button type="button" className="btn" onClick={savePack} disabled={isSavingPack}>
+            {isSavingPack ? 'Speichert …' : 'Speichern & weiter'}
+          </button>
+          <button type="button" className="text-link" onClick={onDiscard}>
+            Pack verwerfen
+          </button>
+          <small className="meta">Tippe auf Speichern, um deinen Fortschritt zu behalten.</small>
+        </section>
+      ) : (
+        <section className="study-ready">
+          <div className="pack-visual">
+            <div className="mini-card m1">der</div>
+            <div className="mini-card m2">die</div>
+            <div className="mini-card m3">das</div>
+            <span>{packSize}</span>
+          </div>
+          <span className="eyebrow">DEIN NÄCHSTES PACK</span>
+          <h2>Bereit für {packSize} Wörter?</h2>
+          <p>
+            Im Bereich <b>{selectedBookMeta?.label} · {scopeLabel}</b> · {scopeWords.length} Wörter. Mit jedem
+            Durchgang festigen sich Artikel und Bedeutung.
+          </p>
+          <div className="pack-options">
+            {[10, 20, 50].map((n, i) => (
+              <button
+                key={n}
+                type="button"
+                className={packSize === n ? 'selected' : ''}
+                onClick={() => setPackSize(n)}
+              >
+                {n}
+                <small>{['sanft', 'fokussiert', 'intensiv'][i]}</small>
+              </button>
+            ))}
+          </div>
+          <button type="button" className="btn dark" onClick={startNewPack}>
+            Pack starten <Icon name="arrow" size={18} />
+          </button>
+          {studyQueue.length === 0 && (
+            <p className="warn">Keine fälligen Wörter in diesem Bereich — wähle eine andere Lektion oder ein ganzes Buch.</p>
+          )}
+          <div className="gender-legend">
+            <span className="der">der</span>
+            <span className="die">die</span>
+            <span className="das">das</span>
+          </div>
+        </section>
       )}
 
-      {(() => { const m = getLektionMastery(scopeWords, progressMap); return (
-        <UberCard styleOverride={{marginTop:'12px', paddingTop:'12px', paddingBottom:'12px'}}>
-          <Block display="flex" justifyContent="space-between" alignItems="center">
-            <LabelSmall>Scope progress — {m.seen}/{m.total} seen • {m.mastered} mastered</LabelSmall>
-            <LabelSmall color="#000" overrides={{Block:{style:{fontWeight:700}}}}>{m.pct}% seen • {m.masteredPct}% mastered</LabelSmall>
-          </Block>
-          <div style={{height:6, background:'#eee', borderRadius:999, marginTop:8, overflow:'hidden'}}>
-            <div style={{height:'100%', width:`${m.pct}%`, background:'#000', borderRadius:999, transition:'width 0.5s'}}/>
+      <section className="scope-card study-progress">
+        <div>
+          <span className="eyebrow">FORTSCHRITT IM BEREICH</span>
+          <h3>
+            {m.seen}/{m.total} gesehen · {m.mastered} gemeistert
+          </h3>
+          <p>
+            {m.pct}% gesehen · {m.masteredPct}% gemeistert — gemeistert = 3× Good, Intervall ≥ 14 Tage.
+          </p>
+          <div className="progress">
+            <span style={{ width: `${m.pct}%` }} />
           </div>
-          <div style={{height:4, background:'#dcfce7', borderRadius:999, marginTop:4, overflow:'hidden'}}>
-            <div style={{height:'100%', width:`${m.masteredPct}%`, background:'#16a34a', borderRadius:999, transition:'width 0.5s'}}/>
+          <div className="progress green">
+            <span style={{ width: `${m.masteredPct}%` }} />
           </div>
-          <ParagraphSmall color="#9a9a9a" margin="4px 0 0">Gray = studied, green = mastered (3× Good, interval ≥14d)</ParagraphSmall>
-        </UberCard>
-      ); })()}
-    </>
+        </div>
+        <button type="button" onClick={() => setActiveKey('books')}>
+          Ändern <Icon name="arrow" size={16} />
+        </button>
+      </section>
+    </div>
   );
 }

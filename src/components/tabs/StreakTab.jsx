@@ -1,35 +1,28 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Block } from 'baseui/block';
-import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
-import { Heading } from 'baseui/heading';
-import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { getStreakCalendar, mergeServerStreak } from '../../db.js';
 import { fetchStreakState } from '../../auth.js';
 import {
-  PERSIAN_WEEKDAYS,
   STREAK_MILESTONES,
   jalaliLabel,
   toPersianDigits,
   utcDayKey,
 } from '../../utils/streak.js';
-import UberCard from '../cards/UberCard.jsx';
 import {
-  StreakTierIcon,
-  getIconByName,
-  Snowflake,
-  LoaderCircle,
-  Sprout,
-  Trophy,
-  CheckCircle2,
-  PartyPopper,
+  Check,
   ChevronLeft,
   ChevronRight,
-  ICON_SIZES,
-} from '../icons.jsx';
+  LoaderCircle,
+  Lock,
+  PartyPopper,
+  Snowflake,
+  Sprout,
+} from 'lucide-react';
 import CalendarTile from '../streak/CalendarTile.jsx';
-import TierBadge from '../streak/TierBadge.jsx';
 import DayDetailSheet from '../streak/DayDetailSheet.jsx';
 import TierCelebration from '../streak/TierCelebration.jsx';
+import { TierGlyph } from '../streak/TierBadge.jsx';
+
+const WEEKDAY_LETTERS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 
 function monthRange(year, month) {
   const m = String(month).padStart(2, '0');
@@ -118,203 +111,216 @@ export default function StreakTab({ authToken, refreshKey, pendingCelebration, o
     setSelectedCell(cell);
   }, []);
 
+  const heroEyebrow = summary && summary.milestone.name !== 'No streak'
+    ? `${summary.milestone.name.toUpperCase()} · STUFE ${summary.milestone.level}`
+    : 'NOCH KEINE SERIE';
+
   return (
-    <Block paddingTop="16px">
+    <div className="page streak-page">
       {tierCelebration && (
         <TierCelebration tier={tierCelebration} streakDays={tierCelebration.streakDays} onDone={handleTierCelebrationDone} />
       )}
       {pendingCelebration && (
-        <div className="gs-celebrate-overlay" role="dialog" aria-modal="true" aria-label="Milestone reached">
-          <div className="gs-celebrate-card">
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <span style={{ display: 'inline-flex', padding: 12, borderRadius: 999, background: '#fef3c7' }}>
-                <StreakTierIcon level={pendingCelebration.level} iconName={pendingCelebration.icon} size={48} />
-              </span>
-            </div>
-            <Heading $style={{ fontSize: 20, margin: '12px 0 4px' }}>Milestone reached!</Heading>
-            <div style={{ fontWeight: 800, fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-              <PartyPopper size={18} aria-hidden="true" style={{ color: '#f59e0b' }} />
+        <div className="sk-celebrate-overlay" role="dialog" aria-modal="true" aria-label="Milestone reached">
+          <div className="sk-celebrate-card">
+            <span className="sk-celebrate-icon">
+              <TierGlyph icon={pendingCelebration.icon} size={48} strokeWidth={1.8} />
+            </span>
+            <h2 className="sk-celebrate-heading">Milestone reached!</h2>
+            <div className="sk-celebrate-name">
+              <PartyPopper size={18} strokeWidth={1.8} aria-hidden="true" />
               {pendingCelebration.name}
             </div>
-            <div lang="fa" dir="rtl" style={{ fontFamily: 'IRANSans', fontSize: 13, color: '#4b4b58', marginTop: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+            <div lang="fa" dir="rtl" className="sk-celebrate-fa">
               {toPersianDigits(pendingCelebration.milestone)} روز!
-              <Snowflake size={14} aria-hidden="true" style={{ color: '#0284c7' }} />
+              <Snowflake size={14} strokeWidth={1.8} aria-hidden="true" style={{ color: '#0284c7' }} />
               جایزه: {toPersianDigits(pendingCelebration.freezes || 1)} فریز
             </div>
-            <Block marginTop="16px">
-              <Button shape={SHAPE.pill} onClick={() => onCelebrationSeen?.()}>Continue</Button>
-            </Block>
+            <div className="sk-celebrate-actions">
+              <button type="button" className="btn dark" onClick={() => onCelebrationSeen?.()}>Continue</button>
+            </div>
           </div>
         </div>
       )}
 
       {loading && !payload && (
-        <UberCard styleOverride={{ textAlign: 'center', paddingTop: '28px', paddingBottom: '28px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <LoaderCircle size={32} aria-hidden="true" className="gs-spin" style={{ color: '#f97316' }} />
-          </div>
-          <ParagraphSmall color="#6b6b7a">Loading streak…</ParagraphSmall>
-        </UberCard>
+        <div className="sk-card sk-center">
+          <LoaderCircle size={32} strokeWidth={1.8} aria-hidden="true" className="sk-spin" />
+          <p className="sk-muted">Loading streak…</p>
+        </div>
       )}
       {error && !payload && (
-        <UberCard styleOverride={{ textAlign: 'center' }}>
-          <ParagraphSmall color="#b91c1c">{error}</ParagraphSmall>
-        </UberCard>
+        <div className="sk-card sk-center">
+          <p className="sk-error">{error}</p>
+        </div>
       )}
 
       {summary && (
         <>
-          <UberCard styleOverride={{ backgroundColor: '#0f0f12', color: '#fff', borderWidth: 0, borderRadius: '20px', textAlign: 'center' }}>
-            <div key={summary.current} className="gs-streak-pop" style={{ display: 'flex', justifyContent: 'center', lineHeight: 1 }}>
-              <StreakTierIcon level={summary.milestone.level} iconName={summary.milestone.icon} size={52} />
+          <section className="streak-hero">
+            <div key={summary.current} className="tier-orb sk-orb-pop" aria-hidden="true">
+              <TierGlyph icon={summary.milestone.icon} size={40} strokeWidth={1.8} />
             </div>
-            <div style={{ fontSize: 44, fontWeight: 900, letterSpacing: '-1px', marginTop: 4 }}>
-              {summary.current} <span style={{ fontSize: 15, fontWeight: 700, opacity: 0.75 }}>DAYS</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 6 }}>
-              <TierBadge level={summary.milestone.level} name={summary.milestone.name} icon={summary.milestone.icon} />
-            </div>
-            <div lang="fa" dir="rtl" style={{ fontFamily: 'IRANSans', fontSize: 12, opacity: 0.7, marginTop: 6 }}>
+            <span className="eyebrow">{heroEyebrow}</span>
+            <h1>
+              {summary.current} <small>TAGE</small>
+            </h1>
+            <p lang="fa" dir="rtl">
               {summary.current === 0 ? 'هنوز رکوردی ثبت نشده' : `${toPersianDigits(summary.current)} روز متوالی`}
+            </p>
+            <div className="tier-progress">
+              <div>
+                <span>{summary.nextTier ? `Nächste Stufe: ${summary.nextTier.name}` : 'Top-Stufe — legendär'}</span>
+                <b>{summary.nextTier ? `${summary.current} / ${summary.nextTier.minDays}` : 'MAX'}</b>
+              </div>
+              <div className="progress yellow">
+                <span style={{ width: `${Math.round(summary.progress * 100)}%` }} />
+              </div>
             </div>
-            <div style={{ height: 8, background: 'rgba(255,255,255,0.16)', borderRadius: 999, marginTop: 12, overflow: 'hidden' }}>
-              <div className="gs-bar-fill" style={{ height: '100%', width: `${Math.round(summary.progress * 100)}%`, background: 'linear-gradient(90deg,#fb923c,#ef4444)', borderRadius: 999 }} />
-            </div>
-            <div style={{ fontSize: 12, marginTop: 6, opacity: 0.85, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-              {summary.nextTier ? (
-                <>
-                  <span>{summary.daysToNextTier} day{summary.daysToNextTier === 1 ? '' : 's'} until {summary.nextTier.name}</span>
-                  <StreakTierIcon level={summary.nextTier.level} iconName={summary.nextTier.icon} size={16} />
-                </>
-              ) : (
-                <>
-                  <span>Top tier — legendary</span>
-                  <Trophy size={16} aria-hidden="true" style={{ color: '#f59e0b' }} />
-                </>
-              )}
-            </div>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 10, background: 'rgba(255,255,255,0.1)', borderRadius: 999, padding: '6px 12px', fontSize: 13, fontWeight: 800 }}>
-              <Snowflake size={16} aria-hidden="true" style={{ color: '#7dd3fc' }} />
-              <span>{summary.freezes.balance}</span>
-              <span lang="fa" dir="rtl" style={{ fontFamily: 'IRANSans', fontWeight: 400, fontSize: 12, opacity: 0.8 }}>فریز</span>
-            </div>
-          </UberCard>
+          </section>
 
-          <Block display="flex" gridGap="8px" marginTop="8px">
-            {[
-              { label: 'Current', value: summary.current },
-              { label: 'Longest', value: summary.longest },
-              { label: 'Total days', value: summary.totalDays },
-            ].map((s) => (
-              <UberCard key={s.label} styleOverride={{ flex: 1, textAlign: 'center', paddingTop: '12px', paddingBottom: '12px' }}>
-                <LabelSmall>{s.label}</LabelSmall>
-                <div style={{ fontWeight: 900, fontSize: 22 }}>{s.value}</div>
-              </UberCard>
-            ))}
-          </Block>
-
-          <UberCard styleOverride={{ marginTop: '8px' }}>
-            <Block display="flex" justifyContent="space-between" alignItems="center">
-              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} onClick={() => setView((v) => shiftMonth(v, -1))} aria-label="Previous month"><ChevronLeft size={14} aria-hidden="true" /> <span lang="fa">قبل</span></Button>
-              <Block display="flex" flexDirection="column" alignItems="center">
-                <LabelSmall>{month.gregorianTitle}</LabelSmall>
-                <div lang="fa" dir="rtl" style={{ fontFamily: 'IRANSans', fontSize: 13, fontWeight: 700 }}>{month.jalaliTitle}</div>
-              </Block>
-              <Button size={SIZE.mini} kind={KIND.secondary} shape={SHAPE.pill} disabled={atCurrentMonth} onClick={() => setView((v) => shiftMonth(v, 1))} aria-label="Next month"><span lang="fa">بعد</span> <ChevronRight size={14} aria-hidden="true" /></Button>
-            </Block>
-            <div className="gs-cal-grid gs-cal-weekdays" dir="rtl" aria-hidden="true">
-              {PERSIAN_WEEKDAYS.map((w) => <span key={w} lang="fa">{w.slice(0, 3)}</span>)}
+          <div className="streak-stats">
+            <div>
+              <span>AKTUELL</span>
+              <b>{summary.current}</b>
+              <small>Tage</small>
             </div>
-            <div key={`${view.y}-${view.m}`} className="gs-cal-grid gs-cal-month-enter" dir="rtl" role="grid" aria-label={`Streak calendar ${month.gregorianTitle}`}>
+            <div>
+              <span>BESTWERT</span>
+              <b>{summary.longest}</b>
+              <small>Tage</small>
+            </div>
+            <div>
+              <span>GESAMT</span>
+              <b>{summary.totalDays}</b>
+              <small>aktive Tage</small>
+            </div>
+            <div className="freeze">
+              <span>FREESTREAK</span>
+              <b>{summary.freezes.balance}</b>
+              <small>verfügbar</small>
+            </div>
+          </div>
+
+          <section className="calendar-card">
+            <div className="calendar-head">
+              <button type="button" onClick={() => setView((v) => shiftMonth(v, -1))} aria-label="Previous month">
+                <ChevronLeft size={16} strokeWidth={1.8} aria-hidden="true" />
+              </button>
+              <div>
+                <h2>{month.gregorianTitle}</h2>
+                <p lang="fa" dir="rtl">{month.jalaliTitle}</p>
+              </div>
+              <button type="button" disabled={atCurrentMonth} onClick={() => setView((v) => shiftMonth(v, 1))} aria-label="Next month">
+                <ChevronRight size={16} strokeWidth={1.8} aria-hidden="true" />
+              </button>
+            </div>
+            <div className="weekdays" dir="rtl" aria-hidden="true">
+              {WEEKDAY_LETTERS.map((w, i) => <span key={i} lang="fa">{w}</span>)}
+            </div>
+            <div
+              key={`${view.y}-${view.m}`}
+              className="calendar-grid sk-month-enter"
+              dir="rtl"
+              role="grid"
+              aria-label={`Streak calendar ${month.gregorianTitle}`}
+            >
               {Array.from({ length: month.leadingBlanks }).map((_, i) => <span key={`b${i}`} />)}
               {month.cells.map((c) => (
                 <CalendarTile key={c.key} cell={c} onSelect={handleSelectCell} />
               ))}
             </div>
-            <Block display="flex" gridGap="12px" marginTop="8px" flexWrap>
-              {[
-                ['evolution', 'Evolution timeline', 'linear-gradient(135deg,#f97316,#8b5cf6)', null],
-                ['protected', 'Freeze', '#0284c7', Snowflake],
-                ['missed', 'Rest', '#d4d4d8', null],
-                ['future', 'Future', '#f4f4f5', null],
-              ].map(([k, label, color, Icon]) => (
-                <span key={k} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#6b6b7a' }}>
-                  <span style={{ width: 10, height: 10, borderRadius: 3, background: color, display: 'inline-block' }} />{label}
-                  {Icon && <Icon size={12} aria-hidden="true" style={{ color }} />}
-                </span>
-              ))}
-            </Block>
-            <ParagraphSmall color="#9aa0b2" margin="8px 0 0">Each completed day keeps the tier it earned — scroll back to watch your evolution. Tap any day for details.</ParagraphSmall>
-          </UberCard>
+            <div className="calendar-legend">
+              <span><i className="complete" />Geschafft</span>
+              <span><i className="ice" />Freeze</span>
+              <span><i className="missed" />Ruhetag</span>
+              <span><i className="future" />Zukunft</span>
+            </div>
+            <p className="sk-cal-note">
+              Each completed day keeps the tier it earned — scroll back to watch your evolution. Tap any day for details.
+            </p>
+          </section>
 
-          <UberCard styleOverride={{ marginTop: '8px' }}>
-            <LabelSmall>Evolution tiers</LabelSmall>
-            <Block display="flex" flexDirection="column" gridGap="8px" marginTop="8px">
+          <section className="tier-list">
+            <div className="section-heading">
+              <div>
+                <span className="eyebrow">DEINE EVOLUTION</span>
+                <h2>Beständigkeit wird sichtbar.</h2>
+              </div>
+            </div>
+            <div className="tier-track">
               {STREAK_MILESTONES.map((t) => {
                 const achieved = summary.current >= t.minDays;
-                const TierIcon = getIconByName(t.icon);
+                const isActive = achieved && t.level === summary.milestone.level;
+                const range = t.maxDays ? `${t.minDays}–${t.maxDays} Tage` : `${t.minDays}+ Tage`;
                 return (
-                  <Block key={t.level} display="flex" justifyContent="space-between" alignItems="center">
-                    <span style={{ fontSize: 13, fontWeight: achieved ? 800 : 400, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                      <TierIcon size={ICON_SIZES.card} aria-hidden="true" style={{ color: achieved ? '#f97316' : '#9aa0b2', flexShrink: 0 }} />
-                      {t.name} <span style={{ color: '#9aa0b2' }}>{t.minDays}{t.maxDays ? `–${t.maxDays}` : '+'}</span>
+                  <div key={t.level} className={isActive ? 'tier active' : achieved ? 'tier done' : 'tier'}>
+                    <b>{String(t.level).padStart(2, '0')}</b>
+                    <span>
+                      {t.name}
+                      <small>{range}</small>
                     </span>
-                    <span style={{ fontSize: 12, color: achieved ? '#16a34a' : '#9aa0b2', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                      {t.rewardFreezes ? (
-                        <>
+                    <i className="sk-tier-side">
+                      {t.rewardFreezes > 0 && (
+                        <span className="sk-tier-reward">
                           +{t.rewardFreezes}
-                          <Snowflake size={12} aria-hidden="true" />
-                        </>
-                      ) : '—'}
-                      {achieved && <CheckCircle2 size={14} aria-hidden="true" style={{ color: '#16a34a' }} />}
-                    </span>
-                  </Block>
+                          <Snowflake size={11} strokeWidth={1.8} aria-hidden="true" />
+                        </span>
+                      )}
+                      {isActive ? (
+                        <TierGlyph icon={t.icon} size={18} strokeWidth={1.8} />
+                      ) : achieved ? (
+                        <Check size={18} strokeWidth={1.8} aria-hidden="true" />
+                      ) : (
+                        <Lock size={15} strokeWidth={1.8} aria-hidden="true" />
+                      )}
+                    </i>
+                  </div>
                 );
               })}
-            </Block>
-          </UberCard>
+            </div>
+          </section>
 
           {summary.freezes.earned > 0 && payload.freezeHistory?.length > 0 && (
-            <UberCard styleOverride={{ marginTop: '8px' }}>
-              <LabelSmall>Freeze history</LabelSmall>
-              <Block display="flex" flexDirection="column" gridGap="6px" marginTop="8px">
+            <div className="sk-card">
+              <span className="sk-card-label">Freeze history</span>
+              <div className="sk-history">
                 {payload.freezeHistory.slice(0, 8).map((h) => (
-                  <Block key={h.ref} display="flex" justifyContent="space-between" alignItems="center">
-                    <span style={{ fontSize: 13, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                      <Snowflake size={14} aria-hidden="true" style={{ color: '#0284c7' }} />
+                  <div className="sk-history-row" key={h.ref}>
+                    <span className="sk-history-left">
+                      <Snowflake size={14} strokeWidth={1.8} aria-hidden="true" />
                       {h.type === 'earn' && `+${h.freezes} earned — day ${h.milestone}`}
-                      {h.type === 'consume' && `used — protected a missed day`}
-                      {h.type === 'refund' && `refunded — real activity arrived`}
+                      {h.type === 'consume' && 'used — protected a missed day'}
+                      {h.type === 'refund' && 'refunded — real activity arrived'}
                     </span>
-                    <span style={{ fontSize: 11, color: '#9aa0b2' }}>
+                    <span className="sk-history-date">
                       {h.date || (h.milestone ? `day ${h.milestone}` : '')}
                       {h.date ? ` • ${jalaliLabel(`${h.date}T12:00:00Z`)}` : ''}
                     </span>
-                  </Block>
+                  </div>
                 ))}
-              </Block>
-            </UberCard>
+              </div>
+            </div>
           )}
 
           {summary.totalDays === 0 && (
-            <UberCard styleOverride={{ marginTop: '8px', textAlign: 'center' }}>
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
-                <span style={{ display: 'inline-flex', padding: 12, borderRadius: 999, background: '#f0fdf4' }}>
-                  <Sprout size={28} aria-hidden="true" style={{ color: '#16a34a' }} />
-                </span>
-              </div>
-              <ParagraphSmall color="#6b6b7a">
+            <div className="sk-card sk-empty">
+              <span className="sk-empty-icon">
+                <Sprout size={28} strokeWidth={1.8} aria-hidden="true" />
+              </span>
+              <p>
                 Finish a pack, quiz, or game to plant your first streak day. Opening the app alone doesn&apos;t count.
-              </ParagraphSmall>
-              <ParagraphSmall lang="fa" dir="rtl" color="#6b6b6b">یک بسته، کوئیز یا بازی را کامل کن تا اولین روز ثبت شود.</ParagraphSmall>
-            </UberCard>
+              </p>
+              <p lang="fa" dir="rtl">یک بسته، کوئیز یا بازی را کامل کن تا اولین روز ثبت شود.</p>
+            </div>
           )}
         </>
       )}
-      <div style={{ fontSize: 11, color: '#9aa0b2', textAlign: 'center', marginTop: 12 }}>
+
+      <div className="sk-footnote">
         Today (UTC): {nowKey} • days are UTC calendar days
       </div>
       {selectedCell && <DayDetailSheet cell={selectedCell} onClose={() => setSelectedCell(null)} />}
-    </Block>
+    </div>
   );
 }

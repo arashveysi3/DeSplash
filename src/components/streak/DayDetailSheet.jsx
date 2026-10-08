@@ -1,6 +1,3 @@
-import { Block } from 'baseui/block';
-import { Button, KIND, SHAPE } from 'baseui/button';
-import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import {
   GREGORIAN_MONTHS,
   GREGORIAN_WEEKDAYS,
@@ -9,8 +6,8 @@ import {
   persianWeekdayIndex,
   toPersianDigits,
 } from '../../utils/streak.js';
+import { Snowflake, Zap, Target, Gamepad2 } from 'lucide-react';
 import TierBadge from './TierBadge.jsx';
-import { Snowflake, Zap, Target, Gamepad2 } from '../icons.jsx';
 
 const MODE_LABELS = {
   pack: 'Flashcards',
@@ -44,71 +41,70 @@ export default function DayDetailSheet({ cell, onClose }) {
   const frozen = cell.status === 'protected';
 
   return (
-    <div className="gs-sheet-overlay" role="dialog" aria-modal="true" aria-label={`Details for ${cell.key}`} onClick={onClose}>
-      <div className="gs-sheet-card" onClick={(e) => e.stopPropagation()}>
-        <span aria-hidden="true" className="gs-sheet-handle" />
-        <LabelSmall color="#9aa0b2">{gregTitle}</LabelSmall>
-        <div lang="fa" dir="rtl" style={{ fontFamily: 'IRANSans', fontSize: 15, fontWeight: 800, marginTop: 2 }}>
-          {faWeekday} • {cell.jalaliLabel}
+    <div className="sk-sheet-overlay" role="dialog" aria-modal="true" aria-label={`Details for ${cell.key}`} onClick={onClose}>
+      <div className="sk-sheet-card" onClick={(e) => e.stopPropagation()}>
+        <span aria-hidden="true" className="sk-sheet-handle" />
+        <span className="sk-sheet-date">{gregTitle}</span>
+        <div lang="fa" dir="rtl" className="sk-sheet-fa">
+          {faWeekday} • {jalaliLabel(`${cell.key}T12:00:00Z`)}
         </div>
-        <div style={{ fontSize: 11, color: '#9aa0b2', marginTop: 2 }}>{jalaliLabel(`${cell.key}T12:00:00Z`)}</div>
 
-        <Block marginTop="12px" display="flex" gridGap="8px" alignItems="center">
+        <div className="sk-sheet-badges">
           {completed && cell.tierLevel ? (
             <TierBadge level={cell.tierLevel} name={cell.tierName || 'Ember'} icon={cell.tierIcon} />
           ) : frozen ? (
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#e0f2fe', color: '#0369a1', borderRadius: 999, padding: '6px 12px', fontWeight: 800, fontSize: 13 }}>
-              <Snowflake size={16} aria-hidden="true" /> Freeze protected
+            <span className="sk-sheet-freeze">
+              <Snowflake size={16} strokeWidth={1.8} aria-hidden="true" /> Freeze protected
             </span>
           ) : (
-            <span style={{ fontSize: 13, fontWeight: 700, color: '#6b6b7a' }}>
+            <span className="sk-sheet-status">
               {cell.status === 'future' ? 'Upcoming day' : cell.isToday ? 'Today — not completed yet' : 'Rest day'}
             </span>
           )}
           {completed && cell.streakLength != null && (
-            <span style={{ fontSize: 12, fontWeight: 800, color: '#0f0f12' }}>Day {cell.streakLength}</span>
+            <span className="sk-sheet-day">Day {cell.streakLength}</span>
           )}
-        </Block>
+        </div>
 
         {(completed || frozen) && (
-          <Block marginTop="12px" display="flex" flexDirection="column" gridGap="8px">
-            <Block display="flex" gridGap="8px">
-              <div className="gs-sheet-stat">
-                <Zap size={16} aria-hidden="true" style={{ color: '#eab308' }} />
-                <div><div className="gs-sheet-stat-v">{cell.xp}</div><div className="gs-sheet-stat-l">XP</div></div>
+          <div className="sk-sheet-body">
+            <div className="sk-sheet-stats">
+              <div className="sk-sheet-stat">
+                <Zap size={16} strokeWidth={1.8} aria-hidden="true" style={{ color: '#d97706' }} />
+                <div><div className="sk-sheet-stat-v">{cell.xp}</div><div className="sk-sheet-stat-l">XP</div></div>
               </div>
-              <div className="gs-sheet-stat">
-                <Target size={16} aria-hidden="true" style={{ color: '#4f46e5' }} />
-                <div><div className="gs-sheet-stat-v">{cell.attempts}</div><div className="gs-sheet-stat-l">Reviews</div></div>
+              <div className="sk-sheet-stat">
+                <Target size={16} strokeWidth={1.8} aria-hidden="true" style={{ color: '#4675e8' }} />
+                <div><div className="sk-sheet-stat-v">{cell.attempts}</div><div className="sk-sheet-stat-l">Reviews</div></div>
               </div>
-              <div className="gs-sheet-stat">
-                <Gamepad2 size={16} aria-hidden="true" style={{ color: '#0ea5e9' }} />
-                <div><div className="gs-sheet-stat-v">{sessionCount}</div><div className="gs-sheet-stat-l">Sessions</div></div>
+              <div className="sk-sheet-stat">
+                <Gamepad2 size={16} strokeWidth={1.8} aria-hidden="true" style={{ color: '#4675e8' }} />
+                <div><div className="sk-sheet-stat-v">{sessionCount}</div><div className="sk-sheet-stat-l">Sessions</div></div>
               </div>
-            </Block>
+            </div>
             {modes.length > 0 && (
-              <div style={{ fontSize: 12, color: '#4b4b58', lineHeight: 1.6 }}>
+              <div className="sk-sheet-modes">
                 {modes.map((m) => `${m.label} ×${m.count}`).join(' • ')}
               </div>
             )}
             {cell.isMilestoneDay && (
-              <div style={{ fontSize: 12, fontWeight: 800, color: '#b45309' }}>Milestone day — freeze earned</div>
+              <div className="sk-sheet-milestone">Milestone day — freeze earned</div>
             )}
-          </Block>
+          </div>
         )}
 
         {!completed && !frozen && (
-          <ParagraphSmall color="#6b6b6b" margin="12px 0 0">
+          <p className="sk-sheet-note">
             {cell.status === 'future'
               ? 'Keep your streak alive and this day will join your evolution timeline.'
               : 'Finish a pack, quiz, or game to add this day to your timeline.'}
-          </ParagraphSmall>
+          </p>
         )}
 
-        <Block marginTop="16px" display="flex" justifyContent="center">
-          <Button kind={KIND.secondary} shape={SHAPE.pill} onClick={onClose}>Close</Button>
-        </Block>
-        <div lang="fa" dir="rtl" style={{ fontFamily: 'IRANSans', fontSize: 11, color: '#9aa0b2', textAlign: 'center', marginTop: 8 }}>
+        <div className="sk-sheet-close">
+          <button type="button" className="btn light" onClick={onClose}>Close</button>
+        </div>
+        <div lang="fa" dir="rtl" className="sk-sheet-fa-note">
           {completed && cell.streakLength != null ? `${toPersianDigits(cell.streakLength)}مین روز متوالی` : ''}
         </div>
       </div>
