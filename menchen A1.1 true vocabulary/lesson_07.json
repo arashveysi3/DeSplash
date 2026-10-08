@@ -1,0 +1,526 @@
+{
+  "lesson_number": 7,
+  "lesson_title": "Du kannst wirklich toll ...!",
+  "pages": {
+    "pdf": "41-44",
+    "book": "41-44",
+    "supplementary": "PDF 81,83,86 / Book 81,83,86 (Aktivitäten-Bingo, Wer kann was?)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "das Hobby",
+      "plural": "die Hobbys",
+      "english": "hobby",
+      "persian": "سرگرمی",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "das Kompliment",
+      "plural": "die Komplimente",
+      "english": "compliment",
+      "persian": "تعریف و تمجید",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "die Fähigkeit",
+      "plural": "die Fähigkeiten",
+      "english": "ability",
+      "persian": "توانایی",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "die Gitarre",
+      "plural": "die Gitarren",
+      "english": "guitar",
+      "persian": "گیتار",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "das Schach",
+      "plural": "—",
+      "english": "chess",
+      "persian": "شطرنج",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "der Ski",
+      "plural": "die Ski",
+      "english": "ski",
+      "persian": "اسکی",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "das Tennis",
+      "plural": "—",
+      "english": "tennis",
+      "persian": "تنیس",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "der Fußball",
+      "plural": "die Fußbälle",
+      "english": "football",
+      "persian": "فوتبال",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "das Foto",
+      "plural": "die Fotos",
+      "english": "photo",
+      "persian": "عکس",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "der Gespräch (das Gespräch)",
+      "plural": "die Gespräche",
+      "english": "conversation",
+      "persian": "گفتگو",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "das Auge",
+      "plural": "die Augen",
+      "english": "eye",
+      "persian": "چشم",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "die Natur",
+      "plural": "—",
+      "english": "nature",
+      "persian": "طبیعت",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "der Ausflug",
+      "plural": "die Ausflüge",
+      "english": "outing / excursion",
+      "persian": "گردش",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "die Musik",
+      "plural": "—",
+      "english": "music",
+      "persian": "موسیقی",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "der Lieblingskomponist",
+      "plural": "die Lieblingskomponisten",
+      "english": "favourite composer",
+      "persian": "آهنگساز محبوب",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "der Lieblingsfilm",
+      "plural": "die Lieblingsfilme",
+      "english": "favourite film",
+      "persian": "فیلم محبوب",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "das Kino",
+      "plural": "die Kinos",
+      "english": "cinema",
+      "persian": "سینما",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "das Theater",
+      "plural": "die Theater",
+      "english": "theatre",
+      "persian": "تئاتر",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "das Feuerzeug",
+      "plural": "die Feuerzeuge",
+      "english": "lighter",
+      "persian": "فندک",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "das Auto",
+      "plural": "die Autos",
+      "english": "car",
+      "persian": "ماشین",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "der Satz",
+      "plural": "die Sätze",
+      "english": "sentence",
+      "persian": "جمله",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "die Tabelle",
+      "plural": "die Tabellen",
+      "english": "table",
+      "persian": "جدول",
+      "page": "PDF p. 42 / Book p. 42"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "können",
+      "third_person": "er/sie kann",
+      "english": "can / to be able to",
+      "persian": "توانستن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "kochen",
+      "third_person": "er/sie kocht",
+      "english": "to cook",
+      "persian": "آشپزی کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "singen",
+      "third_person": "er/sie singt",
+      "english": "to sing",
+      "persian": "آواز خواندن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "lesen",
+      "third_person": "er/sie liest",
+      "english": "to read",
+      "persian": "خواندن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "treffen",
+      "third_person": "er/sie trifft",
+      "english": "to meet",
+      "persian": "ملاقات کردن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "surfen (im Internet surfen)",
+      "third_person": "er/sie surft",
+      "english": "to surf (internet)",
+      "persian": "گشت زدن در اینترنت",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "schwimmen",
+      "third_person": "er/sie schwimmt",
+      "english": "to swim",
+      "persian": "شنا کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "fotografieren",
+      "third_person": "er/sie fotografiert",
+      "english": "to photograph",
+      "persian": "عکاسی کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "Ski fahren",
+      "third_person": "er/sie fährt Ski",
+      "english": "to ski",
+      "persian": "اسکی کردن",
+      "separable": true,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "Schach spielen",
+      "third_person": "er/sie spielt Schach",
+      "english": "to play chess",
+      "persian": "شطرنج بازی کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "Tennis spielen",
+      "third_person": "er/sie spielt Tennis",
+      "english": "to play tennis",
+      "persian": "تنیس بازی کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "Gitarre spielen",
+      "third_person": "er/sie spielt Gitarre",
+      "english": "to play guitar",
+      "persian": "گیتار زدن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "tanzen",
+      "third_person": "er/sie tanzt",
+      "english": "to dance",
+      "persian": "رقصیدن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "fotografieren (see above)",
+      "third_person": "er/sie fotografiert",
+      "english": "to photograph",
+      "persian": "عکاسی کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "malen",
+      "third_person": "er/sie malt",
+      "english": "to paint",
+      "persian": "نقاشی کردن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "backen",
+      "third_person": "er/sie bäckt",
+      "english": "to bake",
+      "persian": "پختن (شیرینی)",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "Musik hören",
+      "third_person": "er/sie hört Musik",
+      "english": "to listen to music",
+      "persian": "موسیقی گوش دادن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "spazieren gehen",
+      "third_person": "er/sie geht spazieren",
+      "english": "to go for a walk",
+      "persian": "پیاده‌روی کردن",
+      "separable": true,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "Rad fahren",
+      "third_person": "er/sie fährt Rad",
+      "english": "to ride a bike",
+      "persian": "دوچرخه‌سواری کردن",
+      "separable": true,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "Fußball spielen",
+      "third_person": "er/sie spielt Fußball",
+      "english": "to play football",
+      "persian": "فوتبال بازی کردن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "fahren",
+      "third_person": "er/sie fährt",
+      "english": "to drive / ride",
+      "persian": "راندن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "telefonieren",
+      "third_person": "er/sie telefoniert",
+      "english": "to telephone",
+      "persian": "تلفن کردن",
+      "separable": false,
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "infinitive": "rauchen",
+      "third_person": "er/sie raucht",
+      "english": "to smoke",
+      "persian": "سیگار کشیدن",
+      "separable": false,
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "infinitive": "haben (haben wollen)",
+      "third_person": "er/sie hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "infinitive": "lieben",
+      "third_person": "er/sie liebt",
+      "english": "to love",
+      "persian": "دوست داشتن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "toll / super",
+      "english": "great / super",
+      "persian": "عالی",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "wirklich",
+      "english": "really",
+      "persian": "واقعاً",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "sehr gut / gut",
+      "english": "very good / good",
+      "persian": "خیلی خوب / خوب",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "nicht so gut",
+      "english": "not so good",
+      "persian": "خیلی خوب نیست",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "gar nicht",
+      "english": "not at all",
+      "persian": "اصلاً نه",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "ein bisschen",
+      "english": "a little",
+      "persian": "کمی",
+      "page": "PDF p. 42 / Book p. 42"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Du kannst wirklich toll kochen. / Du kannst ja super tanzen! / Deine Augen sind sehr schön.",
+      "english": "You can really cook well. / You can dance superbly!",
+      "persian": "تو واقعاً عالی آشپزی می‌کنی / می‌رقصی!",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "Sie können aber toll Ski fahren. / Du kannst wirklich sehr gut Gitarre spielen.",
+      "english": "Compliments with können",
+      "persian": "تعارفات با فعل توانستن",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "Vielen Dank! / Oh, danke! / Danke sehr! / Herzlichen Dank.",
+      "english": "Thank you very much!",
+      "persian": "خیلی ممنون!",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "Ich kann (gar) nicht / nicht so gut / ein bisschen / (sehr) gut singen.",
+      "english": "I can(not) sing well",
+      "persian": "من نمی‌توانم / کمی / خیلی خوب آواز بخوانم",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "Meine Hobbys sind ... und ... / Mein Hobby ist ...",
+      "english": "My hobbies are ... / My hobby is ...",
+      "persian": "سرگرمی‌های من ... هستند / سرگرمی من ... است",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "Ich ... gern. Das macht Spaß. / Ich liebe ...",
+      "english": "I like ... It is fun. / I love ...",
+      "persian": "من ... را دوست دارم. لذت‌بخش است",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "Was sind deine Hobbys? / Was machst du in der Freizeit?",
+      "english": "What are your hobbies? / What do you do in your free time?",
+      "persian": "سرگرمی‌هایت چیست؟ / در اوقات فراغت چه می‌کنی؟",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "Fährst du gern Ski/Rad/...? - Nein, ich kann nicht / fahre nicht gern ...",
+      "english": "Do you like skiing?",
+      "persian": "آیا دوست داری اسکی کنی؟",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "Wie oft gehst du ins Kino/Theater/...? - Ich gehe oft/manchmal/nie ...",
+      "english": "How often do you go to cinema?",
+      "persian": "چند وقت یک بار به سینما می‌روی؟",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "Kann ich mal telefonieren? / hier rauchen? - Ja, klar. / Nein, das geht leider nicht.",
+      "english": "Can I make a phone call? / smoke here?",
+      "persian": "می‌توانم تلفن کنم؟ / اینجا سیگار بکشم؟",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "nicht so gern / tut mir leid",
+      "english": "not so gladly / I'm sorry",
+      "persian": "خیلی با میل نه / متأسفم",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "nie, fast nie, manchmal, oft, immer (0% - 100%)",
+      "english": "never, almost never, sometimes, often, always",
+      "persian": "هرگز، تقریباً هرگز، گاهی، اغلب، همیشه",
+      "page": "PDF p. 43 / Book p. 43"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "ja / aber / wirklich",
+      "type": "particle",
+      "english": "yes / but / really",
+      "persian": "بله / اما / واقعاً",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "gern (Ich mache gern ...)",
+      "type": "adverb",
+      "english": "gladly / like to",
+      "persian": "با میل / دوست داشتن",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "oft / manchmal / nie / immer",
+      "type": "adverb",
+      "english": "often / sometimes / never / always",
+      "persian": "اغلب / گاهی / هرگز / همیشه",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "kann ich ...? (Modalverb können)",
+      "type": "modal verb",
+      "english": "can I ...?",
+      "persian": "آیا می‌توانم ...؟",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "was / wie / wie oft",
+      "type": "question word",
+      "english": "what / how / how often",
+      "persian": "چه / چگونه / چند وقت یک‌بار",
+      "page": "PDF p. 43 / Book p. 43"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 41-44 / Book 41-44 + supplements PDF 81,83,86",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

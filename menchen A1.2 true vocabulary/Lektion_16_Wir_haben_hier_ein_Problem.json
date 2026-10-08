@@ -1,0 +1,988 @@
+{
+  "lesson_number": 16,
+  "lesson_title": "Wir haben hier ein Problem.",
+  "pages": {
+    "pdf": "25-28",
+    "book": "25-28",
+    "supplementary": null,
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90-120 dpi via rendered images (l16_18_p25..p28, rerender_p27_120, rerender_p28_120)",
+  "nouns": [
+    {
+      "german": "das Problem",
+      "plural": "die Probleme",
+      "english": "problem",
+      "persian": "مشکل",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "der Gast",
+      "plural": "die Gäste",
+      "english": "guest",
+      "persian": "مهمان",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "der Kollege",
+      "plural": "die Kollegen",
+      "english": "colleague",
+      "persian": "همکار",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "das Geschwister",
+      "plural": "die Geschwister",
+      "english": "sibling",
+      "persian": "خواهر و برادر",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "das Hotel",
+      "plural": "die Hotels",
+      "english": "hotel",
+      "persian": "هتل",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "die Firma",
+      "plural": "die Firmen",
+      "english": "company",
+      "persian": "شرکت",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "der Aufzug",
+      "plural": "die Aufzüge",
+      "english": "elevator",
+      "persian": "آسانسور",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "die Geschichte",
+      "plural": "die Geschichten",
+      "english": "story",
+      "persian": "داستان",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "die Angst",
+      "plural": "die Ängste",
+      "english": "fear",
+      "persian": "ترس",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "die Klimaanlage",
+      "plural": "die Klimaanlagen",
+      "english": "air conditioning",
+      "persian": "تهویه مطبوع",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die Heizung",
+      "plural": "die Heizungen",
+      "english": "heating",
+      "persian": "گرمایش",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "der Fernseher",
+      "plural": "die Fernseher",
+      "english": "TV",
+      "persian": "تلویزیون",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "das Radio",
+      "plural": "die Radios",
+      "english": "radio",
+      "persian": "رادیو",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die Internetverbindung",
+      "plural": "die Internetverbindungen",
+      "english": "internet connection",
+      "persian": "اتصال اینترنت",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "das Licht",
+      "plural": "die Lichter",
+      "english": "light",
+      "persian": "نور",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die Seife",
+      "plural": "die Seifen",
+      "english": "soap",
+      "persian": "صابون",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "der Hotelgast",
+      "plural": "die Hotelgäste",
+      "english": "hotel guest",
+      "persian": "مهمان هتل",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "der Techniker",
+      "plural": "die Techniker",
+      "english": "technician",
+      "persian": "تکنسین",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die Aufzugfirma",
+      "plural": "die Aufzugfirmen",
+      "english": "elevator company",
+      "persian": "شرکت آسانسور",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die Stunde",
+      "plural": "die Stunden",
+      "english": "hour",
+      "persian": "ساعت",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die halbe Stunde",
+      "plural": "die halben Stunden",
+      "english": "half hour",
+      "persian": "نیم ساعت",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die Musik",
+      "plural": "—",
+      "english": "music",
+      "persian": "موسیقی",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "das Angebot",
+      "plural": "die Angebote",
+      "english": "offer",
+      "persian": "پیشنهاد",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die Hilfe",
+      "plural": "die Hilfen",
+      "english": "help",
+      "persian": "کمک",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die Entschuldigung",
+      "plural": "die Entschuldigungen",
+      "english": "apology",
+      "persian": "عذرخواهی",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "das Telefon",
+      "plural": "die Telefone",
+      "english": "telephone",
+      "persian": "تلفن",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "das Handy",
+      "plural": "die Handys",
+      "english": "mobile phone",
+      "persian": "موبایل",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "das Handtuch",
+      "plural": "die Handtücher",
+      "english": "towel",
+      "persian": "حوله",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Bademantel",
+      "plural": "die Bademäntel",
+      "english": "bathrobe",
+      "persian": "حوله تن‌پوش",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Föhn",
+      "plural": "die Föhne",
+      "english": "hairdryer",
+      "persian": "سشوار",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Wecker",
+      "plural": "die Wecker",
+      "english": "alarm clock",
+      "persian": "ساعت زنگ‌دار",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Dusche",
+      "plural": "die Duschen",
+      "english": "shower",
+      "persian": "دوش",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "das Wasser",
+      "plural": "—",
+      "english": "water",
+      "persian": "آب",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Termin",
+      "plural": "die Termine",
+      "english": "appointment",
+      "persian": "قرار ملاقات",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die E-Mail",
+      "plural": "die E-Mails",
+      "english": "email",
+      "persian": "ایمیل",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "das Thema",
+      "plural": "die Themen",
+      "english": "topic",
+      "persian": "موضوع",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Uni",
+      "plural": "die Unis",
+      "english": "university",
+      "persian": "دانشگاه",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Tanzkurs",
+      "plural": "die Tanzkurse",
+      "english": "dance course",
+      "persian": "کلاس رقص",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "das Essen",
+      "plural": "die Essen",
+      "english": "food / meal",
+      "persian": "غذا",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Lust",
+      "plural": "—",
+      "english": "desire",
+      "persian": "میل",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Dienstag",
+      "plural": "die Dienstage",
+      "english": "Tuesday",
+      "persian": "سه‌شنبه",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Mittwoch",
+      "plural": "die Mittwoche",
+      "english": "Wednesday",
+      "persian": "چهارشنبه",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Freitag",
+      "plural": "die Freitage",
+      "english": "Friday",
+      "persian": "جمعه",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Montag",
+      "plural": "die Montage",
+      "english": "Monday",
+      "persian": "دوشنبه",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Woche",
+      "plural": "die Wochen",
+      "english": "week",
+      "persian": "هفته",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Urlaub",
+      "plural": "die Urlaube",
+      "english": "holiday",
+      "persian": "تعطیلات",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "das Wochenende",
+      "plural": "die Wochenenden",
+      "english": "weekend",
+      "persian": "آخر هفته",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Geschäftsreise",
+      "plural": "die Geschäftsreisen",
+      "english": "business trip",
+      "persian": "سفر کاری",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Sitzung",
+      "plural": "die Sitzungen",
+      "english": "meeting / session",
+      "persian": "جلسه",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Herr",
+      "plural": "die Herren",
+      "english": "Mr.",
+      "persian": "آقای",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Frau",
+      "plural": "die Frauen",
+      "english": "Ms.",
+      "persian": "خانم",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Zeitpunkt",
+      "plural": "die Zeitpunkte",
+      "english": "point in time",
+      "persian": "زمان",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Zukunft",
+      "plural": "—",
+      "english": "future",
+      "persian": "آینده",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Zeitspanne",
+      "plural": "die Zeitspannen",
+      "english": "period",
+      "persian": "بازه زمانی",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Monat",
+      "plural": "die Monate",
+      "english": "month",
+      "persian": "ماه",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "das Jahr",
+      "plural": "die Jahre",
+      "english": "year",
+      "persian": "سال",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Tag",
+      "plural": "die Tage",
+      "english": "day",
+      "persian": "روز",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "die Uhr",
+      "plural": "die Uhren",
+      "english": "clock / watch",
+      "persian": "ساعت",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "das Navi",
+      "plural": "die Navis",
+      "english": "navigation system",
+      "persian": "مسیریاب",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "die Straße",
+      "plural": "die Straßen",
+      "english": "street",
+      "persian": "خیابان",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "der Punkt",
+      "plural": "die Punkte",
+      "english": "point",
+      "persian": "امتیاز",
+      "page": "PDF p. 28 / Book p. 28"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "haben",
+      "third_person": "er hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "infinitive": "stecken bleiben",
+      "third_person": "er bleibt stecken",
+      "english": "to get stuck",
+      "persian": "گیر کردن",
+      "separable": true,
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "infinitive": "funktionieren",
+      "third_person": "es funktioniert",
+      "english": "to work / function",
+      "persian": "کار کردن",
+      "separable": false,
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "infinitive": "stecken",
+      "third_person": "es steckt fest",
+      "english": "to be stuck",
+      "persian": "گیر کردن",
+      "separable": true,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "warten",
+      "third_person": "er wartet",
+      "english": "to wait",
+      "persian": "منتظر ماندن",
+      "separable": false,
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "infinitive": "rufen",
+      "third_person": "er ruft (Hilfe)",
+      "english": "to call",
+      "persian": "صدا زدن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "reparieren",
+      "third_person": "er repariert",
+      "english": "to repair",
+      "persian": "تعمیر کردن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "kommen",
+      "third_person": "er kommt",
+      "english": "to come",
+      "persian": "آمدن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "machen",
+      "third_person": "er macht",
+      "english": "to do / make",
+      "persian": "انجام دادن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "ausmachen",
+      "third_person": "er macht aus",
+      "english": "to turn off",
+      "persian": "خاموش کردن",
+      "separable": true,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "können",
+      "third_person": "er kann",
+      "english": "can / to be able",
+      "persian": "توانستن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "schicken",
+      "third_person": "er schickt",
+      "english": "to send",
+      "persian": "فرستادن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "sich kümmern",
+      "third_person": "er kümmert sich",
+      "english": "to take care of",
+      "persian": "رسیدگی کردن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "brauchen",
+      "third_person": "er braucht",
+      "english": "to need",
+      "persian": "نیاز داشتن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "kaputt sein",
+      "third_person": "es ist kaputt",
+      "english": "to be broken",
+      "persian": "خراب بودن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "helfen",
+      "third_person": "er hilft",
+      "english": "to help",
+      "persian": "کمک کردن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "nehmen",
+      "third_person": "er nimmt",
+      "english": "to take",
+      "persian": "گرفتن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "finden",
+      "third_person": "er findet",
+      "english": "to find",
+      "persian": "یافتن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "absagen",
+      "third_person": "er sagt ab",
+      "english": "to cancel",
+      "persian": "لغو کردن",
+      "separable": true,
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "infinitive": "verschieben",
+      "third_person": "er verschiebt",
+      "english": "to postpone",
+      "persian": "به تعویق انداختن",
+      "separable": false,
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "infinitive": "vereinbaren",
+      "third_person": "er vereinbart",
+      "english": "to arrange",
+      "persian": "توافق کردن",
+      "separable": false,
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "infinitive": "gehen",
+      "third_person": "er geht",
+      "english": "to go",
+      "persian": "رفتن",
+      "separable": false,
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "infinitive": "essen",
+      "third_person": "er isst",
+      "english": "to eat",
+      "persian": "غذا خوردن",
+      "separable": false,
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "infinitive": "kommen",
+      "third_person": "er kommt (zu spät)",
+      "english": "to come",
+      "persian": "آمدن",
+      "separable": false,
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "infinitive": "einladen",
+      "third_person": "er lädt ein",
+      "english": "to invite",
+      "persian": "دعوت کردن",
+      "separable": true,
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "infinitive": "schaffen",
+      "third_person": "er schafft",
+      "english": "to manage",
+      "persian": "موفق شدن",
+      "separable": false,
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "infinitive": "stecken",
+      "third_person": "ich stecke fest",
+      "english": "to be stuck",
+      "persian": "گیر کردن",
+      "separable": true,
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "infinitive": "arbeiten",
+      "third_person": "er arbeitet",
+      "english": "to work",
+      "persian": "کار کردن",
+      "separable": false,
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "infinitive": "geben",
+      "third_person": "er gibt",
+      "english": "to give",
+      "persian": "دادن",
+      "separable": false,
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "infinitive": "glauben",
+      "third_person": "er glaubt",
+      "english": "to believe",
+      "persian": "باور کردن",
+      "separable": false,
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "infinitive": "reagieren",
+      "third_person": "er reagiert",
+      "english": "to react",
+      "persian": "واکنش نشان دادن",
+      "separable": false,
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "infinitive": "bekommen",
+      "third_person": "er bekommt",
+      "english": "to get",
+      "persian": "گرفتن",
+      "separable": false,
+      "page": "PDF p. 28 / Book p. 28"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "genervt",
+      "english": "annoyed",
+      "persian": "عصبانی",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "kaputt",
+      "english": "broken",
+      "persian": "خراب",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "kalt",
+      "english": "cold",
+      "persian": "سرد",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "wichtig",
+      "english": "important",
+      "persian": "مهم",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "pünktlich",
+      "english": "punctual",
+      "persian": "به موقع",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "seltsam",
+      "english": "strange",
+      "persian": "عجیب",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "dumm",
+      "english": "stupid",
+      "persian": "احمقانه",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "schade",
+      "english": "pity",
+      "persian": "حیف",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "morgen / heute",
+      "english": "tomorrow / today",
+      "persian": "فردا / امروز",
+      "page": "PDF p. 27 / Book p. 27"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Wir haben hier ein Problem.",
+      "english": "We have a problem here.",
+      "persian": "ما اینجا مشکلی داریم",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "Was war denn das jetzt?",
+      "english": "What was that now?",
+      "persian": "این دیگر چه بود؟",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "Der Aufzug steckt fest.",
+      "english": "The elevator is stuck.",
+      "persian": "آسانسور گیر کرده",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "Was kann ich für Sie tun?",
+      "english": "What can I do for you?",
+      "persian": "چه کاری می‌توانم برایتان انجام دهم؟",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Die Heizung funktioniert nicht.",
+      "english": "The heating does not work.",
+      "persian": "گرمایش کار نمی‌کند",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Können Sie einen Techniker schicken?",
+      "english": "Can you send a technician?",
+      "persian": "می‌توانید تکنسین بفرستید؟",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Ich kümmere mich sofort darum.",
+      "english": "I’ll take care of it right away.",
+      "persian": "فورا به آن رسیدگی می‌کنم",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Wir brauchen Ihre Hilfe.",
+      "english": "We need your help.",
+      "persian": "به کمک شما نیاز داریم",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Der Fernseher ist kaputt.",
+      "english": "The TV is broken.",
+      "persian": "تلویزیون خراب است",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Ich komme sofort.",
+      "english": "I’ll come right away.",
+      "persian": "فورا می‌آیم",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Tut mir leid. Das kann ich nicht selbst reparieren. Das kann wohl nur die Aufzugfirma machen.",
+      "english": "Sorry. I cannot repair it myself. Only the elevator company can do it.",
+      "persian": "متأسفم خودم نمی‌توانم تعمیر کنم، فقط شرکت آسانسور می‌تواند",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Kann ich Ihnen helfen? / Entschuldigung, können Sie mir helfen?",
+      "english": "Can I help you? / Excuse me, can you help me?",
+      "persian": "می‌توانم کمکتان کنم؟ / ببخشید می‌توانید کمکم کنید؟",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Können Sie die Klimaanlage ausmachen? Es ist sehr kalt hier.",
+      "english": "Can you turn off the air conditioning? It is very cold here.",
+      "persian": "می‌توانید تهویه را خاموش کنید؟ اینجا خیلی سرد است",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Ein Telefon finde ich nicht so wichtig. Ich nehme ja mein Handy immer mit.",
+      "english": "I don’t find a telephone that important. I always take my mobile anyway.",
+      "persian": "تلفن برایم خیلی مهم نیست، همیشه موبایلم را همراه دارم",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "leider kann ich heute Abend doch nicht kommen.",
+      "english": "unfortunately I cannot come tonight after all.",
+      "persian": "متأسفانه امشب نمی‌توانم بیایم",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "Können wir den Termin verschieben?",
+      "english": "Can we postpone the appointment?",
+      "persian": "می‌توانیم قرار را به تعویق بیندازیم؟",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "Passt es Dir am Wochenende?",
+      "english": "Does the weekend suit you?",
+      "persian": "آخر هفته برایت مناسب است؟",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "Hast Du Lust? / Haben Sie Lust?",
+      "english": "Do you feel like it?",
+      "persian": "میل داری؟",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "Ich stecke im Aufzug fest und schaffe es nicht pünktlich zur Sitzung.",
+      "english": "I am stuck in the elevator and won’t make it to the meeting on time.",
+      "persian": "در آسانسور گیر کرده‌ام و به موقع به جلسه نمی‌رسم",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "Es tut mir leid, ich bin im Aufzug stecken geblieben.",
+      "english": "Sorry, I got stuck in the elevator.",
+      "persian": "ببخشید در آسانسور گیر کردم",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "Tut mir leid, meine Uhr ist kaputt.",
+      "english": "Sorry, my watch is broken.",
+      "persian": "ببخشید ساعتم خراب است",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "Ach, das macht doch nichts. / Kein Problem!",
+      "english": "Oh, that doesn’t matter. / No problem!",
+      "persian": "اشکالی ندارد / مشکلی نیست",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "Schade. / Wie dumm! Jetzt ist das Essen kalt.",
+      "english": "Pity. / How stupid! Now the food is cold.",
+      "persian": "حیف / چقدر احمقانه، غذا سرد شد",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "Seltsam! Jetzt funktioniert deine Uhr / dein ... doch.",
+      "english": "Strange! Now your watch does work.",
+      "persian": "عجیب! حالا ساعتت کار می‌کند",
+      "page": "PDF p. 28 / Book p. 28"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "vor / nach / in + Dativ",
+      "type": "preposition temporal",
+      "english": "before / after / in",
+      "persian": "قبل / بعد / در",
+      "page": "PDF p. 27-28 / Book p. 27-28"
+    },
+    {
+      "german": "für + Akkusativ",
+      "type": "preposition temporal",
+      "english": "for",
+      "persian": "برای",
+      "page": "PDF p. 27-28 / Book p. 27-28"
+    },
+    {
+      "german": "in einem Monat / in einer Stunde / in zwei Wochen",
+      "type": "phrase",
+      "english": "in a month / in an hour / in two weeks",
+      "persian": "در یک ماه / در یک ساعت",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "für einen Tag / für eine Woche / für zwei Wochen",
+      "type": "phrase",
+      "english": "for a day / for a week / for two weeks",
+      "persian": "برای یک روز / یک هفته",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "vor dem Kurs / nach dem Essen / nach der Uni",
+      "type": "phrase",
+      "english": "before the course / after the meal / after uni",
+      "persian": "قبل از کلاس / بعد از غذا",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "jetzt",
+      "type": "adverb",
+      "english": "now",
+      "persian": "اکنون",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "leider",
+      "type": "adverb",
+      "english": "unfortunately",
+      "persian": "متأسفانه",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "doch",
+      "type": "particle",
+      "english": "after all",
+      "persian": "با این حال",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "sofort",
+      "type": "adverb",
+      "english": "immediately",
+      "persian": "فورا",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "sehr",
+      "type": "adverb",
+      "english": "very",
+      "persian": "خیلی",
+      "page": "PDF p. 26 / Book p. 26"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 25-28 / Book 25-28",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

@@ -4,7 +4,7 @@ import { signup, login, fetchMe, logout, fetchUsers, deleteUser, fetchProgress, 
 import { getMilestoneForStreak } from './utils/streak.js';
 import { sm2, qualityFromLabel, XP_MAP, QUIZ_XP, GAME_XP } from './srs';
 import { calcQuizReport } from './utils/analytics.js';
-import { todayKey, dayStartOf, buildExposureIndex, partitionPool, orderFallback, takeUpTo, selectGameSet } from './utils/selection.js';
+import { todayKey, dayStartOf, buildExposureIndex, partitionPool, orderFallback, orderReviewPool, takeUpTo, selectGameSet } from './utils/selection.js';
 import { baseGerman, filterSingleWordPool, buildDiktatQuestion } from './utils/diktat.js';
 import { getVocabStatus } from './utils/vocabStatus.js';
 import { bookForLektion, EXAM_DIKTATION_COUNT, BOOK_EXAM_COUNTS, grammarBankForBook, vocabBankForBook, readingThreeForBook, readingTwoForBook } from './data/exam.js';
@@ -605,8 +605,9 @@ export default function App() {
   const studyQueue = useMemo(() => {
     if (!scopeWords.length) return [];
     const today = Date.now();
-    // Shared eligibility first: strong words at their daily cap are excluded
-    // (weak/new/learning are never capped). Capped words return only as fallback.
+    // Global learning levels first: levels 0-2 may appear twice daily, level 3
+    // is maintenance-only, and weak words receive a larger reinforcement budget.
+    // Capped words return only as randomized fallback.
     const { eligible, capped } = partitionPool(scopeWords, selectionCtx);
     let newCount = 0;
     const withScore = eligible.map(({ w, status }) => {
@@ -632,29 +633,23 @@ export default function App() {
       if (weakIds.has(w.id)) score += 300;
       return { w, score, isNew, status, due };
     });
-    withScore.sort((a, b) => {
-      // Reinforcement order preserved (due/weak/learning by SRS score),
-      // but new/unseen now outrank familiar-strong instead of trailing last.
-      const tier = (x) => (x.isNew ? 1 : x.status === 'strong' ? 2 : 0);
-      if (tier(a) !== tier(b)) return tier(a) - tier(b);
-      return b.score - a.score;
-    });
-    let res = withScore.map((x) => x.w);
-    // Multi-Lektion: shuffle new words segment so lesson order doesn't dominate (due words keep SRS order)
-    if (selectedLektions.length > 1) {
-      const newIds = new Set(withScore.filter((x) => x.isNew).map((x) => x.w.id));
-      const duePart = res.filter((w) => !newIds.has(w.id));
-      const newPart = res.filter((w) => newIds.has(w.id));
-      const shuffledNew = shuffleArray(newPart);
-      // also shuffle duePart lightly if it still resembles lesson order — but keep SRS priority, so only shuffle within same score bands?
-      // For true cross-lesson randomness, shuffle duePart when it contains many lessons and no strong score differences
-      // We keep duePart as is to respect SRS, shuffle only newPart for now
-      res = [...duePart, ...shuffledNew];
+    const tiers = [[], [], [], []];
+    for (const x of withScore) {
+      tiers[x.status === 'weak' ? 0 : x.isNew ? 1 : x.status === 'strong' ? 3 : 2].push(x);
     }
-    // Graceful fallback so small/capped pools never yield empty packs.
-    if (capped.length > 0) res = [...res, ...orderFallback(capped).map((e) => e.w)];
+    // Keep SRS severity order for weak/developing words, but shuffle discovery
+    // and maintenance tiers so repeated packs do not follow lesson order.
+    const res = [
+      ...tiers[0].sort((a, b) => b.score - a.score),
+      ...shuffleArray(tiers[1]),
+      ...tiers[2].sort((a, b) => b.score - a.score),
+      ...shuffleArray(tiers[3]),
+    ].map((x) => x.w);
+    // Graceful fallback so small/capped pools never yield empty packs. Weak
+    // reinforcement stays ahead, but repeated fallback draws are randomized.
+    if (capped.length > 0) res.push(...orderReviewPool(capped, shuffleArray).map((e) => e.w));
     return res;
-  }, [scopeWords, progressMap, weakIds, selectedLektions, selectionCtx]);
+  }, [scopeWords, progressMap, weakIds, selectionCtx]);
 
   // pack logic
   const sessionReviewedIds = useRef(new Set());
@@ -675,13 +670,24 @@ export default function App() {
     const today = new Date().toISOString().slice(0,10);
     if (sessionDay.current !== today) { sessionDay.current = today; sessionReviewedIds.current.clear(); }
     const available = studyQueue.filter(w => !sessionReviewedIds.current.has(w.id));
-    let pack = available.slice(0, packSize);
-    // Multi-lesson: shuffle pack order so presentation isn't lesson-by-lesson
-    if (selectedLektions.length > 1) {
-      pack = shuffleArray(pack);
+    let source = available;
+    if (available.length === 0 && studyQueue.length > 0) {
+      // No unreviewed words remain in this session: offer randomized extra review
+      // with weak words ahead of already-completed words.
+      const review = partitionPool(studyQueue, selectionCtx);
+      source = [
+        ...shuffleArray(review.eligible.filter((e) => e.status === 'weak').map((e) => e.w)),
+        ...shuffleArray(review.eligible.filter((e) => e.status !== 'weak').map((e) => e.w)),
+        ...orderReviewPool(review.capped, shuffleArray).map((e) => e.w),
+      ];
+      setToast('Extra review — reshowing weakest first');
+      setTimeout(()=> setToast(null),1800);
     }
+    // Always shuffle presentation order. Selection priority is already encoded
+    // in `source`; shuffling here prevents lesson-by-lesson repetition.
+    const pack = shuffleArray(source.slice(0, packSize));
     if (pack.length === 0) {
-      setToast(available.length === 0 ? 'No more words in this scope — try another Lektion or whole book' : 'All words reviewed');
+      setToast('No more words in this scope — try another Lektion or whole book');
       setTimeout(()=> setToast(null),1800);
       return;
     }
@@ -692,7 +698,7 @@ export default function App() {
     setShowPackSummary(false);
     setFlipped(false);
     setTranscript('');
-  }, [studyQueue, packSize, selectedLektions]);
+  }, [studyQueue, packSize, selectionCtx]);
 
   const handlePackRate = useCallback((label) => {
     const word = packWords[packIdx];
@@ -763,6 +769,9 @@ export default function App() {
         await db.stats.put({ id: 'main', ...latest });
       }
       setToast(`Pack saved +${totalXp} XP`);
+      // Saved answers now live in persisted history. Clear the transient session
+      // filter so daily level budgets—not the just-finished pack—control repeats.
+      sessionReviewedIds.current.clear();
       if (totalXp > 0) playQuizComplete(); else playTap();
     } catch (e) {
       setToast('Save failed — will retry');

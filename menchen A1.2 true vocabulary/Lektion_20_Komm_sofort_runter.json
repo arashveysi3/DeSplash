@@ -1,0 +1,855 @@
+{
+  "lesson_number": 20,
+  "lesson_title": "Komm sofort runter!",
+  "pages": {
+    "pdf": "45-48",
+    "book": "45-48",
+    "supplementary": "Modul 7 supplementary see Lektion 21 (PDF 53-56 / Book 53-56); WGs and duties also on project pages",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90 dpi via rendered images l19_24_p45.png..p48.png, cross-checked OCR via pymupdf",
+  "nouns": [
+    {
+      "german": "das Mädchen",
+      "plural": "die Mädchen",
+      "english": "girl",
+      "persian": "دختر",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "der Tag",
+      "plural": "die Tage",
+      "english": "day",
+      "persian": "روز",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "der Brief",
+      "plural": "die Briefe",
+      "english": "letter",
+      "persian": "نامه",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "das Tagebuch",
+      "plural": "die Tagebücher",
+      "english": "diary",
+      "persian": "دفتر خاطرات",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "der Haushalt",
+      "plural": "die Haushalte",
+      "english": "household",
+      "persian": "خانه‌داری",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "die Aktivität",
+      "plural": "die Aktivitäten",
+      "english": "activity",
+      "persian": "فعالیت",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "die Aufforderung",
+      "plural": "die Aufforderungen",
+      "english": "request / command",
+      "persian": "درخواست",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "der Tisch",
+      "plural": "die Tische",
+      "english": "table",
+      "persian": "میز",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "das Bett",
+      "plural": "die Betten",
+      "english": "bed",
+      "persian": "تخت",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "der Müll",
+      "plural": "—",
+      "english": "rubbish",
+      "persian": "زباله",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "die Spülmaschine",
+      "plural": "die Spülmaschinen",
+      "english": "dishwasher",
+      "persian": "ماشین ظرفشویی",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "die Hausaufgabe",
+      "plural": "die Hausaufgaben",
+      "english": "homework",
+      "persian": "تکالیف",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "das Zimmer",
+      "plural": "die Zimmer",
+      "english": "room",
+      "persian": "اتاق",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "das Bad",
+      "plural": "die Bäder",
+      "english": "bathroom",
+      "persian": "حمام",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "die Wäsche",
+      "plural": "—",
+      "english": "laundry",
+      "persian": "لباس‌های شسته",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "das Geschirr",
+      "plural": "—",
+      "english": "dishes",
+      "persian": "ظروف",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "der Boden",
+      "plural": "die Böden",
+      "english": "floor",
+      "persian": "زمین",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "das Fenster",
+      "plural": "die Fenster",
+      "english": "window",
+      "persian": "پنجره",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "das Tagebucheintrag",
+      "plural": "die Tagebucheinträge",
+      "english": "diary entry",
+      "persian": "یادداشت روزانه",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "die E-Mail",
+      "plural": "die E-Mails",
+      "english": "email",
+      "persian": "ایمیل",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "die Wohngemeinschaft (WG)",
+      "plural": "die Wohngemeinschaften",
+      "english": "shared flat",
+      "persian": "خانه اشتراکی",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "die Notiz",
+      "plural": "die Notizen",
+      "english": "note",
+      "persian": "یادداشت",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "die Information",
+      "plural": "die Informationen",
+      "english": "information",
+      "persian": "اطلاعات",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "die Woche",
+      "plural": "die Wochen",
+      "english": "week",
+      "persian": "هفته",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Bahnhof",
+      "plural": "die Bahnhöfe",
+      "english": "train station",
+      "persian": "ایستگاه قطار",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "die Uhr",
+      "plural": "die Uhren",
+      "english": "clock / o'clock",
+      "persian": "ساعت",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Mitbewohner",
+      "plural": "die Mitbewohner",
+      "english": "flatmate",
+      "persian": "هم‌خانه",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "die Anzeige",
+      "plural": "die Anzeigen",
+      "english": "advert / ad",
+      "persian": "آگهی",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "das WG-Zimmer",
+      "plural": "die WG-Zimmer",
+      "english": "shared-flat room",
+      "persian": "اتاق خانه اشتراکی",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "die Miete",
+      "plural": "die Mieten",
+      "english": "rent",
+      "persian": "اجاره",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "die Nebenkosten",
+      "plural": "—",
+      "english": "additional costs",
+      "persian": "هزینه‌های جانبی",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "die Zimmergröße",
+      "plural": "die Zimmergrößen",
+      "english": "room size",
+      "persian": "اندازه اتاق",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "der Balkon",
+      "plural": "die Balkone",
+      "english": "balcony",
+      "persian": "بالکن",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "die Terrasse",
+      "plural": "die Terrassen",
+      "english": "terrace",
+      "persian": "تراس",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "die Küche",
+      "plural": "die Küchen",
+      "english": "kitchen",
+      "persian": "آشپزخانه",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "die Ordnung",
+      "plural": "—",
+      "english": "order / tidiness",
+      "persian": "نظم",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "der Dreck",
+      "plural": "—",
+      "english": "dirt",
+      "persian": "کثیفی",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "das Personalpronomen",
+      "plural": "die Personalpronomen",
+      "english": "personal pronoun",
+      "persian": "ضمیر شخصی",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Akkusativ",
+      "plural": "—",
+      "english": "accusative",
+      "persian": "حالت مفعولی",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Nominativ",
+      "plural": "—",
+      "english": "nominative",
+      "persian": "حالت فاعلی",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Imperativ",
+      "plural": "die Imperative",
+      "english": "imperative",
+      "persian": "امری",
+      "page": "PDF p. 46 / Book p. 46"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "schreiben",
+      "third_person": "er schreibt",
+      "english": "to write",
+      "persian": "نوشتن",
+      "separable": false,
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "infinitive": "runterkommen",
+      "third_person": "er kommt runter",
+      "english": "to come down",
+      "persian": "پایین آمدن",
+      "separable": true,
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "rufen",
+      "third_person": "er ruft",
+      "english": "to call",
+      "persian": "صدا زدن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "schlafen",
+      "third_person": "er schläft",
+      "english": "to sleep",
+      "persian": "خوابیدن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "decken",
+      "third_person": "er deckt",
+      "english": "to set (table)",
+      "persian": "چیدن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "bringen",
+      "third_person": "er bringt",
+      "english": "to bring",
+      "persian": "آوردن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "rausringen? rausbringen",
+      "third_person": "er bringt raus",
+      "english": "to take out",
+      "persian": "بیرون بردن",
+      "separable": true,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "ausräumen",
+      "third_person": "er räumt aus",
+      "english": "to clear out",
+      "persian": "خالی کردن",
+      "separable": true,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "vergessen",
+      "third_person": "er vergisst",
+      "english": "to forget",
+      "persian": "فراموش کردن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "putzen",
+      "third_person": "er putzt",
+      "english": "to clean",
+      "persian": "تمیز کردن",
+      "separable": false,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "wischen",
+      "third_person": "er wischt",
+      "english": "to wipe",
+      "persian": "دست کشیدن / پاک کردن",
+      "separable": false,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "staubsaugen",
+      "third_person": "er staubsaugt",
+      "english": "to vacuum",
+      "persian": "جاروبرقی کشیدن",
+      "separable": true,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "aufräumen",
+      "third_person": "er räumt auf",
+      "english": "to tidy up",
+      "persian": "مرتب کردن",
+      "separable": true,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "machen",
+      "third_person": "er macht",
+      "english": "to do / make",
+      "persian": "انجام دادن",
+      "separable": false,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "spülen / abwaschen",
+      "third_person": "er spült / wäscht ab",
+      "english": "to wash dishes",
+      "persian": "شستن ظرف",
+      "separable": true,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "abtrocknen",
+      "third_person": "er trocknet ab",
+      "english": "to dry up",
+      "persian": "خشک کردن",
+      "separable": true,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "waschen",
+      "third_person": "er wäscht",
+      "english": "to wash",
+      "persian": "شستن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "aufhängen",
+      "third_person": "er hängt auf",
+      "english": "to hang up",
+      "persian": "آویزان کردن",
+      "separable": true,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "bügeln",
+      "third_person": "er bügelt",
+      "english": "to iron",
+      "persian": "اتو کردن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "nerven",
+      "third_person": "es nervt",
+      "english": "to annoy",
+      "persian": "اعصاب خرد کردن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "besuchen",
+      "third_person": "er besucht",
+      "english": "to visit",
+      "persian": "ملاقات کردن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "ankommen",
+      "third_person": "er kommt an",
+      "english": "to arrive",
+      "persian": "رسیدن",
+      "separable": true,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "abholen",
+      "third_person": "er holt ab",
+      "english": "to pick up",
+      "persian": "به دنبال کسی رفتن",
+      "separable": true,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "anrufen",
+      "third_person": "er ruft an",
+      "english": "to call (phone)",
+      "persian": "تلفن زدن",
+      "separable": true,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "einladen",
+      "third_person": "er lädt ein",
+      "english": "to invite",
+      "persian": "دعوت کردن",
+      "separable": true,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "suchen",
+      "third_person": "er sucht",
+      "english": "to look for",
+      "persian": "جستجو کردن",
+      "separable": false,
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "infinitive": "studieren",
+      "third_person": "er studiert",
+      "english": "to study (university)",
+      "persian": "تحصیل کردن",
+      "separable": false,
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "infinitive": "kochen",
+      "third_person": "er kocht",
+      "english": "to cook",
+      "persian": "پختن",
+      "separable": false,
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "infinitive": "hassen",
+      "third_person": "er hasst",
+      "english": "to hate",
+      "persian": "متنفر بودن",
+      "separable": false,
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "infinitive": "lieben",
+      "third_person": "er liebt",
+      "english": "to love",
+      "persian": "دوست داشتن",
+      "separable": false,
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "infinitive": "können",
+      "third_person": "er kann",
+      "english": "can / to be able",
+      "persian": "توانستن",
+      "separable": false,
+      "page": "PDF p. 48 / Book p. 48"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "schlecht",
+      "english": "bad",
+      "persian": "بد",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "gut",
+      "english": "good",
+      "persian": "خوب",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "faul",
+      "english": "lazy",
+      "persian": "تنبل",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "peinlich",
+      "english": "embarrassing",
+      "persian": "خجالت‌آور",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "fertig",
+      "english": "ready / done",
+      "persian": "آماده",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "schmutzig",
+      "english": "dirty",
+      "persian": "کثیف",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "sauber",
+      "english": "clean",
+      "persian": "تمیز",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "ordentlich",
+      "english": "tidy / orderly",
+      "persian": "مرتب",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "unordentlich",
+      "english": "untidy",
+      "persian": "نامرتب",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "günstig",
+      "english": "cheap / favourable",
+      "persian": "ارزان",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "supergünstig",
+      "english": "super cheap",
+      "persian": "خیلی ارزان",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "billig",
+      "english": "cheap",
+      "persian": "ارزان",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "teuer",
+      "english": "expensive",
+      "persian": "گران",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "freundlich / lieb",
+      "english": "friendly / dear",
+      "persian": "مهربان",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "wahnsinnig / sehr",
+      "english": "insanely / very",
+      "persian": "خیلی",
+      "page": "PDF p. 48 / Book p. 48"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Komm sofort runter!",
+      "english": "Come down immediately!",
+      "persian": "فورا بیا پایین!",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "Was macht das Mädchen gerade?",
+      "english": "What is the girl doing right now?",
+      "persian": "دختر الان چه می‌کند؟",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "Seid nicht so faul! / Schlaf nicht so lange! / Deck den Tisch! / Vergiss deine Hausaufgaben nicht! / Bringt den Müll raus! / Räumt die Spülmaschine aus! / Mach dein Bett!",
+      "english": "Don't be so lazy! / Don't sleep so long! / Set the table! / Don't forget your homework! / Take out the rubbish! / Clear the dishwasher! / Make your bed!",
+      "persian": "تنبل نباشید! / اینقدر نخواب! / میز را بچین! / تکالیفت را فراموش نکن! / آشغال را بیرون ببر! / ماشین ظرفشویی را خالی کن! / تختت را مرتب کن!",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "Deckt den Tisch! / Schlaft ...! / Vergesst ...!",
+      "english": "Set the table! (ihr) / Sleep ...! / Forget ...!",
+      "persian": "میز را بچینید! / بخوابید! / فراموش کنید!",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "Mach endlich dein Bett! / Vergiss ja deine Hausaufgaben nicht!",
+      "english": "Finally make your bed! / Don't you forget your homework!",
+      "persian": "بالاخره تختت را مرتب کن! / تکالیفت را فراموش نکن!",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "Mist!",
+      "english": "Darn! / Shoot!",
+      "persian": "لعنتی!",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "Ich habe gestern ... besucht.",
+      "english": "Yesterday I visited ...",
+      "persian": "دیروز ... را ملاقات کردم",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "Putzt bitte die Fenster. / Bitte mit 'du' / 'ihr'",
+      "english": "Please clean the windows.",
+      "persian": "لطفا پنجره‌ها را تمیز کنید",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "Sei doch so lieb und häng sie bitte auf. Ich hab's nicht mehr geschafft.",
+      "english": "Be so kind and please hang them up. I didn't manage.",
+      "persian": "لطفا آنها را آویزان کن، دیگر وقت نکردم",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "Ich komme um 10.00 Uhr am Bahnhof an. Holst du mich bitte ab?",
+      "english": "I arrive at the station at 10. I come at 10 o'clock at the station. Will you pick me up?",
+      "persian": "ساعت ده به ایستگاه می‌رسم، میایی دنبالم؟",
+      "page": "PDF p. 47-48 / Book p. 47-48"
+    },
+    {
+      "german": "Spül (bitte) das Geschirr! / Deck (bitte) den Tisch!",
+      "english": "Wash the dishes! / Set the table!",
+      "persian": "ظرف‌ها را بشور! / میز را بچین!",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "Komm (bitte) sofort runter da!",
+      "english": "Come down right now!",
+      "persian": "همین الان بیا پایین!",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "Ruf ihn doch bitte zurück.",
+      "english": "Please call him back.",
+      "persian": "لطفا به او زنگ بزن",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "Ich koche auch wahnsinnig gern.",
+      "english": "I also love cooking insanely.",
+      "persian": "من عاشق آشپزی هم هستم",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "Ich freue mich schon auf Deine Antwort.",
+      "english": "I'm looking forward to your answer.",
+      "persian": "مشتاقانه منتظر پاسخت هستم",
+      "page": "PDF p. 48 / Book p. 48"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "sofort",
+      "type": "adverb",
+      "english": "immediately",
+      "persian": "فورا",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "gerade",
+      "type": "adverb",
+      "english": "just now / currently",
+      "persian": "الان",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "oder?",
+      "type": "particle",
+      "english": "or?",
+      "persian": "یا؟",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "natürlich",
+      "type": "adverb",
+      "english": "naturally / of course",
+      "persian": "طبعا",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "sicher",
+      "type": "adverb",
+      "english": "surely",
+      "persian": "حتما",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "gestern",
+      "type": "adverb",
+      "english": "yesterday",
+      "persian": "دیروز",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "doch / ja / mal / endlich / denn",
+      "type": "modal particle",
+      "english": "modal particles",
+      "persian": "ذرات حالتی",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "bitte / doch bitte",
+      "type": "particle",
+      "english": "please",
+      "persian": "لطفا",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "inkl. (= inklusive)",
+      "type": "abbreviation",
+      "english": "incl.",
+      "persian": "شامل",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "qm / m²",
+      "type": "abbreviation",
+      "english": "sqm",
+      "persian": "متر مربع",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "Euro",
+      "type": "noun (currency)",
+      "english": "euro",
+      "persian": "یورو",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "mich / dich / ihn / es / sie / uns / euch / sie / Sie",
+      "type": "pronoun Akkusativ",
+      "english": "me / you / him etc. (accusative)",
+      "persian": "مرا / تو را ...",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "frei ab: 1.10.",
+      "type": "expression",
+      "english": "available from Oct 1",
+      "persian": "از اول اکتبر آزاد",
+      "page": "PDF p. 48 / Book p. 48"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 45-48 / Book 45-48",
+    "vocabulary_sections_checked": "Yes - title, blue info box, Bildlexikon bars (p46 top, p47 top), Tagebuch-eintrag handwritten, imperative table, Personalpronomen Akkusativ table, WG-Anzeige, E-Mail Gert, Grammatik/Kommunikation boxes",
+    "images_and_illustrated_vocabulary_checked": "Yes - girl in tree photo, 14 household activities icons (Müll rausbringen, Tisch decken, Geschirr spülen/abwaschen etc., Bad putzen, Boden wischen etc.), WG kitchen illustration, WG-Zimmer photo",
+    "tables_checked": "Yes - Imperativ du/ihr table (p46 bottom, p48), Personalpronomen Nominativ/Akkusativ (p47c/p48)",
+    "exercises_checked_for_taught_vocabulary": "Yes - exercises 1-9 covering diary, imperatives, accommodation notes",
+    "potentially_unclear_items": [
+      "Bildlexikon icons small: Müll/Abfall rausbringen, Geschirr abtrocknen etc. - text is tiny but legible",
+      "Handwritten diary 'Donnerstag, 21. Juni' partly cursive but verified",
+      "Price '250,00 Euro (inkl. Nebenkosten)' clearly visible"
+    ]
+  }
+}

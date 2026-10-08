@@ -1,0 +1,934 @@
+{
+  "lesson_number": 19,
+  "lesson_title": "Der hatte doch keinen Bauch!",
+  "pages": {
+    "pdf": "41-44",
+    "book": "41-44",
+    "supplementary": "Modul 7 supplementary see Lektion 21 (PDF 53-56 / Book 53-56)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90 dpi via rendered images l19_24_p41.png..p44.png, cross-checked OCR via pymupdf",
+  "nouns": [
+    {
+      "german": "der Bauch",
+      "plural": "die Bäuche",
+      "english": "belly / stomach",
+      "persian": "شکم",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "die Party",
+      "plural": "die Partys",
+      "english": "party",
+      "persian": "مهمانی",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "das Foto",
+      "plural": "die Fotos",
+      "english": "photo",
+      "persian": "عکس",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "das Thema",
+      "plural": "die Themen",
+      "english": "topic / subject",
+      "persian": "موضوع",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "die Frau",
+      "plural": "die Frauen",
+      "english": "woman",
+      "persian": "زن",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "der Mann",
+      "plural": "die Männer",
+      "english": "man",
+      "persian": "مرد",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "der Bart",
+      "plural": "die Bärte",
+      "english": "beard",
+      "persian": "ریش",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "das Haar",
+      "plural": "die Haare",
+      "english": "hair",
+      "persian": "مو",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "die Locke",
+      "plural": "die Locken",
+      "english": "curl / lock",
+      "persian": "فر / موی مجعد",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "die Brille",
+      "plural": "die Brillen",
+      "english": "glasses",
+      "persian": "عینک",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "das Gespräch",
+      "plural": "die Gespräche",
+      "english": "conversation",
+      "persian": "گفتگو",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "der Freund",
+      "plural": "die Freunde",
+      "english": "friend",
+      "persian": "دوست",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "das Schwimmbad",
+      "plural": "die Schwimmbäder",
+      "english": "swimming pool",
+      "persian": "استخر",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "die Zeit",
+      "plural": "die Zeiten",
+      "english": "time",
+      "persian": "زمان",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "die Tabelle",
+      "plural": "die Tabellen",
+      "english": "table / chart",
+      "persian": "جدول",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "das Präsens",
+      "plural": "—",
+      "english": "present tense",
+      "persian": "زمان حال",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "das Präteritum",
+      "plural": "—",
+      "english": "simple past",
+      "persian": "گذشته ساده",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "die Person",
+      "plural": "die Personen",
+      "english": "person",
+      "persian": "شخص",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "das Bildlexikon",
+      "plural": "die Bildlexika",
+      "english": "picture dictionary",
+      "persian": "فرهنگ مصور",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "der Charakter",
+      "plural": "die Charaktere",
+      "english": "character",
+      "persian": "شخصیت",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "das Aussehen",
+      "plural": "—",
+      "english": "appearance",
+      "persian": "ظاهر",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "der Monat",
+      "plural": "die Monate",
+      "english": "month",
+      "persian": "ماه",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "das Baby",
+      "plural": "die Babys",
+      "english": "baby",
+      "persian": "نوزاد",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "das Café",
+      "plural": "die Cafés",
+      "english": "café",
+      "persian": "کافه",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "das Paar",
+      "plural": "die Paare",
+      "english": "couple",
+      "persian": "زوج",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "die Diskothek / die Disko",
+      "plural": "die Diskotheken / Diskos",
+      "english": "discotheque / disco",
+      "persian": "دیسکو",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "der Nachbar",
+      "plural": "die Nachbarn",
+      "english": "neighbour",
+      "persian": "همسایه",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "die Geschichte",
+      "plural": "die Geschichten",
+      "english": "story",
+      "persian": "داستان",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "die Lügen-Geschichte",
+      "plural": "die Lügen-Geschichten",
+      "english": "lie / made-up story",
+      "persian": "داستان دروغی",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "das Leben",
+      "plural": "die Leben",
+      "english": "life",
+      "persian": "زندگی",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "der Stichpunkt",
+      "plural": "die Stichpunkte",
+      "english": "bullet point / note",
+      "persian": "نکته کلیدی",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "die Bäckerei",
+      "plural": "die Bäckereien",
+      "english": "bakery",
+      "persian": "نانوایی",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "die Hausfrau",
+      "plural": "die Hausfrauen",
+      "english": "housewife",
+      "persian": "خانه‌دار",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "der Bruder",
+      "plural": "die Brüder",
+      "english": "brother",
+      "persian": "برادر",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "die Schwester",
+      "plural": "die Schwestern",
+      "english": "sister",
+      "persian": "خواهر",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "der Architekt",
+      "plural": "die Architekten",
+      "english": "architect",
+      "persian": "معمار",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "die Eltern",
+      "plural": "—",
+      "english": "parents",
+      "persian": "والدین",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "der Kontakt",
+      "plural": "die Kontakte",
+      "english": "contact",
+      "persian": "ارتباط",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "das Jahr",
+      "plural": "die Jahre",
+      "english": "year",
+      "persian": "سال",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "die Luxus-Disco",
+      "plural": "die Luxus-Discos",
+      "english": "luxury disco",
+      "persian": "دیسکوی لوکس",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "der/die Prominente",
+      "plural": "die Prominenten",
+      "english": "celebrity",
+      "persian": "شخص مشهور",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "die Sekretärin",
+      "plural": "die Sekretärinnen",
+      "english": "secretary (female)",
+      "persian": "منشی زن",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "das Perfekt",
+      "plural": "—",
+      "english": "perfect tense",
+      "persian": "زمان کامل",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "der Infinitiv",
+      "plural": "die Infinitive",
+      "english": "infinitive",
+      "persian": "مصدر",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "die Wortbildung",
+      "plural": "—",
+      "english": "word formation",
+      "persian": "واژه‌سازی",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "das Adjektiv",
+      "plural": "die Adjektive",
+      "english": "adjective",
+      "persian": "صفت",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "die Zeichnung",
+      "plural": "die Zeichnungen",
+      "english": "drawing",
+      "persian": "طراحی",
+      "page": "PDF p. 43 / Book p. 43"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "haben",
+      "third_person": "er hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "sprechen",
+      "third_person": "er spricht",
+      "english": "to speak",
+      "persian": "صحبت کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "sehen",
+      "third_person": "er sieht",
+      "english": "to see",
+      "persian": "دیدن",
+      "separable": false,
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er hört",
+      "english": "to hear / listen",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "infinitive": "ankreuzen",
+      "third_person": "er kreuzt an",
+      "english": "to tick / check",
+      "persian": "علامت زدن",
+      "separable": true,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "kennen",
+      "third_person": "er kennt",
+      "english": "to know (person)",
+      "persian": "شناختن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "zuordnen",
+      "third_person": "er ordnet zu",
+      "english": "to assign / match",
+      "persian": "مرتبط کردن",
+      "separable": true,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "ergänzen",
+      "third_person": "er ergänzt",
+      "english": "to complete / fill in",
+      "persian": "تکمیل کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "suchen",
+      "third_person": "er sucht",
+      "english": "to look for",
+      "persian": "جستجو کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "beschreiben",
+      "third_person": "er beschreibt",
+      "english": "to describe",
+      "persian": "توصیف کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "raten",
+      "third_person": "er rät",
+      "english": "to guess",
+      "persian": "حدس زدن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "aussehen",
+      "third_person": "er sieht aus",
+      "english": "to look (appearance)",
+      "persian": "به نظر رسیدن",
+      "separable": true,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "finden",
+      "third_person": "er findet",
+      "english": "to find / think",
+      "persian": "یافتن / نظر داشتن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "glauben",
+      "third_person": "er glaubt",
+      "english": "to believe",
+      "persian": "باور کردن",
+      "separable": false,
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "infinitive": "erkennen",
+      "third_person": "er erkennt",
+      "english": "to recognize",
+      "persian": "تشخیص دادن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "gefallen",
+      "third_person": "es gefällt (ihr)",
+      "english": "to please / appeal",
+      "persian": "خوش آمدن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "bekommen",
+      "third_person": "er bekommt",
+      "english": "to get / receive",
+      "persian": "گرفتن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "vergessen",
+      "third_person": "er vergisst",
+      "english": "to forget",
+      "persian": "فراموش کردن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "sich entschuldigen",
+      "third_person": "er entschuldigt sich",
+      "english": "to apologize",
+      "persian": "عذرخواهی کردن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "gehören",
+      "third_person": "es gehört",
+      "english": "to belong",
+      "persian": "تعلق داشتن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "sich beschweren",
+      "third_person": "er beschwert sich",
+      "english": "to complain",
+      "persian": "شکایت کردن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "notieren",
+      "third_person": "er notiert",
+      "english": "to note down",
+      "persian": "یادداشت کردن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "erzählen",
+      "third_person": "er erzählt",
+      "english": "to tell / narrate",
+      "persian": "تعریف کردن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "stimmen",
+      "third_person": "es stimmt",
+      "english": "to be correct",
+      "persian": "درست بودن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "arbeiten",
+      "third_person": "er arbeitet",
+      "english": "to work",
+      "persian": "کار کردن",
+      "separable": false,
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "infinitive": "reagieren",
+      "third_person": "er reagiert",
+      "english": "to react",
+      "persian": "واکنش نشان دادن",
+      "separable": false,
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "infinitive": "wohnen",
+      "third_person": "er wohnt",
+      "english": "to live / reside",
+      "persian": "زندگی کردن",
+      "separable": false,
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "infinitive": "kommen",
+      "third_person": "er kommt",
+      "english": "to come",
+      "persian": "آمدن",
+      "separable": false,
+      "page": "PDF p. 44 / Book p. 44"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "dick",
+      "english": "thick / fat",
+      "persian": "چاق",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "schlank / dünn",
+      "english": "slim / thin",
+      "persian": "لاغر",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "hübsch",
+      "english": "pretty",
+      "persian": "زیبا",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "hässlich",
+      "english": "ugly",
+      "persian": "زشت",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "lang (Haare)",
+      "english": "long",
+      "persian": "بلند",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "kurz (Haare)",
+      "english": "short",
+      "persian": "کوتاه",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "blond",
+      "english": "blond",
+      "persian": "بور",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "braun",
+      "english": "brown",
+      "persian": "قهوه‌ای",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "schwarz",
+      "english": "black",
+      "persian": "سیاه",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "grau",
+      "english": "grey",
+      "persian": "خاکستری",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "glatt (Haare)",
+      "english": "straight (hair)",
+      "persian": "صاف",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "sympathisch",
+      "english": "likeable",
+      "persian": "خوش‌برخورد",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "unsympathisch",
+      "english": "unlikeable",
+      "persian": "ناخوشایند",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "nett",
+      "english": "nice",
+      "persian": "مهربان",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "glücklich",
+      "english": "happy / lucky",
+      "persian": "خوشحال",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "unglücklich / traurig",
+      "english": "unhappy / sad",
+      "persian": "ناراحت / غمگین",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "uninteressant",
+      "english": "uninteresting",
+      "persian": "غیرجذاب",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "interessant",
+      "english": "interesting",
+      "persian": "جالب",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "komisch",
+      "english": "funny / strange",
+      "persian": "عجیب / بامزه",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "unfreundlich",
+      "english": "unfriendly",
+      "persian": "غیردوستانه",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "seltsam",
+      "english": "strange",
+      "persian": "عجیب",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "fröhlich",
+      "english": "cheerful",
+      "persian": "شاد",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "langweilig",
+      "english": "boring",
+      "persian": "کسالت‌آور",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "lustig",
+      "english": "funny",
+      "persian": "خنده‌دار",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "wirklich",
+      "english": "really",
+      "persian": "واقعا",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "früher",
+      "english": "earlier / former",
+      "persian": "قبلا",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "laut",
+      "english": "loud",
+      "persian": "بلند",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "leider",
+      "english": "unfortunately",
+      "persian": "متاسفانه",
+      "page": "PDF p. 43 / Book p. 43"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Der hatte doch keinen Bauch!",
+      "english": "He didn't have a belly at all!",
+      "persian": "او که شکم نداشت!",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "Er hatte keinen Bart / keinen Bauch / keine Brille",
+      "english": "He had no beard / belly / glasses",
+      "persian": "او ریش/شکم/عینک نداشت",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "Sie sieht wirklich sympathisch aus.",
+      "english": "She really looks likeable.",
+      "persian": "او واقعا خوش‌برخورد به نظر می‌رسد",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "Ich finde, ... sieht ... aus.",
+      "english": "I find / think ... looks ...",
+      "persian": "به نظرم ... به نظر می‌رسد",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "in letzter Zeit",
+      "english": "recently / lately",
+      "persian": "اخیرا",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "schon lange / noch gar nicht",
+      "english": "for a long time / not at all yet",
+      "persian": "مدت طولانی / هنوز اصلا نه",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "Hast du schon gesehen ...?",
+      "english": "Have you already seen ...?",
+      "persian": "آیا دیده‌ای ...؟",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "gleich erkannt",
+      "english": "recognized immediately",
+      "persian": "فورا شناختن",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "vor sechs Monaten / vor acht Jahren",
+      "english": "six months ago / eight years ago",
+      "persian": "شش ماه پیش / هشت سال پیش",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "Es war zu laut.",
+      "english": "It was too loud.",
+      "persian": "خیلی بلند بود",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "Ach komm! / Ach du liebe Zeit! / Ach was! / Echt? / Wahnsinn!",
+      "english": "Oh come on! / Oh my goodness! / No way! / Really? / Insane!",
+      "persian": "اوه بیا! / وای خدای من! / چه حرفی! / واقعا؟ / دیوانه‌کننده!",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "Das stimmt.",
+      "english": "That's correct.",
+      "persian": "درست است",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "Früher war sie Sekretärin / Früher hatte er lange Haare",
+      "english": "She used to be a secretary / He used to have long hair",
+      "persian": "قبلا او منشی بود / قبلا او موی بلند داشت",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "Sie haben vor zwei Jahren ein Baby bekommen.",
+      "english": "They had a baby two years ago.",
+      "persian": "آنها دو سال پیش بچه‌دار شدند",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "erstaunt reagieren",
+      "english": "to react astonished",
+      "persian": "با تعجب واکنش نشان دادن",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "Ich glaube, du hast nicht so viele Geschwister.",
+      "english": "I think you don't have so many siblings.",
+      "persian": "فکر می‌کنم این همه خواهر و برادر نداری",
+      "page": "PDF p. 43 / Book p. 43"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "doch",
+      "type": "particle",
+      "english": "indeed / after all",
+      "persian": "که",
+      "page": "PDF p. 41 / Book p. 41"
+    },
+    {
+      "german": "kein / keine",
+      "type": "negation article",
+      "english": "no / not a",
+      "persian": "هیچ",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "ein bisschen",
+      "type": "adverb",
+      "english": "a little bit",
+      "persian": "کمی",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "F (Frau) / M (Mann)",
+      "type": "abbreviation",
+      "english": "F (woman) / M (man)",
+      "persian": "زن / مرد",
+      "page": "PDF p. 42 / Book p. 42"
+    },
+    {
+      "german": "nicht trennbare Verben",
+      "type": "grammar term",
+      "english": "inseparable verbs",
+      "persian": "افعال جداناپذیر",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "ent-, emp-, miss-, zer-, be-, ge-, ver-",
+      "type": "prefix",
+      "english": "prefixes for inseparable verbs",
+      "persian": "پیشوندهای افعال جداناپذیر",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "un- (Wortbildung)",
+      "type": "prefix",
+      "english": "un- (word formation)",
+      "persian": "پیشوند منفی‌ساز",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "oder? (question tag)",
+      "type": "particle",
+      "english": "or?",
+      "persian": "مگر نه؟",
+      "page": "PDF p. 43 / Book p. 43"
+    },
+    {
+      "german": "tausendmal",
+      "type": "adverb",
+      "english": "a thousand times",
+      "persian": "هزار بار",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "wieder",
+      "type": "adverb",
+      "english": "again",
+      "persian": "دوباره",
+      "page": "PDF p. 44 / Book p. 44"
+    },
+    {
+      "german": "nämlich",
+      "type": "particle",
+      "english": "namely",
+      "persian": "یعنی",
+      "page": "PDF p. 44 / Book p. 44"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 41-44 / Book 41-44",
+    "vocabulary_sections_checked": "Yes - title, Bildlexikon bars (p42 top, p43 top), exercises 1-8, grammar boxes Präteritum & Perfekt, Kommunikation, dialogue bubbles, illustration labels",
+    "images_and_illustrated_vocabulary_checked": "Yes - hair/beard styles illustrated (Bart, Haare variants, Locken, dick/schlank etc.), party cartoon with 8 labeled persons, swim/bike thought bubbles",
+    "tables_checked": "Yes - Präsens/Präteritum sein/haben (p42b, p44), nicht trennbare Verben Perfekt (p43b/p44), Wortbildung un-",
+    "exercises_checked_for_taught_vocabulary": "Yes - all 8 exercises including Smalltalk markers and Lügen-Geschichte",
+    "potentially_unclear_items": [
+      "Names Walter Backes etc. are proper nouns - plural not applicable",
+      "Handwritten note 'in Paris geboren / Vater hatte eine Bäckerei...' partly blurry but legible"
+    ]
+  }
+}

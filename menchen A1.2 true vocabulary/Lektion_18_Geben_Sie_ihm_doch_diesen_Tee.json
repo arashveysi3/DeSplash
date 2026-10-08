@@ -1,0 +1,818 @@
+{
+  "lesson_number": 18,
+  "lesson_title": "Geben Sie ihm doch diesen Tee!",
+  "pages": {
+    "pdf": "33-36",
+    "book": "33-36",
+    "supplementary": "PDF 37-40 / Book 37-40 (LESEMAGAZIN Reklamation p37 | FILM-STATIONEN Clips 16-18 p38 | PROJEKT LANDESKUNDE Wunschbäume p39 | AUSKLANG Ich bin der Doktor Eisenbarth p40)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90-120 dpi via rendered images (rerender_p33_120..p40_120, l16_18_p33..p36 where legible)",
+  "nouns": [
+    {
+      "german": "die Nonne",
+      "plural": "die Nonnen",
+      "english": "nun",
+      "persian": "راهبه",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "das Kraut",
+      "plural": "die Kräuter",
+      "english": "herb",
+      "persian": "گیاه دارویی",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "die Blume",
+      "plural": "die Blumen",
+      "english": "flower",
+      "persian": "گل",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "die Schwester (Schwester Angelika)",
+      "plural": "die Schwestern",
+      "english": "sister (nurse/nun)",
+      "persian": "خواهر روحانی",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "die Frau Brehm / der Herr Brehm",
+      "plural": "— (proper)",
+      "english": "Ms. Brehm / Mr. Brehm",
+      "persian": "خانم/آقای برم",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "der Kopfschmerz",
+      "plural": "die Kopfschmerzen",
+      "english": "headache",
+      "persian": "سردرد",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "der Arzt / der Doktor",
+      "plural": "die Ärzte / Doktoren",
+      "english": "doctor",
+      "persian": "پزشک",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "die Apotheke",
+      "plural": "die Apotheken",
+      "english": "pharmacy",
+      "persian": "داروخانه",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "das Medikament",
+      "plural": "die Medikamente",
+      "english": "medication",
+      "persian": "دارو",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "das Rezept",
+      "plural": "die Rezepte",
+      "english": "prescription",
+      "persian": "نسخه",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "die Praxis",
+      "plural": "die Praxen",
+      "english": "doctor’s office",
+      "persian": "مطب",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "der Husten",
+      "plural": "—",
+      "english": "cough",
+      "persian": "سرفه",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "das Fieber",
+      "plural": "—",
+      "english": "fever",
+      "persian": "تب",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "der Schmerz",
+      "plural": "die Schmerzen",
+      "english": "pain",
+      "persian": "درد",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "der Arm",
+      "plural": "die Arme",
+      "english": "arm",
+      "persian": "بازو",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "das Bein",
+      "plural": "die Beine",
+      "english": "leg",
+      "persian": "پا",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "der Kopf",
+      "plural": "die Köpfe",
+      "english": "head",
+      "persian": "سر",
+      "page": "PDF p. 34-35 / Book p. 34-35"
+    },
+    {
+      "german": "der Ratschlag",
+      "plural": "die Ratschläge",
+      "english": "advice",
+      "persian": "توصیه",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "der Tee",
+      "plural": "die Tees",
+      "english": "tea",
+      "persian": "چای",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "das Bett",
+      "plural": "die Betten",
+      "english": "bed",
+      "persian": "تخت",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "der Schnupfen",
+      "plural": "—",
+      "english": "common cold / sniffles",
+      "persian": "آبریزش بینی",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Schmerzen",
+      "plural": "— (pl.)",
+      "english": "pains",
+      "persian": "دردها",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Tablette",
+      "plural": "die Tabletten",
+      "english": "tablet / pill",
+      "persian": "قرص",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Salbe",
+      "plural": "die Salben",
+      "english": "ointment",
+      "persian": "پماد",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "das Pflaster",
+      "plural": "die Pflaster",
+      "english": "plaster / band-aid",
+      "persian": "چسب زخم",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Körperteil",
+      "plural": "die Körperteile",
+      "english": "body part",
+      "persian": "عضو بدن",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Hals",
+      "plural": "die Hälse",
+      "english": "neck / throat",
+      "persian": "گردن / گلو",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Rücken",
+      "plural": "die Rücken",
+      "english": "back",
+      "persian": "کمر",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Brust",
+      "plural": "die Brüste",
+      "english": "chest",
+      "persian": "سینه",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Bauch",
+      "plural": "die Bäuche",
+      "english": "stomach / belly",
+      "persian": "شکم",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Hand",
+      "plural": "die Hände",
+      "english": "hand",
+      "persian": "دست",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Finger",
+      "plural": "die Finger",
+      "english": "finger",
+      "persian": "انگشت",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Fuß",
+      "plural": "die Füße",
+      "english": "foot",
+      "persian": "پا",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "das Knie",
+      "plural": "die Knie",
+      "english": "knee",
+      "persian": "زانو",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "das Ohr",
+      "plural": "die Ohren",
+      "english": "ear",
+      "persian": "گوش",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "das Auge",
+      "plural": "die Augen",
+      "english": "eye",
+      "persian": "چشم",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Zahn",
+      "plural": "die Zähne",
+      "english": "tooth",
+      "persian": "دندان",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Nase",
+      "plural": "die Nasen",
+      "english": "nose",
+      "persian": "بینی",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Mund",
+      "plural": "die Münder",
+      "english": "mouth",
+      "persian": "دهان",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Ratgebertext",
+      "plural": "die Ratgebertexte",
+      "english": "advice text",
+      "persian": "متن راهنما",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Naturmedizin",
+      "plural": "—",
+      "english": "natural medicine",
+      "persian": "پزشکی طبیعی",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "das Heilkräuter",
+      "plural": "die Heilkräuter",
+      "english": "medicinal herbs",
+      "persian": "گیاهان دارویی",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Heilkräuter (Pl.)",
+      "plural": "—",
+      "english": "herbs",
+      "persian": "گیاهان شفابخش",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Klosterladen Bieberach",
+      "plural": "— (proper)",
+      "english": "Bieberach monastery shop",
+      "persian": "فروشگاه صومعه بیبراخ",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Küchenkräuter",
+      "plural": "—",
+      "english": "kitchen herbs",
+      "persian": "سبزی آشپزی",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Kosmetika",
+      "plural": "—",
+      "english": "cosmetics",
+      "persian": "لوازم آرایشی",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Klosterlikör",
+      "plural": "die Klosterliköre",
+      "english": "monastery liqueur",
+      "persian": "لیکور صومعه",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Spirituosen",
+      "plural": "—",
+      "english": "spirits",
+      "persian": "نوشیدنی الکلی",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Bauchschmerzen",
+      "plural": "— (pl.)",
+      "english": "stomach ache",
+      "persian": "دل‌درد",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Kamillentee",
+      "plural": "die Kamillentees",
+      "english": "chamomile tea",
+      "persian": "چای بابونه",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Kräutertee",
+      "plural": "die Kräutertees",
+      "english": "herbal tea",
+      "persian": "چای گیاهی",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Fantasiefigur",
+      "plural": "die Fantasiefiguren",
+      "english": "fantasy figure",
+      "persian": "شکل خیالی",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "die Figur",
+      "plural": "die Figuren",
+      "english": "figure",
+      "persian": "شکل",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "die Zeichnung",
+      "plural": "die Zeichnungen",
+      "english": "drawing",
+      "persian": "نقاشی",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "die Ausstellung",
+      "plural": "die Ausstellungen",
+      "english": "exhibition",
+      "persian": "نمایشگاه",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "das Auge (3 Augen)",
+      "plural": "die Augen",
+      "english": "eye",
+      "persian": "چشم",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "der Mund",
+      "plural": "die Münder",
+      "english": "mouth",
+      "persian": "دهان",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "das Haar",
+      "plural": "die Haare",
+      "english": "hair",
+      "persian": "مو",
+      "page": "PDF p. 36 / Book p. 36"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "geben",
+      "third_person": "er gibt",
+      "english": "to give",
+      "persian": "دادن",
+      "separable": false,
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "infinitive": "sehen",
+      "third_person": "er sieht",
+      "english": "to see",
+      "persian": "دیدن",
+      "separable": false,
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er hört",
+      "english": "to hear",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "infinitive": "kreuzen",
+      "third_person": "er kreuzt an",
+      "english": "to tick",
+      "persian": "علامت زدن",
+      "separable": true,
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "husten",
+      "third_person": "er hustet",
+      "english": "to cough",
+      "persian": "سرفه کردن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "tun weh",
+      "third_person": "es tut weh",
+      "english": "to hurt",
+      "persian": "درد کردن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "bleiben",
+      "third_person": "er bleibt",
+      "english": "to stay",
+      "persian": "ماندن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "machen",
+      "third_person": "er macht",
+      "english": "to make / do",
+      "persian": "انجام دادن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "sagen",
+      "third_person": "sie sagt",
+      "english": "to say",
+      "persian": "گفتن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "sollen",
+      "third_person": "er soll",
+      "english": "should / to be supposed to",
+      "persian": "باید",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "trinken",
+      "third_person": "er trinkt",
+      "english": "to drink",
+      "persian": "نوشیدن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "gehen",
+      "third_person": "er geht (zum Arzt gehen)",
+      "english": "to go",
+      "persian": "رفتن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "ergänzen",
+      "third_person": "er ergänzt",
+      "english": "to complete",
+      "persian": "کامل کردن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "heißen",
+      "third_person": "es heißt",
+      "english": "to be called",
+      "persian": "نامیده شدن",
+      "separable": false,
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "infinitive": "lesen",
+      "third_person": "er liest",
+      "english": "to read",
+      "persian": "خواندن",
+      "separable": false,
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "infinitive": "beantworten",
+      "third_person": "er beantwortet",
+      "english": "to answer",
+      "persian": "پاسخ دادن",
+      "separable": false,
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "infinitive": "helfen",
+      "third_person": "es hilft (gegen)",
+      "english": "to help (against)",
+      "persian": "کمک کردن",
+      "separable": false,
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "infinitive": "lernen",
+      "third_person": "er lernt",
+      "english": "to learn",
+      "persian": "یاد گرفتن",
+      "separable": false,
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "infinitive": "können",
+      "third_person": "er kann",
+      "english": "can",
+      "persian": "توانستن",
+      "separable": false,
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "infinitive": "nehmen",
+      "third_person": "er nimmt",
+      "english": "to take",
+      "persian": "گرفتن",
+      "separable": false,
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "infinitive": "zeichnen",
+      "third_person": "er zeichnet",
+      "english": "to draw",
+      "persian": "کشیدن",
+      "separable": false,
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "infinitive": "beschreiben",
+      "third_person": "er beschreibt",
+      "english": "to describe",
+      "persian": "توصیف کردن",
+      "separable": false,
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "infinitive": "glauben",
+      "third_person": "er glaubt",
+      "english": "to believe",
+      "persian": "باور کردن",
+      "separable": false,
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "infinitive": "passen",
+      "third_person": "es passt",
+      "english": "to fit / match",
+      "persian": "جور بودن",
+      "separable": false,
+      "page": "PDF p. 36 / Book p. 36"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "krank",
+      "english": "sick",
+      "persian": "بیمار",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "hoch",
+      "english": "high",
+      "persian": "بالا",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "gar nicht / sehr viel",
+      "english": "not at all / very much",
+      "persian": "اصلا نه / خیلی زیاد",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "immer noch / nicht mehr",
+      "english": "still / no longer",
+      "persian": "هنوز / دیگر نه",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "groß",
+      "english": "big",
+      "persian": "بزرگ",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "klein",
+      "english": "small",
+      "persian": "کوچک",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "gesund",
+      "english": "healthy",
+      "persian": "سالم",
+      "page": "PDF p. 35 / Book p. 35"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Hallo, Schwester Angelika!",
+      "english": "Hello, Sister Angelika!",
+      "persian": "سلام خواهر آنجلیکا",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "Man sieht eine Nonne. Sie ...",
+      "english": "One sees a nun. She ...",
+      "persian": "یک راهبه دیده می‌شود",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "Frau Brehm ist krank. / Herr Brehm hat seit zwei Tagen Kopfschmerzen.",
+      "english": "Ms. Brehm is sick. / Mr. Brehm has had a headache for two days.",
+      "persian": "خانم برم بیمار است / آقای برم دو روز است سردرد دارد",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "Was hat er denn? / Welche Foto passt?",
+      "english": "What is wrong with him? / Which photo fits?",
+      "persian": "او چه مشکلی دارد؟",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "Herr Brehm hustet sehr viel. / Das Fieber ist sehr hoch.",
+      "english": "Mr. Brehm coughs a lot. / The fever is very high.",
+      "persian": "آقای برم خیلی سرفه می‌کند",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "Geben Sie ihm doch diesen Tee! / Trinken Sie viel!",
+      "english": "Give him this tea! / Drink a lot!",
+      "persian": "این چای را به او بدهید / زیاد بنوشید",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "Gehen Sie zum Arzt! / Bleiben Sie im Bett!",
+      "english": "Go to the doctor! / Stay in bed!",
+      "persian": "به پزشک برو / در رختخواب بمان",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "Schwester Angelika sagt, du sollst diesen Tee trinken. / ich soll ...",
+      "english": "Sister Angelika says you should drink this tea.",
+      "persian": "خواهر آنجلیکا می‌گوید باید این چای را بنوشی",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "Mein Kopf tut weh. / Meine ... tut/tun weh.",
+      "english": "My head hurts.",
+      "persian": "سرم درد می‌کند",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "Ich habe Halsschmerzen. / Bauchschmerzen",
+      "english": "I have a sore throat / stomach ache",
+      "persian": "گلو درد دارم",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "Was machst du gegen ...? / Was hilft gegen ...?",
+      "english": "What do you do against ...? / What helps against ...?",
+      "persian": "در برابر ... چه می‌کنی؟",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "Ich nehme eine Tablette / trinke Tee / gehe zum Arzt. Das hilft.",
+      "english": "I take a pill / drink tea / go to the doctor. That helps.",
+      "persian": "قرص می‌خورم / چای می‌نوشم",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "Gutes und Feines selbst gemacht aus unserem Kloster",
+      "english": "Fine homemade goods from our monastery",
+      "persian": "محصولات دست‌ساز صومعه",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "Meine Figur ist eine Frau. Der Kopf ist sehr groß. Sie hat drei Augen.",
+      "english": "My figure is a woman. The head is very big. She has three eyes.",
+      "persian": "شکل من یک زن است، سرش خیلی بزرگ است",
+      "page": "PDF p. 36 / Book p. 36"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "sollen (Modalverb)",
+      "type": "modal verb",
+      "english": "should / be supposed to",
+      "persian": "باید",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "Imperativ (Sie): Trinken Sie! / Geben Sie!",
+      "type": "grammar",
+      "english": "imperative (formal)",
+      "persian": "امری",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "seit zwei Tagen",
+      "type": "phrase",
+      "english": "for two days",
+      "persian": "از دو روز پیش",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "gegen + Akkusativ",
+      "type": "preposition",
+      "english": "against",
+      "persian": "علیه",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "doch (particle in imperative)",
+      "type": "particle",
+      "english": "do (softening)",
+      "persian": "حتما",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "viel",
+      "type": "quantifier",
+      "english": "much / a lot",
+      "persian": "زیاد",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "vielleicht",
+      "type": "adverb",
+      "english": "maybe",
+      "persian": "شاید",
+      "page": "PDF p. 36 / Book p. 36"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 33-36 / Book 33-36 + supplementary PDF 37-40 / Book 37-40",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

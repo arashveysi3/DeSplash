@@ -1,0 +1,468 @@
+{
+  "lesson_number": 11,
+  "lesson_title": "Was hast du heute gemacht?",
+  "pages": {
+    "pdf": "61-64",
+    "book": "61-64",
+    "supplementary": "PDF 92,96 / Book 92,96 (Perfekt haben, E-Mail schreiben)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "der Tagesablauf",
+      "plural": "die Tagesabläufe",
+      "english": "daily routine",
+      "persian": "روال روزانه",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "die Hausaufgabe",
+      "plural": "die Hausaufgaben",
+      "english": "homework",
+      "persian": "تکالیف خانه",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "die E-Mail",
+      "plural": "die E-Mails",
+      "english": "email",
+      "persian": "ایمیل",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "der Terminkalender",
+      "plural": "die Terminkalender",
+      "english": "appointment calendar",
+      "persian": "تقویم قرارها",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "die Alltagsaktivität",
+      "plural": "die Alltagsaktivitäten",
+      "english": "daily activity",
+      "persian": "فعالیت روزانه",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "das Baby",
+      "plural": "die Babys",
+      "english": "baby",
+      "persian": "نوزاد",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "der Kunde",
+      "plural": "die Kunden",
+      "english": "customer",
+      "persian": "مشتری",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "der Geschäftspartner",
+      "plural": "die Geschäftspartner",
+      "english": "business partner",
+      "persian": "شریک کاری",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "die Pause",
+      "plural": "die Pausen",
+      "english": "break",
+      "persian": "استراحت",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "die Probe (Orchesterprobe)",
+      "plural": "die Proben",
+      "english": "rehearsal",
+      "persian": "تمرین (ارکستر)",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Küchenschrank",
+      "plural": "die Küchenschränke",
+      "english": "kitchen cupboard",
+      "persian": "کابینت آشپزخانه",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "die Zeitung",
+      "plural": "die Zeitungen",
+      "english": "newspaper",
+      "persian": "روزنامه",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "das Geschenk",
+      "plural": "die Geschenke",
+      "english": "gift",
+      "persian": "هدیه",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "die Vergangenheit",
+      "plural": "—",
+      "english": "past",
+      "persian": "گذشته",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "das Perfekt",
+      "plural": "—",
+      "english": "perfect tense",
+      "persian": "زمان گذشته کامل",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "das Partizip",
+      "plural": "die Partizipien",
+      "english": "participle",
+      "persian": "وجه وصفی",
+      "page": "PDF p. 64 / Book p. 64"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "machen",
+      "third_person": "er/sie macht",
+      "english": "to do",
+      "persian": "انجام دادن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "aufräumen",
+      "third_person": "er/sie räumt auf",
+      "english": "to tidy up",
+      "persian": "مرتب کردن",
+      "separable": true,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "frühstücken",
+      "third_person": "er/sie frühstückt",
+      "english": "to breakfast",
+      "persian": "صبحانه خوردن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "fernsehen",
+      "third_person": "er/sie sieht fern",
+      "english": "to watch TV",
+      "persian": "تلویزیون دیدن",
+      "separable": true,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "schlafen",
+      "third_person": "er/sie schläft",
+      "english": "to sleep",
+      "persian": "خوابیدن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "einkaufen",
+      "third_person": "er/sie kauft ein",
+      "english": "to shop",
+      "persian": "خرید کردن",
+      "separable": true,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "telefonieren",
+      "third_person": "er/sie telefoniert",
+      "english": "to telephone",
+      "persian": "تلفن کردن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "arbeiten",
+      "third_person": "er/sie arbeitet",
+      "english": "to work",
+      "persian": "کار کردن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "eine Pause machen",
+      "third_person": "er/sie macht eine Pause",
+      "english": "to take a break",
+      "persian": "استراحت کردن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "Deutsch lernen",
+      "third_person": "er/sie lernt Deutsch",
+      "english": "to learn German",
+      "persian": "آلمانی یاد گرفتن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "lesen",
+      "third_person": "er/sie liest",
+      "english": "to read",
+      "persian": "خواندن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "kochen",
+      "third_person": "er/sie kocht",
+      "english": "to cook",
+      "persian": "آشپزی کردن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "anrufen",
+      "third_person": "er/sie ruft an",
+      "english": "to call",
+      "persian": "تماس گرفتن",
+      "separable": true,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "einladen",
+      "third_person": "er/sie lädt ein",
+      "english": "to invite",
+      "persian": "دعوت کردن",
+      "separable": true,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "sich treffen / Freunde treffen",
+      "third_person": "er/sie trifft sich",
+      "english": "to meet",
+      "persian": "ملاقات کردن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "im Internet surfen",
+      "third_person": "er/sie surft im Internet",
+      "english": "to surf internet",
+      "persian": "در اینترنت گشت زدن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "Musik hören",
+      "third_person": "er/sie hört Musik",
+      "english": "to listen to music",
+      "persian": "موسیقی گوش دادن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "Fußball spielen",
+      "third_person": "er/sie spielt Fußball",
+      "english": "to play football",
+      "persian": "فوتبال بازی کردن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "singen",
+      "third_person": "er/sie singt",
+      "english": "to sing",
+      "persian": "آواز خواندن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "malen",
+      "third_person": "er/sie malt",
+      "english": "to paint",
+      "persian": "نقاشی کردن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "fotografieren",
+      "third_person": "er/sie fotografiert",
+      "english": "to photograph",
+      "persian": "عکاسی کردن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "tanzen",
+      "third_person": "er/sie tanzt",
+      "english": "to dance",
+      "persian": "رقصیدن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "denken",
+      "third_person": "er/sie denkt",
+      "english": "to think",
+      "persian": "فکر کردن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "reden",
+      "third_person": "er/sie redet",
+      "english": "to talk",
+      "persian": "صحبت کردن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "lachen",
+      "third_person": "er/sie lacht",
+      "english": "to laugh",
+      "persian": "خندیدن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "meinen",
+      "third_person": "er/sie meint",
+      "english": "to mean / think",
+      "persian": "منظور داشتن / فکر کردن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "schreiben",
+      "third_person": "er/sie schreibt",
+      "english": "to write",
+      "persian": "نوشتن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "üben",
+      "third_person": "er/sie übt",
+      "english": "to practise",
+      "persian": "تمرین کردن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "haben (Perfekt Hilfsverb)",
+      "third_person": "er/sie hat",
+      "english": "to have (auxiliary)",
+      "persian": "داشتن (فعل کمکی)",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "schwanger",
+      "english": "pregnant",
+      "persian": "باردار",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "fleißig",
+      "english": "diligent",
+      "persian": "کوشا",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "langweilig",
+      "english": "boring",
+      "persian": "کسالت‌آور",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "fertig",
+      "english": "ready / finished",
+      "persian": "آماده / تمام",
+      "page": "PDF p. 63 / Book p. 63"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Was hast du heute / gestern / letzten Montag / letzte Woche gemacht?",
+      "english": "What did you do today / yesterday / last Monday?",
+      "persian": "امروز / دیروز / دوشنبه گذشته چه کردی؟",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "Von neun bis eins habe ich gearbeitet.",
+      "english": "From 9 to 1 I worked.",
+      "persian": "از ساعت نه تا یک کار کردم",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "Ich habe eine E-Mail geschrieben / angerufen / eingekauft / geübt.",
+      "english": "I have written / called / shopped / practised (Perfekt)",
+      "persian": "من ایمیل نوشتم / تماس گرفتم",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "Ab 9 Uhr habe ich gearbeitet.",
+      "english": "From 9 o'clock I worked.",
+      "persian": "از ساعت ۹ کار کردم",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "Was hast du letzten Freitag / letzte Woche gemacht?",
+      "english": "What did you do last Friday?",
+      "persian": "جمعه گذشته چه کردی؟",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "Hast du Frau Dr. Weber angerufen?",
+      "english": "Did you call Dr. Weber?",
+      "persian": "آیا به خانم دکتر وبر زنگ زدی؟",
+      "page": "PDF p. 63 / Book p. 63"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "heute / gestern",
+      "type": "adverb",
+      "english": "today / yesterday",
+      "persian": "امروز / دیروز",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "letzten Freitag / letzte Woche / letztes Jahr",
+      "type": "time expression",
+      "english": "last Friday / last week / last year",
+      "persian": "جمعه گذشته / هفته گذشته / سال گذشته",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "von ... bis / ab ...",
+      "type": "preposition",
+      "english": "from ... until / from ... onwards",
+      "persian": "از ... تا / از ... به بعد",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "gerade / noch",
+      "type": "adverb",
+      "english": "just / still",
+      "persian": "درست الان / هنوز",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "Perfekt mit haben: gemacht, angerufen, telefoniert, gearbeitet",
+      "type": "grammar",
+      "english": "perfect with haben",
+      "persian": "گذشته با فعل کمکی haben",
+      "page": "PDF p. 63 / Book p. 63"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 61-64 / Book 61-64 + supplements PDF 92,96",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

@@ -1,0 +1,548 @@
+{
+  "lesson_number": 3,
+  "lesson_title": "Das ist meine Mutter.",
+  "pages": {
+    "pdf": "17-20",
+    "book": "17-20",
+    "supplementary": "PDF 75,76 / Book 75,76 (Bekannte Persoenlichkeiten, W-Fragen) and PDF 78,82 / Book 78,82",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "die Mutter",
+      "plural": "die Mütter",
+      "english": "mother",
+      "persian": "مادر",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "der Vater",
+      "plural": "die Väter",
+      "english": "father",
+      "persian": "پدر",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Eltern (Pl.)",
+      "plural": "—",
+      "english": "parents",
+      "persian": "والدین",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "die Großmutter / die Oma",
+      "plural": "die Großmütter / die Omas",
+      "english": "grandmother",
+      "persian": "مادربزرگ",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Großvater / der Opa",
+      "plural": "die Großväter / die Opas",
+      "english": "grandfather",
+      "persian": "پدربزرگ",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Großeltern (Pl.)",
+      "plural": "—",
+      "english": "grandparents",
+      "persian": "پدربزرگ و مادربزرگ",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Sohn",
+      "plural": "die Söhne",
+      "english": "son",
+      "persian": "پسر",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Tochter",
+      "plural": "die Töchter",
+      "english": "daughter",
+      "persian": "دختر",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Schwester",
+      "plural": "die Schwestern",
+      "english": "sister",
+      "persian": "خواهر",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "der Bruder",
+      "plural": "die Brüder",
+      "english": "brother",
+      "persian": "برادر",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Geschwister (Pl.)",
+      "plural": "—",
+      "english": "siblings",
+      "persian": "خواهران و برادران",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Enkel",
+      "plural": "die Enkel",
+      "english": "grandson",
+      "persian": "نوه (پسر)",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Enkelin",
+      "plural": "die Enkelinnen",
+      "english": "granddaughter",
+      "persian": "نوه (دختر)",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der (Ehe)Mann",
+      "plural": "die (Ehe)Männer",
+      "english": "husband",
+      "persian": "شوهر",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die (Ehe)Frau",
+      "plural": "die (Ehe)Frauen",
+      "english": "wife",
+      "persian": "همسر (زن)",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Freund",
+      "plural": "die Freunde",
+      "english": "friend (male) / boyfriend",
+      "persian": "دوست (پسر)",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Freundin",
+      "plural": "die Freundinnen",
+      "english": "friend (female) / girlfriend",
+      "persian": "دوست (دختر)",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Kollegin",
+      "plural": "die Kolleginnen",
+      "english": "colleague (female)",
+      "persian": "همکار (زن)",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Kollege",
+      "plural": "die Kollegen",
+      "english": "colleague (male)",
+      "persian": "همکار (مرد)",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Partnerin",
+      "plural": "die Partnerinnen",
+      "english": "partner (female)",
+      "persian": "شریک زندگی (زن)",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Partner",
+      "plural": "die Partner",
+      "english": "partner (male)",
+      "persian": "شریک زندگی (مرد)",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Sprache",
+      "plural": "die Sprachen",
+      "english": "language",
+      "persian": "زبان",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Deutsch",
+      "plural": "—",
+      "english": "German (language)",
+      "persian": "زبان آلمانی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Englisch",
+      "plural": "—",
+      "english": "English",
+      "persian": "انگلیسی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Spanisch",
+      "plural": "—",
+      "english": "Spanish",
+      "persian": "اسپانیایی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Französisch",
+      "plural": "—",
+      "english": "French",
+      "persian": "فرانسوی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Italienisch",
+      "plural": "—",
+      "english": "Italian",
+      "persian": "ایتالیایی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Russisch",
+      "plural": "—",
+      "english": "Russian",
+      "persian": "روسی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Niederländisch",
+      "plural": "—",
+      "english": "Dutch",
+      "persian": "هلندی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Polnisch",
+      "plural": "—",
+      "english": "Polish",
+      "persian": "لهستانی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Tschechisch",
+      "plural": "—",
+      "english": "Czech",
+      "persian": "چکی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Türkisch (im Bild: Türkei as language context)",
+      "plural": "—",
+      "english": "Turkish",
+      "persian": "ترکی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Schwedisch",
+      "plural": "—",
+      "english": "Swedish",
+      "persian": "سوئدی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "die Familie",
+      "plural": "die Familien",
+      "english": "family",
+      "persian": "خانواده",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "das Familienmitglied",
+      "plural": "die Familienmitglieder",
+      "english": "family member",
+      "persian": "عضو خانواده",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Familiengeschichte",
+      "plural": "die Familiengeschichten",
+      "english": "family story",
+      "persian": "داستان خانوادگی",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Karte (Schweiz Sprachen Karte)",
+      "plural": "die Karten",
+      "english": "map",
+      "persian": "نقشه",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Gebiet",
+      "plural": "die Gebiete",
+      "english": "area / region",
+      "persian": "منطقه",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "der Text",
+      "plural": "die Texte",
+      "english": "text",
+      "persian": "متن",
+      "page": "PDF p. 18 / Book p. 18"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "sein",
+      "third_person": "er/sie ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er/sie hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "infinitive": "leben",
+      "third_person": "er/sie lebt",
+      "english": "to live",
+      "persian": "زندگی کردن",
+      "separable": false,
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "infinitive": "studieren",
+      "third_person": "er/sie studiert",
+      "english": "to study",
+      "persian": "تحصیل کردن",
+      "separable": false,
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "infinitive": "sprechen",
+      "third_person": "er/sie spricht",
+      "english": "to speak",
+      "persian": "صحبت کردن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "infinitive": "markieren",
+      "third_person": "er/sie markiert",
+      "english": "to mark",
+      "persian": "علامت زدن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "infinitive": "ergänzen",
+      "third_person": "er/sie ergänzt",
+      "english": "to complete",
+      "persian": "کامل کردن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "raten",
+      "third_person": "er/sie rät",
+      "english": "to guess",
+      "persian": "حدس زدن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "glauben",
+      "third_person": "er/sie glaubt",
+      "english": "to believe",
+      "persian": "باور داشتن",
+      "separable": false,
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "infinitive": "interviewen",
+      "third_person": "er/sie interviewt",
+      "english": "to interview",
+      "persian": "مصاحبه کردن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "verheiratet",
+      "english": "married",
+      "persian": "متأهل",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "geschieden",
+      "english": "divorced",
+      "persian": "مطلقه",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "ledig / Single",
+      "english": "single",
+      "persian": "مجرد",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "sehr alt",
+      "english": "very old",
+      "persian": "خیلی مسن",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "nicht sehr alt",
+      "english": "not very old",
+      "persian": "خیلی مسن نیست",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "richtig / falsch",
+      "english": "correct / false",
+      "persian": "درست / نادرست",
+      "page": "PDF p. 17 / Book p. 17"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Das ist meine Mutter.",
+      "english": "This is my mother.",
+      "persian": "این مادر من است",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "Das sind meine Eltern.",
+      "english": "These are my parents.",
+      "persian": "اینها والدین من هستند",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "Sie sind Schauspieler.",
+      "english": "They are actors.",
+      "persian": "آنها بازیگر هستند",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "Wer ist das? - Ist das deine Frau? - Nein. Das ist meine Mutter.",
+      "english": "Who is that? Is that your wife? No.",
+      "persian": "آن کیست؟ آیا آن همسرت است؟ نه، آن مادر من است",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "Bist du verheiratet? - Nein, ich bin nicht verheiratet.",
+      "english": "Are you married? No, I am not married.",
+      "persian": "آیا متأهلی؟ نه، مجردم",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "Welche Sprachen sprichst du / sprechen Sie?",
+      "english": "Which languages do you speak?",
+      "persian": "به چه زبان‌هایی صحبت می‌کنی / می‌کنید؟",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "Ich spreche sehr gut / gut / ein bisschen ...",
+      "english": "I speak very well / well / a little ...",
+      "persian": "من خیلی خوب / خوب / کمی ... صحبت می‌کنم",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "Ist das deine Schwester? - Nein, das ist meine Freundin.",
+      "english": "Is that your sister? No, that's my girlfriend/friend.",
+      "persian": "آیا آن خواهر توست؟ نه، دوست من است",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "Ich bin Helga. Mein Sohn heißt Bernd. Das ist mein Enkel. Er heißt ...",
+      "english": "I am Helga. My son is called Bernd.",
+      "persian": "من هلگا هستم. پسرم برند نام دارد",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "Wie heißt dein Bruder? - Er heißt Miguel.",
+      "english": "What is your brother's name?",
+      "persian": "نام برادرت چیست؟",
+      "page": "PDF p. 19 / Book p. 19"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "mein / deine / sein / ihr",
+      "type": "possessive article",
+      "english": "my / your / his / her",
+      "persian": "مال من / مال تو",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "ja",
+      "type": "particle",
+      "english": "yes",
+      "persian": "بله",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "nein",
+      "type": "particle",
+      "english": "no",
+      "persian": "نه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "doch",
+      "type": "particle (yes for negative question)",
+      "english": "yes (contradicting negative)",
+      "persian": "چرا (در جواب سوال منفی)",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "nicht",
+      "type": "negation",
+      "english": "not",
+      "persian": "نه / نیست",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "sehr",
+      "type": "adverb",
+      "english": "very",
+      "persian": "خیلی",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "wer / was",
+      "type": "W-question word",
+      "english": "who / what",
+      "persian": "چه کسی / چه چیزی",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "wo / wohin",
+      "type": "question word",
+      "english": "where / where to",
+      "persian": "کجا",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "wie viele?",
+      "type": "question phrase",
+      "english": "how many?",
+      "persian": "چند تا؟",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "in der Schweiz (Deutsch / Französisch / Italienisch / Rätoromanisch)",
+      "type": "phrase",
+      "english": "in Switzerland (languages)",
+      "persian": "در سوئیس",
+      "page": "PDF p. 20 / Book p. 20"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 17-20 / Book 17-20 + supplements PDF 75,76,78,82",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

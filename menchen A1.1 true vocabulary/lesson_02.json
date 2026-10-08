@@ -1,0 +1,635 @@
+{
+  "lesson_number": 2,
+  "lesson_title": "Ich bin Journalistin.",
+  "pages": {
+    "pdf": "13-16",
+    "book": "13-16",
+    "supplementary": "PDF 73,74,78,82 / Book 73,74,78,82 (AKTIONSSEITEN: Zahlen üben S.73, Internet-Profil S.74, Texte verstehen S.78/82)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "der Beruf",
+      "plural": "die Berufe",
+      "english": "profession",
+      "persian": "شغل",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Journalist",
+      "plural": "die Journalisten",
+      "english": "journalist (male)",
+      "persian": "روزنامه‌نگار (مرد)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Journalistin",
+      "plural": "die Journalistinnen",
+      "english": "journalist (female)",
+      "persian": "روزنامه‌نگار (زن)",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "der Historiker",
+      "plural": "die Historiker",
+      "english": "historian (male)",
+      "persian": "مورخ (مرد)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Historikerin",
+      "plural": "die Historikerinnen",
+      "english": "historian (female)",
+      "persian": "مورخ (زن)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Student",
+      "plural": "die Studenten",
+      "english": "student (male)",
+      "persian": "دانشجو (مرد)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Studentin",
+      "plural": "die Studentinnen",
+      "english": "student (female)",
+      "persian": "دانشجو (زن)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Arzt",
+      "plural": "die Ärzte",
+      "english": "doctor (male)",
+      "persian": "پزشک (مرد)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Ärztin",
+      "plural": "die Ärztinnen",
+      "english": "doctor (female)",
+      "persian": "پزشک (زن)",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Ingenieur",
+      "plural": "die Ingenieure",
+      "english": "engineer",
+      "persian": "مهندس",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Mechatroniker",
+      "plural": "die Mechatroniker",
+      "english": "mechatronics technician",
+      "persian": "مکاتronیک‌کار",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Schauspieler",
+      "plural": "die Schauspieler",
+      "english": "actor",
+      "persian": "بازیگر",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Friseurin",
+      "plural": "die Friseurinnen",
+      "english": "hairdresser (female)",
+      "persian": "آرایشگر (زن)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Friseur",
+      "plural": "die Friseure",
+      "english": "hairdresser (male)",
+      "persian": "آرایشگر (مرد)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Architektin",
+      "plural": "die Architektinnen",
+      "english": "architect (female)",
+      "persian": "معمار (زن)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Architekt",
+      "plural": "die Architekten",
+      "english": "architect (male)",
+      "persian": "معمار (مرد)",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "die Sekretärin",
+      "plural": "die Sekretärinnen",
+      "english": "secretary (female)",
+      "persian": "منشی (زن)",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Lehrer",
+      "plural": "die Lehrer",
+      "english": "teacher (male)",
+      "persian": "معلم (مرد)",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Verkäufer",
+      "plural": "die Verkäufer",
+      "english": "salesman",
+      "persian": "فروشنده (مرد)",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "die Kellnerin",
+      "plural": "die Kellnerinnen",
+      "english": "waitress",
+      "persian": "گارسون (زن)",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Kellner",
+      "plural": "die Kellner",
+      "english": "waiter",
+      "persian": "گارسون (مرد)",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "die Ausbildung",
+      "plural": "die Ausbildungen",
+      "english": "training / apprenticeship",
+      "persian": "آموزش حرفه‌ای",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "das Praktikum",
+      "plural": "die Praktika",
+      "english": "internship",
+      "persian": "کارآموزی",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Job",
+      "plural": "die Jobs",
+      "english": "job",
+      "persian": "شغل",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Schülerin",
+      "plural": "die Schülerinnen",
+      "english": "pupil (female)",
+      "persian": "دانش‌آموز (دختر)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Schüler",
+      "plural": "die Schüler",
+      "english": "pupil (male)",
+      "persian": "دانش‌آموز (پسر)",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "die Visitenkarte",
+      "plural": "die Visitenkarten",
+      "english": "business card",
+      "persian": "کارت ویزیت",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "das Internet-Profil",
+      "plural": "die Internet-Profile",
+      "english": "internet profile",
+      "persian": "پروفایل اینترنتی",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Steckbrief",
+      "plural": "die Steckbriefe",
+      "english": "profile / fact sheet",
+      "persian": "برگه مشخصات",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "der Familienstand",
+      "plural": "—",
+      "english": "marital status",
+      "persian": "وضعیت تأهل",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "das Kind",
+      "plural": "die Kinder",
+      "english": "child",
+      "persian": "بچه / فرزند",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Zahl",
+      "plural": "die Zahlen",
+      "english": "number",
+      "persian": "عدد",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "das Jahr",
+      "plural": "die Jahre",
+      "english": "year",
+      "persian": "سال",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Wohnort",
+      "plural": "die Wohnorte",
+      "english": "place of residence",
+      "persian": "محل سکونت",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "die Herkunft",
+      "plural": "—",
+      "english": "origin",
+      "persian": "اصلیت",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "der Arbeitgeber",
+      "plural": "die Arbeitgeber",
+      "english": "employer",
+      "persian": "کارفرما",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "das Alter",
+      "plural": "—",
+      "english": "age",
+      "persian": "سن",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "die Adresse",
+      "plural": "die Adressen",
+      "english": "address",
+      "persian": "آدرس",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "die Telefonnummer (das Handy)",
+      "plural": "die Telefonnummern / die Handys",
+      "english": "phone number / mobile",
+      "persian": "شماره تلفن / موبایل",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "die E-Mail",
+      "plural": "die E-Mails",
+      "english": "email",
+      "persian": "ایمیل",
+      "page": "PDF p. 13 / Book p. 13"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "arbeiten",
+      "third_person": "er/sie arbeitet",
+      "english": "to work",
+      "persian": "کار کردن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er/sie hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er/sie ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "wohnen",
+      "third_person": "er/sie wohnt",
+      "english": "to live / reside",
+      "persian": "زندگی کردن / ساکن بودن",
+      "separable": false,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "leben",
+      "third_person": "er/sie lebt",
+      "english": "to live",
+      "persian": "زندگی کردن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "machen",
+      "third_person": "er/sie macht",
+      "english": "to do / make",
+      "persian": "انجام دادن / کردن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "studieren",
+      "third_person": "er/sie studiert",
+      "english": "to study (university)",
+      "persian": "تحصیل کردن (دانشگاه)",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "glauben",
+      "third_person": "er/sie glaubt",
+      "english": "to believe",
+      "persian": "باور داشتن / فکر کردن",
+      "separable": false,
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "infinitive": "schreiben",
+      "third_person": "er/sie schreibt",
+      "english": "to write",
+      "persian": "نوشتن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "sich vorstellen (andere vorstellen)",
+      "third_person": "er/sie stellt vor",
+      "english": "to introduce",
+      "persian": "معرفی کردن",
+      "separable": true,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "heißen",
+      "third_person": "er/sie heißt",
+      "english": "to be called",
+      "persian": "نام داشتن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "kommen",
+      "third_person": "er/sie kommt",
+      "english": "to come",
+      "persian": "آمدن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "markieren",
+      "third_person": "er/sie markiert",
+      "english": "to mark",
+      "persian": "علامت زدن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "ergänzen",
+      "third_person": "er/sie ergänzt",
+      "english": "to complete",
+      "persian": "کامل کردن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "verheiratet",
+      "english": "married",
+      "persian": "متأهل",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "geschieden",
+      "english": "divorced",
+      "persian": "مطلقه / جدا شده",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Single / allein",
+      "english": "single / alone",
+      "persian": "مجرد / تنها",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "zusammen",
+      "english": "together",
+      "persian": "با هم",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "beruflich",
+      "english": "professional / regarding job",
+      "persian": "شغلی",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "gemeinsam",
+      "english": "common / together",
+      "persian": "مشترک",
+      "page": "PDF p. 15 / Book p. 15"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Ich bin Journalistin.",
+      "english": "I am a journalist.",
+      "persian": "من روزنامه‌نگار هستم",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "Ich arbeite als Journalistin.",
+      "english": "I work as a journalist.",
+      "persian": "من به عنوان روزنامه‌نگار کار می‌کنم",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Ich arbeite bei X-Media.",
+      "english": "I work at X-Media.",
+      "persian": "من در ایکس‌مدیا کار می‌کنم",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Was machen Sie beruflich? / Was machst du beruflich?",
+      "english": "What do you do professionally?",
+      "persian": "شغل شما چیست؟ / کارت چیست؟",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Was sind Sie von Beruf? / Was bist du von Beruf?",
+      "english": "What is your profession?",
+      "persian": "حرفه‌ات چیست؟",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Ich bin Studentin / Schülerin.",
+      "english": "I am a (female) student / pupil.",
+      "persian": "من دانشجو / دانش‌آموز هستم",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Ich mache ein Praktikum bei ... / als ...",
+      "english": "I do an internship at ... / as ...",
+      "persian": "من کارآموزی می‌کنم در ... / به عنوان ...",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Ich mache eine Ausbildung als ... / bei ...",
+      "english": "I do training as ... / at ...",
+      "persian": "من آموزش می‌بینم به عنوان ... / در ...",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Ich habe einen Job als ...",
+      "english": "I have a job as ...",
+      "persian": "من شغلی به عنوان ... دارم",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Wir sind verheiratet. / Wir sind nicht verheiratet.",
+      "english": "We are married. / We are not married.",
+      "persian": "ما متأهل هستیم / ما متأهل نیستیم",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Wir sind geschieden.",
+      "english": "We are divorced.",
+      "persian": "ما مطلقه هستیم",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Wir leben zusammen / nicht zusammen.",
+      "english": "We live together / not together.",
+      "persian": "ما با هم زندگی می‌کنیم / با هم زندگی نمی‌کنیم",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Wir haben ein Kind / zwei Kinder / keine Kinder.",
+      "english": "We have one / two / no children.",
+      "persian": "ما یک / دو / هیچ بچه‌ای داریم",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Ich bin Single. / Ich lebe allein.",
+      "english": "I am single. / I live alone.",
+      "persian": "من مجرد هستم / تنها زندگی می‌کنم",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Wo wohnen Sie? / Wo wohnst du? - Ich wohne in Berlin.",
+      "english": "Where do you live? - I live in Berlin.",
+      "persian": "کجا زندگی می‌کنید؟ - من در برلین زندگی می‌کنم",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "Was haben Sven und Nadine gemeinsam? - Sie wohnen in Berlin.",
+      "english": "What do Sven and Nadine have in common?",
+      "persian": "اِسوِن و نادین چه وجه مشترکی دارند؟",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "Wie alt bist du? - Ich bin 34 Jahre alt.",
+      "english": "How old are you? - I am 34 years old.",
+      "persian": "چند سالته؟ - من ۳۴ ساله هستم",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "Ich bin 24 Jahre alt.",
+      "english": "I am 24 years old.",
+      "persian": "من ۲۴ ساله هستم",
+      "page": "PDF p. 16 / Book p. 16"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "als",
+      "type": "preposition/conjunction",
+      "english": "as",
+      "persian": "به عنوان",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "bei",
+      "type": "preposition (+ Dativ)",
+      "english": "at / with (company)",
+      "persian": "در / نزد",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "in",
+      "type": "preposition (+ Dativ)",
+      "english": "in",
+      "persian": "در",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "als / bei / in",
+      "type": "preposition",
+      "english": "as / at / in",
+      "persian": "به عنوان / در",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "nicht",
+      "type": "negation particle",
+      "english": "not",
+      "persian": "نه",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "und / aber",
+      "type": "conjunction",
+      "english": "and / but",
+      "persian": "و / اما",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "null - hundert",
+      "type": "numbers 0-100",
+      "english": "0 - 100",
+      "persian": "صفر تا صد",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "wie - was - wo - wer",
+      "type": "W-question words",
+      "english": "how what where who",
+      "persian": "چگونه، چه، کجا، چه کسی",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "wir / ihr / sie (Sie)",
+      "type": "pronoun",
+      "english": "we / you (pl) / they / you (formal)",
+      "persian": "ما / شما (جمع) / آنها / شما",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "mein / dein",
+      "type": "possessive article (introduced later but forms seen)",
+      "english": "my / your",
+      "persian": "مال من / مال تو",
+      "page": "PDF p. 16 / Book p. 16"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 13-16 / Book 13-16 + supplements PDF 73,74,78,82",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

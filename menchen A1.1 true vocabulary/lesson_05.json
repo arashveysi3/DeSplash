@@ -1,0 +1,549 @@
+{
+  "lesson_number": 5,
+  "lesson_title": "Was ist das? - Das ist ein F.",
+  "pages": {
+    "pdf": "29-32",
+    "book": "29-32",
+    "supplementary": "PDF 84,85 / Book 84,85 (Produkte beschreiben, Nach Wörtern fragen)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "der Buchstabe",
+      "plural": "die Buchstaben",
+      "english": "letter",
+      "persian": "حرف الفبا",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "das F (der Buchstabe F)",
+      "plural": "die Fs",
+      "english": "letter F",
+      "persian": "حرف F",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "der Bleistift",
+      "plural": "die Bleistifte",
+      "english": "pencil",
+      "persian": "مداد",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "der Kugelschreiber",
+      "plural": "die Kugelschreiber",
+      "english": "ballpoint pen",
+      "persian": "خودکار",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "der Schlüssel",
+      "plural": "die Schlüssel",
+      "english": "key",
+      "persian": "کلید",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Tasche",
+      "plural": "die Taschen",
+      "english": "bag",
+      "persian": "کیف",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Uhr",
+      "plural": "die Uhren",
+      "english": "clock / watch",
+      "persian": "ساعت",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "das Buch",
+      "plural": "die Bücher",
+      "english": "book",
+      "persian": "کتاب",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "die Brille",
+      "plural": "die Brillen",
+      "english": "glasses",
+      "persian": "عینک",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Brillenmodell",
+      "plural": "die Brillenmodelle",
+      "english": "glasses model",
+      "persian": "مدل عینک",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "die Optik",
+      "plural": "die Optiken",
+      "english": "optician",
+      "persian": "عینک‌فروشی",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "der Kunststoff",
+      "plural": "die Kunststoffe",
+      "english": "plastic",
+      "persian": "پلاستیک",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Metall",
+      "plural": "die Metalle",
+      "english": "metal",
+      "persian": "فلز",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Holz",
+      "plural": "die Hölzer",
+      "english": "wood",
+      "persian": "چوب",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Papier",
+      "plural": "die Papiere",
+      "english": "paper",
+      "persian": "کاغذ",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Glas",
+      "plural": "die Gläser",
+      "english": "glass",
+      "persian": "شیشه",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "die Farbe",
+      "plural": "die Farben",
+      "english": "colour",
+      "persian": "رنگ",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "die Form",
+      "plural": "die Formen",
+      "english": "shape",
+      "persian": "شکل",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Produkt",
+      "plural": "die Produkte",
+      "english": "product",
+      "persian": "محصول",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "die Produktinformation",
+      "plural": "die Produktinformationen",
+      "english": "product information",
+      "persian": "اطلاعات محصول",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Material",
+      "plural": "die Materialien",
+      "english": "material",
+      "persian": "جنس",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Kuckucksuhr",
+      "plural": "die Kuckucksuhren",
+      "english": "cuckoo clock",
+      "persian": "ساعت کوکو",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Wanduhr",
+      "plural": "die Wanduhren",
+      "english": "wall clock",
+      "persian": "ساعت دیواری",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Armbanduhr (Uhr rückwärts)",
+      "plural": "die Armbanduhren",
+      "english": "wristwatch",
+      "persian": "ساعت مچی",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Bestellnummer",
+      "plural": "die Bestellnummern",
+      "english": "order number",
+      "persian": "شماره سفارش",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Menge",
+      "plural": "die Mengen",
+      "english": "quantity",
+      "persian": "مقدار",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "das Formular",
+      "plural": "die Formulare",
+      "english": "form",
+      "persian": "فرم",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Anrede",
+      "plural": "die Anreden",
+      "english": "salutation",
+      "persian": "عنوان خطاب",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Straße",
+      "plural": "die Straßen",
+      "english": "street",
+      "persian": "خیابان",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Hausnummer",
+      "plural": "die Hausnummern",
+      "english": "house number",
+      "persian": "پلاک خانه",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Postleitzahl (PLZ)",
+      "plural": "die Postleitzahlen",
+      "english": "postcode",
+      "persian": "کد پستی",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "der Ort",
+      "plural": "die Orte",
+      "english": "place",
+      "persian": "محل",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "das Fax",
+      "plural": "die Faxe",
+      "english": "fax",
+      "persian": "فکس",
+      "page": "PDF p. 32 / Book p. 32"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "sein",
+      "third_person": "er/sie ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "glauben",
+      "third_person": "er/sie glaubt",
+      "english": "to believe",
+      "persian": "باور داشتن",
+      "separable": false,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "markieren",
+      "third_person": "er/sie markiert",
+      "english": "to mark",
+      "persian": "علامت زدن",
+      "separable": false,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "sprechen",
+      "third_person": "er/sie spricht",
+      "english": "to speak",
+      "persian": "صحبت کردن",
+      "separable": false,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "zeichnen",
+      "third_person": "er/sie zeichnet",
+      "english": "to draw",
+      "persian": "کشیدن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "schreiben",
+      "third_person": "er/sie schreibt",
+      "english": "to write",
+      "persian": "نوشتن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "mischen",
+      "third_person": "er/sie mischt",
+      "english": "to mix",
+      "persian": "مخلوط کردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "suchen",
+      "third_person": "er/sie sucht",
+      "english": "to search",
+      "persian": "جستجو کردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "fragen",
+      "third_person": "er/sie fragt",
+      "english": "to ask",
+      "persian": "پرسیدن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "nennen",
+      "third_person": "er/sie nennt",
+      "english": "to name",
+      "persian": "نام بردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "bitten",
+      "third_person": "er/sie bittet",
+      "english": "to ask / request",
+      "persian": "درخواست کردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "beschreiben",
+      "third_person": "er/sie beschreibt",
+      "english": "to describe",
+      "persian": "توصیف کردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "sich bedanken",
+      "third_person": "er/sie bedankt sich",
+      "english": "to thank",
+      "persian": "تشکر کردن",
+      "separable": false,
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "infinitive": "ausfüllen",
+      "third_person": "er/sie füllt aus",
+      "english": "to fill out",
+      "persian": "پر کردن (فرم)",
+      "separable": true,
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "infinitive": "bestellen",
+      "third_person": "er/sie bestellt",
+      "english": "to order",
+      "persian": "سفارش دادن",
+      "separable": false,
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "infinitive": "ergänzen",
+      "third_person": "er/sie ergänzt",
+      "english": "to complete",
+      "persian": "کامل کردن",
+      "separable": false,
+      "page": "PDF p. 32 / Book p. 32"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "rot",
+      "english": "red",
+      "persian": "قرمز",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "blau",
+      "english": "blue",
+      "persian": "آبی",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "gelb",
+      "english": "yellow",
+      "persian": "زرد",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "grün",
+      "english": "green",
+      "persian": "سبز",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "braun",
+      "english": "brown",
+      "persian": "قهوه‌ای",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "schwarz",
+      "english": "black",
+      "persian": "مشکی",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "weiß",
+      "english": "white",
+      "persian": "سفید",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "rund",
+      "english": "round",
+      "persian": "گرد",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "eckig",
+      "english": "rectangular / angular",
+      "persian": "گوشه‌دار",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "aus Kunststoff / Metall / Holz / Papier / Glas",
+      "english": "made of plastic / metal / wood / paper / glass",
+      "persian": "از پلاستیک / فلز / چوب / کاغذ / شیشه",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "modern",
+      "english": "modern",
+      "persian": "مدرن",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "praktisch / leicht",
+      "english": "practical / light",
+      "persian": "کاربردی / سبک",
+      "page": "PDF p. 30 / Book p. 30"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Was ist das? - Das ist ein F. / Das ist eine Brille.",
+      "english": "What is that? - That is an F / a pair of glasses.",
+      "persian": "آن چیست؟ - آن F است / آن یک عینک است",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "Nein, das glaube ich nicht. / Ja, das glaube ich auch.",
+      "english": "No, I don't think so. / Yes, I also think so.",
+      "persian": "نه، فکر نمی‌کنم / بله، من هم همین فکر را می‌کنم",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "Ich glaube, das ist ein P.",
+      "english": "I think that is a P.",
+      "persian": "فکر می‌کنم آن P است",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "Entschuldigung, wie heißt das auf Deutsch?",
+      "english": "Excuse me, what is that called in German?",
+      "persian": "ببخشید، این به آلمانی چه نام دارد؟",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "Wie schreibt man ...? Das ist ein/eine ...",
+      "english": "How do you write ...? That is a ...",
+      "persian": "چگونه می‌نویسند ...؟ آن یک ... است",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "Noch einmal, bitte. / Wie bitte?",
+      "english": "Once more, please. / Pardon?",
+      "persian": "یک بار دیگر لطفاً / ببخشید؟",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "Danke. - Bitteschön. / Bitte. / Gern. / Kein Problem.",
+      "english": "Thanks. - You're welcome.",
+      "persian": "ممنون - خواهش می‌کنم",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "Die Brille ist aus Kunststoff / rot / rund ...",
+      "english": "The glasses are made of plastic / red / round ...",
+      "persian": "عینک از پلاستیک / قرمز / گرد است",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "Hier: eine super Kette! Sie ist aus Plastik und sehr leicht!",
+      "english": "Here: a great chain!",
+      "persian": "نگاه کنید: یک زنجیر عالی!",
+      "page": "PDF p. 31 / Book p. 31"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "ein / eine / ein (indefiniter Artikel)",
+      "type": "article",
+      "english": "a/an",
+      "persian": "یک",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "kein / keine / kein (Negativartikel)",
+      "type": "article",
+      "english": "no / not a",
+      "persian": "هیچ",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "der / das / die (definiter Artikel)",
+      "type": "article",
+      "english": "the",
+      "persian": "حرف تعریف معین",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "und / oder",
+      "type": "conjunction",
+      "english": "and / or",
+      "persian": "و / یا",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "wie / was",
+      "type": "W-question word",
+      "english": "how / what",
+      "persian": "چگونه / چه",
+      "page": "PDF p. 31 / Book p. 31"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 29-32 / Book 29-32 + supplements PDF 84,85",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

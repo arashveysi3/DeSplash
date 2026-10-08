@@ -1,0 +1,998 @@
+{
+  "lesson_number": 13,
+  "lesson_title": "Wir suchen das Hotel Maritim.",
+  "pages": {
+    "pdf": "9-12",
+    "book": "9-12",
+    "supplementary": "PDF 73 / Book 73 (AKTIONSSEITEN KB S. 11 | Lektion 13 | 6)",
+    "note_missing": "Book p. 74 (Lektion 13 | 8) referenced on p.11 but missing in PDF (PDF sequence jumps Book 73->75)"
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90-120 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "das Hotel",
+      "plural": "die Hotels",
+      "english": "hotel",
+      "persian": "هتل",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "das Auto",
+      "plural": "die Autos",
+      "english": "car",
+      "persian": "ماشین",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "das Foto",
+      "plural": "die Fotos",
+      "english": "photo",
+      "persian": "عکس",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "der Stadtplan",
+      "plural": "die Stadtpläne",
+      "english": "city map",
+      "persian": "نقشه شهر",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "der Navigator",
+      "plural": "die Navigatoren",
+      "english": "navigator / GPS",
+      "persian": "مسیریاب",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "der Meter",
+      "plural": "die Meter",
+      "english": "meter",
+      "persian": "متر",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "der Kilometer",
+      "plural": "die Kilometer",
+      "english": "kilometer",
+      "persian": "کیلومتر",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "die Wegbeschreibung",
+      "plural": "die Wegbeschreibungen",
+      "english": "route description",
+      "persian": "توصیف مسیر",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "die Institution",
+      "plural": "die Institutionen",
+      "english": "institution",
+      "persian": "نهاد",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "der Platz",
+      "plural": "die Plätze",
+      "english": "square / place",
+      "persian": "میدان / مکان",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "das Restaurant",
+      "plural": "die Restaurants",
+      "english": "restaurant",
+      "persian": "رستوران",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "das Bildlexikon",
+      "plural": "die Bildlexika",
+      "english": "picture dictionary",
+      "persian": "فرهنگ مصور",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "der Blick",
+      "plural": "die Blicke",
+      "english": "view",
+      "persian": "نگاه / چشم‌انداز",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "der Würfel",
+      "plural": "die Würfel",
+      "english": "cube",
+      "persian": "مکعب",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "der Stab",
+      "plural": "die Stäbe",
+      "english": "rod / stick",
+      "persian": "میله",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Pyramide",
+      "plural": "die Pyramiden",
+      "english": "pyramid",
+      "persian": "هرم",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Stadt",
+      "plural": "die Städte",
+      "english": "city",
+      "persian": "شهر",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Stadtmitte",
+      "plural": "die Stadtmitten",
+      "english": "city centre",
+      "persian": "مرکز شهر",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "das Zentrum",
+      "plural": "die Zentren",
+      "english": "centre",
+      "persian": "مرکز",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "der Bahnhof",
+      "plural": "die Bahnhöfe",
+      "english": "train station",
+      "persian": "ایستگاه قطار",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "der Dom",
+      "plural": "die Dome",
+      "english": "cathedral",
+      "persian": "کلیسای جامع",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Bank",
+      "plural": "die Banken",
+      "english": "bank",
+      "persian": "بانک",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Post",
+      "plural": "—",
+      "english": "post office",
+      "persian": "اداره پست",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Polizei",
+      "plural": "—",
+      "english": "police",
+      "persian": "پلیس",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Ampel",
+      "plural": "die Ampeln",
+      "english": "traffic light",
+      "persian": "چراغ راهنما",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Brücke",
+      "plural": "die Brücken",
+      "english": "bridge",
+      "persian": "پل",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "das Café",
+      "plural": "die Cafés",
+      "english": "café",
+      "persian": "کافه",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "das Gespräch",
+      "plural": "die Gespräche",
+      "english": "conversation",
+      "persian": "گفتگو",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Nähe",
+      "plural": "—",
+      "english": "vicinity",
+      "persian": "نزدیکی",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "der Mann",
+      "plural": "die Männer",
+      "english": "man",
+      "persian": "مرد",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Frau",
+      "plural": "die Frauen",
+      "english": "woman",
+      "persian": "زن",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "der Plan",
+      "plural": "die Pläne",
+      "english": "map / plan",
+      "persian": "نقشه",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "der Weg",
+      "plural": "die Wege",
+      "english": "way / route",
+      "persian": "راه",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "die Straße",
+      "plural": "die Straßen",
+      "english": "street",
+      "persian": "خیابان",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "die Frage",
+      "plural": "die Fragen",
+      "english": "question",
+      "persian": "سوال",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "der Satz",
+      "plural": "die Sätze",
+      "english": "sentence",
+      "persian": "جمله",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "der Moment",
+      "plural": "die Momente",
+      "english": "moment",
+      "persian": "لحظه",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "die Zeit",
+      "plural": "die Zeiten",
+      "english": "time",
+      "persian": "زمان",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "der Artikel",
+      "plural": "die Artikel",
+      "english": "article (grammar)",
+      "persian": "حرف تعریف",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "das Haus",
+      "plural": "die Häuser",
+      "english": "house",
+      "persian": "خانه",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "die Hilfe",
+      "plural": "die Hilfen",
+      "english": "help",
+      "persian": "کمک",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "das Bild",
+      "plural": "die Bilder",
+      "english": "picture",
+      "persian": "تصویر",
+      "page": "PDF p. 73 / Book p. 73"
+    },
+    {
+      "german": "der Tisch",
+      "plural": "die Tische",
+      "english": "table",
+      "persian": "میز",
+      "page": "PDF p. 73 / Book p. 73"
+    },
+    {
+      "german": "die Tür",
+      "plural": "die Türen",
+      "english": "door",
+      "persian": "در",
+      "page": "PDF p. 73 / Book p. 73"
+    },
+    {
+      "german": "der Kölner Dom",
+      "plural": "—",
+      "english": "Cologne Cathedral (proper)",
+      "persian": "کلیسای جامع کلن",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "das Hotel Sacher",
+      "plural": "—",
+      "english": "Hotel Sacher (proper)",
+      "persian": "هتل زاخر",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "das Café Schiffer",
+      "plural": "—",
+      "english": "Café Schiffer (proper)",
+      "persian": "کافه شیفر",
+      "page": "PDF p. 12 / Book p. 12"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "suchen",
+      "third_person": "er sucht",
+      "english": "to look for / search",
+      "persian": "جستجو کردن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "stimmen",
+      "third_person": "es stimmt",
+      "english": "to be correct",
+      "persian": "درست بودن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "anmachen",
+      "third_person": "er macht an",
+      "english": "to turn on",
+      "persian": "روشن کردن",
+      "separable": true,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er hört",
+      "english": "to hear / listen",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "ankreuzen",
+      "third_person": "er kreuzt an",
+      "english": "to tick / check",
+      "persian": "علامت زدن",
+      "separable": true,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "ansehen",
+      "third_person": "er sieht an",
+      "english": "to look at",
+      "persian": "نگاه کردن",
+      "separable": true,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "sehen",
+      "third_person": "er sieht",
+      "english": "to see",
+      "persian": "دیدن",
+      "separable": false,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "sagen",
+      "third_person": "er sagt",
+      "english": "to say",
+      "persian": "گفتن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "abbiegen",
+      "third_person": "er biegt ab",
+      "english": "to turn",
+      "persian": "پیچیدن",
+      "separable": true,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "fahren",
+      "third_person": "er fährt",
+      "english": "to drive / go",
+      "persian": "رانندگی کردن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "gehen",
+      "third_person": "er geht",
+      "english": "to go / walk",
+      "persian": "رفتن",
+      "separable": false,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "wenden",
+      "third_person": "er wendet",
+      "english": "to turn around",
+      "persian": "دور زدن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "zurückfahren / zurückgehen",
+      "third_person": "er fährt/geht zurück",
+      "english": "to go back",
+      "persian": "برگشتن",
+      "separable": true,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "ergänzen",
+      "third_person": "er ergänzt",
+      "english": "to complete / fill in",
+      "persian": "کامل کردن",
+      "separable": false,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "zuordnen",
+      "third_person": "er ordnet zu",
+      "english": "to match / assign",
+      "persian": "مرتبط کردن",
+      "separable": true,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "helfen",
+      "third_person": "er hilft (ich helfe, du hilfst)",
+      "english": "to help",
+      "persian": "کمک کردن",
+      "separable": false,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "kennen",
+      "third_person": "er kennt",
+      "english": "to know (person/place)",
+      "persian": "شناختن",
+      "separable": false,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "eintragen",
+      "third_person": "er trägt ein",
+      "english": "to enter / mark into",
+      "persian": "وارد کردن",
+      "separable": true,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "durchkommen",
+      "third_person": "er kommt durch",
+      "english": "to come through",
+      "persian": "عبور کردن",
+      "separable": true,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "vorbeifahren",
+      "third_person": "er fährt vorbei",
+      "english": "to drive past",
+      "persian": "از کنار گذشتن",
+      "separable": true,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "lesen",
+      "third_person": "er liest",
+      "english": "to read",
+      "persian": "خواندن",
+      "separable": false,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "arbeiten",
+      "third_person": "er arbeitet",
+      "english": "to work",
+      "persian": "کار کردن",
+      "separable": false,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "fragen",
+      "third_person": "er fragt",
+      "english": "to ask",
+      "persian": "پرسیدن",
+      "separable": false,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "beschreiben",
+      "third_person": "er beschreibt",
+      "english": "to describe",
+      "persian": "توصیف کردن",
+      "separable": false,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "sich bedanken",
+      "third_person": "er bedankt sich",
+      "english": "to thank",
+      "persian": "تشکر کردن",
+      "separable": false,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "entschuldigen",
+      "third_person": "er entschuldigt",
+      "english": "to excuse",
+      "persian": "عذرخواهی کردن",
+      "separable": false,
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "infinitive": "finden",
+      "third_person": "er findet",
+      "english": "to find",
+      "persian": "پیدا کردن",
+      "separable": false,
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "infinitive": "bitten",
+      "third_person": "er bittet",
+      "english": "to request",
+      "persian": "درخواست کردن",
+      "separable": false,
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "infinitive": "danken",
+      "third_person": "er dankt",
+      "english": "to thank",
+      "persian": "تشکر کردن",
+      "separable": false,
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "infinitive": "reagieren",
+      "third_person": "er reagiert",
+      "english": "to react",
+      "persian": "واکنش نشان دادن",
+      "separable": false,
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "infinitive": "bauen",
+      "third_person": "er baut",
+      "english": "to build",
+      "persian": "ساختن",
+      "separable": false,
+      "page": "PDF p. 73 / Book p. 73"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "richtig",
+      "english": "correct",
+      "persian": "درست",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "falsch",
+      "english": "wrong / false",
+      "persian": "نادرست",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "höflich",
+      "english": "polite",
+      "persian": "مودبانه",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "nett",
+      "english": "nice",
+      "persian": "مهربان / خوب",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "fremd",
+      "english": "unfamiliar / foreign",
+      "persian": "غریبه",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "nächste",
+      "english": "next",
+      "persian": "بعدی",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "zweite",
+      "english": "second",
+      "persian": "دوم",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "dritte",
+      "english": "third",
+      "persian": "سوم",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "erste",
+      "english": "first",
+      "persian": "اول",
+      "page": "PDF p. 11 / Book p. 11"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "geradeaus",
+      "english": "straight ahead",
+      "persian": "مستقیم",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "rechts",
+      "english": "on the right",
+      "persian": "راست",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "links",
+      "english": "on the left",
+      "persian": "چپ",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "nach rechts / nach links",
+      "english": "to the right / to the left",
+      "persian": "به راست / به چپ",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "bitte",
+      "english": "please",
+      "persian": "لطفاً",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "Nach 600 Metern bitte rechts abbiegen.",
+      "english": "After 600 meters please turn right.",
+      "persian": "بعد از ۶۰۰ متر لطفاً به راست بپیچید",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "Fahr geradeaus weiter!",
+      "english": "Continue straight ahead!",
+      "persian": "مستقیم ادامه بده",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "Bitte links abbiegen.",
+      "english": "Please turn left.",
+      "persian": "لطفاً به چپ بپیچید",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "Bitte wenden Sie.",
+      "english": "Please turn around.",
+      "persian": "لطفاً دور بزنید",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "Fahr zurück!",
+      "english": "Go back!",
+      "persian": "برگرد",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "Entschuldigung! / Entschuldigen Sie bitte.",
+      "english": "Excuse me (please).",
+      "persian": "ببخشید",
+      "page": "PDF p. 11 / Book p. 11, PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Können Sie mir helfen?",
+      "english": "Can you help me?",
+      "persian": "می‌توانید کمکم کنید؟",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Kann ich Sie etwas fragen?",
+      "english": "Can I ask you something?",
+      "persian": "می‌توانم چیزی بپرسم؟",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Haben Sie einen Moment Zeit?",
+      "english": "Do you have a moment?",
+      "persian": "یک لحظه وقت دارید؟",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Eine Frage bitte: Wo ist denn ...?",
+      "english": "A question please: Where is ...?",
+      "persian": "یک سوال: ... کجاست؟",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Ich suche ...",
+      "english": "I am looking for ...",
+      "persian": "دنبال ... می‌گردم",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Wo finde ich ...? / Wo ist denn hier ...? / Kennen Sie ...?",
+      "english": "Where do I find ...? / Where is ... here? / Do you know ...?",
+      "persian": "... را کجا پیدا کنم؟ / اینجا ... کجاست؟",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Das ist in der Nähe (von) ...",
+      "english": "It is near ...",
+      "persian": "آن نزدیک ... است",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Sie biegen rechts/links ab.",
+      "english": "You turn right/left.",
+      "persian": "به راست/چپ بپیچید",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Sie fahren/gehen geradeaus / nach rechts / nach links.",
+      "english": "You go straight / to the right / to the left.",
+      "persian": "مستقیم / به راست / به چپ بروید",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "... die nächste/zweite/dritte/erste Straße rechts/links.",
+      "english": "... the next/second/third/first street on the right/left.",
+      "persian": "خیابان بعدی/دوم/سوم/اول به راست/چپ",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "... einen/zwei/... Kilometer geradeaus.",
+      "english": "... one/two ... km straight ahead.",
+      "persian": "... یک/دو کیلومتر مستقیم",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Und dann sehen Sie schon ...",
+      "english": "And then you already see ...",
+      "persian": "و سپس ... را می‌بینید",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Wenden Sie.",
+      "english": "Turn around.",
+      "persian": "دور بزنید",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Sie gehen/fahren zurück.",
+      "english": "You go back.",
+      "persian": "برگردید",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Und dann sehen Sie das Hotel schon.",
+      "english": "And then you already see the hotel.",
+      "persian": "و سپس هتل را می‌بینید",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Sehr nett! Vielen Dank!",
+      "english": "Very nice! Thank you very much!",
+      "persian": "خیلی لطف دارید! ممنون",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Ach so. Schade. Trotzdem: Dankeschön!",
+      "english": "I see. Too bad. Still: thanks!",
+      "persian": "آها، حیف، با این حال ممنون",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Bitte, gern. / Kein Problem.",
+      "english": "You are welcome. / No problem.",
+      "persian": "خواهش می‌کنم / مشکلی نیست",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Nein. Tut mir leid. Ich bin auch fremd hier. / Ich bin nicht von hier.",
+      "english": "No. Sorry. I am also new here. / I am not from here.",
+      "persian": "نه متاسفم من هم غریبه‌ام / اهل اینجا نیستم",
+      "page": "PDF p. 11 / Book p. 11"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "auf",
+      "type": "preposition + Dativ",
+      "english": "on",
+      "persian": "روی",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "an",
+      "type": "preposition + Dativ",
+      "english": "at / on",
+      "persian": "کنار",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "neben",
+      "type": "preposition + Dativ",
+      "english": "next to",
+      "persian": "کنار",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "vor",
+      "type": "preposition + Dativ",
+      "english": "in front of",
+      "persian": "جلو",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "hinter",
+      "type": "preposition + Dativ",
+      "english": "behind",
+      "persian": "پشت",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "zwischen",
+      "type": "preposition + Dativ",
+      "english": "between",
+      "persian": "بین",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "über",
+      "type": "preposition + Dativ",
+      "english": "above / over",
+      "persian": "بالا",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "unter",
+      "type": "preposition + Dativ",
+      "english": "under",
+      "persian": "زیر",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "in",
+      "type": "preposition + Dativ",
+      "english": "in",
+      "persian": "در",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "von",
+      "type": "preposition",
+      "english": "from / of",
+      "persian": "از",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "durch",
+      "type": "preposition",
+      "english": "through",
+      "persian": "از میان",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "im (= in dem)",
+      "type": "contraction",
+      "english": "in the",
+      "persian": "در",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "am (= an dem)",
+      "type": "contraction",
+      "english": "at the",
+      "persian": "در",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Wo?",
+      "type": "question word",
+      "english": "where?",
+      "persian": "کجا؟",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Sie",
+      "type": "pronoun formal",
+      "english": "you (formal)",
+      "persian": "شما",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "ich / du / er / sie",
+      "type": "pronoun",
+      "english": "I / you / he / she",
+      "persian": "من / تو / او",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "und / dann",
+      "type": "conjunction / adverb",
+      "english": "and / then",
+      "persian": "و / سپس",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "auch / nicht",
+      "type": "particle",
+      "english": "also / not",
+      "persian": "همچنین / نه",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "600 / 1000 / 500 m",
+      "type": "number",
+      "english": "six hundred / thousand / 500 m",
+      "persian": "ششصد / هزار / پانصد متر",
+      "page": "PDF p. 9 / Book p. 9, PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "Meter (m) / Kilometer (km)",
+      "type": "abbreviation",
+      "english": "meter / kilometer",
+      "persian": "متر / کیلومتر",
+      "page": "PDF p. 9 / Book p. 9"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 9-12 / Book 9-12 + PDF 73 / Book 73",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": [
+      "[unclear — PDF p. 74 / Book p. 74 (Lektion 13 | 8) - Seite 74 missing in PDF; Book jumps 73->75, content of Einen Weg beschreiben Aktionsseite cannot be verified]"
+    ]
+  }
+}

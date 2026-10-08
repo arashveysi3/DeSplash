@@ -1,0 +1,377 @@
+{
+  "lesson_number": 10,
+  "lesson_title": "Ich steige jetzt in die U-Bahn ein.",
+  "pages": {
+    "pdf": "57-60",
+    "book": "57-60",
+    "supplementary": "PDF 88,91,94 / Book 88,91,94 (Ankommen, Wann kommst du an?)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "die U-Bahn",
+      "plural": "die U-Bahnen",
+      "english": "underground / subway",
+      "persian": "مترو",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "die S-Bahn",
+      "plural": "die S-Bahnen",
+      "english": "suburban train",
+      "persian": "قطار شهری",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "der Zug",
+      "plural": "die Züge",
+      "english": "train",
+      "persian": "قطار",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "die Straßenbahn",
+      "plural": "die Straßenbahnen",
+      "english": "tram",
+      "persian": "تراموا",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "der Bus",
+      "plural": "die Busse",
+      "english": "bus",
+      "persian": "اتوبوس",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "das Flugzeug",
+      "plural": "die Flugzeuge",
+      "english": "airplane",
+      "persian": "هواپیما",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "der Flughafen",
+      "plural": "die Flughäfen",
+      "english": "airport",
+      "persian": "فرودگاه",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "der Bahnhof",
+      "plural": "die Bahnhöfe",
+      "english": "train station",
+      "persian": "ایستگاه قطار",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "der Bahnsteig",
+      "plural": "die Bahnsteige",
+      "english": "platform",
+      "persian": "سکو",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "das Gleis",
+      "plural": "die Gleise",
+      "english": "track / platform",
+      "persian": "ریل / سکو",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "die Haltestelle",
+      "plural": "die Haltestellen",
+      "english": "stop (bus/tram)",
+      "persian": "ایستگاه",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "der Halt",
+      "plural": "die Halte",
+      "english": "stop",
+      "persian": "توقف",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "der Koffer",
+      "plural": "die Koffer",
+      "english": "suitcase",
+      "persian": "چمدان",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "die Tasche",
+      "plural": "die Taschen",
+      "english": "bag",
+      "persian": "کیف",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "das Gepäck (Sg.)",
+      "plural": "—",
+      "english": "luggage",
+      "persian": "چمدان / بار",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "das Taxi",
+      "plural": "die Taxis",
+      "english": "taxi",
+      "persian": "تاکسی",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "die Durchsage",
+      "plural": "die Durchsagen",
+      "english": "announcement",
+      "persian": "اعلان",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "das Telefonat",
+      "plural": "die Telefonate",
+      "english": "phone call",
+      "persian": "مکالمه تلفنی",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "der Verkehrsmittel",
+      "plural": "die Verkehrsmittel",
+      "english": "means of transport",
+      "persian": "وسیله نقلیه",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "die Reise",
+      "plural": "die Reisen",
+      "english": "journey / trip",
+      "persian": "سفر",
+      "page": "PDF p. 59 / Book p. 59"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "einsteigen",
+      "third_person": "er/sie steigt ein",
+      "english": "to get on",
+      "persian": "سوار شدن",
+      "separable": true,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "aussteigen",
+      "third_person": "er/sie steigt aus",
+      "english": "to get off",
+      "persian": "پیاده شدن",
+      "separable": true,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "umsteigen",
+      "third_person": "er/sie steigt um",
+      "english": "to change (transport)",
+      "persian": "تعویض کردن وسیله",
+      "separable": true,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "abfahren",
+      "third_person": "er/sie fährt ab",
+      "english": "to depart",
+      "persian": "حرکت کردن",
+      "separable": true,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "ankommen",
+      "third_person": "er/sie kommt an",
+      "english": "to arrive",
+      "persian": "رسیدن",
+      "separable": true,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "abholen",
+      "third_person": "er/sie holt ab",
+      "english": "to pick up",
+      "persian": "به دنبال کسی رفتن",
+      "separable": true,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "mitbringen",
+      "third_person": "er/sie bringt mit",
+      "english": "to bring along",
+      "persian": "با خود آوردن",
+      "separable": true,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "anrufen",
+      "third_person": "er/sie ruft an",
+      "english": "to call (phone)",
+      "persian": "تماس گرفتن",
+      "separable": true,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "fernsehen",
+      "third_person": "er/sie sieht fern",
+      "english": "to watch TV",
+      "persian": "تلویزیون دیدن",
+      "separable": true,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "einkaufen",
+      "third_person": "er/sie kauft ein",
+      "english": "to shop",
+      "persian": "خرید کردن",
+      "separable": true,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "nehmen",
+      "third_person": "er/sie nimmt",
+      "english": "to take",
+      "persian": "گرفتن",
+      "separable": false,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "fahren",
+      "third_person": "er/sie fährt",
+      "english": "to drive / go",
+      "persian": "رانندگی کردن / رفتن",
+      "separable": false,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "sich informieren",
+      "third_person": "er/sie informiert sich",
+      "english": "to get information",
+      "persian": "اطلاع کسب کردن",
+      "separable": false,
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "infinitive": "beenden",
+      "third_person": "er/sie beendet",
+      "english": "to end",
+      "persian": "پایان دادن",
+      "separable": false,
+      "page": "PDF p. 60 / Book p. 60"
+    }
+  ],
+  "adjectives": [],
+  "adverbs_expressions": [
+    {
+      "german": "Ich steige jetzt in die U-Bahn / S-Bahn ein.",
+      "english": "I'm now getting on the subway.",
+      "persian": "الان سوار مترو می‌شوم",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "In vierzig Minuten komme ich zu Hause an. / Ja, dann rufe ich dich an.",
+      "english": "In 40 minutes I'll arrive home. / Then I'll call you.",
+      "persian": "چهل دقیقه دیگر به خانه می‌رسم / بعد بهت زنگ می‌زنم",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "Am Bahnsteig zwei fährt die U2 ein. / Bitte Vorsicht! / Nächster Halt: Innsbrucker Ring. / Achtung! Bitte zurückbleiben.",
+      "english": "Announcements at platform",
+      "persian": "اعلان‌های سکو",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "Nimmst du ein Taxi? - Nein, ich nehme die S-Bahn und steige dann in den Bus um.",
+      "english": "Are you taking a taxi?",
+      "persian": "تاکسی می‌گیری؟",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "Wo fährt der Zug nach München ab? - Auf Gleis 10.",
+      "english": "Where does the train to Munich depart?",
+      "persian": "قطار به مونیخ از کجا حرکت می‌کند؟",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "Ich habe viel Gepäck. Holst du mich am Bahnhof ab? - Ja, klar. Wann kommst du an?",
+      "english": "I have a lot of luggage. Will you pick me up?",
+      "persian": "بار زیادی دارم، دنبالم می‌آیی؟",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "Gut, dann bis morgen. / Bis bald. / Mach's gut! / Pass auf dich auf! / Auf Wiedersehen! / Tschüs!",
+      "english": "Goodbye phrases",
+      "persian": "عبارات خداحافظی",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "Wo steigst du ein / aus / um?",
+      "english": "Where do you get on/off/change?",
+      "persian": "کجا سوار / پیاده / تعویض می‌کنی؟",
+      "page": "PDF p. 59 / Book p. 59"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "jetzt",
+      "type": "adverb",
+      "english": "now",
+      "persian": "اکنون",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "gerade",
+      "type": "adverb",
+      "english": "just / currently",
+      "persian": "درست همین لحظه",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "vielleicht",
+      "type": "adverb",
+      "english": "maybe",
+      "persian": "شاید",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "noch / schon",
+      "type": "adverb",
+      "english": "still / already",
+      "persian": "هنوز / قبلاً",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "wann? / wo?",
+      "type": "question word",
+      "english": "when? / where?",
+      "persian": "کی؟ / کجا؟",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "in die U-Bahn (Akkusativ Richtung)",
+      "type": "prepositional phrase",
+      "english": "into the subway",
+      "persian": "به داخل مترو",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "am Bahnhof / vom Hauptbahnhof / zum Flughafen",
+      "type": "prepositional phrase",
+      "english": "at the station / from main station / to airport",
+      "persian": "در ایستگاه / از ایستگاه اصلی / به فرودگاه",
+      "page": "PDF p. 59 / Book p. 59"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 57-60 / Book 57-60 + supplements PDF 88,91,94",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

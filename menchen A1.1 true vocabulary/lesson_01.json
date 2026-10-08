@@ -1,0 +1,579 @@
+{
+  "lesson_number": 1,
+  "lesson_title": "Hallo! Ich bin Nicole ...",
+  "pages": {
+    "pdf": "9-12",
+    "book": "9-12",
+    "supplementary": "PDF 73 / Book 73 (AKTIONSSEITEN KB S. 11 | Lektion 1 | 6, 7) and PDF 75,77 / Book 75,77 (Bekannte Persoenlichkeiten p.11)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "der Name",
+      "plural": "die Namen",
+      "english": "name",
+      "persian": "نام / اسم",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "der Vorname",
+      "plural": "die Vornamen",
+      "english": "first name",
+      "persian": "نام کوچک",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "der Familienname",
+      "plural": "die Familiennamen",
+      "english": "family name",
+      "persian": "نام خانوادگی",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "der Herr",
+      "plural": "die Herren",
+      "english": "Mr.",
+      "persian": "آقا",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Frau",
+      "plural": "die Frauen",
+      "english": "Ms. / woman",
+      "persian": "خانم",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "das Lied",
+      "plural": "die Lieder",
+      "english": "song",
+      "persian": "آهنگ",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "der Sitzplan",
+      "plural": "die Sitzplaene",
+      "english": "seating plan",
+      "persian": "نقشه چینش صندلی‌ها",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "das Land",
+      "plural": "die Laender",
+      "english": "country",
+      "persian": "کشور",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "das Alphabet",
+      "plural": "die Alphabete",
+      "english": "alphabet",
+      "persian": "الفبا",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "die Wendung",
+      "plural": "die Wendungen",
+      "english": "expression",
+      "persian": "عبارت",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "das Bildlexikon",
+      "plural": "die Bildlexika",
+      "english": "picture dictionary",
+      "persian": "واژه‌نامه تصویری",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "die Person",
+      "plural": "die Personen",
+      "english": "person",
+      "persian": "شخص",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "die Persoenlichkeit",
+      "plural": "die Persoenlichkeiten",
+      "english": "personality / famous person",
+      "persian": "شخصیت مشهور",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "das Gespraech",
+      "plural": "die Gespraeche",
+      "english": "conversation",
+      "persian": "گفتگو",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Musik (Sg.)",
+      "plural": "—",
+      "english": "music",
+      "persian": "موسیقی",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Begruessung",
+      "plural": "die Begruessungen",
+      "english": "greeting",
+      "persian": "سلام و احوالپرسی",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "der Abschied",
+      "plural": "die Abschiede",
+      "english": "farewell",
+      "persian": "خداحافظی",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "die Stunde",
+      "plural": "die Stunden",
+      "english": "lesson / hour",
+      "persian": "ساعت / جلسه",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "(das) Deutschland",
+      "plural": "—",
+      "english": "Germany",
+      "persian": "آلمان",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "(das) Oesterreich",
+      "plural": "—",
+      "english": "Austria",
+      "persian": "اتریش",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "(das) Spanien",
+      "plural": "—",
+      "english": "Spain",
+      "persian": "اسپانیا",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "(das) Frankreich",
+      "plural": "—",
+      "english": "France",
+      "persian": "فرانسه",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "der Iran",
+      "plural": "—",
+      "english": "Iran",
+      "persian": "ایران",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Schweiz",
+      "plural": "—",
+      "english": "Switzerland",
+      "persian": "سوئیس",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "die Tuerkei",
+      "plural": "—",
+      "english": "Turkey",
+      "persian": "ترکیه",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "(das) Mexiko",
+      "plural": "—",
+      "english": "Mexico",
+      "persian": "مکزیک",
+      "page": "PDF p. 10 / Book p. 10"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "heißen",
+      "third_person": "er/sie heißt",
+      "english": "to be called",
+      "persian": "نام داشتن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "kommen",
+      "third_person": "er/sie kommt",
+      "english": "to come",
+      "persian": "آمدن",
+      "separable": false,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er/sie ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "gehen",
+      "third_person": "es geht",
+      "english": "to go",
+      "persian": "رفتن",
+      "separable": false,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "fragen",
+      "third_person": "er/sie fragt",
+      "english": "to ask",
+      "persian": "پرسیدن",
+      "separable": false,
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "infinitive": "sich begrüßen",
+      "third_person": "er/sie begrüßt sich",
+      "english": "to greet",
+      "persian": "سلام کردن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "sich verabschieden",
+      "third_person": "er/sie verabschiedet sich",
+      "english": "to say goodbye",
+      "persian": "خداحافظی کردن",
+      "separable": true,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "sich vorstellen",
+      "third_person": "er/sie stellt sich vor",
+      "english": "to introduce (oneself)",
+      "persian": "معرفی کردن",
+      "separable": true,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "kennen",
+      "third_person": "er/sie kennt",
+      "english": "to know",
+      "persian": "شناختن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er/sie hört",
+      "english": "to hear / listen",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "sprechen",
+      "third_person": "er/sie spricht",
+      "english": "to speak",
+      "persian": "صحبت کردن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "kreuzen",
+      "third_person": "er/sie kreuzt",
+      "english": "to tick / cross",
+      "persian": "علامت زدن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "ergänzen",
+      "third_person": "er/sie ergänzt",
+      "english": "to complete",
+      "persian": "کامل کردن",
+      "separable": false,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "vergleichen",
+      "third_person": "er/sie vergleicht",
+      "english": "to compare",
+      "persian": "مقایسه کردن",
+      "separable": false,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "ordnen",
+      "third_person": "er/sie ordnet",
+      "english": "to order / arrange",
+      "persian": "مرتب کردن",
+      "separable": false,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "zuordnen",
+      "third_person": "er/sie ordnet zu",
+      "english": "to assign / match",
+      "persian": "نسبت دادن",
+      "separable": true,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "sagen",
+      "third_person": "er/sie sagt",
+      "english": "to say",
+      "persian": "گفتن",
+      "separable": false,
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "infinitive": "buchstabieren",
+      "third_person": "er/sie buchstabiert",
+      "english": "to spell",
+      "persian": "هجی کردن",
+      "separable": false,
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "infinitive": "diktieren",
+      "third_person": "er/sie diktiert",
+      "english": "to dictate",
+      "persian": "دیکته گفتن",
+      "separable": false,
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "infinitive": "zeichnen",
+      "third_person": "er/sie zeichnet",
+      "english": "to draw",
+      "persian": "ترسیم کردن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "infinitive": "notieren",
+      "third_person": "er/sie notiert",
+      "english": "to note down",
+      "persian": "یادداشت کردن",
+      "separable": false,
+      "page": "PDF p. 9 / Book p. 9"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "gut",
+      "english": "good / well",
+      "persian": "خوب",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "sehr gut",
+      "english": "very good",
+      "persian": "خیلی خوب",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "nicht so gut",
+      "english": "not so good",
+      "persian": "خیلی خوب نیست",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "bekannt",
+      "english": "well-known",
+      "persian": "شناخته‌شده / مشهور",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "deutsch",
+      "english": "German",
+      "persian": "آلمانی",
+      "page": "PDF p. 9 / Book p. 9"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Hallo",
+      "english": "hello",
+      "persian": "سلام",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "Guten Tag",
+      "english": "good day (hello)",
+      "persian": "روز بخیر",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "Guten Morgen",
+      "english": "good morning",
+      "persian": "صبح بخیر",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "Guten Abend",
+      "english": "good evening",
+      "persian": "عصر بخیر",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "Gute Nacht",
+      "english": "good night",
+      "persian": "شب بخیر",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Tschüs",
+      "english": "bye (informal)",
+      "persian": "خداحافظ (خودمانی)",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Auf Wiedersehen",
+      "english": "goodbye (formal)",
+      "persian": "به امید دیدار",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Wie geht es dir? / Wie geht es Ihnen?",
+      "english": "How are you? (informal/formal)",
+      "persian": "حالت چطوره؟ / حالتان چطور است؟",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Sehr gut, danke! / Gut, danke. / Auch gut.",
+      "english": "Very well / Fine / Also well",
+      "persian": "خیلی خوب / خوب / همچنین خوب",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Es geht. / Nicht so gut.",
+      "english": "So-so / Not so well",
+      "persian": "بد نیست / خیلی خوب نیست",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Wie heißen Sie? / Wie heißt du?",
+      "english": "What is your name? (formal/informal)",
+      "persian": "اسمتان چیست؟ / اسمت چیست؟",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Wer sind Sie? / Wer bist du?",
+      "english": "Who are you? (formal/informal)",
+      "persian": "شما کی هستید؟ / تو کی هستی؟",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Wer ist das?",
+      "english": "Who is that?",
+      "persian": "آن کیست؟",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "Woher kommst du? / Woher kommen Sie?",
+      "english": "Where are you from?",
+      "persian": "اهل کجایی؟ / اهل کجایید؟",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "Das ist Paco.",
+      "english": "This is Paco.",
+      "persian": "این پاکو است",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "aus ... kommen / aus Deutschland / aus der Schweiz / aus dem Iran",
+      "english": "to come from ...",
+      "persian": "اهل ... بودن",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "Mein Name ist ... / Ich bin / heiße ...",
+      "english": "My name is ... / I am ...",
+      "persian": "نام من ... است / من ... هستم",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Wie bitte?",
+      "english": "Pardon?",
+      "persian": "ببخشید؟",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "Ich buchstabiere: ...",
+      "english": "I spell: ...",
+      "persian": "هجی می‌کنم: ...",
+      "page": "PDF p. 12 / Book p. 12"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "wer",
+      "type": "W-question word",
+      "english": "who",
+      "persian": "چه کسی",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "wie",
+      "type": "W-question word",
+      "english": "how / what",
+      "persian": "چگونه",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "woher",
+      "type": "W-question word",
+      "english": "where from",
+      "persian": "از کجا",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "welche",
+      "type": "question word",
+      "english": "which",
+      "persian": "کدام",
+      "page": "PDF p. 9 / Book p. 9"
+    },
+    {
+      "german": "aus",
+      "type": "preposition (+ Dativ)",
+      "english": "from",
+      "persian": "از",
+      "page": "PDF p. 10 / Book p. 10"
+    },
+    {
+      "german": "und",
+      "type": "conjunction",
+      "english": "and",
+      "persian": "و",
+      "page": "PDF p. 11 / Book p. 11"
+    },
+    {
+      "german": "ich / du / Sie / er / sie / es",
+      "type": "pronoun",
+      "english": "I / you / he / she / it",
+      "persian": "من / تو / شما / او",
+      "page": "PDF p. 12 / Book p. 12"
+    },
+    {
+      "german": "das",
+      "type": "pronoun/article",
+      "english": "that / the",
+      "persian": "آن",
+      "page": "PDF p. 11 / Book p. 11"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 9-12 / Book 9-12 + supplements PDF 73,75,77",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

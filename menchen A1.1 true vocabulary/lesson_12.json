@@ -1,0 +1,529 @@
+{
+  "lesson_number": 12,
+  "lesson_title": "Was ist denn hier passiert?",
+  "pages": {
+    "pdf": "65-68",
+    "book": "65-68",
+    "supplementary": "PDF 88,91,95 / Book 88,91,95 (Marc feiert gern, Besondere Aktivitäten)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "das Fest",
+      "plural": "die Feste",
+      "english": "festival / party",
+      "persian": "جشن",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Geburtstag",
+      "plural": "die Geburtstage",
+      "english": "birthday",
+      "persian": "تولد",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "die Hochzeit",
+      "plural": "die Hochzeiten",
+      "english": "wedding",
+      "persian": "عروسی",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "das Silvester",
+      "plural": "—",
+      "english": "New Year's Eve",
+      "persian": "شب سال نو",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "das Neujahr",
+      "plural": "—",
+      "english": "New Year",
+      "persian": "سال نو",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Karneval / Fasching / Fasnacht",
+      "plural": "—",
+      "english": "carnival",
+      "persian": "کارناوال",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "das Oktoberfest",
+      "plural": "—",
+      "english": "Oktoberfest",
+      "persian": "جشن اکتبرفست",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "die Jahreszeit",
+      "plural": "die Jahreszeiten",
+      "english": "season",
+      "persian": "فصل",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "der Frühling",
+      "plural": "die Frühlinge",
+      "english": "spring",
+      "persian": "بهار",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Sommer",
+      "plural": "die Sommer",
+      "english": "summer",
+      "persian": "تابستان",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "der Herbst",
+      "plural": "die Herbste",
+      "english": "autumn",
+      "persian": "پاییز",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Winter",
+      "plural": "die Winter",
+      "english": "winter",
+      "persian": "زمستان",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Monat",
+      "plural": "die Monate",
+      "english": "month",
+      "persian": "ماه",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Januar",
+      "plural": "—",
+      "english": "January",
+      "persian": "ژانویه",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Februar",
+      "plural": "—",
+      "english": "February",
+      "persian": "فوریه",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der März",
+      "plural": "—",
+      "english": "March",
+      "persian": "مارس",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der April",
+      "plural": "—",
+      "english": "April",
+      "persian": "آوریل",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Mai",
+      "plural": "—",
+      "english": "May",
+      "persian": "مه",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Juni",
+      "plural": "—",
+      "english": "June",
+      "persian": "ژوئن",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Juli",
+      "plural": "—",
+      "english": "July",
+      "persian": "ژوئیه",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "der August",
+      "plural": "—",
+      "english": "August",
+      "persian": "اوت",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "der September",
+      "plural": "—",
+      "english": "September",
+      "persian": "سپتامبر",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Oktober",
+      "plural": "—",
+      "english": "October",
+      "persian": "اکتبر",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der November",
+      "plural": "—",
+      "english": "November",
+      "persian": "نوامبر",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Dezember",
+      "plural": "—",
+      "english": "December",
+      "persian": "دسامبر",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "das Festival",
+      "plural": "die Festivals",
+      "english": "festival",
+      "persian": "فستیوال",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Besucher",
+      "plural": "die Besucher",
+      "english": "visitor",
+      "persian": "بازدیدکننده",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "die Million",
+      "plural": "die Millionen",
+      "english": "million",
+      "persian": "میلیون",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "das Jahr",
+      "plural": "die Jahre",
+      "english": "year",
+      "persian": "سال",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "die Information",
+      "plural": "die Informationen",
+      "english": "information",
+      "persian": "اطلاعات",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Besucher (see above)",
+      "plural": "die Besucher",
+      "english": "visitor",
+      "persian": "بازدیدکننده",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "die Reise",
+      "plural": "die Reisen",
+      "english": "trip",
+      "persian": "سفر",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Flughafen",
+      "plural": "die Flughäfen",
+      "english": "airport",
+      "persian": "فرودگاه",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "das Flugzeug",
+      "plural": "die Flugzeuge",
+      "english": "airplane",
+      "persian": "هواپیما",
+      "page": "PDF p. 67 / Book p. 67"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "passieren",
+      "third_person": "es passiert",
+      "english": "to happen",
+      "persian": "اتفاق افتادن",
+      "separable": false,
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "infinitive": "feiern",
+      "third_person": "er/sie feiert",
+      "english": "to celebrate",
+      "persian": "جشن گرفتن",
+      "separable": false,
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "infinitive": "tanzen",
+      "third_person": "er/sie tanzt",
+      "english": "to dance",
+      "persian": "رقصیدن",
+      "separable": false,
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "infinitive": "lachen",
+      "third_person": "er/sie lacht",
+      "english": "to laugh",
+      "persian": "خندیدن",
+      "separable": false,
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "infinitive": "gefallen",
+      "third_person": "es gefällt",
+      "english": "to please",
+      "persian": "خوش آمدن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "fahren",
+      "third_person": "er/sie fährt",
+      "english": "to drive / go",
+      "persian": "رفتن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "fliegen",
+      "third_person": "er/sie fliegt",
+      "english": "to fly",
+      "persian": "پرواز کردن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "gehen",
+      "third_person": "er/sie geht",
+      "english": "to go",
+      "persian": "رفتن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "kommen",
+      "third_person": "er/sie kommt",
+      "english": "to come",
+      "persian": "آمدن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "sein (Perfekt Hilfsverb)",
+      "third_person": "er/sie ist",
+      "english": "to be (auxiliary)",
+      "persian": "بودن (کمکی)",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "ankommen",
+      "third_person": "er/sie kommt an",
+      "english": "to arrive",
+      "persian": "رسیدن",
+      "separable": true,
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "infinitive": "einsteigen",
+      "third_person": "er/sie steigt ein",
+      "english": "to get on",
+      "persian": "سوار شدن",
+      "separable": true,
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "infinitive": "abfahren",
+      "third_person": "er/sie fährt ab",
+      "english": "to depart",
+      "persian": "حرکت کردن",
+      "separable": true,
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er/sie hört",
+      "english": "to hear",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "treffen",
+      "third_person": "er/sie trifft",
+      "english": "to meet",
+      "persian": "ملاقات کردن",
+      "separable": false,
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "infinitive": "dauern",
+      "third_person": "es dauert",
+      "english": "to last",
+      "persian": "طول کشیدن",
+      "separable": false,
+      "page": "PDF p. 66 / Book p. 66"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "groß (ganz großen Karnevalsfeste)",
+      "english": "big",
+      "persian": "بزرگ",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "letzt- (letzten sechs Tagen)",
+      "english": "last",
+      "persian": "آخر",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "ganz",
+      "english": "whole",
+      "persian": "کل",
+      "page": "PDF p. 66 / Book p. 66"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Was ist denn hier passiert?",
+      "english": "What happened here?",
+      "persian": "اینجا چه اتفاقی افتاده؟",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "Ich glaube, die Leute haben Geburtstag / Hochzeit / Silvester / Karneval gefeiert.",
+      "english": "I think people celebrated...",
+      "persian": "فکر می‌کنم مردم جشن گرفته‌اند",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "Wann hast du das letzte Mal gefeiert? - Ich habe letzte Woche Geburtstag gefeiert.",
+      "english": "When did you last celebrate?",
+      "persian": "آخرین بار کی جشن گرفتی؟",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "Seit 1985 gehen viele Rockmusik-Fans im Mai oder Juni zu 'Rock am Ring'.",
+      "english": "Since 1985 many fans go to Rock am Ring",
+      "persian": "از سال ۱۹۸۵ طرفداران راک به ... می‌روند",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "Das Oktoberfest gibt es seit 1810. Es ist jedes Jahr im September und Oktober und dauert ungefähr zwei Wochen.",
+      "english": "Oktoberfest has existed since 1810.",
+      "persian": "اکتبرفست از ۱۸۱۰ وجود دارد",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "1823 = achtzehnhundertdreiundzwanzig / 2014 = zweitausendvierzehn",
+      "english": "year numbers",
+      "persian": "سال‌ها",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "Henry ist vor drei Monaten nach Hamburg gekommen. / Letztes Jahr ist er ... geflogen.",
+      "english": "Henry came three months ago.",
+      "persian": "هنری سه ماه پیش به هامبورگ آمد",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "Ich bin / er ist ... gewesen = ich/er war",
+      "english": "to have been = was",
+      "persian": "بوده‌ام",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "Im Frühling fahren wir gern Fahrrad. / Im Herbst / im Oktober",
+      "english": "In spring we like to bike. / In autumn / in October",
+      "persian": "در بهار دوچرخه‌سواری می‌کنیم",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "Letztes Jahr / vor einem Jahr / nach München / in die Schweiz / in den Iran",
+      "english": "last year / to Munich / to Switzerland",
+      "persian": "سال گذشته / به مونیخ / به سوئیس",
+      "page": "PDF p. 67 / Book p. 67"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "seit",
+      "type": "preposition (+ Dativ)",
+      "english": "since",
+      "persian": "از (زمان)",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "im (in + dem)",
+      "type": "contraction + Dativ",
+      "english": "in the (month/season)",
+      "persian": "در (ماه/فصل)",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "nach (nach München / Deutschland)",
+      "type": "preposition (+ Akk)",
+      "english": "to (city/country without article)",
+      "persian": "به",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "in (in die Schweiz / in den Iran)",
+      "type": "preposition",
+      "english": "to (country with article)",
+      "persian": "به",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "vor (vor drei Monaten)",
+      "type": "preposition",
+      "english": "ago",
+      "persian": "پیش",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "letztes Jahr / letzten ...",
+      "type": "time expression",
+      "english": "last year",
+      "persian": "سال گذشته",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "auf der Straße / im Restaurant / zu Hause",
+      "type": "phrase",
+      "english": "on the street / in restaurant / at home",
+      "persian": "در خیابان / در رستوران / در خانه",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "denn (Was ist denn hier passiert?)",
+      "type": "Modalpartikel",
+      "english": "then",
+      "persian": "خب / پس",
+      "page": "PDF p. 65 / Book p. 65"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 65-68 / Book 65-68 + supplements PDF 88,91,95",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

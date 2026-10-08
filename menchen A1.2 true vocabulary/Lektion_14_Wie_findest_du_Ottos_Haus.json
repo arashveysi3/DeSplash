@@ -1,0 +1,976 @@
+{
+  "lesson_number": 14,
+  "lesson_title": "Wie findest du Ottos Haus?",
+  "pages": {
+    "pdf": "13-16",
+    "book": "13-16",
+    "supplementary": "Aktionsseiten: Seite 75 (Gegenstände beschreiben, Lektion 14 | 7) und Seite 76 (Traumhaus, Lektion 14 | 9) – referenced on PDF p.15 / Book p.15; content not in extracted core pages, visually checked via supplementary references",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90 dpi via rendered images l14_15_p13.png .. p16.png, cross-checked garbled OCR",
+  "nouns": [
+    {
+      "german": "das Haus",
+      "plural": "die Häuser",
+      "english": "house",
+      "persian": "خانه",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "der Garten",
+      "plural": "die Gärten",
+      "english": "garden",
+      "persian": "باغ",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Blume",
+      "plural": "die Blumen",
+      "english": "flower",
+      "persian": "گل",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Baum",
+      "plural": "die Bäume",
+      "english": "tree",
+      "persian": "درخت",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Treppe",
+      "plural": "die Treppen",
+      "english": "stairs / staircase",
+      "persian": "پله",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Garage",
+      "plural": "die Garagen",
+      "english": "garage",
+      "persian": "گاراژ",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "das Fenster",
+      "plural": "die Fenster",
+      "english": "window",
+      "persian": "پنجره",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Balkon",
+      "plural": "die Balkone",
+      "english": "balcony",
+      "persian": "بالکن",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "das Erdgeschoss",
+      "plural": "die Erdgeschosse",
+      "english": "ground floor",
+      "persian": "طبقه همکف",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Stock",
+      "plural": "die Stöcke",
+      "english": "floor / storey",
+      "persian": "طبقه",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der erste Stock",
+      "plural": "—",
+      "english": "first floor",
+      "persian": "طبقه اول",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Keller",
+      "plural": "die Keller",
+      "english": "basement / cellar",
+      "persian": "زیرزمین",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "das Kinderzimmer",
+      "plural": "die Kinderzimmer",
+      "english": "children's room",
+      "persian": "اتاق کودک",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "das Wohnzimmer",
+      "plural": "die Wohnzimmer",
+      "english": "living room",
+      "persian": "اتاق نشیمن",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Küche",
+      "plural": "die Küchen",
+      "english": "kitchen",
+      "persian": "آشپزخانه",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "das Arbeitszimmer",
+      "plural": "die Arbeitszimmer",
+      "english": "study / workroom",
+      "persian": "اتاق کار",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "das Schlafzimmer",
+      "plural": "die Schlafzimmer",
+      "english": "bedroom",
+      "persian": "اتاق خواب",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "das Bad",
+      "plural": "die Bäder",
+      "english": "bathroom",
+      "persian": "حمام",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Toilette",
+      "plural": "die Toiletten",
+      "english": "toilet",
+      "persian": "توالت",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Flur",
+      "plural": "die Flure",
+      "english": "hallway / corridor",
+      "persian": "راهرو",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "das Computerspiel",
+      "plural": "die Computerspiele",
+      "english": "computer game",
+      "persian": "بازی کامپیوتری",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "die Nachbarin",
+      "plural": "die Nachbarinnen",
+      "english": "neighbour (female)",
+      "persian": "همسایه (زن)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Frau",
+      "plural": "die Frauen",
+      "english": "woman / wife",
+      "persian": "زن / همسر",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "das Kind",
+      "plural": "die Kinder",
+      "english": "child",
+      "persian": "کودک",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "der Single",
+      "plural": "die Singles",
+      "english": "single (person)",
+      "persian": "مجرد",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "die Anzeige",
+      "plural": "die Anzeigen",
+      "english": "advert / listing",
+      "persian": "آگهی",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "die Wohnung",
+      "plural": "die Wohnungen",
+      "english": "apartment / flat",
+      "persian": "آپارتمان",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "das Apartment",
+      "plural": "die Apartments",
+      "english": "apartment",
+      "persian": "آپارتمان",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Quadratmeter",
+      "plural": "die Quadratmeter",
+      "english": "square meter",
+      "persian": "متر مربع",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Stellplatz",
+      "plural": "die Stellplätze",
+      "english": "parking space",
+      "persian": "جای پارک",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "die Tiefgarage",
+      "plural": "die Tiefgaragen",
+      "english": "underground garage",
+      "persian": "پارکینگ زیرزمینی",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Aufzug",
+      "plural": "die Aufzüge",
+      "english": "elevator / lift",
+      "persian": "آسانسور",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "die Nebenkosten",
+      "plural": "—",
+      "english": "additional costs / utilities",
+      "persian": "هزینه‌های جانبی",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "die Miete",
+      "plural": "die Mieten",
+      "english": "rent",
+      "persian": "اجاره",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Vermieter",
+      "plural": "die Vermieter",
+      "english": "landlord",
+      "persian": "صاحبخانه",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "die Warmmiete",
+      "plural": "die Warmmieten",
+      "english": "rent including heating",
+      "persian": "اجاره با هزینه گرمایش",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Kühlschrank",
+      "plural": "die Kühlschränke",
+      "english": "fridge",
+      "persian": "یخچال",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Herd",
+      "plural": "die Herde",
+      "english": "stove / cooker",
+      "persian": "اجاق گاز",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "die Monatsmiete",
+      "plural": "die Monatsmieten",
+      "english": "monthly rent",
+      "persian": "اجاره ماهانه",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "die E-Mail",
+      "plural": "die E-Mails",
+      "english": "e-mail",
+      "persian": "ایمیل",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "das Traumhaus",
+      "plural": "die Traumhäuser",
+      "english": "dream house",
+      "persian": "خانه رویایی",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "die Größe",
+      "plural": "die Größen",
+      "english": "size",
+      "persian": "اندازه",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "die Kosten",
+      "plural": "—",
+      "english": "costs",
+      "persian": "هزینه‌ها",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "das Zimmer",
+      "plural": "die Zimmer",
+      "english": "room",
+      "persian": "اتاق",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "die Anrede",
+      "plural": "die Anreden",
+      "english": "salutation",
+      "persian": "عنوان خطاب",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "die Grußformel",
+      "plural": "die Grußformeln",
+      "english": "closing formula",
+      "persian": "عبارت پایانی نامه",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "die Reihenfolge",
+      "plural": "die Reihenfolgen",
+      "english": "order / sequence",
+      "persian": "ترتیب",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "der Punkt",
+      "plural": "die Punkte",
+      "english": "point / item",
+      "persian": "نکته",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "der Brief",
+      "plural": "die Briefe",
+      "english": "letter",
+      "persian": "نامه",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "der Artikel",
+      "plural": "die Artikel",
+      "english": "article (grammar)",
+      "persian": "حرف تعریف",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "die Blume",
+      "plural": "die Blumen",
+      "english": "flower",
+      "persian": "گل",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "das Bild",
+      "plural": "die Bilder",
+      "english": "picture",
+      "persian": "تصویر",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "das Stadtviertel",
+      "plural": "die Stadtviertel",
+      "english": "district",
+      "persian": "محله",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "der Gegenstand",
+      "plural": "die Gegenstände",
+      "english": "object",
+      "persian": "شیء",
+      "page": "PDF p. 15 / Book p. 15"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "kennen",
+      "third_person": "er kennt",
+      "english": "to know",
+      "persian": "شناختن",
+      "separable": false,
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "infinitive": "spielen",
+      "third_person": "er spielt",
+      "english": "to play",
+      "persian": "بازی کردن",
+      "separable": false,
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "infinitive": "finden",
+      "third_person": "er findet",
+      "english": "to find / think (opinion)",
+      "persian": "پیدا کردن / یافتن (نظر)",
+      "separable": false,
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "infinitive": "heißen",
+      "third_person": "er heißt",
+      "english": "to be called",
+      "persian": "نامیده شدن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "notieren",
+      "third_person": "er notiert",
+      "english": "to note down",
+      "persian": "یادداشت کردن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "wohnen",
+      "third_person": "er wohnt",
+      "english": "to live",
+      "persian": "زندگی کردن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "brauchen",
+      "third_person": "er braucht",
+      "english": "to need",
+      "persian": "نیاز داشتن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "ergänzen",
+      "third_person": "er ergänzt",
+      "english": "to complete",
+      "persian": "کامل کردن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "mögen",
+      "third_person": "er mag",
+      "english": "to like",
+      "persian": "دوست داشتن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "sehen",
+      "third_person": "er sieht",
+      "english": "to see",
+      "persian": "دیدن",
+      "separable": false,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "aussehen",
+      "third_person": "er sieht aus",
+      "english": "to look (appearance)",
+      "persian": "به نظر رسیدن",
+      "separable": true,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "infinitive": "stehen",
+      "third_person": "er steht",
+      "english": "to stand",
+      "persian": "ایستادن",
+      "separable": false,
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "infinitive": "anbieten",
+      "third_person": "er bietet an",
+      "english": "to offer",
+      "persian": "ارائه کردن",
+      "separable": true,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "suchen",
+      "third_person": "er sucht",
+      "english": "to look for",
+      "persian": "جستجو کردن",
+      "separable": false,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "vermieten",
+      "third_person": "er vermietet",
+      "english": "to rent out",
+      "persian": "اجاره دادن",
+      "separable": false,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "bezahlen",
+      "third_person": "er bezahlt",
+      "english": "to pay",
+      "persian": "پرداخت کردن",
+      "separable": false,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "bekommen",
+      "third_person": "er bekommt",
+      "english": "to receive",
+      "persian": "دریافت کردن",
+      "separable": false,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "umziehen",
+      "third_person": "er zieht um",
+      "english": "to move (house)",
+      "persian": "اسباب‌کشی کردن",
+      "separable": true,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "schreiben",
+      "third_person": "er schreibt",
+      "english": "to write",
+      "persian": "نوشتن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "erwähnen",
+      "third_person": "er erwähnt",
+      "english": "to mention",
+      "persian": "ذکر کردن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "sortieren",
+      "third_person": "er sortiert",
+      "english": "to sort",
+      "persian": "مرتب کردن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "wählen",
+      "third_person": "er wählt",
+      "english": "to choose",
+      "persian": "انتخاب کردن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "kosten",
+      "third_person": "es kostet",
+      "english": "to cost",
+      "persian": "هزینه داشتن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "beziehen (sich beziehen auf?)",
+      "third_person": "er bezieht",
+      "english": "to refer (in context of kosten?)",
+      "persian": "—",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "überfliegen",
+      "third_person": "er überfliegt",
+      "english": "to skim",
+      "persian": "مرور اجمالی کردن",
+      "separable": false,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "markieren",
+      "third_person": "er markiert",
+      "english": "to mark",
+      "persian": "علامت زدن",
+      "separable": false,
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er hört",
+      "english": "to hear / listen",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "infinitive": "kreuzen",
+      "third_person": "er kreuzt an",
+      "english": "to tick",
+      "persian": "علامت زدن",
+      "separable": true,
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "infinitive": "beschreiben",
+      "third_person": "er beschreibt",
+      "english": "to describe",
+      "persian": "توصیف کردن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "bewerten",
+      "third_person": "er bewertet",
+      "english": "to evaluate",
+      "persian": "ارزیابی کردن",
+      "separable": false,
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "infinitive": "arbeiten (zu zweit arbeiten)",
+      "third_person": "er arbeitet",
+      "english": "to work",
+      "persian": "کار کردن",
+      "separable": false,
+      "page": "PDF p. 15 / Book p. 15"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "groß",
+      "english": "big",
+      "persian": "بزرگ",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "klein",
+      "english": "small",
+      "persian": "کوچک",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "elegant",
+      "english": "elegant",
+      "persian": "شیک",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "gemütlich",
+      "english": "cosy",
+      "persian": "دنج / راحت",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "viele",
+      "english": "many",
+      "persian": "بسیاری",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "schön",
+      "english": "beautiful / nice",
+      "persian": "زیبا",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "interessant",
+      "english": "interesting",
+      "persian": "جالب",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "langweilig",
+      "english": "boring",
+      "persian": "کسالت‌آور",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "toll",
+      "english": "great",
+      "persian": "عالی",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "dringend",
+      "english": "urgent",
+      "persian": "فوری",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "neu",
+      "english": "new",
+      "persian": "جدید",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "leer",
+      "english": "empty",
+      "persian": "خالی",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "möbliert",
+      "english": "furnished",
+      "persian": "مبله",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "nett",
+      "english": "nice",
+      "persian": "خوب",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "super",
+      "english": "super",
+      "persian": "عالی",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "besonders",
+      "english": "especially",
+      "persian": "به‌ویژه",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "groß (sehr groß)",
+      "english": "very big",
+      "persian": "خیلی بزرگ",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "kein (kein Fenster)",
+      "english": "no",
+      "persian": "هیچ / بدون",
+      "page": "PDF p. 16 / Book p. 16"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "gern (Spielen Sie gern ...?)",
+      "english": "with pleasure / like to",
+      "persian": "با میل / دوست داشتن",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "auch",
+      "english": "also",
+      "persian": "همچنین",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "oben / hinten / vorn / unten",
+      "english": "above / behind / in front / below",
+      "persian": "بالا / پشت / جلو / پایین",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "Wie findest du ...? / Wie finden Sie ...?",
+      "english": "How do you find ...?",
+      "persian": "... را چطور می‌بینی؟",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "Ich finde ... interessant / langweilig / ...",
+      "english": "I find ... interesting / boring",
+      "persian": "به نظرم ... جالب است",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "... mag ich besonders / gar nicht / nicht so.",
+      "english": "I like ... especially / not at all / not so much",
+      "persian": "... را خیلی دوست دارم / اصلاً دوست ندارم",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "Aber / Und ... sieht toll / nicht so schön aus.",
+      "english": "But / And ... looks great / not so nice",
+      "persian": "اما ... عالی به نظر می‌رسد",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "Das Haus ist groß/klein und hat ... Zimmer.",
+      "english": "The house is big/small and has ... rooms.",
+      "persian": "خانه بزرگ/کوچک است و ... اتاق دارد",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "Im Erdgeschoss / Im ersten Stock sind ... Zimmer.",
+      "english": "On the ground floor / first floor there are ... rooms.",
+      "persian": "در طبقه همکف / اول ... اتاق وجود دارد",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "Hier vorne links ist die Küche / Da hinten ist seine Garage",
+      "english": "Here in front left is the kitchen / Back there is his garage",
+      "persian": "اینجا جلو سمت چپ آشپزخانه است",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "Neben dem Haus ist eine Garage.",
+      "english": "Next to the house is a garage.",
+      "persian": "کنار خانه یک گاراژ است",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "ich bin umgezogen. Meine Wohnung ist ... m² groß und kostet ...",
+      "english": "I moved. My apartment is ... sqm and costs ...",
+      "persian": "اسباب‌کشی کردم، آپارتمانم ... متر است و ... هزینه دارد",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "Toll ist: Die Küche / Das Wohnzimmer hat/ist ...",
+      "english": "Great is: The kitchen / living room has/is ...",
+      "persian": "نکته خوب: آشپزخانه ...",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "Leider hat das Bad kein Fenster.",
+      "english": "Unfortunately the bathroom has no window.",
+      "persian": "متاسفانه حمام پنجره ندارد",
+      "page": "PDF p. 16 / Book p. 16"
+    },
+    {
+      "german": "Liebe / Lieber ... / Hallo ... / Herzliche Grüße / Liebe Grüße / Viele Grüße",
+      "english": "Dear ... / Hello ... / Best regards",
+      "persian": "سلام / با احترام",
+      "page": "PDF p. 16 / Book p. 16"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "sein (Possessivartikel)",
+      "type": "possessive article",
+      "english": "his",
+      "persian": "ـَش (مذکر)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "ihr (Possessivartikel)",
+      "type": "possessive article",
+      "english": "her",
+      "persian": "ـَش (مؤنث)",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "seinen / seine / sein / seine (Akkusativ)",
+      "type": "grammar",
+      "english": "his (accusative forms)",
+      "persian": "ـَش (حالت مفعولی)",
+      "page": "PDF p. 14 / Book p. 14"
+    },
+    {
+      "german": "ihren / ihre / ihr (Akkusativ)",
+      "type": "grammar",
+      "english": "her (accusative)",
+      "persian": "ـَش",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "Ottos Haus (Genitiv -s)",
+      "type": "genitive",
+      "english": "Otto's house",
+      "persian": "خانه اوتو",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "Vanillas Garten",
+      "type": "genitive",
+      "english": "Vanilla's garden",
+      "persian": "باغ وانیلا",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "im (= in dem)",
+      "type": "contraction",
+      "english": "in the",
+      "persian": "در",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "Welcher / Welche / Welches?",
+      "type": "question word",
+      "english": "which?",
+      "persian": "کدام؟",
+      "page": "PDF p. 13 / Book p. 13"
+    },
+    {
+      "german": "zu zweit",
+      "type": "expression",
+      "english": "in pairs",
+      "persian": "دو نفره",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "ca. (= circa)",
+      "type": "abbreviation",
+      "english": "approx.",
+      "persian": "تقریباً",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "inkl. (= inklusive)",
+      "type": "abbreviation",
+      "english": "including",
+      "persian": "شامل",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "z.B. (= zum Beispiel)",
+      "type": "abbreviation",
+      "english": "e.g.",
+      "persian": "مثلاً",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "€ (Euro)",
+      "type": "currency",
+      "english": "euro",
+      "persian": "یورو",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "EG (= Erdgeschoss)",
+      "type": "abbreviation",
+      "english": "ground floor",
+      "persian": "طبقه همکف",
+      "page": "PDF p. 15 / Book p. 15"
+    },
+    {
+      "german": "Zi. (= Zimmer)",
+      "type": "abbreviation",
+      "english": "rooms",
+      "persian": "اتاق",
+      "page": "PDF p. 15 / Book p. 15"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 13-16 / Book 13-16",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": [
+      "Anzeigen E (WGM Wohnpark) small print partially clipped on right edge – price 360 bis 880 €/Monat legible; no [unclear] needed"
+    ]
+  }
+}

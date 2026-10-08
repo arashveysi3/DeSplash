@@ -1,0 +1,962 @@
+{
+  "lesson_number": 23,
+  "lesson_title": "Ins Wasser gefallen?",
+  "pages": {
+    "pdf": "61-64",
+    "book": "61-64",
+    "supplementary": "Modul 8 supplementary see Lektion 24 (PDF 69-72 / Book 69-72)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90 dpi via rendered images l19_24_p61.png..p64.png, cross-checked OCR via pymupdf",
+  "nouns": [
+    {
+      "german": "das Wasser",
+      "plural": "—",
+      "english": "water",
+      "persian": "آب",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "der Urlaub",
+      "plural": "die Urlaube",
+      "english": "vacation",
+      "persian": "تعطیلات",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "das Wetter",
+      "plural": "—",
+      "english": "weather",
+      "persian": "آب و هوا",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "die Laune",
+      "plural": "die Launen",
+      "english": "mood",
+      "persian": "حوصله",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "der Tee",
+      "plural": "die Tees",
+      "english": "tea",
+      "persian": "چای",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "das Glas Wasser",
+      "plural": "die Gläser Wasser",
+      "english": "glass of water",
+      "persian": "لیوان آب",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "das Café",
+      "plural": "die Cafés",
+      "english": "café",
+      "persian": "کافه",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "der Milchkaffee",
+      "plural": "die Milchkaffees",
+      "english": "milky coffee / latte",
+      "persian": "قهوه شیری",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "das Stück Kuchen",
+      "plural": "die Stücke Kuchen",
+      "english": "piece of cake",
+      "persian": "تکه کیک",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "die Sonne",
+      "plural": "—",
+      "english": "sun",
+      "persian": "خورشید",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Schnee",
+      "plural": "—",
+      "english": "snow",
+      "persian": "برف",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Regen",
+      "plural": "—",
+      "english": "rain",
+      "persian": "باران",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "die Wolke",
+      "plural": "die Wolken",
+      "english": "cloud",
+      "persian": "ابر",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Wind",
+      "plural": "die Winde",
+      "english": "wind",
+      "persian": "باد",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Nebel",
+      "plural": "—",
+      "english": "fog",
+      "persian": "مه",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "das Gewitter",
+      "plural": "die Gewitter",
+      "english": "thunderstorm",
+      "persian": "طوفان رعد و برق",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "der Blitz",
+      "plural": "die Blitze",
+      "english": "lightning",
+      "persian": "رعد و برق",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Donner",
+      "plural": "—",
+      "english": "thunder",
+      "persian": "رعد",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Himmel",
+      "plural": "die Himmel",
+      "english": "sky",
+      "persian": "آسمان",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Grad",
+      "plural": "die Grade",
+      "english": "degree",
+      "persian": "درجه",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "die Himmelsrichtung",
+      "plural": "die Himmelsrichtungen",
+      "english": "compass direction",
+      "persian": "جهت جغرافیایی",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "der Norden",
+      "plural": "—",
+      "english": "north",
+      "persian": "شمال",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "der Westen",
+      "plural": "—",
+      "english": "west",
+      "persian": "غرب",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "der Süden",
+      "plural": "—",
+      "english": "south",
+      "persian": "جنوب",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "der Osten",
+      "plural": "—",
+      "english": "east",
+      "persian": "شرق",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "der Blog",
+      "plural": "die Blogs",
+      "english": "blog",
+      "persian": "وبلاگ",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "das Problemurlaub-Blog",
+      "plural": "—",
+      "english": "problem-holiday blog",
+      "persian": "وبلاگ تعطیلات پرمشکل",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "das Foto",
+      "plural": "die Fotos",
+      "english": "photo",
+      "persian": "عکس",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Winter",
+      "plural": "die Winter",
+      "english": "winter",
+      "persian": "زمستان",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Frühling",
+      "plural": "die Frühlinge",
+      "english": "spring",
+      "persian": "بهار",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Sommer",
+      "plural": "die Sommer",
+      "english": "summer",
+      "persian": "تابستان",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Herbst",
+      "plural": "die Herbste",
+      "english": "autumn",
+      "persian": "پاییز",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "das Wohnmobil",
+      "plural": "die Wohnmobile",
+      "english": "camper van",
+      "persian": "کمپر",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "das Ziel",
+      "plural": "die Ziele",
+      "english": "destination",
+      "persian": "مقصد",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "die Temperatur",
+      "plural": "die Temperaturen",
+      "english": "temperature",
+      "persian": "دما",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Nachmittag",
+      "plural": "die Nachmittage",
+      "english": "afternoon",
+      "persian": "بعدازظهر",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Campingplatz",
+      "plural": "die Campingplätze",
+      "english": "campsite",
+      "persian": "کمپ",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "die Tür",
+      "plural": "die Türen",
+      "english": "door",
+      "persian": "در",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Zentimeter Neuschnee",
+      "plural": "—",
+      "english": "centimetre of fresh snow",
+      "persian": "سانتی‌متر برف تازه",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Schwarzwald",
+      "plural": "—",
+      "english": "Black Forest",
+      "persian": "جنگل سیاه",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "das Ferienhaus",
+      "plural": "die Ferienhäuser",
+      "english": "holiday house",
+      "persian": "خانه تعطیلات",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "das Dach",
+      "plural": "die Dächer",
+      "english": "roof",
+      "persian": "سقف",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "das Unwetter",
+      "plural": "die Unwetter",
+      "english": "storm / severe weather",
+      "persian": "هوای طوفانی",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Sturm",
+      "plural": "die Stürme",
+      "english": "storm",
+      "persian": "طوفان",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "die Geschwindigkeit",
+      "plural": "die Geschwindigkeiten",
+      "english": "speed",
+      "persian": "سرعت",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "die Minute",
+      "plural": "die Minuten",
+      "english": "minute",
+      "persian": "دقیقه",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "die Wohnung",
+      "plural": "die Wohnungen",
+      "english": "apartment / dwelling",
+      "persian": "آپارتمان",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "die Ostsee",
+      "plural": "—",
+      "english": "Baltic Sea",
+      "persian": "دریای بالتیک",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Kurzurlaub",
+      "plural": "die Kurzurlaube",
+      "english": "short holiday",
+      "persian": "تعطیلات کوتاه",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Traumwetter",
+      "plural": "—",
+      "english": "dream weather",
+      "persian": "هوای رویایی",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Pullover",
+      "plural": "die Pullover",
+      "english": "pullover",
+      "persian": "پلیور",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Reiseführer",
+      "plural": "die Reiseführer",
+      "english": "travel guide",
+      "persian": "راهنمای سفر",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "der Tipp",
+      "plural": "die Tipps",
+      "english": "tip",
+      "persian": "نکته",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "das Mittelmeer",
+      "plural": "—",
+      "english": "Mediterranean",
+      "persian": "مدیترانه",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "die Postkarte",
+      "plural": "die Postkarten",
+      "english": "postcard",
+      "persian": "کارت پستال",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "der Ort",
+      "plural": "die Orte",
+      "english": "place",
+      "persian": "مکان",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "die Insel Kreta",
+      "plural": "—",
+      "english": "island Crete",
+      "persian": "جزیره کرت",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "der Ausflug",
+      "plural": "die Ausflüge",
+      "english": "excursion",
+      "persian": "گردش",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "das Meer",
+      "plural": "die Meere",
+      "english": "sea",
+      "persian": "دریا",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "das Lieblingsrestaurant",
+      "plural": "die Lieblingsrestaurants",
+      "english": "favourite restaurant",
+      "persian": "رستوران محبوب",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "der Fisch",
+      "plural": "die Fische",
+      "english": "fish",
+      "persian": "ماهی",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "das Leben",
+      "plural": "—",
+      "english": "life",
+      "persian": "زندگی",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "die Endung",
+      "plural": "die Endungen",
+      "english": "ending (grammar)",
+      "persian": "پایانه",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "das Nomen",
+      "plural": "die Nomen",
+      "english": "noun",
+      "persian": "اسم",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "die Wortbildung",
+      "plural": "—",
+      "english": "word formation",
+      "persian": "واژه‌سازی",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "die Konjunktion",
+      "plural": "die Konjunktionen",
+      "english": "conjunction",
+      "persian": "حرف ربط",
+      "page": "PDF p. 64 / Book p. 64"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "fallen",
+      "third_person": "er fällt",
+      "english": "to fall",
+      "persian": "افتادن",
+      "separable": false,
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "infinitive": "regnen",
+      "third_person": "es regnet",
+      "english": "to rain",
+      "persian": "باران باریدن",
+      "separable": false,
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "infinitive": "geben",
+      "third_person": "es gibt",
+      "english": "there is / to give",
+      "persian": "وجود داشتن / دادن",
+      "separable": false,
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "infinitive": "gehen",
+      "third_person": "es geht (mir)",
+      "english": "to be (I am doing)",
+      "persian": "حال کسی خوب/بد بودن",
+      "separable": false,
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "infinitive": "scheinen",
+      "third_person": "die Sonne scheint",
+      "english": "to shine (sun)",
+      "persian": "درخشیدن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "schneien",
+      "third_person": "es schneit",
+      "english": "to snow",
+      "persian": "برف باریدن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "es ist (sonnig/bewölkt)",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "bewölkt sein",
+      "third_person": "es ist bewölkt",
+      "english": "to be cloudy",
+      "persian": "ابری بودن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "donnern und blitzen",
+      "third_person": "es donnert und blitzt",
+      "english": "to thunder and lightning",
+      "persian": "رعد و برق زدن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "sammeln",
+      "third_person": "er sammelt",
+      "english": "to collect",
+      "persian": "جمع کردن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er hört",
+      "english": "to hear",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "sehen wollen",
+      "third_person": "er will sehen",
+      "english": "to want to see",
+      "persian": "خواستن دیدن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "losfahren",
+      "third_person": "er fährt los",
+      "english": "to set off",
+      "persian": "به راه افتادن",
+      "separable": true,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "öffnen",
+      "third_person": "er öffnet",
+      "english": "to open",
+      "persian": "باز کردن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "denken",
+      "third_person": "er denkt",
+      "english": "to think",
+      "persian": "فکر کردن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "gefallen sein",
+      "third_person": "es ist gefallen (ins Wasser)",
+      "english": "to have fallen",
+      "persian": "افتاده بودن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "kommen",
+      "third_person": "er kommt",
+      "english": "to come",
+      "persian": "آمدن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "vergeben sein",
+      "third_person": "es ist vergeben",
+      "english": "to be occupied? actually 'furchtbar'",
+      "persian": "سخت",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "segeln",
+      "third_person": "er segelt",
+      "english": "to sail",
+      "persian": "بادبانی راندن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "brauchen",
+      "third_person": "er braucht",
+      "english": "to need",
+      "persian": "نیاز داشتن",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "mitmachen",
+      "third_person": "er macht mit",
+      "english": "to join in",
+      "persian": "شرکت کردن",
+      "separable": true,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "begründen",
+      "third_person": "er begründet",
+      "english": "to give reason",
+      "persian": "دلیل آوردن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "überfliegen",
+      "third_person": "er überfliegt",
+      "english": "to skim",
+      "persian": "مرور اجمالی",
+      "separable": false,
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "infinitive": "notieren",
+      "third_person": "er notiert",
+      "english": "to note",
+      "persian": "یادداشت کردن",
+      "separable": false,
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "infinitive": "schreiben",
+      "third_person": "er schreibt",
+      "english": "to write",
+      "persian": "نوشتن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "finden",
+      "third_person": "er findet",
+      "english": "to find",
+      "persian": "یافتن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "überprüfen",
+      "third_person": "er überprüft",
+      "english": "to check",
+      "persian": "بررسی کردن",
+      "separable": false,
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "infinitive": "großschreiben",
+      "third_person": "er schreibt groß",
+      "english": "to capitalize",
+      "persian": "با حرف بزرگ نوشتن",
+      "separable": true,
+      "page": "PDF p. 64 / Book p. 64"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "schlecht",
+      "english": "bad",
+      "persian": "بد",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "gut",
+      "english": "good",
+      "persian": "خوب",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "sonnig",
+      "english": "sunny",
+      "persian": "آفتابی",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "windig",
+      "english": "windy",
+      "persian": "بادی",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "bewölkt",
+      "english": "cloudy",
+      "persian": "ابری",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "neblig",
+      "english": "foggy",
+      "persian": "مه‌آلود",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "warm",
+      "english": "warm",
+      "persian": "گرم",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "kalt",
+      "english": "cold",
+      "persian": "سرد",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "kühl",
+      "english": "cool",
+      "persian": "خنک",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "wolkenlos (= ohne Wolken)",
+      "english": "cloudless",
+      "persian": "بدون ابر",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "wunderbar",
+      "english": "wonderful",
+      "persian": "فوق‌العاده",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "perfekt",
+      "english": "perfect",
+      "persian": "عالی",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "traumhaft / Traum-",
+      "english": "dreamlike",
+      "persian": "رویایی",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "furchtbar",
+      "english": "terrible",
+      "persian": "وحشتناک",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "kaputt",
+      "english": "broken",
+      "persian": "خراب",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "hart (Winter hart)",
+      "english": "harsh",
+      "persian": "سخت",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "fahl / grau (farblos)",
+      "english": "pale / grey",
+      "persian": "رنگ‌پریده",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "-los (wolkenlos)",
+      "english": "-less (without)",
+      "persian": "-بدون",
+      "page": "PDF p. 64 / Book p. 64"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Ins Wasser gefallen?",
+      "english": "Fallen into the water?",
+      "persian": "به آب افتاده؟",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "Urlaub – und es regnet. Was machen Sie und wie geht es Ihnen?",
+      "english": "Holiday – and it's raining. What do you do and how do you feel?",
+      "persian": "تعطیلات و باران می‌بارد",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "Ich gehe in ein Café. Mit einem Milchkaffee und einem Stück Kuchen geht es mir gleich viel besser!",
+      "english": "I go to a café. With a latte and piece of cake I feel much better!",
+      "persian": "به کافه می‌روم، با قهوه و کیک حالم بهتر می‌شود",
+      "page": "PDF p. 61 / Book p. 61"
+    },
+    {
+      "german": "Es regnet. / Es schneit. / Es ist sonnig. / Es ist windig. / Es ist bewölkt. / Es ist neblig. / Es donnert und blitzt. / Die Sonne scheint.",
+      "english": "It is raining / snowing / sunny / windy / cloudy / foggy / thundering & lightning / sun shines.",
+      "persian": "باران/برف می‌بارد / آفتابی/بادی/ابری/مه‌آلود است / رعد و برق می‌زند",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "Es ist warm. Es sind 25 Grad.",
+      "english": "It is warm. It is 25 degrees.",
+      "persian": "هوا گرم است، ۲۵ درجه است",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "Es ist kalt. Es sind minus (-) 2 Grad.",
+      "english": "It is cold. It is minus 2 degrees.",
+      "persian": "سرد است، منفی دو درجه",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "Es ist kühl. Es sind plus (+) 8 Grad.",
+      "english": "It is cool. It is plus 8 degrees.",
+      "persian": "خنک است، هشت درجه",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "Unser Ziel war Südtirol, denn dort ist es im März schon oft sehr warm.",
+      "english": "Our destination was South Tyrol, because there it is often warm in March.",
+      "persian": "مقصد ما تیرول جنوبی بود چون آنجا در مارس گرم است",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "Es war perfekt, denn wir hatten ein Traumwetter.",
+      "english": "It was perfect, because we had dream weather.",
+      "persian": "عالی بود چون هوای رویایی داشتیم",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "Ich war im Urlaub auf Kreta ...",
+      "english": "I was on holiday on Crete",
+      "persian": "در کرت در تعطیلات بودم",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "Liebe/r ... wir sind gerade auf Kreta ... So ist das Leben wunderbar!",
+      "english": "Dear ... we are currently on Crete ... That's wonderful life!",
+      "persian": "نامه کارت پستال از کرت",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "Wie ist das Wetter?",
+      "english": "How is the weather?",
+      "persian": "هوا چطور است؟",
+      "page": "PDF p. 64 / Book p. 64"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "denn",
+      "type": "conjunction",
+      "english": "because / for",
+      "persian": "زیرا",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "-los",
+      "type": "suffix",
+      "english": "-less (wolkenlos = without clouds)",
+      "persian": "-بدون",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "sehr / zu lang / zu hart / wieder",
+      "type": "adverb",
+      "english": "very / too long / too harsh / again",
+      "persian": "خیلی / خیلی طولانی",
+      "page": "PDF p. 62 / Book p. 62"
+    },
+    {
+      "german": "minus (-) / plus (+)",
+      "type": "particle",
+      "english": "minus / plus",
+      "persian": "منفی / مثبت",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "Grad Celsius",
+      "type": "noun",
+      "english": "degree Celsius",
+      "persian": "درجه سانتی‌گراد",
+      "page": "PDF p. 63 / Book p. 63"
+    },
+    {
+      "german": "am ...ten (Datum)",
+      "type": "prepositional phrase",
+      "english": "on the ...th",
+      "persian": "در تاریخ ...",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "über das Wetter sprechen",
+      "type": "expression",
+      "english": "to talk about the weather",
+      "persian": "درباره هوا صحبت کردن",
+      "page": "PDF p. 64 / Book p. 64"
+    },
+    {
+      "german": "Gründe angeben",
+      "type": "expression",
+      "english": "to give reasons",
+      "persian": "دلیل آوردن",
+      "page": "PDF p. 61 / Book p. 61"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 61-64 / Book 61-64",
+    "vocabulary_sections_checked": "Yes - Bildlexikon bars (p62 top: Sonne, Schnee, Regen, Wolke, Wind, Nebel; p63 top: Gewitter, warm/kalt/kühl), exercise 3-7, blog texts A-C, Himmelsrichtungen compass rose, postcard p64, grammar/Kommunikation boxes",
+    "images_and_illustrated_vocabulary_checked": "Yes - campsite with caravan/puddle photo p61, weather icons (sun, snow, rain, cloud, wind, fog, thunderstorm), thermometer images, compass rose, field landscape p63, blog photos A-C",
+    "tables_checked": "Yes - Es ist ... Wetter table (p62-64), wolkenlos definition, -los Wortbildung, denn conjunction (p64), temperature phrases",
+    "exercises_checked_for_taught_vocabulary": "Yes - exercises 1-7 covering holiday, weather association, postcard",
+    "potentially_unclear_items": [
+      "Blog text A '15 Zentimeter Neuschnee bei minus zwei Grad' small but legible",
+      "Publisher footer Modul 8 on each page not counted as vocab"
+    ]
+  }
+}

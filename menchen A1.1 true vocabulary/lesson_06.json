@@ -1,0 +1,425 @@
+{
+  "lesson_number": 6,
+  "lesson_title": "Ich brauche kein Büro.",
+  "pages": {
+    "pdf": "33-36",
+    "book": "33-36",
+    "supplementary": "PDF 83,88,91 / Book 83,88,91 etc.",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "das Büro",
+      "plural": "die Büros",
+      "english": "office",
+      "persian": "دفتر",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "der Arbeitsplatz",
+      "plural": "die Arbeitsplätze",
+      "english": "workplace",
+      "persian": "محل کار",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "der See",
+      "plural": "die Seen",
+      "english": "lake",
+      "persian": "دریاچه",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "der Laptop",
+      "plural": "die Laptops",
+      "english": "laptop",
+      "persian": "لپ‌تاپ",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "das Handy",
+      "plural": "die Handys",
+      "english": "mobile phone",
+      "persian": "موبایل",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "die Briefmarke",
+      "plural": "die Briefmarken",
+      "english": "stamp",
+      "persian": "تمبر",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "die E-Mail",
+      "plural": "die E-Mails",
+      "english": "email",
+      "persian": "ایمیل",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "die Rechnung",
+      "plural": "die Rechnungen",
+      "english": "bill / invoice",
+      "persian": "صورتحساب",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "das Telefon",
+      "plural": "die Telefone",
+      "english": "telephone",
+      "persian": "تلفن",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "die SMS",
+      "plural": "die SMS",
+      "english": "text message",
+      "persian": "پیامک",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "das Formular",
+      "plural": "die Formulare",
+      "english": "form",
+      "persian": "فرم",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Drucker",
+      "plural": "die Drucker",
+      "english": "printer",
+      "persian": "پرینتر",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Maus",
+      "plural": "die Mäuse",
+      "english": "mouse (computer)",
+      "persian": "موس",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Computer",
+      "plural": "die Computer",
+      "english": "computer",
+      "persian": "کامپیوتر",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Stift",
+      "plural": "die Stifte",
+      "english": "pen",
+      "persian": "خودکار / قلم",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "das Notizbuch",
+      "plural": "die Notizbücher",
+      "english": "notebook",
+      "persian": "دفتر یادداشت",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Kalender",
+      "plural": "die Kalender",
+      "english": "calendar",
+      "persian": "تقویم",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Bildschirm",
+      "plural": "die Bildschirme",
+      "english": "screen",
+      "persian": "صفحه نمایش",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "das Papier",
+      "plural": "die Papiere",
+      "english": "paper",
+      "persian": "کاغذ",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Firma",
+      "plural": "die Firmen",
+      "english": "company",
+      "persian": "شرکت",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "der Chef",
+      "plural": "die Chefs",
+      "english": "boss",
+      "persian": "رئیس",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "die Kollegin",
+      "plural": "die Kolleginnen",
+      "english": "colleague (female)",
+      "persian": "همکار (زن)",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "der Termin",
+      "plural": "die Termine",
+      "english": "appointment",
+      "persian": "قرار ملاقات",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "der Schlüssel",
+      "plural": "die Schlüssel",
+      "english": "key",
+      "persian": "کلید",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Telefonnummer",
+      "plural": "die Telefonnummern",
+      "english": "phone number",
+      "persian": "شماره تلفن",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "das Telefonat",
+      "plural": "die Telefonate",
+      "english": "phone call",
+      "persian": "مکالمه تلفنی",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "das Gespräch",
+      "plural": "die Gespräche",
+      "english": "conversation",
+      "persian": "مکالمه",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "die Hilfe",
+      "plural": "—",
+      "english": "help",
+      "persian": "کمک",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der Stress",
+      "plural": "—",
+      "english": "stress",
+      "persian": "استرس",
+      "page": "PDF p. 34 / Book p. 34"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "brauchen",
+      "third_person": "er/sie braucht",
+      "english": "to need",
+      "persian": "نیاز داشتن",
+      "separable": false,
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er/sie hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "infinitive": "suchen",
+      "third_person": "er/sie sucht",
+      "english": "to search",
+      "persian": "جستجو کردن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er/sie ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "infinitive": "sich melden (am Telefon)",
+      "third_person": "er/sie meldet sich",
+      "english": "to answer (phone)",
+      "persian": "خود را معرفی کردن (تلفنی)",
+      "separable": false,
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "infinitive": "sich verabschieden",
+      "third_person": "er/sie verabschiedet sich",
+      "english": "to say goodbye",
+      "persian": "خداحافظی کردن",
+      "separable": true,
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "infinitive": "schreiben",
+      "third_person": "er/sie schreibt",
+      "english": "to write",
+      "persian": "نوشتن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "arbeiten",
+      "third_person": "er/sie arbeitet",
+      "english": "to work",
+      "persian": "کار کردن",
+      "separable": false,
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "infinitive": "drucken",
+      "third_person": "er/sie druckt",
+      "english": "to print",
+      "persian": "چاپ کردن",
+      "separable": false,
+      "page": "PDF p. 35 / Book p. 35"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "praktisch",
+      "english": "practical",
+      "persian": "کاربردی",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "schön",
+      "english": "beautiful / nice",
+      "persian": "زیبا",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "nicht praktisch",
+      "english": "not practical",
+      "persian": "غیر کاربردی",
+      "page": "PDF p. 34 / Book p. 34"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Ich brauche kein Büro.",
+      "english": "I don't need an office.",
+      "persian": "من به دفتر نیاز ندارم",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "Dieser Arbeitsplatz ist sehr schön / sehr praktisch.",
+      "english": "This workplace is very nice / practical.",
+      "persian": "این محل کار خیلی زیبا / کاربردی است",
+      "page": "PDF p. 33 / Book p. 33"
+    },
+    {
+      "german": "Wo ist ...? / Wo sind ...?",
+      "english": "Where is ...? / Where are ...?",
+      "persian": " ... کجاست؟ / کجاها هستند؟",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "Wo ist denn der Laptop? - Der Laptop? Frau Esebeck hat doch den Laptop.",
+      "english": "Where is the laptop?",
+      "persian": "لپ‌تاپ کجاست؟",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "Ich habe einen Laptop und zwei Handys. / Ich habe kein Handy.",
+      "english": "I have a laptop and two mobiles.",
+      "persian": "من یک لپ‌تاپ و دو موبایل دارم",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "Wie viele ... hast du? - Ich habe einen Drucker.",
+      "english": "How many ... do you have?",
+      "persian": "چند تا ... داری؟",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "Brenner IT-Consulting. Guten Tag. Hier ist Christian Schmidt. / Marlene Neumann hier.",
+      "english": "Phone answering phrases",
+      "persian": "عبارات تلفنی",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "Tschüs. / Auf Wiedersehen. / Auf Wiederhören.",
+      "english": "Bye / Goodbye (phone)",
+      "persian": "خداحافظ",
+      "page": "PDF p. 36 / Book p. 36"
+    },
+    {
+      "german": "Ich drucke im Büro.",
+      "english": "I print in the office.",
+      "persian": "من در دفتر چاپ می‌کنم",
+      "page": "PDF p. 35 / Book p. 35"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "kein / keine / kein",
+      "type": "Negativartikel",
+      "english": "no / not a",
+      "persian": "هیچ",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "der / das / die / die (Plural)",
+      "type": "definit/indefinit article",
+      "english": "the / a",
+      "persian": "حرف تعریف",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "einen (Akkusativ)",
+      "type": "article Akkusativ",
+      "english": "a (accusative masc)",
+      "persian": "را (مفعول)",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "doch (in: Frau Esebeck hat doch den Laptop)",
+      "type": "Modalpartikel",
+      "english": "but / indeed",
+      "persian": "که (تاکید)",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "wie viele?",
+      "type": "question word",
+      "english": "how many?",
+      "persian": "چند تا؟",
+      "page": "PDF p. 35 / Book p. 35"
+    },
+    {
+      "german": "am See / im Büro",
+      "type": "prepositional phrase",
+      "english": "at the lake / in the office",
+      "persian": "کنار دریاچه / در دفتر",
+      "page": "PDF p. 34 / Book p. 34"
+    },
+    {
+      "german": "hier",
+      "type": "adverb",
+      "english": "here",
+      "persian": "اینجا",
+      "page": "PDF p. 36 / Book p. 36"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 33-36 / Book 33-36 + supplements PDF 83,88,91",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

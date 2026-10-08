@@ -1,14 +1,22 @@
 {
-  "version": "939b6f2",
-  "generatedAt": "2026-10-08T17:31:18.804Z",
+  "version": "f50bfba",
+  "generatedAt": "2026-10-08T19:09:57.201Z",
   "repo": "https://github.com/arashveysi3/DeSplash",
   "commits": [
+    {
+      "hash": "f50bfba",
+      "fullHash": "f50bfba84835e9ddd0ed1f1c7f80eea6e5fcc845",
+      "subject": "fix: improve mobile book, header, and nav contrast/spacing",
+      "author": "arashveysi3",
+      "date": "2 hours ago",
+      "url": "https://github.com/arashveysi3/DeSplash/commit/f50bfba"
+    },
     {
       "hash": "939b6f2",
       "fullHash": "939b6f2a0a1b28a999c7e7e2f3921fd0fe07b97b",
       "subject": "feat: full UI redesign to Figma Make design system, drop BaseUI/Styletron",
       "author": "arashveysi3",
-      "date": "15 minutes ago",
+      "date": "2 hours ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/939b6f2"
     },
     {
@@ -56,7 +64,7 @@
       "fullHash": "f5d05df31221c5c9dcd6eec5ebfe02f2c4fb1227",
       "subject": "feat: add Diktat learning insights + A1 Final Mock Exam (55 Qs)",
       "author": "arashveysi3",
-      "date": "11 days ago",
+      "date": "12 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/f5d05df"
     },
     {
@@ -64,7 +72,7 @@
       "fullHash": "27838462cb9591d9caa4f48023f3c23386cdc32e",
       "subject": "Revise README for clarity and consistency",
       "author": "Arash Veysi",
-      "date": "11 days ago",
+      "date": "12 days ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/2783846"
     },
     {
@@ -114,14 +122,6 @@
       "author": "arashveysi3",
       "date": "2 weeks ago",
       "url": "https://github.com/arashveysi3/DeSplash/commit/78b7816"
-    },
-    {
-      "hash": "5f73faa",
-      "fullHash": "5f73faaf5b4e4617cd8a866b75690effb1c36d35",
-      "subject": "fix: shared vocabulary repetition engine with DB-backed daily limits",
-      "author": "arashveysi3",
-      "date": "2 weeks ago",
-      "url": "https://github.com/arashveysi3/DeSplash/commit/5f73faa"
     }
   ]
 }

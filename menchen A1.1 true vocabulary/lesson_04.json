@@ -1,0 +1,458 @@
+{
+  "lesson_number": 4,
+  "lesson_title": "Der Tisch ist schön!",
+  "pages": {
+    "pdf": "25-28",
+    "book": "25-28",
+    "supplementary": "PDF 79,80 / Book 79,80 (Möbel Puzzle, Hotelzimmer bewerten, Uhrzeiten)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "der Tisch",
+      "plural": "die Tische",
+      "english": "table",
+      "persian": "میز",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "das Bett",
+      "plural": "die Betten",
+      "english": "bed",
+      "persian": "تخت",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "das Bild",
+      "plural": "die Bilder",
+      "english": "picture",
+      "persian": "تصویر / تابلو",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "der Sessel",
+      "plural": "die Sessel",
+      "english": "armchair",
+      "persian": "مبل راحتی",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die Lampe",
+      "plural": "die Lampen",
+      "english": "lamp",
+      "persian": "چراغ / آباژور",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "der Stuhl",
+      "plural": "die Stühle",
+      "english": "chair",
+      "persian": "صندلی",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "das Sofa / die Couch",
+      "plural": "die Sofas / die Couches",
+      "english": "sofa",
+      "persian": "مبل",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Schrank",
+      "plural": "die Schränke",
+      "english": "cupboard / wardrobe",
+      "persian": "کمد",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Teppich",
+      "plural": "die Teppiche",
+      "english": "carpet",
+      "persian": "فرش",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Preis",
+      "plural": "die Preise",
+      "english": "price",
+      "persian": "قیمت",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "der Euro",
+      "plural": "die Euros",
+      "english": "euro",
+      "persian": "یورو",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "der Cent",
+      "plural": "die Cents",
+      "english": "cent",
+      "persian": "سنت",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "das Sonderangebot",
+      "plural": "die Sonderangebote",
+      "english": "special offer",
+      "persian": "پیشنهاد ویژه",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "der Verkäufer",
+      "plural": "die Verkäufer",
+      "english": "salesman",
+      "persian": "فروشنده",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "die Verkäuferin",
+      "plural": "die Verkäuferinnen",
+      "english": "saleswoman",
+      "persian": "فروشنده (زن)",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Designer",
+      "plural": "die Designer",
+      "english": "designer",
+      "persian": "طراح",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "das Möbel",
+      "plural": "die Möbel",
+      "english": "furniture (pl.)",
+      "persian": "مبلمان",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "das Möbelhaus",
+      "plural": "die Möbelhäuser",
+      "english": "furniture store",
+      "persian": "فروشگاه مبلمان",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Hilfe",
+      "plural": "die Hilfen",
+      "english": "help",
+      "persian": "کمک",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "das Adjektiv",
+      "plural": "die Adjektive",
+      "english": "adjective",
+      "persian": "صفت",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "die Farbe",
+      "plural": "die Farben",
+      "english": "colour",
+      "persian": "رنگ",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "das Material",
+      "plural": "die Materialien",
+      "english": "material",
+      "persian": "جنس / مواد",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "die Form",
+      "plural": "die Formen",
+      "english": "shape",
+      "persian": "شکل",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "die Zahlenschlange",
+      "plural": "die Zahlenschlangen",
+      "english": "number snake",
+      "persian": "مار اعداد",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "der Artikel",
+      "plural": "die Artikel",
+      "english": "article (grammar)",
+      "persian": "حرف تعریف",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "das Personalpronomen",
+      "plural": "die Personalpronomen",
+      "english": "personal pronoun",
+      "persian": "ضمیر شخصی",
+      "page": "PDF p. 28 / Book p. 28"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "kosten",
+      "third_person": "er/sie kostet",
+      "english": "to cost",
+      "persian": "هزینه داشتن / قیمت داشتن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "finden",
+      "third_person": "er/sie findet",
+      "english": "to find / to think",
+      "persian": "پیدا کردن / یافتن / نظر داشتن",
+      "separable": false,
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "infinitive": "brauchen",
+      "third_person": "er/sie braucht",
+      "english": "to need",
+      "persian": "احتیاج داشتن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er/sie ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "infinitive": "tanzen (Artikel-Tanz)",
+      "third_person": "er/sie tanzt",
+      "english": "to dance",
+      "persian": "رقصیدن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er/sie hört",
+      "english": "to hear",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "infinitive": "vergleichen",
+      "third_person": "er/sie vergleicht",
+      "english": "to compare",
+      "persian": "مقایسه کردن",
+      "separable": false,
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "infinitive": "notieren",
+      "third_person": "er/sie notiert",
+      "english": "to note",
+      "persian": "یادداشت کردن",
+      "separable": false,
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "infinitive": "bewerten",
+      "third_person": "er/sie bewertet",
+      "english": "to evaluate",
+      "persian": "ارزیابی کردن",
+      "separable": false,
+      "page": "PDF p. 28 / Book p. 28"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "schön",
+      "english": "beautiful",
+      "persian": "زیبا",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "hässlich",
+      "english": "ugly",
+      "persian": "زشت",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "modern",
+      "english": "modern",
+      "persian": "مدرن",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "praktisch",
+      "english": "practical",
+      "persian": "کاربردی",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "groß",
+      "english": "big",
+      "persian": "بزرگ",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "klein",
+      "english": "small",
+      "persian": "کوچک",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "teuer",
+      "english": "expensive",
+      "persian": "گران",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "billig / günstig",
+      "english": "cheap",
+      "persian": "ارزان",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "sehr / zu / aber",
+      "english": "very / too / but",
+      "persian": "خیلی / خیلی (بیش از حد) / اما",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "wirklich",
+      "english": "really",
+      "persian": "واقعاً",
+      "page": "PDF p. 26 / Book p. 26"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Der Tisch ist schön!",
+      "english": "The table is beautiful!",
+      "persian": "میز زیباست!",
+      "page": "PDF p. 25 / Book p. 25"
+    },
+    {
+      "german": "Der Tisch ist zu groß / zu klein.",
+      "english": "The table is too big / small.",
+      "persian": "میز خیلی بزرگ / کوچک است",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "Die Lampe kostet 119 Euro. Das ist sehr günstig. / Das ist ein Sonderangebot.",
+      "english": "The lamp costs 119 euros. That's a bargain / special offer.",
+      "persian": "لامپ ۱۱۹ یورو قیمت دارد. خیلی ارزان است",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Wie viel kostet (denn) die Lampe? / Wie viel kostet der Tisch?",
+      "english": "How much does the lamp/table cost?",
+      "persian": "قیمت لامپ / میز چقدر است؟",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "Das ist (sehr/zu/aber) teuer / günstig / billig.",
+      "english": "That is (very/too/really) expensive/cheap.",
+      "persian": "آن خیلی گران / ارزان است",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "Ich finde die Lampe (wirklich) sehr schön. / Das finde ich auch. / Das finde ich nicht.",
+      "english": "I find the lamp really beautiful. / I agree. / I don't think so.",
+      "persian": "به نظر من لامپ خیلی زیباست",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "Finden Sie? / Findest du?",
+      "english": "Do you think so?",
+      "persian": "نظرت چیست؟",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "Brauchen Sie Hilfe? - Ja, bitte. Wie viel kostet denn der Tisch?",
+      "english": "Do you need help? - Yes, please.",
+      "persian": "کمک می‌خواهید؟ بله لطفاً",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "Das macht dann 9 Euro 95. - Vielen Dank!",
+      "english": "That will be 9.95 euros.",
+      "persian": "می‌شود ۹٫۹۵ یورو",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "100 Cent = 1 Euro / 9,99 = 9 Euro 99 / 0,50 = 50 Cent",
+      "english": "prices",
+      "persian": "قیمت‌ها",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "300, 351, 1000, 10.000, 100.000, 1.000.000",
+      "english": "numbers 300, 351 etc.",
+      "persian": "اعداد",
+      "page": "PDF p. 27 / Book p. 27"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "der / das / die (definiter Artikel)",
+      "type": "article",
+      "english": "the",
+      "persian": "حرف تعریف معین",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "er / es / sie (Personalpronomen)",
+      "type": "pronoun",
+      "english": "he / it / she",
+      "persian": "او (مذکر / خنثی / مونث)",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "wie viel?",
+      "type": "question word",
+      "english": "how much?",
+      "persian": "چقدر؟",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "was kostet ...? Wie viel kostet ...?",
+      "type": "question phrase",
+      "english": "what does ... cost?",
+      "persian": "قیمتش چند است؟",
+      "page": "PDF p. 27 / Book p. 27"
+    },
+    {
+      "german": "bitte / danke / Vielen Dank!",
+      "type": "expression",
+      "english": "please / thanks",
+      "persian": "لطفاً / ممنون",
+      "page": "PDF p. 28 / Book p. 28"
+    },
+    {
+      "german": "nur / sehr / zu / aber",
+      "type": "particle/adverb",
+      "english": "only / very / too",
+      "persian": "فقط / خیلی",
+      "page": "PDF p. 26 / Book p. 26"
+    },
+    {
+      "german": "hundert / tausend / Million",
+      "type": "number noun",
+      "english": "hundred / thousand / million",
+      "persian": "صد / هزار / میلیون",
+      "page": "PDF p. 27 / Book p. 27"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 25-28 / Book 25-28 + supplements PDF 79,80",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

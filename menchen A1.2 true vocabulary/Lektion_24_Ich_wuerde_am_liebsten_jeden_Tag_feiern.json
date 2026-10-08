@@ -1,0 +1,1086 @@
+{
+  "lesson_number": 24,
+  "lesson_title": "Ich würde am liebsten jeden Tag feiern.",
+  "pages": {
+    "pdf": "65-72",
+    "book": "65-72",
+    "supplementary": "PDF 69-72 / Book 69-72 (LESEMAGAZIN Was sagen Ihnen diese Zahlen? p69 | FILM-STATIONEN Clips 22-24 p70 | PROJEKT LANDESKUNDE Motto-Party p71 | AUSKLANG Besser oder mehr? p72)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90 dpi via rendered images l19_24_p65.png..p72.png, cross-checked OCR via pymupdf",
+  "nouns": [
+    {
+      "german": "der Tag",
+      "plural": "die Tage",
+      "english": "day",
+      "persian": "روز",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "das Geschenk",
+      "plural": "die Geschenke",
+      "english": "gift",
+      "persian": "هدیه",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "die Überraschungsparty",
+      "plural": "die Überraschungspartys",
+      "english": "surprise party",
+      "persian": "مهمانی غافلگیرانه",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "das Examen",
+      "plural": "die Examen",
+      "english": "exam",
+      "persian": "امتحان",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "die Prüfung",
+      "plural": "die Prüfungen",
+      "english": "exam / test",
+      "persian": "امتحان",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "der Brief",
+      "plural": "die Briefe",
+      "english": "letter",
+      "persian": "نامه",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "der September",
+      "plural": "—",
+      "english": "September",
+      "persian": "سپتامبر",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "der Abend",
+      "plural": "die Abende",
+      "english": "evening",
+      "persian": "عصر",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "das Fest",
+      "plural": "die Feste",
+      "english": "festival / celebration",
+      "persian": "جشن",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "Weihnachten",
+      "plural": "—",
+      "english": "Christmas",
+      "persian": "کریسمس",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "Ostern",
+      "plural": "—",
+      "english": "Easter",
+      "persian": "عید پاک",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "Silvester",
+      "plural": "—",
+      "english": "New Year's Eve",
+      "persian": "شب سال نو",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "Neujahr",
+      "plural": "—",
+      "english": "New Year",
+      "persian": "سال نو",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Geburtstag",
+      "plural": "die Geburtstage",
+      "english": "birthday",
+      "persian": "تولد",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "die Hochzeit",
+      "plural": "die Hochzeiten",
+      "english": "wedding",
+      "persian": "عروسی",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "die Einweihungsparty",
+      "plural": "die Einweihungspartys",
+      "english": "housewarming party",
+      "persian": "مهمانی خانه‌نو",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Karneval",
+      "plural": "—",
+      "english": "carnival",
+      "persian": "کارناوال",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "die Abschlussprüfung",
+      "plural": "die Abschlussprüfungen",
+      "english": "final exam",
+      "persian": "امتحان نهایی",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "die Einladung",
+      "plural": "die Einladungen",
+      "english": "invitation",
+      "persian": "دعوت‌نامه",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Heilige Abend",
+      "plural": "die Heiligen Abende",
+      "english": "Christmas Eve",
+      "persian": "شب کریسمس",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "die Familie",
+      "plural": "die Familien",
+      "english": "family",
+      "persian": "خانواده",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Bruder",
+      "plural": "die Brüder",
+      "english": "brother",
+      "persian": "برادر",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Gutschein",
+      "plural": "die Gutscheine",
+      "english": "voucher",
+      "persian": "کوپن",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Kinogutschein",
+      "plural": "die Kinogutscheine",
+      "english": "cinema voucher",
+      "persian": "کوپن سینما",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "die Fitness",
+      "plural": "—",
+      "english": "fitness",
+      "persian": "تناسب اندام",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "die Hantel",
+      "plural": "die Hanteln",
+      "english": "dumbbell",
+      "persian": "دمبل",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "das Kino",
+      "plural": "die Kinos",
+      "english": "cinema",
+      "persian": "سینما",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "das Traumhaus",
+      "plural": "die Traumhäuser",
+      "english": "dream house",
+      "persian": "خانه رویایی",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "der Garten",
+      "plural": "die Gärten",
+      "english": "garden",
+      "persian": "باغ",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "die Haus­einweihung",
+      "plural": "—",
+      "english": "housewarming",
+      "persian": "خانه‌نو",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "das Datum",
+      "plural": "die Daten",
+      "english": "date",
+      "persian": "تاریخ",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Januar",
+      "plural": "—",
+      "english": "January",
+      "persian": "ژانویه",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Dezember",
+      "plural": "—",
+      "english": "December",
+      "persian": "دسامبر",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Oktober",
+      "plural": "—",
+      "english": "October",
+      "persian": "اکتبر",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Mai",
+      "plural": "—",
+      "english": "May",
+      "persian": "مه",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Juli",
+      "plural": "—",
+      "english": "July",
+      "persian": "ژوئیه",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Glückwunsch",
+      "plural": "die Glückwünsche",
+      "english": "congratulation",
+      "persian": "تبریک",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "das Geschenk (schenken/bekommen)",
+      "plural": "die Geschenke",
+      "english": "gift",
+      "persian": "هدیه",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Wunsch",
+      "plural": "die Wünsche",
+      "english": "wish",
+      "persian": "آرزو",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "der Traum",
+      "plural": "die Träume",
+      "english": "dream",
+      "persian": "رویا",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "das Lieblingsfest",
+      "plural": "die Lieblingsfeste",
+      "english": "favourite festival",
+      "persian": "جشن محبوب",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "die Ordinalzahl",
+      "plural": "die Ordinalzahlen",
+      "english": "ordinal number",
+      "persian": "عدد ترتیبی",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "der Konjunktiv II",
+      "plural": "—",
+      "english": "subjunctive II",
+      "persian": "وجه التزامی دوم",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "die Motto-Party",
+      "plural": "die Motto-Partys",
+      "english": "themed party",
+      "persian": "مهمانی موضوعی",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "die Dekoration",
+      "plural": "die Dekorationen",
+      "english": "decoration",
+      "persian": "تزیین",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "die Einladung (Flaschenpost)",
+      "plural": "die Einladungen",
+      "english": "invitation (bottle post)",
+      "persian": "دعوتنامه بطری",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "der Raum",
+      "plural": "die Räume",
+      "english": "room",
+      "persian": "اتاق",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "das Essen",
+      "plural": "—",
+      "english": "food",
+      "persian": "غذا",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "das Getränk",
+      "plural": "die Getränke",
+      "english": "drink",
+      "persian": "نوشیدنی",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "die Musik",
+      "plural": "—",
+      "english": "music",
+      "persian": "موسیقی",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "das Programm",
+      "plural": "die Programme",
+      "english": "program",
+      "persian": "برنامه",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "die Strand-Party",
+      "plural": "die Strand-Partys",
+      "english": "beach party",
+      "persian": "مهمانی ساحلی",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "der Sand",
+      "plural": "—",
+      "english": "sand",
+      "persian": "شن",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "die Liegestühle",
+      "plural": "—",
+      "english": "deck chairs",
+      "persian": "صندلی آفتاب",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "der Planschbecken",
+      "plural": "die Planschbecken",
+      "english": "paddling pool",
+      "persian": "استخر بادی",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "der Bikini",
+      "plural": "die Bikinis",
+      "english": "bikini",
+      "persian": "بیکینی",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "der Badeanzug",
+      "plural": "die Badeanzüge",
+      "english": "swimsuit",
+      "persian": "مایو",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "die Zahl",
+      "plural": "die Zahlen",
+      "english": "number",
+      "persian": "عدد",
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "german": "das Diagramm",
+      "plural": "die Diagramme",
+      "english": "diagram",
+      "persian": "نمودار",
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "german": "das Jahr",
+      "plural": "die Jahre",
+      "english": "year",
+      "persian": "سال",
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "german": "der Klimawandel",
+      "plural": "—",
+      "english": "climate change",
+      "persian": "تغییر اقلیم",
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "german": "die Umwelt",
+      "plural": "—",
+      "english": "environment",
+      "persian": "محیط زیست",
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "german": "die Welt",
+      "plural": "die Welten",
+      "english": "world",
+      "persian": "جهان",
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "german": "der Film",
+      "plural": "die Filme",
+      "english": "film",
+      "persian": "فیلم",
+      "page": "PDF p. 70 / Book p. 70"
+    },
+    {
+      "german": "die Modenschau",
+      "plural": "die Modenschauen",
+      "english": "fashion show",
+      "persian": "نمایش مد",
+      "page": "PDF p. 70 / Book p. 70"
+    },
+    {
+      "german": "die Auer Dult",
+      "plural": "—",
+      "english": "Auer Dult (fair in Munich)",
+      "persian": "نمایشگاه آور دولز",
+      "page": "PDF p. 70 / Book p. 70"
+    },
+    {
+      "german": "das Glück",
+      "plural": "—",
+      "english": "luck / happiness",
+      "persian": "خوشبختی",
+      "page": "PDF p. 72 / Book p. 72"
+    },
+    {
+      "german": "der Schmuck",
+      "plural": "—",
+      "english": "jewellery",
+      "persian": "جواهرات",
+      "page": "PDF p. 72 / Book p. 72"
+    },
+    {
+      "german": "das Luxushaus",
+      "plural": "die Luxushäuser",
+      "english": "luxury house",
+      "persian": "خانه لوکس",
+      "page": "PDF p. 72 / Book p. 72"
+    },
+    {
+      "german": "der Chauffeur",
+      "plural": "die Chauffeure",
+      "english": "chauffeur",
+      "persian": "راننده شخصی",
+      "page": "PDF p. 72 / Book p. 72"
+    },
+    {
+      "german": "der Millionär",
+      "plural": "die Millionäre",
+      "english": "millionaire",
+      "persian": "میلیونر",
+      "page": "PDF p. 72 / Book p. 72"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "feiern",
+      "third_person": "er feiert",
+      "english": "to celebrate",
+      "persian": "جشن گرفتن",
+      "separable": false,
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "infinitive": "würde feiern (Konjunktiv II)",
+      "third_person": "er würde feiern",
+      "english": "would celebrate",
+      "persian": "جشن می‌گرفت",
+      "separable": false,
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "infinitive": "einladen",
+      "third_person": "er lädt ein",
+      "english": "to invite",
+      "persian": "دعوت کردن",
+      "separable": true,
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "infinitive": "sehen",
+      "third_person": "er sieht",
+      "english": "to see",
+      "persian": "دیدن",
+      "separable": false,
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "infinitive": "bestehen",
+      "third_person": "er besteht",
+      "english": "to pass (exam)",
+      "persian": "قبول شدن",
+      "separable": false,
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "infinitive": "kommen",
+      "third_person": "er kommt",
+      "english": "to come",
+      "persian": "آمدن",
+      "separable": false,
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "infinitive": "überfliegen",
+      "third_person": "er überfliegt",
+      "english": "to skim",
+      "persian": "مرور اجمالی کردن",
+      "separable": false,
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "infinitive": "passen",
+      "third_person": "es passt",
+      "english": "to fit / suit",
+      "persian": "مناسب بودن",
+      "separable": false,
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "infinitive": "achten (auf die Kleidung)",
+      "third_person": "er achtet",
+      "english": "to pay attention to",
+      "persian": "توجه کردن",
+      "separable": false,
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "infinitive": "kennen",
+      "third_person": "er kennt",
+      "english": "to know",
+      "persian": "شناختن",
+      "separable": false,
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "infinitive": "wissen",
+      "third_person": "er weiß",
+      "english": "to know (fact)",
+      "persian": "دانستن",
+      "separable": false,
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "infinitive": "schenken",
+      "third_person": "er schenkt",
+      "english": "to give (gift)",
+      "persian": "هدیه دادن",
+      "separable": false,
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "infinitive": "bekommen",
+      "third_person": "er bekommt",
+      "english": "to get / receive",
+      "persian": "گرفتن",
+      "separable": false,
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "infinitive": "umziehen",
+      "third_person": "er zieht um",
+      "english": "to move (house)",
+      "persian": "اسباب‌کشی کردن",
+      "separable": true,
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "infinitive": "markieren",
+      "third_person": "er markiert",
+      "english": "to mark",
+      "persian": "علامت زدن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "ergänzen",
+      "third_person": "er ergänzt",
+      "english": "to complete",
+      "persian": "تکمیل کردن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "gratulieren",
+      "third_person": "er gratuliert",
+      "english": "to congratulate",
+      "persian": "تبریک گفتن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "bekommen (Geschenk bekommen)",
+      "third_person": "er bekommt",
+      "english": "to receive gift",
+      "persian": "گرفتن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "werden (würde)",
+      "third_person": "er wird - würde",
+      "english": "to become / would",
+      "persian": "شدن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "aufstehen",
+      "third_person": "er steht auf",
+      "english": "to get up",
+      "persian": "بلند شدن",
+      "separable": true,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "gewinnen",
+      "third_person": "er gewinnt",
+      "english": "to win",
+      "persian": "برنده شدن",
+      "separable": false,
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "infinitive": "wählen",
+      "third_person": "er wählt",
+      "english": "to choose",
+      "persian": "انتخاب کردن",
+      "separable": false,
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "infinitive": "recherchieren",
+      "third_person": "er recherchiert",
+      "english": "to research",
+      "persian": "تحقیق کردن",
+      "separable": false,
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "infinitive": "erzählen",
+      "third_person": "er erzählt",
+      "english": "to tell",
+      "persian": "تعریف کردن",
+      "separable": false,
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "infinitive": "leben",
+      "third_person": "er lebt",
+      "english": "to live",
+      "persian": "زندگی کردن",
+      "separable": false,
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "infinitive": "machen",
+      "third_person": "er macht",
+      "english": "to do / make",
+      "persian": "انجام دادن",
+      "separable": false,
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "infinitive": "achten (auf die Umwelt)",
+      "third_person": "er achtet",
+      "english": "to care for",
+      "persian": "مراقبت کردن",
+      "separable": false,
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "infinitive": "verändern",
+      "third_person": "er verändert",
+      "english": "to change",
+      "persian": "تغییر دادن",
+      "separable": false,
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "infinitive": "kaputt machen",
+      "third_person": "er macht kaputt",
+      "english": "to destroy",
+      "persian": "خراب کردن",
+      "separable": true,
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "infinitive": "anbieten",
+      "third_person": "er bietet an",
+      "english": "to offer",
+      "persian": "پیشنهاد دادن",
+      "separable": true,
+      "page": "PDF p. 70 / Book p. 70"
+    },
+    {
+      "infinitive": "aussehen",
+      "third_person": "er sieht aus",
+      "english": "to look",
+      "persian": "به نظر رسیدن",
+      "separable": true,
+      "page": "PDF p. 70 / Book p. 70"
+    },
+    {
+      "infinitive": "schießen",
+      "third_person": "er schießt",
+      "english": "to shoot",
+      "persian": "شلیک کردن",
+      "separable": false,
+      "page": "PDF p. 70 / Book p. 70"
+    },
+    {
+      "infinitive": "dekorieren",
+      "third_person": "er dekoriert",
+      "english": "to decorate",
+      "persian": "تزیین کردن",
+      "separable": false,
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "infinitive": "aufstellen",
+      "third_person": "er stellt auf",
+      "english": "to set up",
+      "persian": "برپا کردن",
+      "separable": true,
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "infinitive": "anziehen",
+      "third_person": "er zieht an",
+      "english": "to put on (clothes)",
+      "persian": "پوشیدن",
+      "separable": true,
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "infinitive": "sorgen (für Stimmung)",
+      "third_person": "es sorgt",
+      "english": "to provide",
+      "persian": "فراهم کردن",
+      "separable": false,
+      "page": "PDF p. 71 / Book p. 71"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "liebste (am liebsten)",
+      "english": "dearest / most gladly",
+      "persian": "محبوب‌ترین",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "sicher",
+      "english": "sure / certain",
+      "persian": "مطمئن",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "vielleicht",
+      "english": "perhaps",
+      "persian": "شاید",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "unbedingt",
+      "english": "absolutely / definitely",
+      "persian": "حتما",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "nett",
+      "english": "nice",
+      "persian": "مهربان",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "schön",
+      "english": "beautiful",
+      "persian": "زیبا",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "erste / zweite / dritte / vierte ...",
+      "english": "first / second / third / fourth ...",
+      "persian": "اول / دوم / سوم / چهارم",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "achte",
+      "english": "eighth",
+      "persian": "هشتم",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "zwanzigste / einundzwanzigste",
+      "english": "twentieth / twenty-first",
+      "persian": "بیستم / بیست‌ویکم",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "glücklich / zufrieden",
+      "english": "happy / satisfied",
+      "persian": "خوشحال / راضی",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "exotisch",
+      "english": "exotic",
+      "persian": "عجیب و غریب",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "teuer",
+      "english": "expensive",
+      "persian": "گران",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "toll",
+      "english": "great",
+      "persian": "عالی",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "warm / wärmste",
+      "english": "warm / warmest",
+      "persian": "گرم / گرم‌ترین",
+      "page": "PDF p. 69 / Book p. 69"
+    },
+    {
+      "german": "sportlich / elegant",
+      "english": "sporty / elegant",
+      "persian": "اسپورتی / شیک",
+      "page": "PDF p. 70 / Book p. 70"
+    },
+    {
+      "german": "teuer (teuerste Schmuck)",
+      "english": "expensive",
+      "persian": "گران",
+      "page": "PDF p. 72 / Book p. 72"
+    },
+    {
+      "german": "traurig / mehr traurig",
+      "english": "sad / sadder",
+      "persian": "غمگین",
+      "page": "PDF p. 72 / Book p. 72"
+    },
+    {
+      "german": "besser / mehr",
+      "english": "better / more",
+      "persian": "بهتر / بیشتر",
+      "page": "PDF p. 72 / Book p. 72"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Ich würde am liebsten jeden Tag feiern.",
+      "english": "I would most like to celebrate every day.",
+      "persian": "دوست دارم هر روز جشن بگیرم",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "Das müssen wir unbedingt feiern!",
+      "english": "We absolutely have to celebrate that!",
+      "persian": "حتماً باید این را جشن بگیریم!",
+      "page": "PDF p. 65 / Book p. 65"
+    },
+    {
+      "german": "Herzlichen Glückwunsch!",
+      "english": "Congratulations!",
+      "persian": "تبریک صمیمانه!",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "Frohe Weihnachten!",
+      "english": "Merry Christmas!",
+      "persian": "کریسمس مبارک!",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "Gutes / Frohes neues Jahr!",
+      "english": "Happy New Year!",
+      "persian": "سال نو مبارک!",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "Gut gemacht! / Alles Gute!",
+      "english": "Well done! / All the best!",
+      "persian": "آفرین! / بهترین آرزوها!",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "Am vierten Mai / Heute ist der ... Dezember.",
+      "english": "On the fourth of May / Today is ... December.",
+      "persian": "در چهارم مه",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "Ich würde dich gern ins Kino einladen.",
+      "english": "I would like to invite you to the cinema.",
+      "persian": "دوست دارم تو را به سینما دعوت کنم",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "Wir würden das gern mit dir feiern.",
+      "english": "We would like to celebrate that with you.",
+      "persian": "دوست داریم این را با تو جشن بگیریم",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "Ich würde gern jeden Morgen spät aufstehen.",
+      "english": "I would like to get up late every morning.",
+      "persian": "دوست دارم هر روز صبح دیر بیدار شوم",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "Vielleicht hast du am 4. Mai abends Zeit?",
+      "english": "Maybe you have time on May 4th in the evening?",
+      "persian": "شاید چهارم مه وقت داری؟",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "Willkommen auf unserer Webseite!",
+      "english": "Welcome to our website!",
+      "persian": "به وبسایت ما خوش آمدید",
+      "page": "PDF p. 71 / Book p. 71"
+    },
+    {
+      "german": "Wie heißt das Fest? Wann ist das Fest? Mit wem feiert man? Wo feiert man? Was trinkt/isst man? Was macht man?",
+      "english": "What is the festival called? When is it? With whom do you celebrate? etc.",
+      "persian": "نام جشن چیست؟ کی است؟ با چه کسی ...",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "Besser oder mehr?",
+      "english": "Better or more?",
+      "persian": "بهتر یا بیشتر؟",
+      "page": "PDF p. 72 / Book p. 72"
+    },
+    {
+      "german": "Sie hat mehr Glück als ich.",
+      "english": "She has more luck than I.",
+      "persian": "او از من خوش‌شانس‌تر است",
+      "page": "PDF p. 72 / Book p. 72"
+    },
+    {
+      "german": "Ist ... für dich immer nur ...?",
+      "english": "Is ... always just ... for you?",
+      "persian": "آیا ... همیشه برای تو فقط ... است؟",
+      "page": "PDF p. 72 / Book p. 72"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "am (+ Datum) / vom ... bis (zum) ...",
+      "type": "preposition + ordinal",
+      "english": "on (date) / from ... to ...",
+      "persian": "در تاریخ ... / از ... تا ...",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "würde + Infinitiv (Konjunktiv II)",
+      "type": "grammar",
+      "english": "would + infinitive",
+      "persian": "صورت شرطی",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "1.-19.: -te / ab 20.: -ste",
+      "type": "grammar rule",
+      "english": "ordinal formation",
+      "persian": "قاعده اعداد ترتیبی",
+      "page": "PDF p. 67 / Book p. 67"
+    },
+    {
+      "german": "denn / und / oder",
+      "type": "conjunction",
+      "english": "because / and / or",
+      "persian": "زیرا / و / یا",
+      "page": "PDF p. 66 / Book p. 66"
+    },
+    {
+      "german": "bei / zu Hause / in Diskotheken / draußen",
+      "type": "preposition",
+      "english": "at / at home / in discos / outside",
+      "persian": "در / در خانه / در دیسکو",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "um 24 Uhr",
+      "type": "time",
+      "english": "at 24 o'clock",
+      "persian": "ساعت ۲۴",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "das Feuerwerk",
+      "type": "noun",
+      "english": "fireworks",
+      "persian": "آتش‌بازی",
+      "page": "PDF p. 68 / Book p. 68"
+    },
+    {
+      "german": "die Abschlussprüfung bestanden!",
+      "type": "expression",
+      "english": "passed final exam!",
+      "persian": "امتحان نهایی را قبول شد!",
+      "page": "PDF p. 66 / Book p. 66"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 65-72 / Book 65-72 (core 65-68 plus supplementary 69-72)",
+    "vocabulary_sections_checked": "Yes - Bildlexikon bars (p66 top: Weihnachten, Ostern, Silvester etc.; p67 top: Hochzeit etc.), invitation texts A-D p66, Datums-Übung p67, Glückwünsche p67, Konjunktiv II Wünsche p67-68, Mini-Projekt Silvester p68, Lesemagazin Zahlen p69, Film p70, Projekt Motto-Party p71, Ausklang Besser oder mehr p72",
+    "images_and_illustrated_vocabulary_checked": "Yes - woman wrapping gift photo p65, 10 fest icons (Weihnachten tree, Ostern bunny, Silvester champagne, Neujahr, Geburtstag cake etc.), 4 persons with clothing for invitation matching p66, ordinal tables, beach party illustration p71, temperature bar chart p69, song illustrations p72",
+    "tables_checked": "Yes - Ordinalzahlen Datum (p67-68), Wünsche Konjunktiv II (p68), Grammatik/Kommunikation boxes",
+    "exercises_checked_for_taught_vocabulary": "Yes - exercises 1-7 plus all supplementary tasks 1-2 each",
+    "potentially_unclear_items": [
+      "Handwritten insertion on p65 'vielleicht' small but legible",
+      "Price-less: all fest names in Bildlexikon are clear at 90 dpi",
+      "Song lyrics gaps 'besser/mehr/schöner' on p72 left column partially handwritten font but legible"
+    ]
+  }
+}

@@ -1,0 +1,516 @@
+{
+  "lesson_number": 9,
+  "lesson_title": "Ich möchte was essen, Onkel Harry.",
+  "pages": {
+    "pdf": "49-52",
+    "book": "49-52",
+    "supplementary": "PDF 90 / Book 90 (Einladung, beim Essen)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "der Hunger",
+      "plural": "—",
+      "english": "hunger",
+      "persian": "گرسنگی",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "der Durst",
+      "plural": "—",
+      "english": "thirst",
+      "persian": "تشنگی",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "der Käse",
+      "plural": "die Käse",
+      "english": "cheese",
+      "persian": "پنیر",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "der Schinken",
+      "plural": "die Schinken",
+      "english": "ham",
+      "persian": "ژامبون",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "das Brot",
+      "plural": "die Brote",
+      "english": "bread",
+      "persian": "نان",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "das Käsebrot",
+      "plural": "die Käsebrote",
+      "english": "cheese sandwich",
+      "persian": "نان پنیری",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "das Schinkenbrot",
+      "plural": "die Schinkenbrote",
+      "english": "ham sandwich",
+      "persian": "نان ژامبونی",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "die Schokolade",
+      "plural": "die Schokoladen",
+      "english": "chocolate",
+      "persian": "شکلات",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "der Kuchen",
+      "plural": "die Kuchen",
+      "english": "cake",
+      "persian": "کیک",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "das Stück Kuchen",
+      "plural": "die Stücke Kuchen",
+      "english": "piece of cake",
+      "persian": "تکه کیک",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "die Suppe",
+      "plural": "die Suppen",
+      "english": "soup",
+      "persian": "سوپ",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Apfel",
+      "plural": "die Äpfel",
+      "english": "apple",
+      "persian": "سیب",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "die Milch",
+      "plural": "—",
+      "english": "milk",
+      "persian": "شیر",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "der Orangensaft",
+      "plural": "die Orangensäfte",
+      "english": "orange juice",
+      "persian": "آب پرتقال",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "die Orange",
+      "plural": "die Orangen",
+      "english": "orange",
+      "persian": "پرتقال",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "die Tomate",
+      "plural": "die Tomaten",
+      "english": "tomato",
+      "persian": "گوجه‌فرنگی",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "der Salat",
+      "plural": "die Salate",
+      "english": "salad",
+      "persian": "سالاد",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "das Wasser",
+      "plural": "die Wässer",
+      "english": "water",
+      "persian": "آب",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Kaffee",
+      "plural": "die Kaffees",
+      "english": "coffee",
+      "persian": "قهوه",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Tee",
+      "plural": "die Tees",
+      "english": "tea",
+      "persian": "چای",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "das Brötchen",
+      "plural": "die Brötchen",
+      "english": "bread roll",
+      "persian": "نان کوچک",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "das Müsli",
+      "plural": "die Müslis",
+      "english": "muesli",
+      "persian": "موسلی",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "die Fischsuppe",
+      "plural": "die Fischsuppen",
+      "english": "fish soup",
+      "persian": "سوپ ماهی",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "der Schokoladenkuchen",
+      "plural": "die Schokoladenkuchen",
+      "english": "chocolate cake",
+      "persian": "کیک شکلاتی",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "die Vorspeise",
+      "plural": "die Vorspeisen",
+      "english": "starter",
+      "persian": "پیش‌غذا",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "die Hauptspeise",
+      "plural": "die Hauptspeisen",
+      "english": "main course",
+      "persian": "غذای اصلی",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "das Dessert",
+      "plural": "die Desserts",
+      "english": "dessert",
+      "persian": "دسر",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "die Leberknödelsuppe",
+      "plural": "die Leberknödelsuppen",
+      "english": "liver dumpling soup",
+      "persian": "سوپ کوفته جگر",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "der Hamburger",
+      "plural": "die Hamburger",
+      "english": "hamburger",
+      "persian": "همبرگر",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "die Aalsuppe",
+      "plural": "die Aalsuppen",
+      "english": "eel soup",
+      "persian": "سوپ مارماهی",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "das Zürcher Geschnetzeltes",
+      "plural": "—",
+      "english": "Zürich ragout (veal)",
+      "persian": "گوشت زوریخی",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "die Rösti",
+      "plural": "die Rösti",
+      "english": "hash browns (Swiss)",
+      "persian": "رُشتی",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "das Wiener Schnitzel",
+      "plural": "die Wiener Schnitzel",
+      "english": "Viennese schnitzel",
+      "persian": "شنیتسل وینی",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "der Kartoffelsalat",
+      "plural": "die Kartoffelsalate",
+      "english": "potato salad",
+      "persian": "سالاد سیب‌زمینی",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "der Apfelstrudel",
+      "plural": "die Apfelstrudel",
+      "english": "apple strudel",
+      "persian": "اشترودل سیب",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "das Vanilleeis",
+      "plural": "—",
+      "english": "vanilla ice cream",
+      "persian": "بستنی وانیلی",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "die Rote Grütze",
+      "plural": "—",
+      "english": "red fruit jelly",
+      "persian": "دسر میوه قرمز",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "die Sahne",
+      "plural": "—",
+      "english": "cream",
+      "persian": "خامه",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "der Kühlschrank",
+      "plural": "die Kühlschränke",
+      "english": "fridge",
+      "persian": "یخچال",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "das Frühstück",
+      "plural": "die Frühstücke",
+      "english": "breakfast",
+      "persian": "صبحانه",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "das Wochenende",
+      "plural": "die Wochenenden",
+      "english": "weekend",
+      "persian": "آخر هفته",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "die Woche",
+      "plural": "die Wochen",
+      "english": "week",
+      "persian": "هفته",
+      "page": "PDF p. 50 / Book p. 50"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "möchten",
+      "third_person": "er/sie möchte",
+      "english": "would like to",
+      "persian": "خواستن (مودبانه)",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "mögen",
+      "third_person": "er/sie mag",
+      "english": "to like",
+      "persian": "دوست داشتن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "essen",
+      "third_person": "er/sie isst",
+      "english": "to eat",
+      "persian": "خوردن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "trinken",
+      "third_person": "er/sie trinkt",
+      "english": "to drink",
+      "persian": "نوشیدن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "frühstücken",
+      "third_person": "er/sie frühstückt",
+      "english": "to have breakfast",
+      "persian": "صبحانه خوردن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "schmecken",
+      "third_person": "es schmeckt",
+      "english": "to taste (good)",
+      "persian": "خوشمزه بودن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "kochen",
+      "third_person": "er/sie kocht",
+      "english": "to cook",
+      "persian": "آشپزی کردن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "machen (Kuchen machen)",
+      "third_person": "er/sie macht",
+      "english": "to make",
+      "persian": "درست کردن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "nehmen",
+      "third_person": "er/sie nimmt",
+      "english": "to take",
+      "persian": "گرفتن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er/sie hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 49 / Book p. 49"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "lecker",
+      "english": "delicious",
+      "persian": "خوشمزه",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "gern (ich esse gern)",
+      "english": "like to",
+      "persian": "با میل",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "oft / manchmal / (fast) nie",
+      "english": "often / sometimes / (almost) never",
+      "persian": "اغلب / گاهی / (تقریباً) هرگز",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "immer",
+      "english": "always",
+      "persian": "همیشه",
+      "page": "PDF p. 49 / Book p. 49"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Ich habe Hunger / Durst. / Ich habe keinen Käse. / Ich habe immer Milch im Kühlschrank.",
+      "english": "I am hungry / thirsty. / I have cheese etc.",
+      "persian": "گرسنه / تشنه‌ام",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "Was isst du gern zum Frühstück? - Ich esse gern Käsebrötchen.",
+      "english": "What do you like to eat for breakfast?",
+      "persian": "برای صبحانه چه دوست داری بخوری؟",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "Ich mag keinen Käse, aber Müsli esse ich sehr gern.",
+      "english": "I don't like cheese, but I like muesli.",
+      "persian": "من پنیر دوست ندارم اما موسلی خیلی دوست دارم",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "In der Woche frühstücke ich schon um sechs. / Am Wochenende ... um elf.",
+      "english": "During the week I breakfast at six.",
+      "persian": "در هفته ساعت شش صبحانه می‌خورم",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "Möchten Sie einen Kaffee? / Möchten Sie noch etwas Wurstsuppe? - Oh ja, bitte. / Nein, danke.",
+      "english": "Would you like a coffee?",
+      "persian": "آیا قهوه میل دارید؟",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "Guten Appetit! - Danke, gleichfalls / ebenfalls.",
+      "english": "Enjoy your meal!",
+      "persian": "نوش جان!",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "Das schmeckt sehr gut.",
+      "english": "That tastes very good.",
+      "persian": "خیلی خوشمزه است",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "Was essen wir als Vorspeise / Hauptgericht / Dessert? - Als Vorspeise essen wir Suppe.",
+      "english": "What shall we eat as starter?",
+      "persian": "به عنوان پیش‌غذا چه می‌خوریم؟",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "Ich koche heute Abend etwas. - Was kochst du denn?",
+      "english": "I'm cooking tonight.",
+      "persian": "امشب چیزی می‌پزم",
+      "page": "PDF p. 51 / Book p. 51"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "zum Frühstück / in der Woche / am Wochenende",
+      "type": "phrase",
+      "english": "for breakfast / during the week / at weekend",
+      "persian": "برای صبحانه / در هفته / آخر هفته",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "etwas / noch etwas",
+      "type": "pronoun",
+      "english": "something / some more",
+      "persian": "چیزی / کمی بیشتر",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "kein / keine (keinen Käse)",
+      "type": "Negativartikel",
+      "english": "no",
+      "persian": "هیچ",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "als Vorspeise / als Hauptgericht",
+      "type": "phrase",
+      "english": "as starter / main",
+      "persian": "به عنوان پیش‌غذا",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "mit Sahne / aus Kalbfleisch",
+      "type": "phrase",
+      "english": "with cream / from veal",
+      "persian": "با خامه / از گوشت گوساله",
+      "page": "PDF p. 52 / Book p. 52"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 49-52 / Book 49-52 + supplement PDF 90",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

@@ -1,0 +1,948 @@
+{
+  "lesson_number": 21,
+  "lesson_title": "Bei Rot musst du stehen, bei Grün darfst du gehen.",
+  "pages": {
+    "pdf": "49-52",
+    "book": "49-52",
+    "supplementary": "PDF 53-56 / Book 53-56 (LESEMAGAZIN Montagmorgen, 06.38 Uhr p53 | FILM-STATIONEN Clips 19-21 p54 | PROJEKT LANDESKUNDE DJ Ötzi p55 | AUSKLANG Bitte-Danke-Walzer p56)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90 dpi via rendered images l19_24_p49.png..p56.png, cross-checked OCR via pymupdf",
+  "nouns": [
+    {
+      "german": "die Ampel",
+      "plural": "die Ampeln",
+      "english": "traffic light",
+      "persian": "چراغ راهنما",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "der Fußgänger",
+      "plural": "die Fußgänger",
+      "english": "pedestrian",
+      "persian": "عابر پیاده",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "der Fahrradfahrer",
+      "plural": "die Fahrradfahrer",
+      "english": "cyclist",
+      "persian": "دوچرخه‌سوار",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "der Autofahrer",
+      "plural": "die Autofahrer",
+      "english": "car driver",
+      "persian": "راننده خودرو",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "die Regel",
+      "plural": "die Regeln",
+      "english": "rule",
+      "persian": "قانون",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "das Leben",
+      "plural": "die Leben",
+      "english": "life",
+      "persian": "زندگی",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "das Restaurant",
+      "plural": "die Restaurants",
+      "english": "restaurant",
+      "persian": "رستوران",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "das Flugzeug",
+      "plural": "die Flugzeuge",
+      "english": "airplane",
+      "persian": "هواپیما",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Park",
+      "plural": "die Parks",
+      "english": "park",
+      "persian": "پارک",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Weg",
+      "plural": "die Wege",
+      "english": "path / way",
+      "persian": "راه",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "die Wiese",
+      "plural": "die Wiesen",
+      "english": "meadow",
+      "persian": "چمن",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Mofafahrer",
+      "plural": "die Mofafahrer",
+      "english": "moped rider",
+      "persian": "موتورگازی‌سوار",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Helm",
+      "plural": "die Helme",
+      "english": "helmet",
+      "persian": "کلاه ایمنی",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Radfahrer",
+      "plural": "die Radfahrer",
+      "english": "cyclist",
+      "persian": "دوچرخه‌سوار",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "die Bibliothek",
+      "plural": "die Bibliotheken",
+      "english": "library",
+      "persian": "کتابخانه",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Bus",
+      "plural": "die Busse",
+      "english": "bus",
+      "persian": "اتوبوس",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Hund",
+      "plural": "die Hunde",
+      "english": "dog",
+      "persian": "سگ",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "das Geschäft",
+      "plural": "die Geschäfte",
+      "english": "shop",
+      "persian": "مغازه",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "das Schild",
+      "plural": "die Schilder",
+      "english": "sign",
+      "persian": "تابلو",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Motorradfahrer",
+      "plural": "die Motorradfahrer",
+      "english": "motorcyclist",
+      "persian": "موتورسوار",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Gurt",
+      "plural": "die Gurte",
+      "english": "seatbelt",
+      "persian": "کمربند ایمنی",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "das Krankenhaus",
+      "plural": "die Krankenhäuser",
+      "english": "hospital",
+      "persian": "بیمارستان",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "die Nähe",
+      "plural": "—",
+      "english": "proximity",
+      "persian": "نزدیکی",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "die Straße",
+      "plural": "die Straßen",
+      "english": "street",
+      "persian": "خیابان",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "das Kind",
+      "plural": "die Kinder",
+      "english": "child",
+      "persian": "کودک",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "die Leine",
+      "plural": "die Leinen",
+      "english": "leash",
+      "persian": "قلاده",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "das Fahrrad",
+      "plural": "die Fahrräder",
+      "english": "bicycle",
+      "persian": "دوچرخه",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "das Wasser",
+      "plural": "—",
+      "english": "water",
+      "persian": "آب",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "die Stadt",
+      "plural": "die Städte",
+      "english": "city",
+      "persian": "شهر",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "das Plakat",
+      "plural": "die Plakate",
+      "english": "poster",
+      "persian": "پوستر",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "der Monat",
+      "plural": "die Monate",
+      "english": "month",
+      "persian": "ماه",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "die Woche",
+      "plural": "die Wochen",
+      "english": "week",
+      "persian": "هفته",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "der Urlaub",
+      "plural": "die Urlaube",
+      "english": "vacation",
+      "persian": "تعطیلات",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "die Party",
+      "plural": "die Partys",
+      "english": "party",
+      "persian": "مهمانی",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "die Meinung",
+      "plural": "die Meinungen",
+      "english": "opinion",
+      "persian": "نظر",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Verkehr",
+      "plural": "—",
+      "english": "traffic",
+      "persian": "ترافیک",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "die Umwelt",
+      "plural": "—",
+      "english": "environment",
+      "persian": "محیط زیست",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "die Überschrift",
+      "plural": "die Überschriften",
+      "english": "headline",
+      "persian": "تیتر",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Satz",
+      "plural": "die Sätze",
+      "english": "sentence",
+      "persian": "جمله",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "die Zeitungskolumne",
+      "plural": "die Zeitungskolumnen",
+      "english": "newspaper column",
+      "persian": "ستون روزنامه",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "das Bildlexikon",
+      "plural": "die Bildlexika",
+      "english": "picture dictionary",
+      "persian": "فرهنگ مصور",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "der Modalverb",
+      "plural": "die Modalverben",
+      "english": "modal verb",
+      "persian": "فعل وجهی",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "die U-Bahn",
+      "plural": "die U-Bahnen",
+      "english": "subway",
+      "persian": "مترو",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "der Fahrgast",
+      "plural": "die Fahrgäste",
+      "english": "passenger",
+      "persian": "مسافر",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "das Mikro",
+      "plural": "die Mikros",
+      "english": "microphone",
+      "persian": "میکروفن",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "das Aufnahmegerät",
+      "plural": "die Aufnahmegeräte",
+      "english": "recording device",
+      "persian": "دستگاه ضبط",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "der Krankenpfleger",
+      "plural": "die Krankenpfleger",
+      "english": "male nurse",
+      "persian": "پرستار مرد",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "die Arbeit",
+      "plural": "die Arbeiten",
+      "english": "work",
+      "persian": "کار",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "der Nachtdienst",
+      "plural": "die Nachtdienste",
+      "english": "night shift",
+      "persian": "شیفت شب",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "der Kollege",
+      "plural": "die Kollegen",
+      "english": "colleague",
+      "persian": "همکار",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "die Station",
+      "plural": "die Stationen",
+      "english": "ward / station",
+      "persian": "بخش",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "der Patient",
+      "plural": "die Patienten",
+      "english": "patient",
+      "persian": "بیمار",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "die Medikamente",
+      "plural": "—",
+      "english": "medication",
+      "persian": "دارو",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "die Polizei",
+      "plural": "—",
+      "english": "police",
+      "persian": "پلیس",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "die Dienststelle",
+      "plural": "die Dienststellen",
+      "english": "office / duty station",
+      "persian": "اداره",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "der Streifendienst",
+      "plural": "—",
+      "english": "patrol duty",
+      "persian": "گشت",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "der Kindergarten",
+      "plural": "die Kindergärten",
+      "english": "kindergarten",
+      "persian": "مهدکودک",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "der Zauberer",
+      "plural": "die Zauberer",
+      "english": "magician",
+      "persian": "شعبده‌باز",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "der Künstlername",
+      "plural": "die Künstlernamen",
+      "english": "stage name",
+      "persian": "نام هنری",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "die Show",
+      "plural": "die Shows",
+      "english": "show",
+      "persian": "نمایش",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "das Kreuzfahrtschiff",
+      "plural": "die Kreuzfahrtschiffe",
+      "english": "cruise ship",
+      "persian": "کشتی کروز",
+      "page": "PDF p. 53 / Book p. 53"
+    },
+    {
+      "german": "die Wahl",
+      "plural": "die Wahlen",
+      "english": "choice / election",
+      "persian": "انتخاب",
+      "page": "PDF p. 56 / Book p. 56"
+    },
+    {
+      "german": "der Walzer",
+      "plural": "die Walzer",
+      "english": "waltz",
+      "persian": "والس",
+      "page": "PDF p. 56 / Book p. 56"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "stehen",
+      "third_person": "er steht",
+      "english": "to stand",
+      "persian": "ایستادن",
+      "separable": false,
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "infinitive": "gehen",
+      "third_person": "er geht",
+      "english": "to go / walk",
+      "persian": "رفتن",
+      "separable": false,
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "infinitive": "dürfen",
+      "third_person": "er darf",
+      "english": "to be allowed to",
+      "persian": "اجازه داشتن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "müssen",
+      "third_person": "er muss",
+      "english": "to have to / must",
+      "persian": "مجبور بودن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "rauchen",
+      "third_person": "er raucht",
+      "english": "to smoke",
+      "persian": "سیگار کشیدن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "telefonieren",
+      "third_person": "er telefoniert",
+      "english": "to phone",
+      "persian": "تلفن کردن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "verstehen",
+      "third_person": "er versteht",
+      "english": "to understand",
+      "persian": "فهمیدن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "bleiben",
+      "third_person": "er bleibt",
+      "english": "to stay",
+      "persian": "ماندن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "tragen",
+      "third_person": "er trägt",
+      "english": "to wear / carry",
+      "persian": "پوشیدن / حمل کردن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "essen",
+      "third_person": "er isst",
+      "english": "to eat",
+      "persian": "خوردن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "regeln",
+      "third_person": "er regelt",
+      "english": "to regulate",
+      "persian": "تنظیم کردن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "hupen",
+      "third_person": "er hupt",
+      "english": "to honk",
+      "persian": "بوق زدن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "anlegen",
+      "third_person": "er legt an",
+      "english": "to put on (seatbelt)",
+      "persian": "بستن",
+      "separable": true,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "fahren",
+      "third_person": "er fährt",
+      "english": "to drive",
+      "persian": "رانندگی کردن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "achten",
+      "third_person": "er achtet (auf)",
+      "english": "to pay attention to",
+      "persian": "توجه کردن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "nehmen",
+      "third_person": "er nimmt",
+      "english": "to take",
+      "persian": "گرفتن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "schieben",
+      "third_person": "er schiebt",
+      "english": "to push",
+      "persian": "هل دادن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "sitzen",
+      "third_person": "er sitzt",
+      "english": "to sit",
+      "persian": "نشستن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "parken",
+      "third_person": "er parkt",
+      "english": "to park",
+      "persian": "پارک کردن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "überqueren",
+      "third_person": "er überquert",
+      "english": "to cross",
+      "persian": "عبور کردن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "trinken",
+      "third_person": "er trinkt",
+      "english": "to drink",
+      "persian": "نوشیدن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "arbeiten",
+      "third_person": "er arbeitet",
+      "english": "to work",
+      "persian": "کار کردن",
+      "separable": false,
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "infinitive": "aufstehen",
+      "third_person": "er steht auf",
+      "english": "to get up",
+      "persian": "بلند شدن",
+      "separable": true,
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "infinitive": "feiern",
+      "third_person": "er feiert",
+      "english": "to celebrate",
+      "persian": "جشن گرفتن",
+      "separable": false,
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "infinitive": "machen",
+      "third_person": "er macht",
+      "english": "to do / make",
+      "persian": "انجام دادن",
+      "separable": false,
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "infinitive": "finden",
+      "third_person": "er findet",
+      "english": "to find",
+      "persian": "یافتن",
+      "separable": false,
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er hört",
+      "english": "to hear",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "infinitive": "lesen",
+      "third_person": "er liest",
+      "english": "to read",
+      "persian": "خواندن",
+      "separable": false,
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "infinitive": "erlauben",
+      "third_person": "er erlaubt",
+      "english": "to allow",
+      "persian": "اجازه دادن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "infinitive": "verbieten",
+      "third_person": "er verbietet",
+      "english": "to forbid",
+      "persian": "ممنوع کردن",
+      "separable": false,
+      "page": "PDF p. 51 / Book p. 51"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "erlaubt",
+      "english": "allowed",
+      "persian": "مجاز",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "verboten",
+      "english": "forbidden",
+      "persian": "ممنوع",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "falsch / nicht in Ordnung",
+      "english": "wrong / not okay",
+      "persian": "نادرست / نابجا",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "richtig / in Ordnung",
+      "english": "correct / okay",
+      "persian": "درست",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "gefährlich",
+      "english": "dangerous",
+      "persian": "خطرناک",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "(sehr) gefährlich",
+      "english": "(very) dangerous",
+      "persian": "خیلی خطرناک",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "leise",
+      "english": "quiet",
+      "persian": "آرام / بی‌صدا",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "langsam",
+      "english": "slow",
+      "persian": "آهسته",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "frei",
+      "english": "free",
+      "persian": "آزاد",
+      "page": "PDF p. 55 / Book p. 55"
+    },
+    {
+      "german": "schlimm / nicht so schlimm",
+      "english": "bad / not so bad",
+      "persian": "بد / نه چندان بد",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "freundlich",
+      "english": "friendly",
+      "persian": "مهربان",
+      "page": "PDF p. 56 / Book p. 56"
+    },
+    {
+      "german": "herzlich",
+      "english": "heartfelt",
+      "persian": "صمیمانه",
+      "page": "PDF p. 56 / Book p. 56"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Bei Rot musst du stehen, bei Grün darfst du gehen.",
+      "english": "At red you must stand, at green you may go.",
+      "persian": "در چراغ قرمز باید بایستی، در سبز می‌توانی بروی",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "Was passiert hier?",
+      "english": "What is happening here?",
+      "persian": "اینجا چه اتفاقی می‌افتد؟",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "Da sind ein Mann und ein Kind ...",
+      "english": "There is a man and a child ...",
+      "persian": "آنجا مرد و کودکی هستند",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "Zu Fuß gehe ich manchmal bei Rot über die Ampel.",
+      "english": "On foot I sometimes cross at red.",
+      "persian": "پیاده گاهی در قرمز از چراغ می‌گذرم",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "Im Restaurant darf man nicht rauchen.",
+      "english": "In the restaurant one may not smoke.",
+      "persian": "در رستوران نباید سیگار کشید",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "Man muss leise sein. / Man darf nicht essen.",
+      "english": "One must be quiet. / One may not eat.",
+      "persian": "باید ساکت بود / نباید خورد",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "Das ist verboten. = Das darf man nicht.",
+      "english": "That is forbidden. = One may not do that.",
+      "persian": "این ممنوع است = مجاز نیست",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "Das ist erlaubt. = Das darf man.",
+      "english": "That is allowed. = One may do that.",
+      "persian": "این مجاز است",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "Im Flugzeug darf man nicht telefonieren. Das finde ich richtig. Das ist gefährlich.",
+      "english": "In the plane you may not phone. I find that correct. That's dangerous.",
+      "persian": "در هواپیما نباید تلفن کرد، به نظرم درست است",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "Das finde ich nicht so schlimm / gar nicht gut / sehr gefährlich.",
+      "english": "I find that not so bad / not good at all / very dangerous.",
+      "persian": "این را بد / اصلا خوب / خیلی خطرناک نمی‌دانم",
+      "page": "PDF p. 51 / Book p. 51"
+    },
+    {
+      "german": "Willkommen in Glückstadt! Das darf man nicht / Das darf man / Das muss man",
+      "english": "Welcome to Happiness Town! That one may not / may / must",
+      "persian": "به شهر خوشبختی خوش آمدید",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "Hier darf man (nicht) rauchen / ...",
+      "english": "Here one may (not) smoke",
+      "persian": "اینجا (نباید) سیگار کشید",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "Muss man denn wirklich ALLES regeln?",
+      "english": "Does one really have to regulate EVERYTHING?",
+      "persian": "آیا واقعا باید همه چیز را قانونمند کرد؟",
+      "page": "PDF p. 50 / Book p. 50"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "für / gegen",
+      "type": "preposition",
+      "english": "for / against",
+      "persian": "برای / علیه",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "bei Rot / bei Grün",
+      "type": "preposition + color",
+      "english": "at red / at green",
+      "persian": "در قرمز / سبز",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "als Fußgänger / als Fahrradfahrer / als Autofahrer",
+      "type": "preposition",
+      "english": "as pedestrian / cyclist / driver",
+      "persian": "به عنوان عابر / دوچرخه‌سوار / راننده",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "zu Fuß",
+      "type": "expression",
+      "english": "on foot",
+      "persian": "پیاده",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "man",
+      "type": "pronoun impersonal",
+      "english": "one / you (general)",
+      "persian": "آدم / انسان",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "immer",
+      "type": "adverb",
+      "english": "always",
+      "persian": "همیشه",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "manchmal",
+      "type": "adverb",
+      "english": "sometimes",
+      "persian": "گاهی",
+      "page": "PDF p. 49 / Book p. 49"
+    },
+    {
+      "german": "wieder",
+      "type": "adverb",
+      "english": "again",
+      "persian": "دوباره",
+      "page": "PDF p. 50 / Book p. 50"
+    },
+    {
+      "german": "vor / nach",
+      "type": "preposition",
+      "english": "before / after",
+      "persian": "قبل / بعد",
+      "page": "PDF p. 52 / Book p. 52"
+    },
+    {
+      "german": "etwa",
+      "type": "particle",
+      "english": "about / approximately",
+      "persian": "تقریبا",
+      "page": "PDF p. 55 / Book p. 55"
+    },
+    {
+      "german": "Schon wieder...",
+      "type": "expression",
+      "english": "Again...",
+      "persian": "دوباره...",
+      "page": "PDF p. 56 / Book p. 56"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 49-56 / Book 49-56 (core 49-52 plus supplementary 53-56)",
+    "vocabulary_sections_checked": "Yes - Bildlexikon green 'erlaubt' bar (p50 top, p51 top), Zeitungskolumne text p50, grammar table müssen/dürfen p50, park illustration p51, Mini-Projekt Glückstadt p52, Lesemagazin p53, Film-Stationen p54, Projekt DJ Ötzi p55, Ausklang Walzer p56",
+    "images_and_illustrated_vocabulary_checked": "Yes - traffic lights, park signs (Picknick erlaubt etc., Baden erlaubt, Grillen erlaubt, Rauchen erlaubt, Angeln erlaubt, Fahrräder, etc.), prohibition signs (Hund, Rauchen, Essen etc.), Glückstadt city drawing, crosswalk illustration",
+    "tables_checked": "Yes - müssen/dürfen conjugation, Modalverben im Satz, übrigens Motorradhelm/Gurt table, Grammatik/Kommunikation boxes p52",
+    "exercises_checked_for_taught_vocabulary": "Yes - exercises 1-8 plus all supplementary tasks",
+    "potentially_unclear_items": [
+      "Lesemagazin tiny print 'U-Bahn-Waggon' partly truncated but legible",
+      "DJ Ötzi Steckbrief handwritten 'blond (gefärbt)' slightly blurry"
+    ]
+  }
+}

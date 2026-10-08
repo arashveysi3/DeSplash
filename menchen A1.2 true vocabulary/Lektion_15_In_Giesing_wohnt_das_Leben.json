@@ -1,0 +1,1050 @@
+{
+  "lesson_number": 15,
+  "lesson_title": "In Giesing wohnt das Leben!",
+  "pages": {
+    "pdf": "17-20",
+    "book": "17-20",
+    "supplementary": "PDF 21-24 / Book 21-24 (LESEMAGAZIN Vom Seehaus bis zum Teehaus p21 | FILM-STATIONEN Clips 13-15 p22 | PROJEKT LANDESKUNDE Hamburg – das Tor zur Welt p23 | AUSKLANG Ich finde es hier super! p24)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90-120 dpi via rendered images (l14_15_p17..p24, rerender where needed)",
+  "nouns": [
+    {
+      "german": "das Leben",
+      "plural": "die Leben",
+      "english": "life",
+      "persian": "زندگی",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "der Blick",
+      "plural": "die Blicke",
+      "english": "view",
+      "persian": "چشم‌انداز",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "das Fenster",
+      "plural": "die Fenster",
+      "english": "window",
+      "persian": "پنجره",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "das Bild",
+      "plural": "die Bilder",
+      "english": "picture",
+      "persian": "تصویر",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "das Foto",
+      "plural": "die Fotos",
+      "english": "photo",
+      "persian": "عکس",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "der Text",
+      "plural": "die Texte",
+      "english": "text",
+      "persian": "متن",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "das Café",
+      "plural": "die Cafés",
+      "english": "café",
+      "persian": "کافه",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "der Park",
+      "plural": "die Parks",
+      "english": "park",
+      "persian": "پارک",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "der Hafen",
+      "plural": "die Häfen",
+      "english": "harbour",
+      "persian": "بندر",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "die Straße",
+      "plural": "die Straßen",
+      "english": "street",
+      "persian": "خیابان",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "das Meer",
+      "plural": "die Meere",
+      "english": "sea",
+      "persian": "دریا",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "der Turm",
+      "plural": "die Türme",
+      "english": "tower",
+      "persian": "برج",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Kirche",
+      "plural": "die Kirchen",
+      "english": "church",
+      "persian": "کلیسا",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Schloss",
+      "plural": "die Schlösser",
+      "english": "castle / palace",
+      "persian": "قصر",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Rathaus",
+      "plural": "die Rathäuser",
+      "english": "town hall",
+      "persian": "شهرداری",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Markt",
+      "plural": "die Märkte",
+      "english": "market",
+      "persian": "بازار",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Altstadt",
+      "plural": "die Altstädte",
+      "english": "old town",
+      "persian": "بافت قدیمی شهر",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Geschäft",
+      "plural": "die Geschäfte",
+      "english": "shop / business",
+      "persian": "مغازه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Laden",
+      "plural": "die Läden",
+      "english": "shop",
+      "persian": "فروشگاه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Reisebüro",
+      "plural": "die Reisebüros",
+      "english": "travel agency",
+      "persian": "آژانس مسافرتی",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Kino",
+      "plural": "die Kinos",
+      "english": "cinema",
+      "persian": "سینما",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Film",
+      "plural": "die Filme",
+      "english": "film",
+      "persian": "فیلم",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Bibliothek",
+      "plural": "die Bibliotheken",
+      "english": "library",
+      "persian": "کتابخانه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Schule",
+      "plural": "die Schulen",
+      "english": "school",
+      "persian": "مدرسه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Jugendherberge",
+      "plural": "die Jugendherbergen",
+      "english": "youth hostel",
+      "persian": "خوابگاه جوانان",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Museum",
+      "plural": "die Museen",
+      "english": "museum",
+      "persian": "موزه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Friseur",
+      "plural": "die Friseure",
+      "english": "hairdresser",
+      "persian": "آرایشگاه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Wetter",
+      "plural": "—",
+      "english": "weather",
+      "persian": "آب و هوا",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Foto",
+      "plural": "die Fotos",
+      "english": "photo",
+      "persian": "عکس",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Restaurant",
+      "plural": "die Restaurants",
+      "english": "restaurant",
+      "persian": "رستوران",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Rezept",
+      "plural": "die Rezepte",
+      "english": "recipe",
+      "persian": "دستور غذا",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Theater",
+      "plural": "die Theater",
+      "english": "theatre",
+      "persian": "تئاتر",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Blog",
+      "plural": "die Blogs",
+      "english": "blog",
+      "persian": "وبلاگ",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Stadt",
+      "plural": "die Städte",
+      "english": "city",
+      "persian": "شهر",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Stadtviertel",
+      "plural": "die Stadtviertel",
+      "english": "district / quarter",
+      "persian": "محله",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Straße",
+      "plural": "die Straßen",
+      "english": "street",
+      "persian": "خیابان",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Einrichtung",
+      "plural": "die Einrichtungen",
+      "english": "facility / institution",
+      "persian": "تأسیسات",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Ort",
+      "plural": "die Orte",
+      "english": "place",
+      "persian": "مکان",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Lieblingsviertel",
+      "plural": "die Lieblingsviertel",
+      "english": "favourite district",
+      "persian": "محله محبوب",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Stadtteil",
+      "plural": "die Stadtteile",
+      "english": "district",
+      "persian": "ناحیه شهری",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Jahr",
+      "plural": "die Jahre",
+      "english": "year",
+      "persian": "سال",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Familie",
+      "plural": "die Familien",
+      "english": "family",
+      "persian": "خانواده",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Alten (Alte und Junge)",
+      "plural": "—",
+      "english": "old people (and young)",
+      "persian": "سالمندان و جوانان",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Arbeiter",
+      "plural": "die Arbeiter",
+      "english": "worker",
+      "persian": "کارگر",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Student",
+      "plural": "die Studenten",
+      "english": "student",
+      "persian": "دانشجو",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Ausländer",
+      "plural": "die Ausländer",
+      "english": "foreigner",
+      "persian": "خارجی",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Kneipe",
+      "plural": "die Kneipen",
+      "english": "pub",
+      "persian": "میخانه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Werkstatt",
+      "plural": "die Werkstätten",
+      "english": "workshop",
+      "persian": "کارگاه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Kindergarten",
+      "plural": "die Kindergärten",
+      "english": "kindergarten",
+      "persian": "مهد کودک",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Spielplatz",
+      "plural": "die Spielplätze",
+      "english": "playground",
+      "persian": "زمین بازی",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Kommentar",
+      "plural": "die Kommentare",
+      "english": "comment",
+      "persian": "نظر",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Ecke",
+      "plural": "die Ecken",
+      "english": "corner",
+      "persian": "گوشه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "das Nachbarhaus",
+      "plural": "die Nachbarhäuser",
+      "english": "neighbour house",
+      "persian": "خانه همسایه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Post",
+      "plural": "—",
+      "english": "post office",
+      "persian": "اداره پست",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Meter",
+      "plural": "die Meter",
+      "english": "meter",
+      "persian": "متر",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Link",
+      "plural": "die Links",
+      "english": "link",
+      "persian": "لینک",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Heimat",
+      "plural": "—",
+      "english": "homeland",
+      "persian": "زادگاه",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Heimatort",
+      "plural": "die Heimatorte",
+      "english": "hometown",
+      "persian": "زادگاه",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Einkauf",
+      "plural": "die Einkäufe",
+      "english": "shopping",
+      "persian": "خرید",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Ruhe",
+      "plural": "—",
+      "english": "quiet / peace",
+      "persian": "آرامش",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "das Land",
+      "plural": "die Länder",
+      "english": "countryside / country",
+      "persian": "روستا / کشور",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Mensch",
+      "plural": "die Menschen",
+      "english": "person / human",
+      "persian": "انسان",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "das Kind",
+      "plural": "die Kinder",
+      "english": "child",
+      "persian": "کودک",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Beruf",
+      "plural": "die Berufe",
+      "english": "profession",
+      "persian": "شغل",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "die Sprache",
+      "plural": "die Sprachen",
+      "english": "language",
+      "persian": "زبان",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Hobby",
+      "plural": "die Hobbys",
+      "english": "hobby",
+      "persian": "سرگرمی",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "die Farbe",
+      "plural": "die Farben",
+      "english": "colour",
+      "persian": "رنگ",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Obst",
+      "plural": "—",
+      "english": "fruit",
+      "persian": "میوه",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Computerspiel",
+      "plural": "die Computerspiele",
+      "english": "computer game",
+      "persian": "بازی کامپیوتری",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Buch",
+      "plural": "die Bücher",
+      "english": "book",
+      "persian": "کتاب",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "der Urlaubsort",
+      "plural": "die Urlaubsorte",
+      "english": "holiday destination",
+      "persian": "مقصد تعطیلات",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "das Lieblingsrestaurant",
+      "plural": "die Lieblingsrestaurants",
+      "english": "favourite restaurant",
+      "persian": "رستوران محبوب",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "die Lieblingsstadt",
+      "plural": "die Lieblingsstädte",
+      "english": "favourite city",
+      "persian": "شهر محبوب",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "der Lieblingsfilm",
+      "plural": "die Lieblingsfilme",
+      "english": "favourite film",
+      "persian": "فیلم محبوب",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "die Natur",
+      "plural": "—",
+      "english": "nature",
+      "persian": "طبیعت",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "die Landschaft",
+      "plural": "die Landschaften",
+      "english": "landscape",
+      "persian": "منظره",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "der Wald",
+      "plural": "die Wälder",
+      "english": "forest",
+      "persian": "جنگل",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "der Berg",
+      "plural": "die Berge",
+      "english": "mountain",
+      "persian": "کوه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Stadt",
+      "plural": "die Städte",
+      "english": "city",
+      "persian": "شهر",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "die Größe",
+      "plural": "die Größen",
+      "english": "size",
+      "persian": "اندازه",
+      "page": "PDF p. 20 / Book p. 20"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "sehen",
+      "third_person": "er sieht",
+      "english": "to see",
+      "persian": "دیدن",
+      "separable": false,
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "infinitive": "mögen",
+      "third_person": "er mag",
+      "english": "to like",
+      "persian": "دوست داشتن",
+      "separable": false,
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er hört",
+      "english": "to hear",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "infinitive": "ordnen",
+      "third_person": "er ordnet zu",
+      "english": "to order / assign",
+      "persian": "مرتب کردن",
+      "separable": true,
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "infinitive": "überfliegen",
+      "third_person": "er überfliegt",
+      "english": "to skim",
+      "persian": "مرور اجمالی کردن",
+      "separable": false,
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "infinitive": "schreiben",
+      "third_person": "er schreibt",
+      "english": "to write",
+      "persian": "نوشتن",
+      "separable": false,
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "infinitive": "kreuzen",
+      "third_person": "er kreuzt an",
+      "english": "to tick",
+      "persian": "علامت زدن",
+      "separable": true,
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "infinitive": "notieren",
+      "third_person": "er notiert",
+      "english": "to note",
+      "persian": "یادداشت کردن",
+      "separable": false,
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "infinitive": "wohnen",
+      "third_person": "er wohnt",
+      "english": "to live",
+      "persian": "زندگی کردن",
+      "separable": false,
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "infinitive": "leben",
+      "third_person": "er lebt",
+      "english": "to live",
+      "persian": "زندگی کردن",
+      "separable": false,
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "infinitive": "gefallen",
+      "third_person": "es gefällt (mir/dir)",
+      "english": "to please",
+      "persian": "خوش آمدن",
+      "separable": false,
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "infinitive": "gehören",
+      "third_person": "es gehört (uns)",
+      "english": "to belong",
+      "persian": "تعلق داشتن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "danken",
+      "third_person": "er dankt (mir)",
+      "english": "to thank",
+      "persian": "تشکر کردن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "helfen",
+      "third_person": "er hilft (mir)",
+      "english": "to help",
+      "persian": "کمک کردن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "lesen",
+      "third_person": "er liest",
+      "english": "to read",
+      "persian": "خواندن",
+      "separable": false,
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "infinitive": "fragen",
+      "third_person": "er fragt",
+      "english": "to ask",
+      "persian": "پرسیدن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "antworten",
+      "third_person": "er antwortet",
+      "english": "to answer",
+      "persian": "پاسخ دادن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "kaufen",
+      "third_person": "er kauft ein",
+      "english": "to shop",
+      "persian": "خرید کردن",
+      "separable": true,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "lieben",
+      "third_person": "er liebt",
+      "english": "to love",
+      "persian": "دوست داشتن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "finden",
+      "third_person": "er findet",
+      "english": "to find",
+      "persian": "یافتن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "kennen",
+      "third_person": "er kennt",
+      "english": "to know",
+      "persian": "شناختن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "infinitive": "wissen",
+      "third_person": "er weiß",
+      "english": "to know (fact)",
+      "persian": "دانستن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "infinitive": "machen",
+      "third_person": "er macht",
+      "english": "to do / make",
+      "persian": "انجام دادن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "infinitive": "tauschen",
+      "third_person": "er tauscht",
+      "english": "to exchange",
+      "persian": "عوض کردن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "infinitive": "beantworten",
+      "third_person": "er beantwortet",
+      "english": "to answer",
+      "persian": "جواب دادن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "infinitive": "ziehen",
+      "third_person": "er zieht",
+      "english": "to pull / draw",
+      "persian": "کشیدن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "infinitive": "erzählen",
+      "third_person": "er erzählt",
+      "english": "to tell",
+      "persian": "تعریف کردن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "infinitive": "raten",
+      "third_person": "er rät",
+      "english": "to guess",
+      "persian": "حدس زدن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "infinitive": "bewerten",
+      "third_person": "er bewertet",
+      "english": "to evaluate",
+      "persian": "ارزیابی کردن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "fehlen",
+      "third_person": "es fehlt",
+      "english": "to be missing",
+      "persian": "کم بودن",
+      "separable": false,
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "infinitive": "gehören",
+      "third_person": "es gehört mir/dir",
+      "english": "to belong to",
+      "persian": "متعلق بودن",
+      "separable": false,
+      "page": "PDF p. 20 / Book p. 20"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "normal",
+      "english": "normal",
+      "persian": "عادی",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "toll",
+      "english": "great",
+      "persian": "عالی",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "super",
+      "english": "super",
+      "persian": "عالی",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "wichtig",
+      "english": "important",
+      "persian": "مهم",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "wenig",
+      "english": "few / little",
+      "persian": "کم",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "ganz",
+      "english": "quite / whole",
+      "persian": "کاملا",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "lieb",
+      "english": "dear",
+      "persian": "عزیز",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "allein",
+      "english": "alone",
+      "persian": "تنها",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "gern",
+      "english": "gladly",
+      "persian": "با میل",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "letzte",
+      "english": "last",
+      "persian": "آخر",
+      "page": "PDF p. 18 / Book p. 18"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Giesing ist ganz normal.",
+      "english": "Giesing is quite normal.",
+      "persian": "گیزینگ کاملا عادی است",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "Das gefällt mir.",
+      "english": "I like that.",
+      "persian": "این از ... خوش آمدن",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "Der Stadtteil gehört uns allen.",
+      "english": "The district belongs to all of us.",
+      "persian": "محله به همه ما تعلق دارد",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "Was gefällt Ihnen (nicht) an dem Viertel?",
+      "english": "What do you (not) like about the district?",
+      "persian": "چه چیزی در محله مورد پسند شماست؟",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "Was gibt es in dem Viertel? Was fehlt?",
+      "english": "What is in the district? What is missing?",
+      "persian": "در محله چه چیزی وجود دارد؟ چه چیزی کم است؟",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "Es gibt viele Kneipen und Restaurants.",
+      "english": "There are many pubs and restaurants.",
+      "persian": "کافه‌ها و رستوران‌های زیادی وجود دارد",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "Gibt es eigentlich auch ein Kino in ...?",
+      "english": "Is there actually also a cinema in ...?",
+      "persian": "آیا واقعا سینمایی هم در ... وجود دارد؟",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "In ... gibt es leider nur sehr wenige Geschäfte.",
+      "english": "In ... there are unfortunately only very few shops.",
+      "persian": "متأسفانه در ... فقط مغازه‌های خیلی کمی وجود دارد",
+      "page": "PDF p. 20 / Book p. 20"
+    },
+    {
+      "german": "Ich sehe eine Straße. Ich mag den Blick nicht so gern.",
+      "english": "I see a street. I don’t like the view that much.",
+      "persian": "من خیابانی می‌بینم. منظره را خیلی دوست ندارم",
+      "page": "PDF p. 17 / Book p. 17"
+    },
+    {
+      "german": "seit einem halben Jahr",
+      "english": "for half a year",
+      "persian": "از شش ماه پیش",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "sehr gut zu Fuß hin",
+      "english": "very easy to get there on foot",
+      "persian": "پیاده خیلی خوب می‌توان رسید",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "gleich um die Ecke",
+      "english": "right around the corner",
+      "persian": "همین گوشه",
+      "page": "PDF p. 18 / Book p. 18"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "in",
+      "type": "preposition + Dativ",
+      "english": "in",
+      "persian": "در",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "mir / dir / ihm / ihr / uns / euch / ihnen/Ihnen",
+      "type": "pronoun Dativ",
+      "english": "to me / you / him etc.",
+      "persian": "به من / تو ...",
+      "page": "PDF p. 19-20 / Book p. 19-20"
+    },
+    {
+      "german": "Was?",
+      "type": "question word",
+      "english": "what?",
+      "persian": "چه؟",
+      "page": "PDF p. 19 / Book p. 19"
+    },
+    {
+      "german": "Worüber? / Wofür?",
+      "type": "question word",
+      "english": "about what? / for what?",
+      "persian": "درباره چه؟",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "wie",
+      "type": "adverb",
+      "english": "how",
+      "persian": "چگونه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "und / oder",
+      "type": "conjunction",
+      "english": "and / or",
+      "persian": "و / یا",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "auch",
+      "type": "particle",
+      "english": "also",
+      "persian": "همچنین",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "leider",
+      "type": "adverb",
+      "english": "unfortunately",
+      "persian": "متأسفانه",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "sehr wenige",
+      "type": "quantifier",
+      "english": "very few",
+      "persian": "خیلی کم",
+      "page": "PDF p. 18 / Book p. 18"
+    },
+    {
+      "german": "eigentlich",
+      "type": "adverb",
+      "english": "actually",
+      "persian": "در واقع",
+      "page": "PDF p. 20 / Book p. 20"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 17-20 / Book 17-20 + supplementary PDF 21-24 / Book 21-24",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": [
+      "Bildlexikon bar on PDF p. 18 top partially truncated at scan edge but Turm/Kirche etc legible",
+      "Blog handwritten correction on PDF p. 19 c (Marlene table) blurry – not counted as vocabulary"
+    ]
+  }
+}

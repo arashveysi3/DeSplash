@@ -1,0 +1,664 @@
+{
+  "lesson_number": 22,
+  "lesson_title": "Am besten sind seine Schuhe!",
+  "pages": {
+    "pdf": "57-60",
+    "book": "57-60",
+    "supplementary": "Modul 8 supplementary see Lektion 24 (PDF 69-72 / Book 69-72)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90 dpi via rendered images l19_24_p57.png..p60.png, cross-checked OCR via pymupdf",
+  "nouns": [
+    {
+      "german": "der Schuh",
+      "plural": "die Schuhe",
+      "english": "shoe",
+      "persian": "کفش",
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "german": "die Kleidung",
+      "plural": "—",
+      "english": "clothing",
+      "persian": "لباس",
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "german": "die Hose",
+      "plural": "die Hosen",
+      "english": "trousers",
+      "persian": "شلوار",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "das Hemd",
+      "plural": "die Hemden",
+      "english": "shirt",
+      "persian": "پیراهن",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "das T-Shirt",
+      "plural": "die T-Shirts",
+      "english": "T-shirt",
+      "persian": "تی‌شرت",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "der Mantel",
+      "plural": "die Mäntel",
+      "english": "coat",
+      "persian": "پالتو",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "die Bluse",
+      "plural": "die Blusen",
+      "english": "blouse",
+      "persian": "بلوز زنانه",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "die Strumpfhose",
+      "plural": "die Strumpfhosen",
+      "english": "tights",
+      "persian": "جوراب شلواری",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "die Jacke",
+      "plural": "die Jacken",
+      "english": "jacket",
+      "persian": "ژاکت",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "der Hut",
+      "plural": "die Hüte",
+      "english": "hat",
+      "persian": "کلاه",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "die Mütze",
+      "plural": "die Mützen",
+      "english": "cap / beanie",
+      "persian": "کلاه بافتنی",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "das Kleid",
+      "plural": "die Kleider",
+      "english": "dress",
+      "persian": "لباس زنانه",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "der Pullover",
+      "plural": "die Pullover",
+      "english": "pullover",
+      "persian": "پلیور",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "der Rock",
+      "plural": "die Röcke",
+      "english": "skirt",
+      "persian": "دامن",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "die Socke / der Strumpf",
+      "plural": "die Socken / die Strümpfe",
+      "english": "sock / stocking",
+      "persian": "جوراب",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "der Gürtel",
+      "plural": "die Gürtel",
+      "english": "belt",
+      "persian": "کمربند",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "das Kostüm",
+      "plural": "die Kostüme",
+      "english": "costume",
+      "persian": "لباس مبدل",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "die Party",
+      "plural": "die Partys",
+      "english": "party",
+      "persian": "مهمانی",
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "german": "das Konzert",
+      "plural": "die Konzerte",
+      "english": "concert",
+      "persian": "کنسرت",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "der Karneval",
+      "plural": "—",
+      "english": "carnival",
+      "persian": "کارناوال",
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "german": "die Farbe",
+      "plural": "die Farben",
+      "english": "colour",
+      "persian": "رنگ",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "das T-Shirt-Werkstatt",
+      "plural": "—",
+      "english": "T-shirt workshop",
+      "persian": "کارگاه تی‌شرت",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "die Ausstellung",
+      "plural": "die Ausstellungen",
+      "english": "exhibition",
+      "persian": "نمایشگاه",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "die Zeitschrift",
+      "plural": "die Zeitschriften",
+      "english": "magazine",
+      "persian": "مجله",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "der Katalog",
+      "plural": "die Kataloge",
+      "english": "catalogue",
+      "persian": "کاتالوگ",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "der Vergleich",
+      "plural": "die Vergleiche",
+      "english": "comparison",
+      "persian": "مقایسه",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "der Komparativ",
+      "plural": "die Komparative",
+      "english": "comparative",
+      "persian": "تفضیلی",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "der Superlativ",
+      "plural": "die Superlative",
+      "english": "superlative",
+      "persian": "عالی",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "das Forum",
+      "plural": "die Foren",
+      "english": "forum",
+      "persian": "انجمن اینترنتی",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "der Lieblings-T-Shirt / das Lieblings-Kleidungsstück",
+      "plural": "die Lieblings-T-Shirts",
+      "english": "favourite T-shirt / favourite item of clothing",
+      "persian": "تی‌شرت محبوب / لباس محبوب",
+      "page": "PDF p. 59 / Book p. 59"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "finden",
+      "third_person": "er findet",
+      "english": "to find / think",
+      "persian": "یافتن / به نظر آمدن",
+      "separable": false,
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "infinitive": "gefallen",
+      "third_person": "es gefällt ihm/ihr",
+      "english": "to please / appeal",
+      "persian": "خوش آمدن",
+      "separable": false,
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "kaufen",
+      "third_person": "er kauft",
+      "english": "to buy",
+      "persian": "خریدن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "tragen",
+      "third_person": "er trägt",
+      "english": "to wear",
+      "persian": "پوشیدن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "anhaben",
+      "third_person": "er hat an",
+      "english": "to have on / wear",
+      "persian": "بر تن داشتن",
+      "separable": true,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "wählen",
+      "third_person": "er wählt",
+      "english": "to choose",
+      "persian": "انتخاب کردن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "beschreiben",
+      "third_person": "er beschreibt",
+      "english": "to describe",
+      "persian": "توصیف کردن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "raten",
+      "third_person": "er rät",
+      "english": "to guess",
+      "persian": "حدس زدن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "hören",
+      "third_person": "er hört",
+      "english": "to hear",
+      "persian": "شنیدن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "markieren",
+      "third_person": "er markiert",
+      "english": "to mark",
+      "persian": "علامت زدن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "ergänzen",
+      "third_person": "er ergänzt",
+      "english": "to complete",
+      "persian": "تکمیل کردن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "mögen",
+      "third_person": "er mag",
+      "english": "to like",
+      "persian": "دوست داشتن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "lieben",
+      "third_person": "er liebt",
+      "english": "to love",
+      "persian": "عاشق بودن",
+      "separable": false,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "notieren",
+      "third_person": "er notiert",
+      "english": "to note",
+      "persian": "یادداشت کردن",
+      "separable": false,
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "infinitive": "entwerfen",
+      "third_person": "er entwirft",
+      "english": "to design",
+      "persian": "طراحی کردن",
+      "separable": false,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "malen",
+      "third_person": "er malt",
+      "english": "to paint / draw",
+      "persian": "نقاشی کردن",
+      "separable": false,
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "infinitive": "aussehen",
+      "third_person": "er sieht aus",
+      "english": "to look (appearance)",
+      "persian": "به نظر رسیدن",
+      "separable": true,
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "infinitive": "verstärken",
+      "third_person": "er verstärkt",
+      "english": "to intensify / emphasize",
+      "persian": "تقویت کردن",
+      "separable": false,
+      "page": "PDF p. 60 / Book p. 60"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "gut",
+      "english": "good",
+      "persian": "خوب",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "besser",
+      "english": "better",
+      "persian": "بهتر",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "am besten",
+      "english": "best",
+      "persian": "بهترین",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "gern / lieber / am liebsten",
+      "english": "gladly / rather / most gladly",
+      "persian": "با میل / ترجیحا / بیشترین میل",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "viel / mehr / am meisten",
+      "english": "much / more / most",
+      "persian": "زیاد / بیشتر / بیشترین",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "lustig",
+      "english": "funny",
+      "persian": "خنده‌دار",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "schön",
+      "english": "beautiful",
+      "persian": "زیبا",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "alt",
+      "english": "old",
+      "persian": "قدیمی",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "groß",
+      "english": "big / large",
+      "persian": "بزرگ",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "klug",
+      "english": "clever",
+      "persian": "باهوش",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "beige",
+      "english": "beige",
+      "persian": "بژ",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "lila",
+      "english": "purple",
+      "persian": "بنفش",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "rosa",
+      "english": "pink",
+      "persian": "صورتی",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "golden",
+      "english": "golden",
+      "persian": "طلایی",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "billig",
+      "english": "cheap",
+      "persian": "ارزان",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "seltsam",
+      "english": "strange",
+      "persian": "عجیب",
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "german": "elegant",
+      "english": "elegant",
+      "persian": "شیک",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "sportlich",
+      "english": "sporty",
+      "persian": "اسپورتی",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "hässlich",
+      "english": "ugly",
+      "persian": "زشت",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "toll",
+      "english": "great",
+      "persian": "عالی",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "total / richtig / wahnsinnig",
+      "english": "totally / really / insanely (intensifier)",
+      "persian": "کاملا / واقعا / دیوانه‌وار",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "kurz",
+      "english": "short",
+      "persian": "کوتاه",
+      "page": "PDF p. 60 / Book p. 60"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Am besten sind seine Schuhe!",
+      "english": "His shoes are the best!",
+      "persian": "کفش‌های او بهترین هستند!",
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "german": "Wie findest du ...? / Ich finde ...",
+      "english": "How do you find ...? / I find ...",
+      "persian": "نظرت درباره ... چیست؟",
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "german": "Sie gefällt ihm (nicht).",
+      "english": "He likes it (not).",
+      "persian": "او آن را (نمی‌پسندد)",
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "german": "Wohin geht er wohl? Er geht zum Karneval.",
+      "english": "Where is he going? He's going to carnival.",
+      "persian": "به کجا می‌رود؟ به کارناوال",
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "german": "Ich finde die Kleidung seltsam.",
+      "english": "I find the clothing strange.",
+      "persian": "لباسش عجیب است",
+      "page": "PDF p. 57 / Book p. 57"
+    },
+    {
+      "german": "Was hat diese Person an?",
+      "english": "What is this person wearing?",
+      "persian": "این شخص چه پوشیده؟",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "Meine Person hat eine Hose und einen Pullover an.",
+      "english": "My person is wearing trousers and a pullover.",
+      "persian": "شخص من شلوار و پلیور پوشیده",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "Am besten / Am liebsten / besser / gern / gut / lieber",
+      "english": "best / most gladly / better / gladly / good / rather",
+      "persian": "بهترین / با بیشترین میل ...",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "Das Hemd gefällt ihr besser als die Hose.",
+      "english": "She likes the shirt better than the trousers.",
+      "persian": "او پیراهن را بیشتر از شلوار دوست دارد",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "Lila mag sie genauso gern wie Rosa. / Beige mag sie lieber als Rosa.",
+      "english": "She likes lilac just as much as pink. / She likes beige rather than pink.",
+      "persian": "بنفش را به اندازه صورتی دوست دارد",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "Ich mag Jans Kostüm am liebsten.",
+      "english": "I like Jan's costume most.",
+      "persian": "لباس جان را بیشتر از همه دوست دارم",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "Das ist total/richtig/wahnsinnig lustig!",
+      "english": "That's totally/really/insanely funny!",
+      "persian": "خیلی بامزه است!",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "Wow, hast du das Kleid schon gesehen? Total schön.",
+      "english": "Wow, have you seen the dress? Totally beautiful.",
+      "persian": "وای، این لباس را دیده‌ای؟ خیلی زیبا",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "Das gefällt mir besser. Die Farben sind schöner.",
+      "english": "I like that better. The colours are more beautiful.",
+      "persian": "این را بیشتر می‌پسندم",
+      "page": "PDF p. 59 / Book p. 59"
+    },
+    {
+      "german": "Ich habe das T-Shirt bei einem Konzert in Berlin gekauft.",
+      "english": "I bought the T-shirt at a concert in Berlin.",
+      "persian": "تی‌شرت را در کنسرتی در برلین خریدم",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "Ich ziehe es oft an, zuletzt am Montag.",
+      "english": "I wear it often, last on Monday.",
+      "persian": "اغلب می‌پوشم، آخرین بار دوشنبه",
+      "page": "PDF p. 60 / Book p. 60"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "oft / manchmal / (fast) nie",
+      "type": "frequency adverb",
+      "english": "often / sometimes / (almost) never",
+      "persian": "اغلب / گاهی / (تقریبا) هرگز",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "als / wie (Vergleiche)",
+      "type": "conjunction",
+      "english": "than / as",
+      "persian": "از / مانند",
+      "page": "PDF p. 60 / Book p. 60"
+    },
+    {
+      "german": "genauso ... wie",
+      "type": "comparison",
+      "english": "just as ... as",
+      "persian": "به اندازه ...",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "AB",
+      "type": "abbreviation",
+      "english": "workbook",
+      "persian": "کتاب کار",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "Info (Farbbox)",
+      "type": "info box",
+      "english": "info",
+      "persian": "اطلاعات",
+      "page": "PDF p. 58 / Book p. 58"
+    },
+    {
+      "german": "oft bei einsilbigen Adjektiven: a→ä, o→ö, u→ü",
+      "type": "grammar rule",
+      "english": "often with monosyllabic adj. umlaut",
+      "persian": "در صفت‌های تک‌هجایی",
+      "page": "PDF p. 60 / Book p. 60"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 57-60 / Book 57-60",
+    "vocabulary_sections_checked": "Yes - Bildlexikon bars (p58 top, p59 top), exercises 1-8, forum texts p59, T-Shirt Werkstatt, Komparation tables, Kommunikation boxes",
+    "images_and_illustrated_vocabulary_checked": "Yes - kitchen photo Fabian with mother, 14 clothing items illustrated with color dots (Schuhe, Hose, Hemd etc.), party group photo with 5 persons, forum T-shirt photos, magazine/catalog illustration p60",
+    "tables_checked": "Yes - Komparation gut/gern/viel, andere Adjektive (lustig etc.), Vergleiche als/wie (p58, p60)",
+    "exercises_checked_for_taught_vocabulary": "Yes - all 8 exercises including Ratespiel, Kostüm comparison, Lieblings-T-Shirt discussion",
+    "potentially_unclear_items": [
+      "Bildlexikon 'Röcke' handwritten addition on p58 top - added by learner but clearly 'Röcke'",
+      "Color words beige/lila/rosa/golden in INFO box small but legible"
+    ]
+  }
+}

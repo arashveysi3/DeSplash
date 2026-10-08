@@ -1,0 +1,466 @@
+{
+  "lesson_number": 8,
+  "lesson_title": "Kein Problem. Ich habe Zeit!",
+  "pages": {
+    "pdf": "45-48",
+    "book": "45-48",
+    "supplementary": "PDF 80,89,93 / Book 80,89,93 (Uhrzeiten, sich verabreden)",
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 150 dpi, cross-checked OCR",
+  "nouns": [
+    {
+      "german": "das Problem",
+      "plural": "die Probleme",
+      "english": "problem",
+      "persian": "مشکل",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "die Zeit",
+      "plural": "die Zeiten",
+      "english": "time",
+      "persian": "زمان / وقت",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "das Schwimmbad",
+      "plural": "die Schwimmbäder",
+      "english": "swimming pool",
+      "persian": "استخر",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "das Kino",
+      "plural": "die Kinos",
+      "english": "cinema",
+      "persian": "سینما",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "das Theater",
+      "plural": "die Theater",
+      "english": "theatre",
+      "persian": "تئاتر",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "das Museum",
+      "plural": "die Museen",
+      "english": "museum",
+      "persian": "موزه",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "die Ausstellung",
+      "plural": "die Ausstellungen",
+      "english": "exhibition",
+      "persian": "نمایشگاه",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "das Konzert",
+      "plural": "die Konzerte",
+      "english": "concert",
+      "persian": "کنسرت",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "die Kneipe",
+      "plural": "die Kneipen",
+      "english": "pub",
+      "persian": "میخانه",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "das Restaurant",
+      "plural": "die Restaurants",
+      "english": "restaurant",
+      "persian": "رستوران",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "der Abend",
+      "plural": "die Abende",
+      "english": "evening",
+      "persian": "عصر / شب",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Mittag",
+      "plural": "die Mittage",
+      "english": "noon",
+      "persian": "ظهر",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Morgen",
+      "plural": "die Morgen",
+      "english": "morning",
+      "persian": "صبح",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Vormittag",
+      "plural": "die Vormittage",
+      "english": "late morning",
+      "persian": "قبل از ظهر",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Nachmittag",
+      "plural": "die Nachmittage",
+      "english": "afternoon",
+      "persian": "بعد از ظهر",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "die Nacht",
+      "plural": "die Nächte",
+      "english": "night",
+      "persian": "شب",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "die Woche",
+      "plural": "die Wochen",
+      "english": "week",
+      "persian": "هفته",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Wochentag",
+      "plural": "die Wochentage",
+      "english": "weekday",
+      "persian": "روز هفته",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "die Uhrzeit",
+      "plural": "die Uhrzeiten",
+      "english": "time (clock)",
+      "persian": "ساعت (زمان)",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "die Uhr",
+      "plural": "die Uhren",
+      "english": "clock / watch",
+      "persian": "ساعت",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "die SMS",
+      "plural": "die SMS",
+      "english": "text message",
+      "persian": "پیامک",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "der Chat",
+      "plural": "die Chats",
+      "english": "chat",
+      "persian": "چت",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "die Verabredung",
+      "plural": "die Verabredungen",
+      "english": "appointment / date",
+      "persian": "قرار ملاقات",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "der Vorschlag",
+      "plural": "die Vorschläge",
+      "english": "suggestion",
+      "persian": "پیشنهاد",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "die Einladung",
+      "plural": "die Einladungen",
+      "english": "invitation",
+      "persian": "دعوت",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "die Absage",
+      "plural": "die Absagen",
+      "english": "cancellation / refusal",
+      "persian": "لغو / رد دعوت",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "die Liebe Grüße (Grüße)",
+      "plural": "—",
+      "english": "kind regards",
+      "persian": "با سلام",
+      "page": "PDF p. 48 / Book p. 48"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "sich verabreden",
+      "third_person": "er/sie verabredet sich",
+      "english": "to make an appointment",
+      "persian": "قرار گذاشتن",
+      "separable": false,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "vorschlagen",
+      "third_person": "er/sie schlägt vor",
+      "english": "to suggest",
+      "persian": "پیشنهاد دادن",
+      "separable": true,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "reagieren",
+      "third_person": "er/sie reagiert",
+      "english": "to react",
+      "persian": "واکنش نشان دادن",
+      "separable": false,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er/sie hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "infinitive": "gehen (ins Kino gehen)",
+      "third_person": "er/sie geht",
+      "english": "to go",
+      "persian": "رفتن",
+      "separable": false,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "spielen",
+      "third_person": "er/sie spielt",
+      "english": "to play",
+      "persian": "بازی کردن",
+      "separable": false,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "machen",
+      "third_person": "er/sie macht",
+      "english": "to do / make",
+      "persian": "انجام دادن",
+      "separable": false,
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "infinitive": "sehen",
+      "third_person": "er/sie sieht",
+      "english": "to see",
+      "persian": "دیدن",
+      "separable": false,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "wissen",
+      "third_person": "er/sie weiß",
+      "english": "to know (fact)",
+      "persian": "دانستن",
+      "separable": false,
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "infinitive": "absagen",
+      "third_person": "er/sie sagt ab",
+      "english": "to cancel",
+      "persian": "لغو کردن",
+      "separable": true,
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "infinitive": "einladen",
+      "third_person": "er/sie lädt ein",
+      "english": "to invite",
+      "persian": "دعوت کردن",
+      "separable": true,
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "infinitive": "kommen",
+      "third_person": "er/sie kommt",
+      "english": "to come",
+      "persian": "آمدن",
+      "separable": false,
+      "page": "PDF p. 48 / Book p. 48"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "frei (heute Abend frei haben)",
+      "english": "free",
+      "persian": "آزاد / بیکار",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "spät (zu spät)",
+      "english": "late",
+      "persian": "دیر",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "leider",
+      "english": "unfortunately",
+      "persian": "متأسفانه",
+      "page": "PDF p. 46 / Book p. 46"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Gehen wir ins Schwimmbad / Kino?",
+      "english": "Shall we go to the pool / cinema?",
+      "persian": "به استخر / سینما برویم؟",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "Ich habe (leider) keine Zeit. / Ich habe Zeit!",
+      "english": "I (unfortunately) have no time. / I have time!",
+      "persian": "من وقت ندارم / وقت دارم!",
+      "page": "PDF p. 45 / Book p. 45"
+    },
+    {
+      "german": "Heute Nachmittag / Heute Abend habe ich leider keine Zeit.",
+      "english": "This afternoon / evening I have no time.",
+      "persian": "امروز بعد از ظهر / امشب وقت ندارم",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "Vielleicht. / Das weiß ich noch nicht. / Okay. / Ja, klar.",
+      "english": "Maybe / I don't know yet / Okay / Sure",
+      "persian": "شاید / هنوز نمی‌دانم / باشه / حتماً",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "Gute Idee! / Vielleicht können wir morgen Abend ins Theater gehen?",
+      "english": "Good idea! / Maybe we can go to theatre tomorrow evening?",
+      "persian": "ایده خوبی است!",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "Tut mir leid, ich habe keine Lust. / Keine Lust.",
+      "english": "Sorry, I don't feel like it.",
+      "persian": "متأسفم، حوصله ندارم",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "Lust auf Schwimmbad? - Nöö. Keine Lust.",
+      "english": "Fancy going to pool? - Nope.",
+      "persian": "دوست داری به استخر برویم؟ نه",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "Wie spät ist es? / Wie viel Uhr ist es? - Es ist halb sechs / fünf Uhr / Viertel vor drei.",
+      "english": "What time is it?",
+      "persian": "ساعت چند است؟",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "Am Dienstag / Abend / Mittwochabend ... / in der Nacht / um drei Uhr",
+      "english": "On Tuesday / in the evening / at 3 o'clock",
+      "persian": "روز سه‌شنبه / شب / ساعت سه",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "Hast du heute Abend / am ... Zeit? - Ja, klar. / Nein, leider nicht.",
+      "english": "Do you have time tonight?",
+      "persian": "امشب وقت داری؟",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "Gehen wir ins Kino / ...? - Gute Idee! / Okay! / Nein, leider nicht.",
+      "english": "Shall we go to cinema?",
+      "persian": "به سینما برویم؟",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "Ich kann leider doch nicht kommen.",
+      "english": "Unfortunately I can't come after all.",
+      "persian": "متأسفانه نمی‌توانم بیایم",
+      "page": "PDF p. 48 / Book p. 48"
+    },
+    {
+      "german": "Wann denn? Am Dienstag / um drei / halb vier.",
+      "english": "When? On Tuesday / at 3",
+      "persian": "کی؟ روز سه‌شنبه / ساعت سه",
+      "page": "PDF p. 48 / Book p. 48"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "am",
+      "type": "preposition (an + dem)",
+      "english": "on (days/times)",
+      "persian": "در (روز)",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "um",
+      "type": "preposition",
+      "english": "at (clock time)",
+      "persian": "در (ساعت)",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "in der Nacht",
+      "type": "prepositional phrase",
+      "english": "at night",
+      "persian": "در شب",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "heute / morgen",
+      "type": "adverb",
+      "english": "today / tomorrow",
+      "persian": "امروز / فردا",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "Montag / Dienstag / Mittwoch / Donnerstag / Freitag / Samstag / Sonntag",
+      "type": "weekdays",
+      "english": "Monday ... Sunday",
+      "persian": "دوشنبه ... یکشنبه",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "Vormittag / Nachmittag / Abend / Nacht",
+      "type": "time of day",
+      "english": "morning / afternoon / evening / night",
+      "persian": "صبح / بعدازظهر / عصر / شب",
+      "page": "PDF p. 47 / Book p. 47"
+    },
+    {
+      "german": "leider",
+      "type": "adverb",
+      "english": "unfortunately",
+      "persian": "متأسفانه",
+      "page": "PDF p. 46 / Book p. 46"
+    },
+    {
+      "german": "doch (leider kann ich doch nicht kommen)",
+      "type": "particle",
+      "english": "after all",
+      "persian": "با این حال",
+      "page": "PDF p. 48 / Book p. 48"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 45-48 / Book 45-48 + supplements PDF 80,89,93",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

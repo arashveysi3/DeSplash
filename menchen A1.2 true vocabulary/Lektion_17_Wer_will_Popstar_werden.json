@@ -1,0 +1,974 @@
+{
+  "lesson_number": 17,
+  "lesson_title": "Wer will Popstar werden?",
+  "pages": {
+    "pdf": "29-32",
+    "book": "29-32",
+    "supplementary": null,
+    "note_missing": null
+  },
+  "source_rule": "PDF is only source of truth; visually inspected at 90-120 dpi via rendered images (l16_18_p29..p32, rerender_p29_120..p31_120)",
+  "nouns": [
+    {
+      "german": "der Popstar",
+      "plural": "die Popstars",
+      "english": "pop star",
+      "persian": "ستاره پاپ",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "die Aufnahmeprüfung",
+      "plural": "die Aufnahmeprüfungen",
+      "english": "entrance exam",
+      "persian": "آزمون ورودی",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "die Anzeige",
+      "plural": "die Anzeigen",
+      "english": "advert / ad",
+      "persian": "آگهی",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "die Pop-Akademie (IPA)",
+      "plural": "die Pop-Akademien",
+      "english": "pop academy",
+      "persian": "آکادمی پاپ",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "die Casting-Show (DSDS)",
+      "plural": "die Casting-Shows",
+      "english": "casting show",
+      "persian": "مسابقه استعدادیابی",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "der Superstar",
+      "plural": "die Superstars",
+      "english": "superstar",
+      "persian": "سوپراستار",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "das Fernsehen",
+      "plural": "—",
+      "english": "television",
+      "persian": "تلویزیون",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "das Casting",
+      "plural": "die Castings",
+      "english": "casting",
+      "persian": "انتخاب بازیگر",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "die Schule für Schauspielkunst",
+      "plural": "die Schulen",
+      "english": "acting school",
+      "persian": "مدرسه هنرپیشگی",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "das Theater",
+      "plural": "die Theater",
+      "english": "theatre",
+      "persian": "تئاتر",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "ein Buch schreiben",
+      "plural": "— (phrase)",
+      "english": "writing a book (activity)",
+      "persian": "کتاب نوشتن",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "der Chef",
+      "plural": "die Chefs",
+      "english": "boss",
+      "persian": "رئیس",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "der Schauspieler",
+      "plural": "die Schauspieler",
+      "english": "actor",
+      "persian": "بازیگر",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "der Politiker",
+      "plural": "die Politiker",
+      "english": "politician",
+      "persian": "سیاستمدار",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Geld",
+      "plural": "—",
+      "english": "money",
+      "persian": "پول",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "die Familie",
+      "plural": "die Familien",
+      "english": "family",
+      "persian": "خانواده",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "der Berg",
+      "plural": "die Berge",
+      "english": "mountain",
+      "persian": "کوه",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "der Studienplatz",
+      "plural": "die Studienplätze",
+      "english": "study place / university place",
+      "persian": "جای تحصیل",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "die Berufsausbildung",
+      "plural": "die Berufsausbildungen",
+      "english": "vocational training",
+      "persian": "آموزش حرفه‌ای",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "die Ausbildung",
+      "plural": "die Ausbildungen",
+      "english": "training",
+      "persian": "آموزش",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "der Student",
+      "plural": "die Studenten",
+      "english": "student",
+      "persian": "دانشجو",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Jahr",
+      "plural": "die Jahre",
+      "english": "year",
+      "persian": "سال",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Komponieren",
+      "plural": "—",
+      "english": "composing",
+      "persian": "آهنگسازی",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Singen",
+      "plural": "—",
+      "english": "singing",
+      "persian": "خوانندگی",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "das Tanzen",
+      "plural": "—",
+      "english": "dancing",
+      "persian": "رقص",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "die Antwort",
+      "plural": "die Antworten",
+      "english": "answer",
+      "persian": "پاسخ",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "die Frage",
+      "plural": "die Fragen",
+      "english": "question",
+      "persian": "سوال",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "der Liedermacher",
+      "plural": "die Liedermacher",
+      "english": "songwriter",
+      "persian": "ترانه‌سرا",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Sängerin",
+      "plural": "die Sängerinnen",
+      "english": "female singer",
+      "persian": "خواننده زن",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Schule",
+      "plural": "die Schulen",
+      "english": "school",
+      "persian": "مدرسه",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "der Lehrer",
+      "plural": "die Lehrer",
+      "english": "teacher",
+      "persian": "معلم",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Chance",
+      "plural": "die Chancen",
+      "english": "chance",
+      "persian": "شانس",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Starbrille",
+      "plural": "die Starbrillen",
+      "english": "star glasses",
+      "persian": "عینک ستاره‌ای",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "das Glück",
+      "plural": "—",
+      "english": "luck",
+      "persian": "شانس / خوشبختی",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Gitarre",
+      "plural": "die Gitarren",
+      "english": "guitar",
+      "persian": "گیتار",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "das Zimmer",
+      "plural": "die Zimmer",
+      "english": "room",
+      "persian": "اتاق",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "das Lied",
+      "plural": "die Lieder",
+      "english": "song",
+      "persian": "آهنگ",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "der Profi",
+      "plural": "die Profis",
+      "english": "professional",
+      "persian": "حرفه‌ای",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Angst",
+      "plural": "die Ängste",
+      "english": "fear",
+      "persian": "ترس",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Prüfung",
+      "plural": "die Prüfungen",
+      "english": "exam",
+      "persian": "امتحان",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "das Prüfungszimmer",
+      "plural": "die Prüfungszimmer",
+      "english": "exam room",
+      "persian": "اتاق امتحان",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "der Wunsch",
+      "plural": "die Wünsche",
+      "english": "wish",
+      "persian": "آرزو",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "der Plan",
+      "plural": "die Pläne",
+      "english": "plan",
+      "persian": "برنامه",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "durch Europa reisen",
+      "plural": "— (phrase)",
+      "english": "traveling through Europe",
+      "persian": "سفر در اروپا",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Welt",
+      "plural": "die Welten",
+      "english": "world",
+      "persian": "دنیا",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "das Ausland",
+      "plural": "—",
+      "english": "abroad",
+      "persian": "خارج",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "das Motorrad",
+      "plural": "die Motorräder",
+      "english": "motorcycle",
+      "persian": "موتورسیکلت",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "der Führerschein",
+      "plural": "die Führerscheine",
+      "english": "driving licence",
+      "persian": "گواهینامه",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "das (Musik)Instrument",
+      "plural": "die Instrumente",
+      "english": "instrument",
+      "persian": "ساز",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "die Fremdsprache",
+      "plural": "die Fremdsprachen",
+      "english": "foreign language",
+      "persian": "زبان خارجی",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "das Elfchen (Gedicht mit 11 Wörtern)",
+      "plural": "die Elfchen",
+      "english": "eleven-word poem",
+      "persian": "شعر یازده‌کلمه‌ای",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Aktivität",
+      "plural": "die Aktivitäten",
+      "english": "activity",
+      "persian": "فعالیت",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "der Zeitpunkt",
+      "plural": "die Zeitpunkte",
+      "english": "point in time",
+      "persian": "زمان",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "der Gegenstand",
+      "plural": "die Gegenstände",
+      "english": "object",
+      "persian": "شی",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "der Abschluss",
+      "plural": "die Abschlüsse",
+      "english": "completion / conclusion",
+      "persian": "پایان",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "das Laufen",
+      "plural": "—",
+      "english": "running",
+      "persian": "دویدن",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "der Mittwoch",
+      "plural": "die Mittwoche",
+      "english": "Wednesday",
+      "persian": "چهارشنبه",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "der Park",
+      "plural": "die Parks",
+      "english": "park",
+      "persian": "پارک",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Freundin",
+      "plural": "die Freundinnen",
+      "english": "friend (female)",
+      "persian": "دوست دختر",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "das Putzen",
+      "plural": "—",
+      "english": "cleaning",
+      "persian": "تمیز کردن",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "der Samstag",
+      "plural": "die Samstage",
+      "english": "Saturday",
+      "persian": "شنبه",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "die Wohnung",
+      "plural": "die Wohnungen",
+      "english": "apartment",
+      "persian": "آپارتمان",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "der iPod",
+      "plural": "die iPods",
+      "english": "iPod",
+      "persian": "آی‌پاد",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "das Fernsehen",
+      "plural": "—",
+      "english": "watching TV",
+      "persian": "تلویزیون دیدن",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "der Sonntag",
+      "plural": "die Sonntage",
+      "english": "Sunday",
+      "persian": "یکشنبه",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "der Nachbar",
+      "plural": "die Nachbarn",
+      "english": "neighbour",
+      "persian": "همسایه",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "das Handy",
+      "plural": "die Handys",
+      "english": "mobile",
+      "persian": "موبایل",
+      "page": "PDF p. 32 / Book p. 32"
+    }
+  ],
+  "verbs": [
+    {
+      "infinitive": "werden",
+      "third_person": "er wird",
+      "english": "to become",
+      "persian": "شدن",
+      "separable": false,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "sich anmelden",
+      "third_person": "er meldet sich an",
+      "english": "to register",
+      "persian": "ثبت‌نام کردن",
+      "separable": true,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "singen",
+      "third_person": "er singt",
+      "english": "to sing",
+      "persian": "آواز خواندن",
+      "separable": false,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "bewerben",
+      "third_person": "er bewirbt sich",
+      "english": "to apply",
+      "persian": "درخواست دادن",
+      "separable": false,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "klingen",
+      "third_person": "es klingt",
+      "english": "to sound",
+      "persian": "به نظر رسیدن",
+      "separable": false,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "finden",
+      "third_person": "er findet",
+      "english": "to find",
+      "persian": "یافتن",
+      "separable": false,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "möchten",
+      "third_person": "er möchte",
+      "english": "would like",
+      "persian": "خواستن",
+      "separable": false,
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "infinitive": "schreiben",
+      "third_person": "er schreibt",
+      "english": "to write",
+      "persian": "نوشتن",
+      "separable": false,
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "infinitive": "lesen",
+      "third_person": "er liest",
+      "english": "to read",
+      "persian": "خواندن",
+      "separable": false,
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "infinitive": "abschließen",
+      "third_person": "er schließt ab",
+      "english": "to complete / finish",
+      "persian": "به پایان رساندن",
+      "separable": true,
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "infinitive": "bekommen",
+      "third_person": "er bekommt",
+      "english": "to get",
+      "persian": "گرفتن",
+      "separable": false,
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "infinitive": "sich anmelden (an einer Schule)",
+      "third_person": "er meldet sich an",
+      "english": "to enroll",
+      "persian": "ثبت‌نام کردن",
+      "separable": true,
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "infinitive": "schaffen",
+      "third_person": "er schafft",
+      "english": "to manage / succeed",
+      "persian": "موفق شدن",
+      "separable": false,
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "infinitive": "studieren",
+      "third_person": "er studiert",
+      "english": "to study",
+      "persian": "تحصیل کردن",
+      "separable": false,
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "infinitive": "komponieren",
+      "third_person": "er komponiert",
+      "english": "to compose",
+      "persian": "آهنگسازی کردن",
+      "separable": false,
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "infinitive": "tanzen",
+      "third_person": "er tanzt",
+      "english": "to dance",
+      "persian": "رقصیدن",
+      "separable": false,
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "infinitive": "lernen",
+      "third_person": "er lernt",
+      "english": "to learn",
+      "persian": "یاد گرفتن",
+      "separable": false,
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "infinitive": "wollen",
+      "third_person": "er will",
+      "english": "to want",
+      "persian": "خواستن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "werden (Sängerin werden etc.)",
+      "third_person": "sie wird Sängerin",
+      "english": "to become",
+      "persian": "شدن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "können",
+      "third_person": "er kann",
+      "english": "can",
+      "persian": "توانستن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "denken",
+      "third_person": "er denkt",
+      "english": "to think",
+      "persian": "فکر کردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "geben",
+      "third_person": "es gibt",
+      "english": "to give / there is",
+      "persian": "وجود داشتن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "verdienen",
+      "third_person": "er verdient",
+      "english": "to earn",
+      "persian": "کسب کردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "bringen",
+      "third_person": "es bringt Glück",
+      "english": "to bring",
+      "persian": "آوردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "gehen",
+      "third_person": "er geht",
+      "english": "to go",
+      "persian": "رفتن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "sein",
+      "third_person": "er ist",
+      "english": "to be",
+      "persian": "بودن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "haben",
+      "third_person": "er hat",
+      "english": "to have",
+      "persian": "داشتن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "reisen",
+      "third_person": "er reist",
+      "english": "to travel",
+      "persian": "سفر کردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "segeln",
+      "third_person": "er segelt",
+      "english": "to sail",
+      "persian": "قایقرانی کردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "leben",
+      "third_person": "er lebt",
+      "english": "to live",
+      "persian": "زندگی کردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "fahren",
+      "third_person": "er fährt",
+      "english": "to drive / ride",
+      "persian": "رانندگی کردن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "machen",
+      "third_person": "er macht",
+      "english": "to do / make",
+      "persian": "انجام دادن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "glauben",
+      "third_person": "er glaubt",
+      "english": "to believe",
+      "persian": "باور داشتن",
+      "separable": false,
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "infinitive": "laufen",
+      "third_person": "er läuft",
+      "english": "to run",
+      "persian": "دویدن",
+      "separable": false,
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "infinitive": "putzen",
+      "third_person": "er putzt",
+      "english": "to clean",
+      "persian": "تمیز کردن",
+      "separable": false,
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "infinitive": "fernsehen",
+      "third_person": "er sieht fern",
+      "english": "to watch TV",
+      "persian": "تلویزیون دیدن",
+      "separable": true,
+      "page": "PDF p. 32 / Book p. 32"
+    }
+  ],
+  "adjectives": [
+    {
+      "german": "staatlich anerkannt",
+      "english": "state-recognized",
+      "persian": "مورد تایید دولت",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "interessant",
+      "english": "interesting",
+      "persian": "جالب",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "groß",
+      "english": "big",
+      "persian": "بزرگ",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "wichtig",
+      "english": "important",
+      "persian": "مهم",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "langweilig",
+      "english": "boring",
+      "persian": "کسل‌کننده",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "gemütlich",
+      "english": "cosy",
+      "persian": "دلنشین",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "fit",
+      "english": "fit",
+      "persian": "سرحال",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "besser",
+      "english": "better",
+      "persian": "بهتر",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "schnell",
+      "english": "fast / quick",
+      "persian": "سریع",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "besonders",
+      "english": "especially",
+      "persian": "به ویژه",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "unbedingt",
+      "english": "absolutely",
+      "persian": "حتما",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "vielleicht",
+      "english": "maybe",
+      "persian": "شاید",
+      "page": "PDF p. 31 / Book p. 31"
+    }
+  ],
+  "adverbs_expressions": [
+    {
+      "german": "Ich will unbedingt noch Schauspielerin werden.",
+      "english": "I absolutely want to become an actress.",
+      "persian": "من حتما می‌خواهم بازیگر شوم",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "Anzeige ... klingt interessant. Ich singe gern.",
+      "english": "Ad ... sounds interesting. I like singing.",
+      "persian": "آگهی ... جالب به نظر می‌رسد",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "Ich möchte gern ins Fernsehen / zum Theater.",
+      "english": "I would like to go on TV / to the theatre.",
+      "persian": "دوست دارم به تلویزیون/تئاتر بروم",
+      "page": "PDF p. 29 / Book p. 29"
+    },
+    {
+      "german": "Ich will Sängerin werden.",
+      "english": "I want to become a singer.",
+      "persian": "می‌خواهم خواننده شوم",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "Ich will Liedermacher werden.",
+      "english": "I want to become a songwriter.",
+      "persian": "می‌خواهم ترانه‌سرا شوم",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "Ich will unbedingt ... / vielleicht ... / auf keinen Fall ...",
+      "english": "I absolutely want ... / maybe ... / on no account ...",
+      "persian": "حتما می‌خواهم / شاید / به هیچ وجه",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "Für mich sind ... und ... besonders wichtig.",
+      "english": "For me ... and ... are especially important.",
+      "persian": "برای من ... خیلی مهم است",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "ohne meine Freundin / mit dem iPod",
+      "english": "without my girlfriend / with the iPod",
+      "persian": "بدون دوست دخترم / با آی‌پاد",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "Schaffe ich die Aufnahmeprüfung?",
+      "english": "Will I pass the entrance exam?",
+      "persian": "آیا آزمون ورودی را قبول می‌شوم؟",
+      "page": "PDF p. 30 / Book p. 30"
+    },
+    {
+      "german": "Ich will Geld verdienen.",
+      "english": "I want to earn money.",
+      "persian": "می‌خواهم پول دربیاورم",
+      "page": "PDF p. 30 / Book p. 30"
+    }
+  ],
+  "other_vocabulary": [
+    {
+      "german": "mit + Dativ",
+      "type": "preposition",
+      "english": "with",
+      "persian": "با",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "ohne + Akkusativ",
+      "type": "preposition",
+      "english": "without",
+      "persian": "بدون",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "mit der Gitarre / ohne die Gitarre",
+      "type": "phrase",
+      "english": "with the guitar / without the guitar",
+      "persian": "با گیتار / بدون گیتار",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "wollen (Modalverb)",
+      "type": "modal verb",
+      "english": "to want",
+      "persian": "خواستن",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "werden (Futur/Vorgang)",
+      "type": "verb",
+      "english": "to become",
+      "persian": "شدن",
+      "page": "PDF p. 31 / Book p. 31"
+    },
+    {
+      "german": "unbedingt / vielleicht / auf keinen Fall",
+      "type": "adverb",
+      "english": "absolutely / maybe / on no account",
+      "persian": "حتما / شاید / به هیچ وجه",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "am Sonntag / am Samstag",
+      "type": "phrase",
+      "english": "on Sunday / on Saturday",
+      "persian": "یکشنبه / شنبه",
+      "page": "PDF p. 32 / Book p. 32"
+    },
+    {
+      "german": "im Park / bei Silvia",
+      "type": "phrase",
+      "english": "in the park / at Silvia’s",
+      "persian": "در پارک / نزد سیلویا",
+      "page": "PDF p. 32 / Book p. 32"
+    }
+  ],
+  "completeness_check": {
+    "pages_visually_checked": "PDF 29-32 / Book 29-32",
+    "vocabulary_sections_checked": "Yes",
+    "images_and_illustrated_vocabulary_checked": "Yes",
+    "tables_checked": "Yes",
+    "exercises_checked_for_taught_vocabulary": "Yes",
+    "potentially_unclear_items": []
+  }
+}

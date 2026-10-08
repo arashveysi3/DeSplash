@@ -1,40 +1,54 @@
 /**
- * Shared vocabulary/question selection & repetition engine (Quiz Frequency fix).
+ * Shared vocabulary/question selection & repetition engine.
  *
  * Single source of truth for candidate eligibility and prioritization,
  * reused by flashcards (studyQueue/packs), all quiz modes, Match Dash,
  * Lightning Sprint, SatzBau and WortSturm.
  *
- * Design decisions (see final report for rationale):
+ * Design decisions:
  * - Tracking is WORD-level: every question/game item in the app is generated
  *   from one vocabulary word (prompted word), so appearances, accuracy and
- *   the daily cap are keyed by wordId. Distractor options are not exposures.
- * - A word answered correctly once per calendar day is done for the day
- *   (CORRECT_DAILY_LIMIT = 1, all statuses). Wrong answers stay eligible
- *   for same-day reinforcement. Strong words are additionally capped by
- *   appearance (DAILY_LIMIT) to guarantee variety.
+ *   daily budgets are keyed by wordId. Distractor options are not exposures.
+ * - Words have a global learning level: new (0), learning (1), familiar (2),
+ *   or strong/mastered (3). Weak/false-answer reinforcement is a separate
+ *   priority overlay, not a different level.
+ * - Ordinary words may appear up to twice per calendar day. Strong/mastered
+ *   words normally appear once: they are for maintenance, not same-day loops.
+ *   Weak words may appear up to four times, with a separate same-day target
+ *   of two correct answers before they are considered done.
  * - Exposure history comes from the Dexie `quizAttempts` table (all modes),
  *   aggregated once per selection via buildExposureIndex(). No localStorage.
  * - Day boundaries use the app's existing UTC-day convention (YYYY-MM-DD).
  * - Selection picks the set (weak-first priority), then callers MUST shuffle
- *   presentation order so repeated quizzes never start with the same words
- *   (e.g. Spielen / Sortieren). The shared layer provides eligibility
- *   (partitionPool), classification (classifyWord) and graceful fallback
- *   (takeUpTo) so small pools never produce empty sets.
+ *   presentation order so repeated quizzes never start with the same words.
+ *   The shared layer provides eligibility (partitionPool), classification
+ *   (classifyWord/wordLevel) and graceful fallback (takeUpTo/orderReviewPool)
+ *   so small pools never produce empty sets.
  */
 
 import { isWordMastered } from './progress.js';
 
-/** Max appearances per calendar day for strong/familiar words. */
-export const DAILY_LIMIT = 1;
-/** Max correct answers per calendar day for ANY word — once correct, done for today. */
-export const CORRECT_DAILY_LIMIT = 1;
+/** Global learning levels, from first encounter through mastery. */
+export const WORD_LEVELS = ['new', 'learning', 'familiar', 'strong'];
+export const WORD_LEVEL = { NEW: 0, LEARNING: 1, FAMILIAR: 2, STRONG: 3 };
+/** Ordinary daily appearances by level. Level 3 is maintenance-only. */
+export const DAILY_EXPOSURE_BY_LEVEL = { 0: 2, 1: 2, 2: 2, 3: 1 };
+/** Ordinary same-day correct-answer targets by level. */
+export const DAILY_CORRECT_BY_LEVEL = { 0: 2, 1: 2, 2: 2, 3: 1 };
+/** Weak/false-answer words get a larger reinforcement budget. */
+export const WEAK_DAILY_EXPOSURE_LIMIT = 4;
+export const WEAK_DAILY_CORRECT_TARGET = 2;
 /** Below this historical accuracy (with >=2 attempts) a word counts as weak. */
 export const WEAK_ACCURACY = 60;
 /** At/above this accuracy (with >=3 attempts and last correct) a word counts as strong. */
 export const STRONG_ACCURACY = 80;
 /** Attempts needed before accuracy alone can mark a word strong. */
 export const MIN_ATTEMPTS_CONFIDENT = 3;
+/** At/above this accuracy a repeatedly seen word counts as familiar. */
+export const FAMILIAR_ACCURACY = 75;
+/** Repetitions or historical attempts needed before a word can be familiar. */
+export const MIN_REPETITIONS_FAMILIAR = 2;
+export const MIN_ATTEMPTS_FAMILIAR = 4;
 
 /**
  * Current-day key. Matches the application's existing date convention
@@ -97,6 +111,8 @@ export function buildExposureIndex(attempts, dayStart) {
  * - 'learning': everything else
  *
  * Weak wins over strong when signals conflict (reinforcement beats familiarity).
+ * Weakness is a reinforcement priority; the numeric learning level is still
+ * available separately through wordLevel().
  */
 export function classifyWord(wordId, { progress, weakIds, exposure } = {}) {
   const exp = exposure || emptyExposure();
@@ -111,37 +127,71 @@ export function classifyWord(wordId, { progress, weakIds, exposure } = {}) {
 }
 
 /**
- * A word is done for today if answered correctly >= CORRECT_DAILY_LIMIT,
- * regardless of status. Strong words are additionally capped by appearance
- * to guarantee variety even when never answered correctly.
+ * Global numeric learning level for a word, independent of the weak overlay:
+ * 0 = new, 1 = learning, 2 = familiar, 3 = strong/mastered.
  */
-export function isCapped(status, todayCount, limit = DAILY_LIMIT) {
-  return status === 'strong' && todayCount >= limit;
+export function wordLevel(wordId, { progress, exposure } = {}) {
+  const exp = exposure || emptyExposure();
+  const acc = accuracyOf(exp.correct, exp.total);
+  if (isWordMastered(progress)) return WORD_LEVEL.STRONG;
+  if (exp.total >= MIN_ATTEMPTS_CONFIDENT && acc !== null && acc >= STRONG_ACCURACY && exp.lastCorrect) {
+    return WORD_LEVEL.STRONG;
+  }
+  const repetitions = progress?.repetition || 0;
+  const established = repetitions >= MIN_REPETITIONS_FAMILIAR || exp.total >= MIN_ATTEMPTS_FAMILIAR;
+  if (established && acc !== null && acc >= FAMILIAR_ACCURACY && exp.lastCorrect) {
+    return WORD_LEVEL.FAMILIAR;
+  }
+  const seen = !!progress && (
+    repetitions > 0 || (progress.interval || 0) > 0 || (progress.lapses || 0) > 0
+  );
+  if (seen || exp.total > 0) return WORD_LEVEL.LEARNING;
+  return WORD_LEVEL.NEW;
 }
 
-export function isCorrectCapped(exp, limit = CORRECT_DAILY_LIMIT) {
-  const tc = exp?.todayCorrect ?? 0;
-  return tc >= limit;
+/** Daily appearance budget for a level; weak words receive reinforcement room. */
+export function dailyExposureLimit(level, weak = false) {
+  if (weak) return WEAK_DAILY_EXPOSURE_LIMIT;
+  return DAILY_EXPOSURE_BY_LEVEL[level] ?? DAILY_EXPOSURE_BY_LEVEL[WORD_LEVEL.LEARNING];
+}
+
+/** Same-day correct-answer target for a level; weak words need two successes. */
+export function dailyCorrectTarget(level, weak = false) {
+  if (weak) return WEAK_DAILY_CORRECT_TARGET;
+  return DAILY_CORRECT_BY_LEVEL[level] ?? DAILY_CORRECT_BY_LEVEL[WORD_LEVEL.LEARNING];
+}
+
+export function isExposureCapped(exp, level, weak = false, limit) {
+  const budgeted = limit ?? dailyExposureLimit(level, weak);
+  return (exp?.today ?? 0) >= budgeted;
+}
+
+export function isCorrectCapped(exp, level, weak = false, target) {
+  const needed = target ?? dailyCorrectTarget(level, weak);
+  return (exp?.todayCorrect ?? 0) >= needed;
 }
 
 /**
  * Split candidates into normally-eligible vs daily-capped.
- * - Any word with todayCorrect >= correctLimit is capped (once correct, done today).
- * - Strong words with today >= appearLimit are also capped (variety).
- * @returns {{ eligible: Array<{w,status,exp}>, capped: Array<{w,status,exp}> }}
+ * Ordinary levels 0-2 remain eligible until they reach either two appearances
+ * or two correct answers. Strong/mastered words are done after one success.
+ * Weak words use the larger reinforcement budget.
+ * @returns {{ eligible: Array<{w,status,level,weak,exp}>, capped: Array<{w,status,level,weak,exp}> }}
  */
 export function partitionPool(words, ctx = {}) {
   const eligible = [];
   const capped = [];
-  const appearLimit = ctx.dailyLimit ?? DAILY_LIMIT;
-  const correctLimit = ctx.dailyCorrectLimit ?? CORRECT_DAILY_LIMIT;
   for (const w of words || []) {
     const p = ctx.progressMap ? ctx.progressMap[w.id] : undefined;
     const exp = (ctx.exposure && ctx.exposure.get(w.id)) || emptyExposure();
     const status = classifyWord(w.id, { progress: p, weakIds: ctx.weakIds, exposure: exp });
-    const entry = { w, status, exp };
-    if (isCorrectCapped(exp, correctLimit)) capped.push(entry);
-    else if (isCapped(status, exp.today, appearLimit)) capped.push(entry);
+    const level = wordLevel(w.id, { progress: p, exposure: exp });
+    const weak = status === 'weak';
+    const exposureLimit = ctx.dailyExposureLimit ?? dailyExposureLimit(level, weak);
+    const correctTarget = ctx.dailyCorrectTarget ?? dailyCorrectTarget(level, weak);
+    const entry = { w, status, level, weak, exp };
+    if (isCorrectCapped(exp, level, weak, correctTarget)) capped.push(entry);
+    else if (isExposureCapped(exp, level, weak, exposureLimit)) capped.push(entry);
     else eligible.push(entry);
   }
   return { eligible, capped };
@@ -158,6 +208,18 @@ export function orderFallback(capped) {
     if (a.exp.today !== b.exp.today) return a.exp.today - b.exp.today;
     return b.exp.total - a.exp.total;
   });
+}
+
+/**
+ * Randomized fallback for extra-review packs. Weak reinforcement stays ahead
+ * of completed words, but each tier is shuffled so repeated fallback packs do
+ * not repeat the same deterministic sequence.
+ */
+export function orderReviewPool(capped, shuffleFn) {
+  const shuffle = shuffleFn || ((entries) => entries);
+  const urgent = shuffle((capped || []).filter((e) => e.status === 'weak'));
+  const rest = shuffle((capped || []).filter((e) => e.status !== 'weak'));
+  return [...urgent, ...rest];
 }
 
 /**
