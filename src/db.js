@@ -380,6 +380,108 @@ export async function initDB() {
     workingWords = await db.words.toArray();
   }
 
+  // --- A2.1 authoritative replacement (435 -> 883 words, merged 2026-10-16) ---
+  // New words are appended per-Lektion after the old ones, so sequential IDs
+  // (70001+) shift for Lektion 2-12 (390/435 IDs). ID-based seeding alone would
+  // orphan progress and misattribute words, so migrate via lexical key like A1.x.
+  const newA21Words = ALL_MENSCHEN_WORDS.filter(w => w.book === 'a2.1');
+  const existingA21 = workingWords.filter(w => w.book === 'a2.1' && w.isCustom !== 1);
+  const needsA21Replacement = (() => {
+    if (!hasMenschen) return false; // will be seeded via !hasMenschen branch
+    if (existingA21.length === 0 && newA21Words.length > 0) return true;
+    const newCount = newA21Words.length;
+    if (existingA21.length !== newCount) return true;
+    if (existingA21.some(w => !w.appearsInLessons || !w.canonicalLesson)) return true;
+    const newLexSet = new Set(newA21Words.map(lexKeyForNew));
+    const expanded = new Set([...newLexSet]);
+    for (const k of newLexSet) {
+      if (k.startsWith('verb:')) expanded.add(k.replace('verb:','other:'));
+      if (k.startsWith('other:')) expanded.add(k.replace('other:','verb:'));
+    }
+    const obsolete = existingA21.filter(w => !expanded.has(lexKeyForMigration(w)));
+    if (obsolete.length > 0) return true;
+    const oldLexSet = new Set(existingA21.map(lexKeyForMigration));
+    if (oldLexSet.size !== newLexSet.size) return true;
+    return false;
+  })();
+
+  if (needsA21Replacement) {
+    const allProgress = await db.progress.toArray();
+    const newLexToId = new Map();
+    for (const nw of newA21Words) {
+      const k = lexKeyForNew(nw);
+      newLexToId.set(k, nw.id);
+      if (k.startsWith('verb:')) newLexToId.set(k.replace('verb:','other:'), nw.id);
+      if (k.startsWith('other:')) newLexToId.set(k.replace('other:','verb:'), nw.id);
+    }
+    // oldId -> lex for quizAttempts remap (built before deletion)
+    const oldIdToLex = new Map(existingA21.map(w => [w.id, lexKeyForMigration(w)]));
+    const progressToMigrate = [];
+    const obsoleteProgressIds = [];
+    for (const p of allProgress) {
+      const oldWord = existingA21.find(w => w.id === p.id);
+      if (!oldWord) continue;
+      const lk = lexKeyForMigration(oldWord);
+      const newId = newLexToId.get(lk);
+      if (newId && newId !== p.id) {
+        progressToMigrate.push({ oldId: p.id, newId });
+      } else if (!newId) {
+        obsoleteProgressIds.push(p.id);
+      }
+    }
+    const idsToDelete = existingA21.map(w => w.id);
+    if (idsToDelete.length) await db.words.bulkDelete(idsToDelete);
+    if (obsoleteProgressIds.length) await db.progress.bulkDelete(obsoleteProgressIds);
+    for (const m of progressToMigrate) {
+      const existingProgress = await db.progress.get(m.oldId);
+      if (existingProgress) {
+        await db.progress.delete(m.oldId);
+        const targetWord = newA21Words.find(w=> w.id===m.newId);
+        const newProg = { ...existingProgress, id: m.newId, book: targetWord?.book || existingProgress.book, lektion: targetWord?.lektion || existingProgress.lektion };
+        await db.progress.put(newProg);
+      }
+    }
+    // Remap quiz/game attempt history so exposure + analytics stay attached
+    // to the same lexical word after the ID shift. Best-effort, never blocks.
+    try {
+      const attempts = await db.quizAttempts.where('book').equals('a2.1').toArray();
+      for (const a of attempts) {
+        const lk = oldIdToLex.get(a.wordId);
+        if (!lk) continue;
+        const newId = newLexToId.get(lk);
+        if (newId && newId !== a.wordId) {
+          await db.quizAttempts.update(a.id, { wordId: newId });
+        }
+      }
+    } catch (e) {
+      console.warn('[migration] a2.1 quizAttempts remap skipped', e);
+    }
+    await db.words.bulkPut(newA21Words.map(w => ({ ...w })));
+    const afterA21 = await db.words.toArray();
+    for (const fresh of newA21Words) {
+      const cur = afterA21.find(x=> x.id===fresh.id);
+      if (cur) {
+        const needsUpdate = cur.meaning_en !== fresh.meaning_en || cur.meaning_fa !== fresh.meaning_fa || cur.plural !== fresh.plural
+          || cur.example !== fresh.example || JSON.stringify(cur.appearsInLessons||[]) !== JSON.stringify(fresh.appearsInLessons||[])
+          || cur.canonicalLesson !== fresh.canonicalLesson || cur.page !== fresh.page;
+        if (needsUpdate) {
+          await db.words.update(fresh.id, {
+            meaning_en: fresh.meaning_en,
+            meaning_fa: fresh.meaning_fa,
+            plural: fresh.plural,
+            english: fresh.meaning_en,
+            example: fresh.example,
+            appearsInLessons: fresh.appearsInLessons,
+            canonicalLesson: fresh.canonicalLesson,
+            page: fresh.page,
+            type: fresh.type,
+          });
+        }
+      }
+    }
+    workingWords = await db.words.toArray();
+  }
+
   if (!hasMenschen) {
     // keep custom words, remove old non-custom Menschen/A1 generic words if they are from old seed
     const customs = workingWords.filter(w => w.isCustom === 1);
@@ -389,7 +491,7 @@ export async function initDB() {
       if (customs.length) await db.words.bulkPut(customs);
     }
     await db.words.bulkPut(ALL_MENSCHEN_WORDS.map(w => ({ ...w })));
-  } else if (!needsA12Replacement && !needsA11Replacement) {
+  } else if (!needsA12Replacement && !needsA11Replacement && !needsA21Replacement) {
     // ensure any missing Menschen words are present (e.g. after JSON update) — only if no replacement already handled
     const existingIds = new Set(workingWords.map(w => w.id));
     const missing = ALL_MENSCHEN_WORDS.filter(w => !existingIds.has(w.id));
@@ -408,7 +510,7 @@ export async function initDB() {
     }
     // Safety cleanup: remove obsolete words that are not in new set for any book (but keep custom)
     const newIds = new Set(ALL_MENSCHEN_WORDS.map(w=> w.id));
-    const obsoleteWords = workingWords.filter(w => w.isCustom!==1 && (w.book==='a1.1' || w.book==='a1.2') && !newIds.has(w.id));
+    const obsoleteWords = workingWords.filter(w => w.isCustom!==1 && (w.book==='a1.1' || w.book==='a1.2' || w.book==='a2.1') && !newIds.has(w.id));
     if (obsoleteWords.length) await db.words.bulkDelete(obsoleteWords.map(w=> w.id));
   } else {
     // If one of the replacements happened, ensure the other book's missing words are still handled (already done in each block)

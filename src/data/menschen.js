@@ -99,6 +99,8 @@ const ID_BASE = {
   'a1.1': 50001,
   'a1.2': 10438,
   // A2.1 sits far above A1.1's range (50001-50704) so IDs never collide.
+  // A2.1 currently 883 words (70001-70883), merged 2026-10-16. IDs shift when
+  // per-Lektion appends happen — db.js migrates A2.1 progress via lexical keys.
   'a2.1': 70001,
 };
 const idCounters = {
