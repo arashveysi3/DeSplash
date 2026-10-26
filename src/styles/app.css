@@ -8,12 +8,13 @@
 .splash.is-leaving { opacity: 0; pointer-events: none; transition: opacity .7s ease; }
 .loading-pill {
   display: inline-flex; align-items: center; gap: 11px; min-height: 52px; padding: 0 20px;
-  border-radius: 15px; background: rgba(24, 24, 22, .06); color: #5d574e;
+  border: 1px solid rgba(255,255,255,.1); border-radius: 15px;
+  background: rgba(255,255,255,.06); color: #d1ccc2;
   font-weight: 700; font-size: 13px;
 }
 .loading-pill i {
   width: 14px; height: 14px; border-radius: 50%; font-style: normal;
-  border: 2px solid rgba(24, 24, 22, .18); border-top-color: var(--red);
+  border: 2px solid rgba(255,255,255,.18); border-top-color: var(--yellow);
   animation: spin .8s linear infinite;
 }
 

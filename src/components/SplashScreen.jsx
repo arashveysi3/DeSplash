@@ -18,17 +18,26 @@ export default function SplashScreen({ phase = 'visible', action = null }) {
       <div className="splash-art" aria-hidden="true">
         <div className="orbit orbit-one" />
         <div className="orbit orbit-two" />
-        <div className="letter-card card-a">
-          A<small>APFEL</small>
+        <div className="splash-card splash-card-der">
+          <span>der</span>
+          <strong>Apfel</strong>
+          <small>apple · سیب</small>
         </div>
-        <div className="letter-card card-umlaut">
-          Ä<small>ÄPFEL</small>
+        <div className="splash-card splash-card-die">
+          <span>die</span>
+          <strong>Sprache</strong>
+          <small>language · زبان</small>
         </div>
-        <div className="spark spark-one" />
-        <div className="spark spark-two" />
+        <div className="splash-card splash-card-das">
+          <span>das</span>
+          <strong>Wort</strong>
+          <small>word · کلمه</small>
+        </div>
+        <span className="splash-spark splash-spark-one" />
+        <span className="splash-spark splash-spark-two" />
       </div>
       <div className="splash-copy">
-        <span className="eyebrow">DEIN DEUTSCH-MOMENT BEGINNT</span>
+        <span className="eyebrow"><i /> DEIN DEUTSCH-MOMENT BEGINNT</span>
         <h1>
           Wörter, die
           <br />
@@ -39,7 +48,7 @@ export default function SplashScreen({ phase = 'visible', action = null }) {
           <br />A little progress, every day.
         </p>
         {action ? (
-          <button className="btn dark" type="button" onClick={action.onClick}>
+          <button className="btn splash-cta" type="button" onClick={action.onClick}>
             {action.label} <Icon name="arrow" size={18} />
           </button>
         ) : (
