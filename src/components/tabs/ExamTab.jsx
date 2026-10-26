@@ -1,5 +1,13 @@
-import { BOOK_EXAM_COUNTS, EXAM_BOOK_TITLES, GRAMMAR_TOPICS_A11, GRAMMAR_TOPICS_A12, findReadingText } from '../../data/exam.js';
-import { EXAM_SECTION_LABELS, EXAM_SECTIONS, examModeTotal, examModeLabel, readExamBest } from '../../utils/exam.js';
+import {
+  BOOK_EXAM_COUNTS,
+  EXAM_BOOKS,
+  EXAM_BOOK_LABELS,
+  EXAM_BOOK_LEKTIONS,
+  EXAM_BOOK_TITLES,
+  GRAMMAR_TOPICS_BY_BOOK,
+  findReadingText,
+} from '../../data/exam.js';
+import { EXAM_SECTION_LABELS, EXAM_SECTIONS, examModeTotal, examModeLabel, examBookTag, readExamBest } from '../../utils/exam.js';
 import { speakGerman } from '../../utils/speak';
 import Icon from '../shell/Icon.jsx';
 import { CircleX, Sparkles } from 'lucide-react';
@@ -55,7 +63,7 @@ export default function ExamTab(props) {
     const { score, analysis, bonus, isNewBest } = examResult;
     const mode = examResult.mode || examMode || 'full';
     const resultBook = examResult.book || examBook || 'a1.2';
-    const resultTag = resultBook === 'a1.1' ? 'A1.1' : 'A1.2';
+    const resultTag = examBookTag(resultBook);
     const incorrect = (score.results || []).filter((r) => !r.correct);
     const byId = new Map((examQuestions || []).map((q) => [q.id, q]));
     const presentSections = EXAM_SECTIONS.filter((s) => (score.perSection[s] || { total: 0 }).total > 0);
@@ -276,16 +284,14 @@ export default function ExamTab(props) {
   }
 
   // ---------------------------------------------------------- start screen
-  // Prüfung is divided by book: one Final Mock per book (A1.1 / A1.2).
-  const book = examBook === 'a1.1' ? 'a1.1' : 'a1.2';
-  const bookTag = book === 'a1.1' ? 'A1.1' : 'A1.2';
+  // Prüfung is divided by book: one Final Mock per book (A1.1 / A1.2 / A2.1).
+  const book = EXAM_BOOKS.includes(examBook) ? examBook : 'a1.2';
+  const bookTag = EXAM_BOOK_LABELS[book];
   const bookCounts = BOOK_EXAM_COUNTS[book];
   const bookTotal = bookCounts.diktation + bookCounts.grammatik + bookCounts.wortschatz + bookCounts.lesen;
   const fullBest = readExamBest('full', book);
-  const otherBook = book === 'a1.1' ? 'a1.2' : 'a1.1';
-  const otherBest = readExamBest('full', otherBook);
-  const otherTag = otherBook === 'a1.1' ? 'A1.1' : 'A1.2';
-  const grammarTopics = book === 'a1.1' ? GRAMMAR_TOPICS_A11.length : GRAMMAR_TOPICS_A12.length;
+  const otherBooks = EXAM_BOOKS.filter((b) => b !== book);
+  const grammarTopics = GRAMMAR_TOPICS_BY_BOOK[book].length;
   return (
     <div className="page exam-page">
       <div className="page-title-row">
@@ -295,10 +301,10 @@ export default function ExamTab(props) {
           <p>Realistisch üben. Ruhig abliefern.</p>
         </div>
         <div className="book-toggle" role="group" aria-label="Buch wählen">
-          {['a1.1', 'a1.2'].map((b) => {
+          {EXAM_BOOKS.map((b) => {
             const active = b === book;
-            const label = b === 'a1.1' ? 'A1.1' : 'A1.2';
-            const sub = b === 'a1.1' ? 'Lektion 1–12' : 'Lektion 13–24';
+            const label = EXAM_BOOK_LABELS[b];
+            const sub = EXAM_BOOK_LEKTIONS[b];
             return (
               <button
                 key={b}
@@ -332,7 +338,11 @@ export default function ExamTab(props) {
             {fullBest ? fullBest.pct : '—'}{fullBest ? <small>%</small> : null}
           </strong>
           <p>{fullBest ? `${fullBest.correct} von ${fullBest.total}` : 'Noch kein Versuch'}</p>
-          <small>{otherTag} Final Mock: {bestLine(otherBest)}</small>
+          {otherBooks.map((b) => (
+            <small key={b}>
+              {EXAM_BOOK_LABELS[b]} Final Mock: {bestLine(readExamBest('full', b))}
+            </small>
+          ))}
         </div>
       </section>
 

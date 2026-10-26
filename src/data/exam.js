@@ -1,13 +1,15 @@
 /**
- * A1 Final Mock Exam — static question bank (GermanSplash).
+ * Final Mock Exam banks + book scoping (GermanSplash).
  *
  * Knowledge boundary: the Menschen A1.1 (Lektion 1-12) + A1.2 (Lektion 13-24)
  * vocabulary datasets in this repo. Every content word used in prompts,
  * options and reading texts was verified against
  * menschen_a1_1_vocabulary.json / menschen_a1_2_vocabulary.json before
- * storing (see verification scripts). Standard A1 function words
- * (articles, pronouns, prepositions, connectors like weil/dass) are core A1
- * grammar and intentionally allowed — they are not "B1 vocabulary".
+ * storing (see verification scripts). The A2.1 banks (examA21*.js) are
+ * grounded the same way in menchen-a2.1-lernwortchatz.json. Standard A1/A2
+ * function words (articles, pronouns, prepositions, connectors like weil/dass)
+ * are core grammar vocabulary and intentionally allowed — they are not
+ * "B1 vocabulary".
  *
  * Reading texts are ORIGINAL A1-level texts (Anzeige, E-Mail, Angebot,
  * Durchsage) inspired by everyday situations. No external content is
@@ -24,6 +26,7 @@
  *
  * Per-book Final Mocks: A1.1 → Grammatik 20, Wortschatz 15, Lesen 10,
  * Diktation 15 (total 60); A1.2 → Grammatik 26, Wortschatz 15, Lesen 10,
+ * Diktation 15 (total 66); A2.1 → Grammatik 26, Wortschatz 15, Lesen 10,
  * Diktation 15 (total 66). Grammatik counts equal the syllabus topic counts
  * so every grammar topic of the book appears at least once per mock.
  *
@@ -34,6 +37,12 @@
  *    split into 20 x 3-question texts + 20 x 2-question texts so every run
  *    can sample exactly 10 (2 x 3Q + 2 x 2Q) with texts kept together.
  *  - Diktation: generated at runtime from the full A1 word pool (infinite).
+ *
+ * A2.1 (Menschen A2.1, Lektion 1-12) has its own banks in examA21G.js,
+ * examA21V.js and examA21R.js: 58 Grammatik, 48 Wortschatz and 30 Lesen
+ * questions across 12 texts (6 x 3Q + 6 x 2Q). Because A2.1 reuses the
+ * lesson numbers "Lektion 1-12", its items carry book: 'a2.1' explicitly —
+ * the Lektion range alone cannot tell A1.1 and A2.1 apart.
  */
 
 import { GRAMMAR_BANK_2 } from './examG2.js';
@@ -45,6 +54,9 @@ import { VOCAB_BANK_3 } from './examV3.js';
 import { READING_BANK_2 } from './examR2.js';
 import { READING_BANK_3 } from './examR3.js';
 import { READING_BANK_4 } from './examR4.js';
+import { GRAMMAR_BANK_A21 as GRAMMAR_A21_SOURCE } from './examA21G.js';
+import { VOCAB_BANK_A21 as VOCAB_A21_SOURCE } from './examA21V.js';
+import { READING_BANK_A21 as READING_A21_SOURCE } from './examA21R.js';
 
 export const EXAM_META = {
   id: 'a1-final-mock-1',
@@ -553,12 +565,51 @@ export const BANK_META = {
 };
 
 // ---------------------------------------------------------------------------
+// A2.1 banks — separate from the A1 banks, because A2.1 reuses the lesson
+// numbers "Lektion 1-12". Tagging every item with book: 'a2.1' here keeps the
+// A1 slices (and their tests) untouched and makes book scoping exact.
+// ---------------------------------------------------------------------------
+
+const withBook = (list, book) => list.map((item) => ({ ...item, book }));
+
+/**
+ * Reading texts need the tag on their questions too: the sampler flattens a
+ * text into questions that carry only section/topic/lektion/textId, so without
+ * a per-question book an A2.1 Lesefrage would fall back to `bookForLektion`
+ * and be attributed to A1.1 in the weakness analysis and the attempt log.
+ */
+const withBookReading = (list, book) => withBook(list, book).map((t) => ({
+  ...t,
+  questions: t.questions.map((q) => ({ ...q, book })),
+}));
+
+export const GRAMMAR_BANK_A21 = withBook(GRAMMAR_A21_SOURCE, 'a2.1');
+export const VOCAB_BANK_A21 = withBook(VOCAB_A21_SOURCE, 'a2.1');
+export const READING_BANK_A21 = withBookReading(READING_A21_SOURCE, 'a2.1');
+
+/** All Lesen texts of every book (used to resolve a question back to its text). */
+export const READING_BANK_BY_ID = [...READING_BANK_ALL, ...READING_BANK_A21];
+
+export function bankMetaForBook(book) {
+  const grammar = grammarBankForBook(book);
+  const vocab = vocabBankForBook(book);
+  const texts = readingBankForBook(book);
+  return {
+    grammatik: grammar.length,
+    wortschatz: vocab.length,
+    lesen: texts.reduce((a, t) => a + t.questions.length, 0),
+    lesenTexts: texts.length,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Per-book exam scope — the Prüfung tab is divided by book: one Final Mock
-// per book (Menschen A1.1 = Lektion 1-12, Menschen A1.2 = Lektion 13-24).
-// Every Final Mock covers EVERY grammar topic of its book at least once:
-// the Grammatik question count of a book mock equals the number of syllabus
-// topics of that book (see GRAMMAR_TOPICS_A11 / GRAMMAR_TOPICS_A12), and the
-// engine samples exactly one question per topic (src/utils/exam.js).
+// per book (Menschen A1.1 = Lektion 1-12, Menschen A1.2 = Lektion 13-24,
+// Menschen A2.1 = Lektion 1-12 of its own book). Every Final Mock covers
+// EVERY grammar topic of its book at least once: the Grammatik question
+// count of a book mock equals the number of syllabus topics of that book
+// (see GRAMMAR_TOPICS_A11 / GRAMMAR_TOPICS_A12 / GRAMMAR_TOPICS_A21), and
+// the engine samples exactly one question per topic (src/utils/exam.js).
 // ---------------------------------------------------------------------------
 
 /** Numeric Lektion from a "Lektion N" tag (0 when unparseable). */
@@ -625,17 +676,65 @@ export const GRAMMAR_TOPICS_A12 = [
   'Perfekt trennbar/untrennbar',
 ];
 
+/** Every grammar topic taught in Menschen A2.1 (Lektion 1-12).
+ *  Contract: each topic MUST have at least one bank question tagged
+ *  book 'a2.1' (enforced by src/utils/examBank.test.js). */
+export const GRAMMAR_TOPICS_A21 = [
+  'Perfekt',
+  'Plusquamperfekt',
+  'Modalverben im Präteritum',
+  'Reflexive Verben (Akkusativ)',
+  'Reflexive Verben (Dativ)',
+  'Verben mit Präpositionen (Akkusativ)',
+  'Verben mit Präpositionen (Dativ)',
+  'Präpositionen mit Artikel',
+  'Temporale Präpositionen',
+  'Adjektivdeklination (bestimmter Artikel)',
+  'Adjektivdeklination (ein / Possessivartikel)',
+  'Adjektivdeklination (ohne Artikel)',
+  'Komparativ',
+  'Superlativ',
+  'Relativsatz (Nominativ)',
+  'Relativsatz (Akkusativ)',
+  'Relativsatz mit Präposition',
+  'Konnektor obwohl',
+  'Konnektor damit',
+  'um … zu',
+  'Infinitiv mit zu',
+  'als / wenn',
+  'Indirekte Fragen',
+  'Futur I mit werden',
+  'Passiv mit werden',
+  'N-Deklination',
+];
+
 /** Book ids with a Final Mock exam. */
-export const EXAM_BOOKS = ['a1.1', 'a1.2'];
+export const EXAM_BOOKS = ['a1.1', 'a1.2', 'a2.1'];
 
 export const EXAM_BOOK_LABELS = {
   'a1.1': 'A1.1',
   'a1.2': 'A1.2',
+  'a2.1': 'A2.1',
+};
+
+/** Lektion range shown under the book toggle in the Prüfung tab. */
+export const EXAM_BOOK_LEKTIONS = {
+  'a1.1': 'Lektion 1–12',
+  'a1.2': 'Lektion 13–24',
+  'a2.1': 'Lektion 1–12',
 };
 
 export const EXAM_BOOK_TITLES = {
   'a1.1': 'Menschen A1.1 (Lektion 1–12)',
   'a1.2': 'Menschen A1.2 (Lektion 13–24)',
+  'a2.1': 'Menschen A2.1 (Lektion 1–12)',
+};
+
+/** Grammar syllabus per book — the Final Mock samples one question per topic. */
+export const GRAMMAR_TOPICS_BY_BOOK = {
+  'a1.1': GRAMMAR_TOPICS_A11,
+  'a1.2': GRAMMAR_TOPICS_A12,
+  'a2.1': GRAMMAR_TOPICS_A21,
 };
 
 /** Question counts per book mock. Grammatik always equals the number of
@@ -653,6 +752,12 @@ export const BOOK_EXAM_COUNTS = {
     wortschatz: 15,
     lesen: 10,
   },
+  'a2.1': {
+    diktation: 15,
+    grammatik: GRAMMAR_TOPICS_A21.length,
+    wortschatz: 15,
+    lesen: 10,
+  },
 };
 
 export function bookExamTotal(book) {
@@ -660,20 +765,33 @@ export function bookExamTotal(book) {
   return c.diktation + c.grammatik + c.wortschatz + c.lesen;
 }
 
-/** Grammar bank slice for one book (by Lektion tag). */
+/**
+ * Book of a bank item. A2.1 items carry an explicit book because the book
+ * reuses the lesson numbers "Lektion 1-12"; A1 items are derived from the
+ * Lektion range (1-12 → a1.1, 13-24 → a1.2).
+ */
+export function examBookOf(item) {
+  if (!item) return null;
+  return item.book || bookForLektion(item.lektion);
+}
+
+/** Grammar bank slice for one book. */
 export function grammarBankForBook(book) {
+  if (book === 'a2.1') return GRAMMAR_BANK_A21;
   const isA11 = book === 'a1.1';
   return GRAMMAR_BANK.filter((q) => (lektionNumber(q.lektion) <= 12) === isA11);
 }
 
-/** Vocab bank slice for one book (by Lektion tag). */
+/** Vocab bank slice for one book. */
 export function vocabBankForBook(book) {
+  if (book === 'a2.1') return VOCAB_BANK_A21;
   const isA11 = book === 'a1.1';
   return VOCAB_BANK.filter((q) => (lektionNumber(q.lektion) <= 12) === isA11);
 }
 
-/** Reading texts slice for one book (by Lektion tag). */
+/** Reading texts slice for one book. */
 export function readingBankForBook(book) {
+  if (book === 'a2.1') return READING_BANK_A21;
   const isA11 = book === 'a1.1';
   return READING_BANK_ALL.filter((t) => (lektionNumber(t.lektion) <= 12) === isA11);
 }
@@ -686,14 +804,15 @@ export function readingTwoForBook(book) {
   return readingBankForBook(book).filter((t) => t.questions.length === 2);
 }
 
-/** Find a reading text by id across the whole bank (all 40 texts). */
+/** Find a reading text by id across the whole bank (all books). */
 export function findReadingText(textId) {
-  return READING_BANK_ALL.find((t) => t.id === textId) || null;
+  return READING_BANK_BY_ID.find((t) => t.id === textId) || null;
 }
 
-/** Flat list of ALL bank questions (Grammatik + Wortschatz + Lesen). */
+/** Flat list of ALL bank questions (Grammatik + Wortschatz + Lesen, all books). */
 export function getFullBankQuestions() {
-  const reading = READING_BANK_ALL.flatMap((t) =>
+  const texts = [...READING_BANK_ALL, ...READING_BANK_A21];
+  const reading = texts.flatMap((t) =>
     t.questions.map((q) => ({
       ...q,
       section: 'lesen',
@@ -705,6 +824,8 @@ export function getFullBankQuestions() {
   return [
     ...GRAMMAR_BANK.map((q) => ({ ...q })),
     ...VOCAB_BANK.map((q) => ({ ...q })),
+    ...GRAMMAR_BANK_A21.map((q) => ({ ...q })),
+    ...VOCAB_BANK_A21.map((q) => ({ ...q })),
     ...reading,
   ];
 }

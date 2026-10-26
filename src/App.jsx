@@ -7,7 +7,7 @@ import { calcQuizReport } from './utils/analytics.js';
 import { todayKey, dayStartOf, buildExposureIndex, partitionPool, orderFallback, orderReviewPool, takeUpTo, selectGameSet } from './utils/selection.js';
 import { baseGerman, filterSingleWordPool, buildDiktatQuestion } from './utils/diktat.js';
 import { getVocabStatus } from './utils/vocabStatus.js';
-import { bookForLektion, EXAM_DIKTATION_COUNT, BOOK_EXAM_COUNTS, grammarBankForBook, vocabBankForBook, readingThreeForBook, readingTwoForBook } from './data/exam.js';
+import { examBookOf, EXAM_BOOKS, EXAM_DIKTATION_COUNT, BOOK_EXAM_COUNTS, grammarBankForBook, vocabBankForBook, readingThreeForBook, readingTwoForBook } from './data/exam.js';
 import { prepareExamQuestions, selectBookQuestions, scoreExam, analyzeExam, getExamBonusGrant, toExamAttemptEntries, readExamBest, writeExamBest, EXAM_MODE_COUNTS } from './utils/exam.js';
 import { BOOKS, ALL_MENSCHEN_WORDS, lektionenForBook } from './data/menschen.js';
 import PWAUpdater from './components/PWAUpdater.jsx';
@@ -291,10 +291,13 @@ export default function App() {
   const [examMode, setExamMode] = useState('full');
   const examModeRef = useRef('full');
   useEffect(() => { examModeRef.current = examMode; }, [examMode]);
-  // Prüfung is divided by book: 'a1.1' (Lektion 1-12) or 'a1.2' (Lektion 13-24).
-  // Default is A1.2 — the upcoming final.
+  // Prüfung is divided by book: A1.1 (Lektion 1-12), A1.2 (Lektion 13-24) and
+  // A2.1 (Lektion 1-12 of its own book). Default is A1.2 — the upcoming final.
   const [examBook, setExamBook] = useState(() => {
-    try { return localStorage.getItem('gs_exam_book') || 'a1.2'; } catch { return 'a1.2'; }
+    try {
+      const saved = localStorage.getItem('gs_exam_book');
+      return EXAM_BOOKS.includes(saved) ? saved : 'a1.2';
+    } catch { return 'a1.2'; }
   });
   const examBookRef = useRef(examBook);
   useEffect(() => {
@@ -1093,7 +1096,7 @@ export default function App() {
     if (!isArtikelNext && quizMode !== 'fa' && quizMode !== 'choice' && quizMode !== 'diktat') setTimeout(()=> speakGerman(w.german), 250);
   };
 
-  // === A1 Final Mock Exams (per book: A1.1 + A1.2) ===
+  // === Final Mock Exams (per book: A1.1, A1.2, A2.1) ===
   // Diktation: stratified sampling across the selected book's pool,
   // round-robin over Lektionen so the section samples the whole book.
   // Questions are built with the existing Diktat-Check engine — no duplicate engine.
@@ -1141,8 +1144,8 @@ export default function App() {
   const startExam = useCallback((mode = 'full', book) => {
     const m = EXAM_MODE_COUNTS[mode] ? mode : 'full';
     // The Prüfung tab is divided by book: every run belongs to exactly one
-    // book (Menschen A1.1 = Lektion 1-12, A1.2 = Lektion 13-24).
-    const b = (book === 'a1.1' || book === 'a1.2') ? book : examBookRef.current;
+    // book (Menschen A1.1, A1.2 or A2.1).
+    const b = EXAM_BOOKS.includes(book) ? book : examBookRef.current;
     // Full mocks use per-book counts: Grammatik count equals the syllabus
     // topic count of the book, so every grammar topic appears at least once.
     const counts = m === 'full' ? BOOK_EXAM_COUNTS[b] : EXAM_MODE_COUNTS[m];
@@ -1170,7 +1173,7 @@ export default function App() {
         threeQ: counts.lesen > 0 ? 2 : 0,
         twoQ: counts.lesen > 0 ? 2 : 0,
       },
-    ).map((q) => ({ ...q, book: bookForLektion(q.lektion) }));
+    ).map((q) => ({ ...q, book: examBookOf(q) }));
     const expectedStatic = counts.grammatik + counts.wortschatz + counts.lesen;
     if (staticQs.length < expectedStatic) {
       setToast('Question bank unavailable — try again');

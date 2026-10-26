@@ -43,10 +43,14 @@ export function examModeTotal(mode) {
   return c.diktation + c.grammatik + c.wortschatz + c.lesen;
 }
 
-/** Short book tag for titles, e.g. 'a1.2' → 'A1.2'. */
+/** Books with a Final Mock (mirrors EXAM_BOOKS in src/data/exam.js). */
+const EXAM_BOOK_KEYS = ['a1.1', 'a1.2', 'a2.1'];
+
+/** Short book tag for titles, e.g. 'a1.2' → 'A1.2', 'a2.1' → 'A2.1'. */
 export function examBookTag(book) {
   if (book === 'a1.1') return 'A1.1';
   if (book === 'a1.2') return 'A1.2';
+  if (book === 'a2.1') return 'A2.1';
   return '';
 }
 
@@ -117,7 +121,7 @@ export function selectStaticQuestions(
 
 export function examBestKey(mode, book) {
   const m = mode || 'full';
-  if (book === 'a1.1' || book === 'a1.2') return `gs_exam_best_${m}_${book}`;
+  if (EXAM_BOOK_KEYS.includes(book)) return `gs_exam_best_${m}_${book}`;
   return `gs_exam_best_${m}`;
 }
 
@@ -144,7 +148,7 @@ export function writeExamBest(mode, bookOrBest, maybeBest) {
   // Back-compat: writeExamBest(mode, best) still works (no book).
   let book = null;
   let best = null;
-  if (typeof bookOrBest === 'string' && (bookOrBest === 'a1.1' || bookOrBest === 'a1.2')) {
+  if (typeof bookOrBest === 'string' && EXAM_BOOK_KEYS.includes(bookOrBest)) {
     book = bookOrBest;
     best = maybeBest;
   } else {
